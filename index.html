@@ -1,0 +1,2092 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>카발리에 킹 찰스 스파니엘 · 첫 반려 핸드북</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FDFCF9; --panel:#F7F1E6; --ink:#241E18; --sub:#6E6254;
+  --chest:#8A3324; --chest-d:#5E2015; --pearl:#EFE5D2;
+  --amber-bg:#FBF1D4; --amber-bd:#DFB449;
+  --sage:#4F6B58; --sage-bg:#EAF0EB;
+  --line:#E6DECF; --red:#AC3A28; --red-bg:#F9E9E4;
+  --radius:14px;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{transition:none!important; animation:none!important;} }
+body{
+  font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.7; font-size:15.5px;
+  -webkit-font-smoothing:antialiased;
+}
+.serif{font-family:'Gowun Batang','Noto Serif KR',serif;}
+
+/* ---------- Header ---------- */
+header.hero{
+  background:
+    linear-gradient(115deg, var(--chest-d) 0%, var(--chest) 58%, var(--chest) 62%, transparent 62.5%),
+    repeating-linear-gradient(-45deg, var(--pearl) 0 10px, #E7DCC5 10px 20px);
+  color:#FBF6EC; padding:34px 20px 30px;
+}
+.hero-in{max-width:880px; margin:0 auto;}
+.hero .eyebrow{
+  font-size:11px; letter-spacing:.22em; font-weight:700; color:#E9C9A8;
+  text-transform:uppercase; margin-bottom:10px;
+}
+.hero h1{font-family:'Gowun Batang',serif; font-size:clamp(24px,5.5vw,36px); line-height:1.3; font-weight:700;}
+.hero h1 .en{display:block; font-size:.42em; letter-spacing:.14em; color:#E9C9A8; font-family:'Noto Sans KR',sans-serif; font-weight:500; margin-top:8px;}
+.hero .sub{margin-top:12px; font-size:13.5px; color:#F3E3CE; max-width:520px; line-height:1.65;}
+.hero .badges{margin-top:14px; display:flex; gap:8px; flex-wrap:wrap;}
+.hero .bdg{background:rgba(0,0,0,.22); border:1px solid rgba(255,255,255,.28); border-radius:999px; padding:3px 12px; font-size:11.5px; font-weight:700;}
+
+/* ---------- Nav ---------- */
+nav.tabs{
+  position:sticky; top:0; z-index:50; background:var(--paper);
+  border-bottom:2px solid var(--ink);
+  overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;
+}
+nav.tabs::-webkit-scrollbar{display:none;}
+.tabs-in{max-width:880px; margin:0 auto; display:flex; gap:2px; padding:0 12px;}
+.tab-btn{
+  flex:0 0 auto; background:none; border:none; cursor:pointer;
+  font-family:inherit; font-size:13.5px; font-weight:700; color:var(--sub);
+  padding:13px 13px 11px; border-bottom:3px solid transparent; white-space:nowrap;
+}
+.tab-btn .num{font-size:10px; color:#B7A78E; margin-right:3px; font-weight:800;}
+.tab-btn:hover{color:var(--ink);}
+.tab-btn.on{color:var(--chest); border-bottom-color:var(--chest);}
+.tab-btn:focus-visible{outline:2px solid var(--chest); outline-offset:-2px; border-radius:6px;}
+
+/* ---------- Layout ---------- */
+main{max-width:880px; margin:0 auto; padding:26px 16px 80px;}
+section.tab-panel{display:none;}
+section.tab-panel.on{display:block; animation:fadein .25s ease;}
+@keyframes fadein{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;}}
+
+.ch-head{margin:6px 0 20px;}
+.ch-head .ch-no{font-size:11px; letter-spacing:.2em; color:var(--chest); font-weight:800;}
+.ch-head h2{font-family:'Gowun Batang',serif; font-size:clamp(21px,4.5vw,27px); margin-top:4px;}
+.ch-head .lede{color:var(--sub); font-size:14px; margin-top:6px; line-height:1.65;}
+
+h3.sec{
+  font-size:16.5px; font-weight:800; margin:34px 0 12px; padding-left:11px;
+  border-left:4px solid var(--chest); line-height:1.4;
+}
+h4.sub-t{font-size:14.5px; font-weight:800; margin:20px 0 8px; color:var(--chest-d);}
+p{margin:0 0 10px;}
+ul.ls, ol.ls{margin:0 0 12px 20px;}
+ul.ls li, ol.ls li{margin-bottom:6px;}
+strong{font-weight:800;}
+.muted{color:var(--sub); font-size:13px;}
+.small{font-size:12.5px;}
+
+/* ---------- Boxes ---------- */
+.box{border-radius:var(--radius); padding:15px 17px; margin:14px 0;}
+.box .bt{font-size:12px; font-weight:800; letter-spacing:.06em; margin-bottom:6px; display:flex; align-items:center; gap:6px;}
+.box-core{background:var(--panel); border:1.5px solid var(--line);}
+.box-core .bt{color:var(--chest);}
+.box-key{background:var(--amber-bg); border:1.5px solid var(--amber-bd);}
+.box-key .bt{color:#8A6A10;}
+.box-warn{background:var(--red-bg); border:1.5px solid #DCA08F;}
+.box-warn .bt{color:var(--red);}
+.box-note{background:var(--sage-bg); border:1.5px solid #C6D5C9;}
+.box-note .bt{color:var(--sage);}
+.box p:last-child, .box ul:last-child{margin-bottom:0;}
+.box ul{margin-left:18px;}
+
+/* ---------- Tables ---------- */
+.tw{overflow-x:auto; margin:12px 0; border:1.5px solid var(--line); border-radius:12px;}
+table{border-collapse:collapse; width:100%; min-width:520px; font-size:13.5px; background:#fff;}
+th,td{padding:9px 11px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; line-height:1.55;}
+thead th{background:var(--panel); font-size:12.5px; font-weight:800; color:var(--chest-d); white-space:nowrap; border-bottom:1.5px solid var(--line);}
+tbody tr:last-child td{border-bottom:none;}
+td .tag{display:inline-block; font-size:11px; font-weight:800; padding:1px 8px; border-radius:999px; background:var(--panel); color:var(--chest); white-space:nowrap;}
+td .tag.g{background:var(--sage-bg); color:var(--sage);}
+td .tag.r{background:var(--red-bg); color:var(--red);}
+td .tag.y{background:var(--amber-bg); color:#8A6A10;}
+
+/* ---------- Checklists ---------- */
+.ck{list-style:none; margin:10px 0;}
+.ck li{display:flex; gap:10px; align-items:flex-start; padding:9px 4px; border-bottom:1px dashed var(--line); font-size:14px;}
+.ck li:last-child{border-bottom:none;}
+.ck input[type=checkbox]{width:19px; height:19px; accent-color:var(--chest); flex:0 0 auto; margin-top:2px; cursor:pointer;}
+.ck label{cursor:pointer; flex:1;}
+.ck .done{color:#A79B87; text-decoration:line-through;}
+
+/* ---------- Cards / grid ---------- */
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+@media(max-width:620px){.grid2{grid-template-columns:1fr;}}
+.card{background:#fff; border:1.5px solid var(--line); border-radius:var(--radius); padding:15px 16px;}
+.card .ct{font-weight:800; font-size:14px; margin-bottom:6px; color:var(--chest-d);}
+
+/* ---------- Trainer note ---------- */
+.trainer{
+  display:flex; gap:12px; background:#fff; border:1.5px solid var(--ink);
+  border-radius:var(--radius); padding:14px 16px; margin:16px 0;
+}
+.trainer .ico{flex:0 0 auto; width:38px; height:38px; border-radius:50%; background:var(--ink); color:#F6E9D2; display:flex; align-items:center; justify-content:center; font-size:17px;}
+.trainer .tt{font-size:11.5px; font-weight:800; letter-spacing:.08em; color:var(--chest); margin-bottom:3px;}
+.trainer .tb{font-size:13.5px; line-height:1.65;}
+
+/* ---------- Forms / record widgets ---------- */
+input[type=text], input[type=date], input[type=number], select, textarea{
+  font-family:inherit; font-size:14px; padding:8px 10px; border:1.5px solid var(--line);
+  border-radius:9px; background:#fff; color:var(--ink); max-width:100%;
+}
+input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible{outline:2px solid var(--chest); outline-offset:1px;}
+button.btn{
+  font-family:inherit; font-size:13.5px; font-weight:800; cursor:pointer;
+  background:var(--chest); color:#FBF3E6; border:none; border-radius:9px; padding:9px 16px;
+}
+button.btn:hover{background:var(--chest-d);}
+button.btn.ghost{background:#fff; color:var(--chest); border:1.5px solid var(--chest);}
+button.btn.sm{padding:6px 11px; font-size:12.5px;}
+.row{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+.field{display:flex; flex-direction:column; gap:4px; margin-bottom:10px;}
+.field label{font-size:12px; font-weight:800; color:var(--sub);}
+
+/* ---------- Home widgets ---------- */
+.age-nav{background:#fff; border:2px solid var(--chest); border-radius:var(--radius); padding:18px; margin:14px 0;}
+.age-nav .big{font-family:'Gowun Batang',serif; font-size:26px; color:var(--chest-d); font-weight:700;}
+.stage-pill{display:inline-block; background:var(--chest); color:#FBF3E6; border-radius:999px; padding:3px 13px; font-size:12.5px; font-weight:800; margin:6px 0 10px;}
+.daily-date{font-size:13px; font-weight:800; color:var(--sub);}
+.progress-bar{height:9px; background:var(--panel); border-radius:99px; overflow:hidden; margin-top:8px;}
+.progress-fill{height:100%; background:var(--sage); border-radius:99px; transition:width .3s; width:0%;}
+
+/* ---------- Record log ---------- */
+.log-item{display:flex; justify-content:space-between; gap:10px; padding:9px 4px; border-bottom:1px dashed var(--line); font-size:13.5px; align-items:center;}
+.log-item .del{background:none; border:none; color:#C0846F; cursor:pointer; font-size:15px; padding:2px 6px;}
+.wchart{width:100%; height:180px; margin-top:8px;}
+.storage-badge{font-size:11.5px; font-weight:700; border-radius:999px; padding:2px 10px; display:inline-block; margin-top:6px;}
+.storage-badge.ok{background:var(--sage-bg); color:var(--sage);}
+.storage-badge.no{background:var(--red-bg); color:var(--red);}
+
+footer{border-top:2px solid var(--ink); margin-top:40px; padding:22px 16px 40px; background:var(--panel);}
+.foot-in{max-width:880px; margin:0 auto; font-size:12px; color:var(--sub); line-height:1.7;}
+.divider{border:none; border-top:1.5px dashed var(--line); margin:26px 0;}
+.jump{display:flex; gap:6px; flex-wrap:wrap; margin:0 0 8px;}
+.jump a{font-size:12px; font-weight:800; color:var(--chest); background:#fff; border:1.5px solid var(--line); border-radius:999px; padding:4px 12px; text-decoration:none;}
+.jump a:hover{border-color:var(--chest);}
+</style>
+<style>
+/* ---------- Pager ---------- */
+.pager{display:flex; justify-content:space-between; gap:10px; margin-top:40px; padding-top:16px; border-top:1.5px dashed var(--line);}
+.pg{font-family:inherit; font-size:12.5px; font-weight:800; color:var(--chest); background:#fff; border:1.5px solid var(--line); border-radius:10px; padding:10px 13px; cursor:pointer; max-width:48%; text-align:center; line-height:1.4;}
+.pg:hover{border-color:var(--chest);}
+.pg:focus-visible{outline:2px solid var(--chest); outline-offset:1px;}
+/* ---------- Calendar ---------- */
+.cal-wrap{background:#fff; border:1.5px solid var(--line); border-radius:var(--radius); padding:14px;}
+.cal-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:8px;}
+.cal-title{font-family:'Gowun Batang',serif; font-size:19px; font-weight:700;}
+.cal-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:3px;}
+.cal-dow{text-align:center; font-size:11px; font-weight:800; color:var(--sub); padding:4px 0 6px;}
+.cal-dow.sun{color:var(--red);}
+.cal-cell{min-height:58px; border:1px solid var(--line); border-radius:8px; padding:4px 5px; cursor:pointer; background:#fff; font-size:12px;}
+.cal-cell:hover{border-color:var(--chest);}
+.cal-cell.empty{border:none; background:transparent; cursor:default;}
+.cal-cell .dn{font-weight:700;}
+.cal-cell.today{border:2px solid var(--chest);}
+.cal-cell.sel{background:var(--amber-bg);}
+.cal-cell.sun .dn{color:var(--red);}
+.dots{display:flex; gap:2px; flex-wrap:wrap; margin-top:3px;}
+.dot{width:7px; height:7px; border-radius:50%; display:inline-block;}
+.dot.a{background:var(--chest);} .dot.d{background:var(--sage);} .dot.l{background:var(--red);} .dot.u{background:var(--amber-bd);}
+.cal-legend{display:flex; gap:12px; flex-wrap:wrap; margin-top:12px; font-size:11.5px; color:var(--sub); font-weight:700;}
+.cal-legend .dot{margin-right:4px; vertical-align:middle;}
+.ev-row{display:flex; justify-content:space-between; align-items:center; gap:8px; padding:8px 4px; border-bottom:1px dashed var(--line); font-size:13.5px;}
+.ev-row:last-child{border-bottom:none;}
+.ev-tag{font-size:10.5px; font-weight:800; border-radius:99px; padding:1px 8px; white-space:nowrap;}
+.ev-tag.a{background:var(--panel); color:var(--chest);} .ev-tag.d{background:var(--sage-bg); color:var(--sage);}
+.ev-tag.l{background:var(--red-bg); color:var(--red);} .ev-tag.u{background:var(--amber-bg); color:#8A6A10;}
+.up-item{display:flex; gap:10px; align-items:baseline; padding:7px 4px; border-bottom:1px dashed var(--line); font-size:13.5px;}
+.up-item:last-child{border-bottom:none;}
+.up-d{font-weight:800; color:var(--chest); min-width:46px; font-size:12.5px; flex:0 0 auto;}
+@media(max-width:480px){ .cal-cell{min-height:50px; padding:3px 4px;} }
+/* ---------- Link chips ---------- */
+a.lnk{display:inline-block; font-size:11.5px; font-weight:800; color:var(--chest); border:1.5px solid var(--line); border-radius:999px; padding:2px 10px; text-decoration:none; margin:3px 5px 3px 0; background:#fff; white-space:normal; line-height:1.5;}
+a.lnk:hover{border-color:var(--chest);}
+a.lnk.ext{color:var(--sage);}
+a.plink{color:var(--chest); font-weight:800; text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1.5px; text-decoration-color:#D9BBA9;}
+a.plink:active{opacity:.55;}
+</style>
+<style>
+/* =============== 모바일 전용 최적화 =============== */
+html{-webkit-text-size-adjust:100%;}
+body{-webkit-tap-highlight-color:transparent;}
+button, .cal-cell, .tab-btn, a.lnk{touch-action:manipulation;}
+input[type=text], input[type=date], input[type=number], select, textarea{font-size:16px;} /* iOS 포커스 확대 방지 */
+.btn{min-height:42px;} .btn.sm{min-height:38px;}
+nav.tabs{box-shadow:0 2px 12px rgba(38,32,24,.07);}
+
+@media(max-width:640px){
+  body{font-size:15px;}
+  header.hero{padding:26px 16px 22px;}
+  .hero .sub{font-size:12.5px;}
+  main{padding:20px 14px calc(84px + env(safe-area-inset-bottom));}
+  .box{padding:13px 14px;}
+  .card{padding:13px 14px;}
+  .tab-btn{padding:14px 12px 12px;}
+  .jump{flex-wrap:nowrap; overflow-x:auto; padding-bottom:4px; scrollbar-width:none;}
+  .jump::-webkit-scrollbar{display:none;}
+  .jump a{flex:0 0 auto;}
+  /* 표 → 세로 카드형 자동 변환 (가로 스크롤 제거) */
+  .tw{border:none; overflow:visible; margin:12px 0 4px;}
+  .tw table{min-width:0; background:transparent; display:block;}
+  .tw thead{display:none;}
+  .tw tbody{display:block;}
+  .tw tr{display:block; background:#fff; border:1.5px solid var(--line); border-radius:12px; padding:5px 13px; margin-bottom:10px;}
+  .tw td{display:block; position:relative; padding:9px 0 9px 96px; border-bottom:1px dashed var(--line); font-size:13.5px; min-height:36px; text-align:left;}
+  .tw tr td:last-child{border-bottom:none;}
+  .tw td::before{content:attr(data-label); position:absolute; left:0; top:10px; width:88px; font-size:11.5px; font-weight:800; color:var(--chest-d); line-height:1.35;}
+  .tw td .tag{vertical-align:1px;}
+}
+
+/* =============== 부드러운 애니메이션 =============== */
+.hero-in{animation:heroIn .6s cubic-bezier(.22,.8,.36,1) both;}
+@keyframes heroIn{from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:none;}}
+section.tab-panel.on{animation:panelIn .34s cubic-bezier(.22,.8,.36,1);}
+@keyframes panelIn{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;}}
+.rv{opacity:0; transform:translateY(14px); transition:opacity .5s cubic-bezier(.22,.8,.36,1), transform .5s cubic-bezier(.22,.8,.36,1);}
+.rv.vis{opacity:1; transform:none;}
+.btn, .pg, .cal-cell, a.lnk, .tab-btn{transition:transform .12s ease, border-color .15s ease, background .15s ease, color .15s ease;}
+.btn:active, .pg:active, .cal-cell:active, .tab-btn:active, a.lnk:active{transform:scale(.96);}
+.ck label{transition:color .25s ease;}
+.log-item, .ev-row, .up-item{animation:rowIn .3s ease both;}
+@keyframes rowIn{from{opacity:0; transform:translateY(5px);} to{opacity:1; transform:none;}}
+.cal-anim{animation:calIn .28s cubic-bezier(.22,.8,.36,1);}
+@keyframes calIn{from{opacity:.3; transform:translateY(7px);} to{opacity:1; transform:none;}}
+#topBtn{position:fixed; right:14px; bottom:calc(18px + env(safe-area-inset-bottom)); width:46px; height:46px; border-radius:50%;
+  background:var(--chest); color:#FBF3E6; border:none; font-size:19px; font-weight:800; cursor:pointer;
+  opacity:0; pointer-events:none; transform:translateY(10px);
+  transition:opacity .3s ease, transform .3s ease; z-index:60; box-shadow:0 5px 16px rgba(94,32,21,.32);}
+#topBtn.show{opacity:1; pointer-events:auto; transform:none;}
+#topBtn:active{transform:scale(.94);}
+@media (prefers-reduced-motion: reduce){
+  .rv{opacity:1 !important; transform:none !important;}
+  #topBtn{transition:none;}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-in">
+    <div class="eyebrow">First Dog Handbook · Male · Est. 2026</div>
+    <h1 class="serif">카발리에 킹 찰스 스파니엘<br>첫 반려 핸드북
+      <span class="en">CAVALIER KING CHARLES SPANIEL — OWNER'S MANUAL &amp; RECORD BOOK</span>
+    </h1>
+    <p class="sub">분양 준비부터 중성화까지. 출근 08시 · 퇴근 18시 직장인 1인 가구 기준으로 설계된 실전 가이드 + 기록장. 해외 견종 클럽·수의학 연구 기반.</p>
+    <div class="badges">
+      <span class="bdg">남아 기준</span><span class="bdg">직장인 플랜 내장</span><span class="bdg">기록 저장 기능</span>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist">
+  <div class="tabs-in">
+    <button class="tab-btn on" data-tab="home"><span class="num">00</span>홈</button>
+    <button class="tab-btn" data-tab="cal"><span class="num">CAL</span>달력</button>
+    <button class="tab-btn" data-tab="prep"><span class="num">01</span>분양 준비</button>
+    <button class="tab-btn" data-tab="health"><span class="num">02</span>건강·병원</button>
+    <button class="tab-btn" data-tab="money"><span class="num">03</span>보험·비용</button>
+    <button class="tab-btn" data-tab="food"><span class="num">04</span>사료·간식</button>
+    <button class="tab-btn" data-tab="walk"><span class="num">05</span>산책·훈련·짖음</button>
+    <button class="tab-btn" data-tab="work"><span class="num">06</span>직장인 플랜</button>
+    <button class="tab-btn" data-tab="neuter"><span class="num">07</span>중성화</button>
+    <button class="tab-btn" data-tab="record"><span class="num">08</span>기록장</button>
+    <button class="tab-btn" data-tab="shop"><span class="num">09</span>구매 가이드</button>
+    <button class="tab-btn" data-tab="place"><span class="num">10</span>삼송 동네</button>
+    <button class="tab-btn" data-tab="emerg"><span class="num">11</span>응급 대처</button>
+    <button class="tab-btn" data-tab="behav"><span class="num">12</span>행동 사전</button>
+    <button class="tab-btn" data-tab="life"><span class="num">13</span>생활·법규</button>
+    <button class="tab-btn" data-tab="index"><span class="num">14</span>자료실</button>
+  </div>
+</nav>
+
+<main>
+<!-- ===================== 00 홈 ===================== -->
+<section class="tab-panel on" id="tab-home">
+  <div class="ch-head">
+    <div class="ch-no">CHAPTER 00</div>
+    <h2 class="serif">오늘의 대시보드</h2>
+    <p class="lede">아이 정보를 입력하면 월령에 맞는 "지금 할 일"이 자동으로 표시됩니다. 매일 아침·저녁 루틴 체크로 시작하세요.</p>
+  </div>
+
+  <div class="age-nav">
+    <div class="row" style="justify-content:space-between; align-items:flex-start;">
+      <div>
+        <div class="muted small" style="font-weight:800;">우리 아이</div>
+        <div class="big" id="homeName">이름 미등록</div>
+        <div id="homeAge" class="muted" style="margin-top:2px;">기록장 탭에서 생년월일을 입력하세요</div>
+        <span class="stage-pill" id="homeStage" style="display:none;"></span>
+      </div>
+      <button class="btn sm ghost" onclick="goTab('record')">정보 입력 →</button>
+    </div>
+    <div id="stageTasks"></div>
+  </div>
+
+  <h3 class="sec">오늘의 루틴 체크</h3>
+  <div class="card">
+    <div class="row" style="justify-content:space-between;">
+      <span class="daily-date" id="dailyDate"></span>
+      <span class="muted small" id="dailyCount">0 / 8</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="dailyBar"></div></div>
+    <ul class="ck" id="dailyList"></ul>
+    <p class="muted small" style="margin-top:8px;">체크는 날짜별로 저장됩니다. 자정이 지나면 새 체크리스트로 시작됩니다.</p>
+  </div>
+
+  <h3 class="sec">즉시 병원 — 응급 신호 8</h3>
+  <div class="box box-warn">
+    <div class="bt">⚠ 아래 증상은 "지켜보기" 대상이 아닙니다. 바로 병원.</div>
+    <ul class="ls">
+      <li><strong>기침 + 호흡 곤란·혀 색 변화</strong> — 카발리에는 심장 질환 다발 견종. 마른기침 반복도 진료 대상</li>
+      <li><strong>잇몸이 창백하거나 보라색</strong></li>
+      <li><strong>구토·설사 반복(특히 4개월 미만)</strong> — 어린 강아지는 반나절 만에 탈수로 위험해짐. 파보 가능성</li>
+      <li><strong>초콜릿·포도·양파·자일리톨 등 섭취</strong> — 먹은 양·시각 메모 후 즉시 이동</li>
+      <li><strong>12시간 이상 소변을 못 봄 / 소변 볼 때 비명</strong></li>
+      <li><strong>발작, 의식 저하, 몸 한쪽 마비</strong></li>
+      <li><strong>허공을 긁는 행동(팬텀 스크래칭) + 목 만지면 아파함</strong> — 카발리에 특이 질환 SM 의심 신호 (02장 참고)</li>
+      <li><strong>여름철 헐떡임 심화 + 축 처짐</strong> — 열사병. 카발리에는 더위에 약한 견종</li>
+    </ul>
+    <p class="small" style="margin-top:9px; font-weight:800;">→ 증상별 대처 방법(하임리히·열사병·중독·발작)은 <u>11장 응급 대처</u>에 있습니다.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="ct">우리 병원 메모</div>
+      <div class="field"><label>단골 동물병원 (이름·전화)</label><input type="text" id="vetMain" placeholder="예: ○○동물병원 031-000-0000"></div>
+      <div class="field"><label>24시 응급 병원 (이름·전화)</label><input type="text" id="vet24" placeholder="집에서 가장 가까운 24시 병원을 미리 저장"></div>
+      <p class="muted small">응급은 검색할 시간이 없습니다. 입양 전 미리 확인해 저장해두세요. 삼송 인근 병원 목록은 <strong>10장 동네 가이드</strong>에 정리해두었습니다. 도보 5분 거리에 24시 병원(라인동물의료센터)이 있습니다.</p>
+    </div>
+    <div class="card">
+      <div class="ct">이 핸드북 사용법</div>
+      <ul class="ls small" style="margin-left:16px;">
+        <li><strong>01→07 순서 = 시간 순서.</strong> 분양 전엔 01·03장, 데려온 직후엔 02장부터.</li>
+        <li><strong>달력 탭</strong> — 생년월일 입력 시 접종·검진 알림이 자동 생성됩니다. 각 장 하단의 이전/다음 버튼으로 순서대로 읽을 수 있습니다.</li>
+        <li><strong>11~13장</strong> — 응급처치·행동 문제·계절·법규는 사전처럼 필요할 때 찾아보는 참고 장입니다.</li>
+        <li>체크·기록은 자동 저장됩니다 (하단 저장 상태 배지 확인).</li>
+        <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
+        <li>의료 정보는 일반 정보입니다. 개별 판단은 <strong>수의사 진료가 항상 우선</strong>입니다.</li>
+      </ul>
+      <div id="storageState"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CAL 관리 달력 ===================== -->
+<section class="tab-panel" id="tab-cal">
+  <div class="ch-head">
+    <div class="ch-no">YEARLY PLANNER</div>
+    <h2 class="serif">관리 달력 — 정비 알림</h2>
+    <p class="lede">차량 정비 주기처럼 접종·구충·검진 시기를 달력이 알려줍니다. 생년월일(08장)을 입력하면 알림이 자동 생성되고, 날짜를 눌러 내 일정도 넣을 수 있습니다.</p>
+  </div>
+
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ct">다가오는 관리 알림 <span class="muted small" style="font-weight:400;">— 향후 60일</span></div>
+    <div id="upList"></div>
+  </div>
+
+  <div class="cal-wrap">
+    <div class="cal-head">
+      <button class="btn sm ghost" id="calPrev" aria-label="이전 달">←</button>
+      <div style="text-align:center;">
+        <div class="cal-title" id="calTitle">달력</div>
+        <button class="btn sm ghost" id="calToday" style="margin-top:4px; padding:3px 10px; font-size:11.5px;">오늘로</button>
+      </div>
+      <button class="btn sm ghost" id="calNext" aria-label="다음 달">→</button>
+    </div>
+    <div class="cal-grid" id="calDow"></div>
+    <div class="cal-grid" id="calGrid"></div>
+    <div class="cal-legend">
+      <span><span class="dot a"></span>관리 알림(자동)</span>
+      <span><span class="dot l"></span>지연</span>
+      <span><span class="dot d"></span>완료</span>
+      <span><span class="dot u"></span>내 일정</span>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px;">
+    <div class="ct" id="selTitle">날짜를 선택하세요</div>
+    <div id="selEvents"></div>
+    <div class="row" style="margin-top:10px;">
+      <input type="text" id="cvTitle" placeholder="이 날짜에 일정 추가 (예: 유치원 상담, 목욕)" style="flex:1; min-width:180px;">
+      <button class="btn sm" id="cvAdd">추가</button>
+    </div>
+    <p class="muted small" style="margin-top:8px;">자동 알림은 생년월일·입양일·접종 기록으로 계산됩니다. 02장 접종 표에 완료 체크와 날짜를 넣으면 달력에도 완료로 바뀌고, 심장사상충 알림은 매월 같은 날짜(입양일 기준, 8번 행에 날짜를 기록하면 그 날짜 기준)로 반복됩니다.</p>
+  </div>
+
+  <div class="box box-key" style="margin-top:14px;">
+    <div class="bt">★ 달력이 자동으로 챙겨주는 것</div>
+    <ul class="ls">
+      <li><strong>접종 1~6차 + 항체검사</strong> — 생후 7·9·11·13·15·17·19주 기준 예정일, 지나면 "지연" 표시</li>
+      <li><strong>심장사상충·구충</strong> — 매월 반복 (생후 8주 이후부터)</li>
+      <li><strong>성장 이정표</strong> — 사회화 골든타임 마감(14주) · 중성화 상담(6개월) · 성견 사료 전환 검토(10개월)</li>
+      <li><strong>매년 생일</strong> — 연간검진 + 심장 청진 + 보강접종 알림 (카발리에 관리의 핵심)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== 01 분양 준비 ===================== -->
+<section class="tab-panel" id="tab-prep">
+  <div class="ch-head">
+    <div class="ch-no">CHAPTER 01</div>
+    <h2 class="serif">분양 준비 — 데려오기 전 · 첫 2주</h2>
+    <p class="lede">카발리에는 "어디서 데려오느냐"가 향후 10년 병원비와 직결되는 견종입니다. 준비의 절반은 브리더 검증입니다.</p>
+  </div>
+
+  <div class="box box-core">
+    <div class="bt">■ 결론 먼저</div>
+    <ul class="ls">
+      <li>카발리에 입양의 1순위 확인 사항 = <strong>부모견 심장(MVD) 검진 이력</strong>. 외모·가격보다 먼저.</li>
+      <li>생후 <strong>8주(2개월) 미만 분양은 거절</strong> — 사회성·건강 결함 위험. 국내법상으로도 2개월 미만 판매 금지.</li>
+      <li>첫 2주의 목표는 "훈련"이 아니라 <strong>적응</strong>. 조용한 환경 + 규칙적인 밥·잠·배변이 전부.</li>
+    </ul>
+  </div>
+
+  <h3 class="sec">건강한 남아 고르기 — 브리더 검증 체크리스트</h3>
+  <ul class="ck" data-store="prep">
+    <li><input type="checkbox" id="p1"><label for="p1"><strong>부모견 심장 청진·검진 이력 확인</strong> — 카발리에 최우선. "검사했다" 말이 아니라 기록(진단서·검진 결과)으로. 부모 모두 잡음 없는 개체가 이상적</label></li>
+    <li><input type="checkbox" id="p2"><label for="p2"><strong>켄넬 직접 방문</strong> — 방문을 거절하는 곳은 제외. 부모견·형제견이 크는 환경을 눈으로 확인</label></li>
+    <li><input type="checkbox" id="p3"><label for="p3"><strong>모견과 함께 있는 모습 확인</strong> — 모견 성격이 새끼 성격의 가장 큰 예고편</label></li>
+    <li><input type="checkbox" id="p4"><label for="p4"><strong>생후 8주 이상 + 최소 1차 접종·구충 완료 후 인도</strong></label></li>
+    <li><input type="checkbox" id="p5"><label for="p5"><strong>슬개골·눈 관련 이력 질문</strong> — 소형견 공통(슬개골 탈구), 카발리에 눈 질환 이력</label></li>
+    <li><input type="checkbox" id="p6"><label for="p6"><strong>계약서에 건강 보증 조항 확인</strong> — 인도 후 일정 기간 내 선천 질환 발견 시 조치 내용</label></li>
+    <li><input type="checkbox" id="p7"><label for="p7"><strong>강아지 상태 직접 확인</strong> — 눈곱·귀 냄새·배 팽창(기생충)·항문 오염 없는지, 다가오는 성격인지</label></li>
+    <li><input type="checkbox" id="p8"><label for="p8"><strong>동배 새끼 수·이유식 시기 등 기본 질문에 즉답하는지</strong> — 머뭇거리면 직접 키운 곳이 아닐 가능성</label></li>
+  </ul>
+
+  <div class="box box-key">
+    <div class="bt">★ 왜 부모견 심장이 최우선인가</div>
+    <p>카발리에의 승모판 질환(MVD)은 유전 경향이 강하고, 부모의 발병 시기가 빠를수록 자견도 빨리 발병하는 경향이 보고되어 있습니다. 해외 견종 클럽들은 "심장이 깨끗한 부모 조합"을 브리딩의 기본 조건으로 요구합니다. 펫숍은 이 정보 확인이 사실상 불가능하므로, <strong>전문 켄넬·가정 브리더 방문 입양</strong>이 카발리에에게는 특히 중요합니다.</p>
+  </div>
+
+  <h3 class="sec">용품 준비 리스트</h3>
+  <div class="tw"><table>
+    <thead><tr><th>구분</th><th>품목</th><th>메모</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag">필수</span></td><td>크레이트(켄넬) + 방석</td><td>성견 기준 사이즈(몸길이 1.5배). 훈련의 중심 도구, 05장 참고</td></tr>
+      <tr><td><span class="tag">필수</span></td><td>울타리(펜스)</td><td>출근 시 안전 구역. 크레이트+배변판+물그릇이 들어가는 크기</td></tr>
+      <tr><td><span class="tag">필수</span></td><td>배변판 + 패드</td><td>초기엔 넓게 깔고 점차 축소</td></tr>
+      <tr><td><span class="tag">필수</span></td><td>사료(브리더가 먹이던 것과 동일 제품)</td><td>첫 1~2주는 기존 사료 유지, 교체는 04장 방식으로</td></tr>
+      <tr><td><span class="tag">필수</span></td><td>밥그릇·물그릇(스테인리스/도자기)</td><td>플라스틱은 턱 여드름 원인이 되기도</td></tr>
+      <tr><td><span class="tag">필수</span></td><td>가슴줄(하네스) + 리드줄</td><td>카발리에는 목줄보다 하네스 권장 — 기관·목 부담↓</td></tr>
+      <tr><td><span class="tag">필수</span></td><td>빗(슬리커+콤)</td><td>귀·가슴·엉덩이 장식털 엉킴 방지, 주 3회</td></tr>
+      <tr><td><span class="tag">필수</span></td><td>노즈워크 장난감·콩(KONG)</td><td>06장 직장인 플랜의 핵심 장비</td></tr>
+      <tr><td><span class="tag y">권장</span></td><td>펫캠 + 자동급식기</td><td>부재 시 모니터링·급여</td></tr>
+      <tr><td><span class="tag y">권장</span></td><td>미끄럼 방지 매트</td><td>소형견 슬개골 보호. 주요 동선에</td></tr>
+      <tr><td><span class="tag y">권장</span></td><td>이갈이 토이·치석 관리 용품(칫솔·치약)</td><td>양치는 어릴 때부터 습관화</td></tr>
+      <tr><td><span class="tag g">선택</span></td><td>계단(소파·침대용)</td><td>점프 착지 반복 줄이기</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted small">각 품목의 추천 제품·구매 링크는 <strong>09장 구매 가이드</strong>에 모아두었습니다.</p>
+
+  <h3 class="sec">집 안전화 (퍼피 프루핑)</h3>
+  <ul class="ls">
+    <li><strong>전선</strong> — 바닥 전선 정리·커버. 이갈이 시기 최다 사고.</li>
+    <li><strong>삼킬 것 제거</strong> — 머리끈·양말·약·동전·이어폰. 바닥 30cm 높이에서 집을 훑어볼 것.</li>
+    <li><strong>독성 식물 치우기</strong> — 몬스테라·스킨답서스·백합류 등.</li>
+    <li><strong>쓰레기통 잠금/높이기</strong>, 음식물 쓰레기 접근 차단(양파·닭뼈 사고 다발).</li>
+    <li><strong>베란다·현관 이중 차단</strong> — 문 열릴 때 튀어나감 방지.</li>
+    <li><strong>바닥 미끄럼 방지</strong> — 매트·러그. 슬개골 장기 관리의 시작.</li>
+  </ul>
+
+  <h3 class="sec">데려오는 날 → 첫 2주 로드맵</h3>
+  <div class="tw"><table>
+    <thead><tr><th>시기</th><th>해야 할 것</th><th>하지 말 것</th></tr></thead>
+    <tbody>
+      <tr><td><strong>D-Day</strong></td><td>낮 시간에 데려오기 · 이동장 사용 · 도착 후 물·배변 유도 · 조용히 탐색하게 두기</td><td>손님 초대, 목욕, 긴 스킨십, 이름 반복 부르기</td></tr>
+      <tr><td><strong>D+1~3</strong></td><td>밥·잠·배변 시간 고정 · 브리더에게 받은 사료 그대로 · 크레이트에 간식 던져 좋은 곳으로 인식시키기</td><td>산책(접종 미완), 목욕(첫 접종·적응 후로 연기), 혼내기</td></tr>
+      <tr><td><strong>D+3~7</strong></td><td><strong>첫 건강검진</strong>(분변·기초검진) — 인도 후 3일 내 권장 · 배변 성공 즉시 보상 시작</td><td>다른 개·외부인 접촉</td></tr>
+      <tr><td><strong>2주 차</strong></td><td>이름 반응 놀이 · 하네스 착용 연습(실내) · 짧은 단독 시간 연습 시작(06장) · 접종 스케줄 개시(02장)</td><td>혼자 두는 시간 갑자기 늘리기</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="box box-warn">
+    <div class="bt">⚠ 첫 주 밤울음 — 가장 흔한 첫 실수</div>
+    <p>밤에 낑낑댈 때 <strong>바로 안아주면 "울면 온다"를 학습</strong>합니다. 반대로 완전히 무시해 불안이 커지는 것도 문제. 절충안: 크레이트를 침실 근처에 두고, 조용해진 순간에만 낮은 목소리로 안심시키기 → 며칠에 걸쳐 크레이트 위치를 원래 자리로 이동. 담요로 크레이트 일부를 덮고, 어미 냄새가 밴 수건(브리더에게 요청)을 넣어주면 적응이 빨라집니다.</p>
+  </div>
+
+  <div class="trainer">
+    <div class="ico">🐾</div>
+    <div>
+      <div class="tt">TRAINER'S NOTE</div>
+      <div class="tb">첫 2주에 예뻐서 규칙 없이 다 받아주면, 그 기준이 평생 기준이 됩니다. 침대 합사·식탁 음식·안아서 재우기 — 나중에 못 하게 할 거라면 처음부터 시작하지 마세요. 규칙은 첫날부터, 처벌은 평생 없이. 이게 이 핸드북 전체의 원칙입니다.</div>
+    </div>
+  </div>
+
+  <h3 class="sec">행정 — 동물등록 (의무)</h3>
+  <ul class="ls">
+    <li>생후 <strong>2개월 이상</strong>이면 등록 의무 대상. 미등록 시 과태료(최대 100만 원 이하).</li>
+    <li>방법: 내장형 마이크로칩(권장·분실 대비 확실) 또는 외장형. 시·군·구 지정 동물병원에서 접종 갈 때 함께 처리하면 한 번에 끝.</li>
+    <li>내장칩 등록은 펫보험 보험료 할인 조건이 되기도 함(03장).</li>
+    <li>고양시는 등록 지원·자진신고 기간을 운영하기도 하니 시 홈페이지에서 당시 기준 확인.</li>
+  </ul>
+</section>
+<!-- ===================== 02 건강·병원 ===================== -->
+<section class="tab-panel" id="tab-health">
+  <div class="ch-head">
+    <div class="ch-no">CHAPTER 02</div>
+    <h2 class="serif">건강·병원 — 접종부터 심장까지</h2>
+    <p class="lede">카발리에는 "귀엽고 순한 대신, 심장을 평생 관리하는 견종"입니다. 이 장의 핵심은 접종 스케줄과 4대 견종 특이 질환입니다.</p>
+  </div>
+
+  <div class="box box-core">
+    <div class="bt">■ 결론 먼저</div>
+    <ul class="ls">
+      <li>접종은 <strong>생후 6~8주 시작, 2~3주 간격 5차 + 광견병 + 항체검사</strong>가 국내 표준.</li>
+      <li>카발리에 관리의 중심축은 <strong>심장(MVD)</strong>: 1세부터 <strong>매년 심장 청진</strong>, 잡음 발견 시 심장초음파.</li>
+      <li>심장사상충 예방약은 <strong>매월, 평생, 계절 무관</strong>. 이거 하나가 가장 가성비 높은 건강 투자.</li>
+      <li>비만은 카발리에에게 단순 미용 문제가 아니라 <strong>심장 부담 가중 요인</strong>. 체중 기록(08장)을 습관화.</li>
+    </ul>
+  </div>
+
+  <h3 class="sec">접종 스케줄 — 체크하며 관리</h3>
+  <p class="muted small">완료 체크와 날짜는 자동 저장됩니다. 병원 예약 시 이 표를 그대로 보여주면 됩니다. (사는 지역·병원 방침에 따라 구성이 약간 다를 수 있음)</p>
+  <div class="tw"><table id="vaxTable">
+    <thead><tr><th style="width:52px;">완료</th><th>회차 / 시기</th><th>접종 내용</th><th style="width:150px;">접종일</th></tr></thead>
+    <tbody>
+      <tr data-vx="v1"><td><input type="checkbox" class="vx-done"></td><td><strong>1차</strong> · 6~8주</td><td>종합백신(DHPPL) 1차 + 코로나 장염 1차</td><td><input type="date" class="vx-date"></td></tr>
+      <tr data-vx="v2"><td><input type="checkbox" class="vx-done"></td><td><strong>2차</strong> · 8~10주</td><td>종합백신 2차 + 코로나 장염 2차</td><td><input type="date" class="vx-date"></td></tr>
+      <tr data-vx="v3"><td><input type="checkbox" class="vx-done"></td><td><strong>3차</strong> · 10~12주</td><td>종합백신 3차 + 켄넬코프 1차</td><td><input type="date" class="vx-date"></td></tr>
+      <tr data-vx="v4"><td><input type="checkbox" class="vx-done"></td><td><strong>4차</strong> · 12~14주</td><td>종합백신 4차 + 켄넬코프 2차</td><td><input type="date" class="vx-date"></td></tr>
+      <tr data-vx="v5"><td><input type="checkbox" class="vx-done"></td><td><strong>5차</strong> · 14~16주</td><td>종합백신 5차 + 인플루엔자 1차(선택)</td><td><input type="date" class="vx-date"></td></tr>
+      <tr data-vx="v6"><td><input type="checkbox" class="vx-done"></td><td><strong>6차</strong> · 16~18주</td><td>인플루엔자 2차(선택) + <strong>광견병</strong></td><td><input type="date" class="vx-date"></td></tr>
+      <tr data-vx="v7"><td><input type="checkbox" class="vx-done"></td><td>마무리 · 마지막 접종 2주 후</td><td><strong>항체가 검사</strong> — 항체 미형성 시 추가 접종</td><td><input type="date" class="vx-date"></td></tr>
+      <tr data-vx="v8"><td><input type="checkbox" class="vx-done"></td><td>매월 · 평생</td><td><strong>심장사상충 + 내외부 구충</strong> (매월 같은 날짜로 고정 권장)</td><td><input type="date" class="vx-date"></td></tr>
+      <tr data-vx="v9"><td><input type="checkbox" class="vx-done"></td><td>매년</td><td>종합·켄넬코프·광견병 보강접종 + <strong>심장 청진 포함 건강검진</strong></td><td><input type="date" class="vx-date"></td></tr>
+    </tbody>
+  </table></div>
+  <div class="box box-key">
+    <div class="bt">★ 접종 시기 실전 수칙</div>
+    <ul class="ls">
+      <li>접종 당일은 목욕·산책·격한 놀이 금지, 2~3일 컨디션 관찰.</li>
+      <li>접종 전 컨디션 저하(설사·식욕부진)면 연기 — 무리 접종 금지.</li>
+      <li>본격 바닥 산책은 통상 접종 완료(항체 확인) 후. 단, 사회화는 그 전부터 <strong>안고 나가서</strong> 진행(05장). 이 두 개는 별개 과제.</li>
+    </ul>
+  </div>
+
+  <h3 class="sec">카발리에 4대 특이 질환 — 반드시 알아야 할 것</h3>
+
+  <h4 class="sub-t">① 승모판 질환 MVD — 이 견종의 최대 이슈</h4>
+  <ul class="ls">
+    <li><strong>무엇:</strong> 심장 승모판이 변성돼 혈액이 역류하는 질환. <strong>카발리에 사망 원인 1위.</strong></li>
+    <li><strong>얼마나 흔한가:</strong> 해외 통계 기준 <strong>5세경 절반가량, 10세 이상에서는 거의 전부</strong>에서 발견. 타 견종 대비 약 20배 높은 유병률로 보고됨. "오래 살면 결국 온다"는 전제로 관리하는 게 정석.</li>
+    <li><strong>조기 신호:</strong> 청진상 심잡음(무증상 단계) → 진행 시 마른기침(특히 밤·흥분 후), 쉽게 지침, 호흡수 증가.</li>
+    <li><strong>관리 프로토콜:</strong> <strong>1세부터 매년 심장 청진</strong> → 잡음 발견 시 심장초음파로 병기 확인 → 심비대 단계(B2)부터는 약물로 심부전 진입을 유의미하게 늦출 수 있음(피모벤단 등, 수의사 판단). 즉, <strong>조기 발견 = 수명 연장</strong>과 직결.</li>
+    <li><strong>보호자가 할 일:</strong> 매년 청진 거르지 않기 · 체중 관리 · 성견 이후 <u>안정 시 호흡수</u>(잘 때 분당 호흡수, 정상 대략 30회 미만)를 가끔 세어 기록 · 잡음 진단 전 펫보험 가입(03장).</li>
+  </ul>
+
+  <h4 class="sub-t">② 척수공동증 SM / 후두골 형성이상 CM</h4>
+  <ul class="ls">
+    <li><strong>무엇:</strong> 두개골 뒤쪽 공간이 좁아(CM) 척수에 액체 주머니(SM)가 생기는 신경 질환. 카발리에에서 유독 흔함 — 연구상 CM은 대부분의 개체에서, SM은 상당수(연령이 높을수록 증가)에서 관찰. 다만 <strong>실제 통증 증상을 보이는 비율은 그중 일부</strong>.</li>
+    <li><strong>대표 증상:</strong> <strong>허공 긁기(팬텀 스크래칭)</strong> — 산책·흥분 시 어깨 근처 허공을 긁는 행동, 목·머리 만지면 아파함, 특정 자세로만 자려 함, 이유 없는 비명.</li>
+    <li><strong>발현 시기:</strong> 주로 생후 6개월~3세 사이 첫 증상.</li>
+    <li><strong>보호자가 할 일:</strong> 위 증상 발견 시 신경과 진료(확진은 MRI) · 목줄 대신 <strong>하네스 사용</strong>(목 압박 회피) · 통증은 약물로 관리 가능한 경우가 많음.</li>
+  </ul>
+
+  <h4 class="sub-t">③ 슬개골 탈구 — 소형견 공통</h4>
+  <ul class="ls">
+    <li>무릎뼈가 제자리에서 이탈. 깽깽이걸음(한 발 들고 뛰기)이 대표 신호.</li>
+    <li>예방 = 환경: <strong>미끄럼 방지 매트 + 소파·침대 점프 최소화 + 체중 관리</strong>. 정기검진 때 등급 체크.</li>
+  </ul>
+
+  <h4 class="sub-t">④ 귀·눈 관리</h4>
+  <ul class="ls">
+    <li><strong>귀:</strong> 늘어진 귀 = 통풍 불량 = 외이염 단골. <strong>주 1회 귀 냄새·귀지 확인</strong>, 이상 시 세정제 관리. 갈색 귀지·악취·머리 털기 반복이면 진료. 카발리에는 중이 삼출(PSOM, 일명 글루 이어)도 보고되는 견종 — 청력 둔화·목 긁기 시 감별 필요.</li>
+    <li><strong>눈:</strong> 큰 눈 = 외상·건조 취약. 눈곱 색 변화(노랑·초록), 충혈, 눈 못 뜸 → 진료. 정기검진 시 안과 항목 포함 권장.</li>
+  </ul>
+
+  <div class="box box-note">
+    <div class="bt">✓ 연간 건강 관리 캘린더 (성견 기준)</div>
+    <ul class="ls">
+      <li><strong>매월:</strong> 심장사상충·구충 / 체중 기록 / 발톱·발바닥 털 정리</li>
+      <li><strong>매주:</strong> 귀 점검 1회 / 빗질 3회 / 양치 (이상적으론 매일, 최소 주 2~3회)</li>
+      <li><strong>매년:</strong> 보강접종 + <strong>심장 청진</strong> + 기본 혈액검사 / 스케일링 필요 여부 확인</li>
+      <li><strong>7세 이후:</strong> 연 1~2회 심화 검진(심장초음파·엑스레이 포함 상담)</li>
+    </ul>
+  </div>
+
+  <div class="trainer">
+    <div class="ico">🩺</div>
+    <div>
+      <div class="tt">TRAINER'S NOTE</div>
+      <div class="tb">카발리에 보호자의 실력은 "병원에 얼마나 빨리 가느냐"가 아니라 "매년 청진을 얼마나 꾸준히 받느냐"로 갈립니다. MVD는 조기 발견하면 몇 년을 버는 병입니다. 08장 기록장에 병원 방문을 남기는 습관이 곧 심장 관리입니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 03 보험·비용 ===================== -->
+<section class="tab-panel" id="tab-money">
+  <div class="ch-head">
+    <div class="ch-no">CHAPTER 03</div>
+    <h2 class="serif">보험·비용 — 돈 계획</h2>
+    <p class="lede">카발리에는 펫보험의 가치가 특히 큰 견종입니다. 이유는 하나 — 심장. 단, 타이밍을 놓치면 소용없습니다.</p>
+  </div>
+
+  <div class="box box-core">
+    <div class="bt">■ 결론 먼저</div>
+    <ul class="ls">
+      <li>펫보험은 <strong>데려온 직후, 어떤 진단·심잡음 소견도 나오기 전에</strong> 가입한다. 잡음이 먼저 발견되면 심장 질환은 면책·부담보 처리될 수 있음 → 카발리에에게 보험 드는 의미의 대부분이 사라짐.</li>
+      <li>월 고정비는 대략 <strong>15~25만 원대</strong>(보험·유치원 제외 시 10만 원 안팎), 초기 세팅 비용은 대략 <strong>70~120만 원</strong>(분양가 제외). 비상금 <strong>200~300만 원</strong> 별도 확보 권장.</li>
+      <li>보험 대안 = 같은 금액 적금. 연 치료비가 일정 수준을 넘을 것 같으면 보험이 유리해지는 구조 — 심장 리스크가 있는 카발리에는 보험 쪽에 무게.</li>
+    </ul>
+  </div>
+
+  <h3 class="sec">펫보험 — 무엇을 보고 고르나</h3>
+  <p>2026년 현재 국내 펫보험은 삼성화재·메리츠·현대해상·DB·KB 5개 손보사 중심으로 판매 중이며, 금융당국 주도의 비교·추천 서비스도 운영되고 있습니다. 상품 구조가 계속 바뀌므로 <strong>가입 시점에 아래 7개 항목으로 직접 비교</strong>하는 게 정확합니다.</p>
+  <div class="tw"><table>
+    <thead><tr><th>비교 항목</th><th>확인 포인트 (카발리에 기준)</th></tr></thead>
+    <tbody>
+      <tr><td><strong>① 심장 질환 보장</strong></td><td>최우선. 심장 관련 질환이 보장 범위에 포함되는지, 면책·대기 기간은 얼마인지</td></tr>
+      <tr><td><strong>② 슬개골 보장</strong></td><td>소형견 필수 체크. 기본 포함인지 특약인지, 특약이면 추가 보험료</td></tr>
+      <tr><td><strong>③ 보장 비율·자기부담금</strong></td><td>통상 50/70/80% 중 선택 + 회당 자기부담금. 70%가 일반적 균형점</td></tr>
+      <tr><td><strong>④ 연간 한도</strong></td><td>입원·통원 각각의 연 한도, 1일 한도</td></tr>
+      <tr><td><strong>⑤ 갱신 구조</strong></td><td>몇 년 갱신인지, 갱신 시 보험료 인상 구조, 몇 세까지 갱신 가능한지 (노령까지 가는지)</td></tr>
+      <tr><td><strong>⑥ MRI/CT·수술 보장</strong></td><td>SM 확진엔 MRI가 필요 — 고가 검사 보장 여부가 실효성 좌우</td></tr>
+      <tr><td><strong>⑦ 할인</strong></td><td>내장칩 동물등록 할인, 다펫 할인, 유기동물 입양 할인 등</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted small">참고 시세감: 1세 소형견·보장 70% 기준 월 3~4만 원대가 흔한 범위(상품·나이·특약 따라 상이). 국내 반려가구의 최근 2년 치료비 평균은 약 100만 원 수준으로 조사된 바 있음(KB 2025 보고서) — 연 50만 원 안팎이 "보험 vs 적금" 판단의 감각적 기준선.</p>
+  <p class="muted small">보험 비교 사이트·각 사 바로가기는 <strong>09장 구매 가이드</strong> 하단에 정리했습니다.</p>
+
+  <div class="box box-warn">
+    <div class="bt">⚠ 가입 타이밍이 전부인 이유</div>
+    <p>펫보험은 <strong>가입 전 이미 확인된 질환·소견을 보장하지 않습니다.</strong> 카발리에는 몇 살이 됐든 언젠가 청진에서 잡음이 나올 확률이 매우 높은 견종 — 즉 "잡음 발견 전 가입"과 "발견 후 가입"은 완전히 다른 상품이 됩니다. 데려오고 첫 검진에서 이상이 없다면, <strong>그 주에 가입을 끝내세요.</strong> 노령엔 신규 가입 자체가 막히는 상품이 많습니다(가입 가능 연령 확인).</p>
+  </div>
+
+  <h3 class="sec">비용 총정리 (2026년 대략 범위, 지역·병원별 상이)</h3>
+  <h4 class="sub-t">초기 1회성 비용</h4>
+  <div class="tw"><table>
+    <thead><tr><th>항목</th><th>대략 범위</th><th>메모</th></tr></thead>
+    <tbody>
+      <tr><td>용품 일체 (크레이트·펜스·식기·하네스 등)</td><td>30~60만 원</td><td>01장 리스트 기준</td></tr>
+      <tr><td>접종 풀코스 + 항체검사 + 초기 검진</td><td>30~45만 원</td><td>회당 2~5만 원 수준 × 횟수 + 검사</td></tr>
+      <tr><td>동물등록(내장칩)</td><td>3~5만 원</td><td>지자체 지원 시 더 저렴</td></tr>
+      <tr><td>중성화(수컷)</td><td>20~40만 원</td><td>07장 참고, 사전검사 포함 여부 확인</td></tr>
+      <tr><td><strong>합계 (분양가 제외)</strong></td><td><strong>약 85~150만 원</strong></td><td>분양가는 별도</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4 class="sub-t">매월 고정 비용</h4>
+  <div class="tw"><table>
+    <thead><tr><th>항목</th><th>대략 범위</th><th>메모</th></tr></thead>
+    <tbody>
+      <tr><td>사료</td><td>4~7만 원</td><td>성견 체중 6~8kg급 소형견 기준</td></tr>
+      <tr><td>심장사상충·구충 예방약</td><td>1.5~3만 원</td><td>매월, 평생</td></tr>
+      <tr><td>패드·소모품</td><td>2~4만 원</td><td></td></tr>
+      <tr><td>간식·장난감</td><td>2~4만 원</td><td>간식은 하루 열량의 10% 이내(04장)</td></tr>
+      <tr><td>펫보험</td><td>3~5만 원</td><td>선택이지만 카발리에는 권장</td></tr>
+      <tr><td>목욕·위생미용</td><td>0~5만 원</td><td>카발리에는 전신 클리핑 불필요 — 셀프 목욕 가능. 미용실 이용 시 회당 3~5만 원 수준</td></tr>
+      <tr><td>(선택) 강아지 유치원 주 2회</td><td>25~40만 원</td><td>06장 직장인 플랜 참고</td></tr>
+      <tr><td><strong>합계</strong></td><td><strong>기본 13~25만 / 유치원 포함 40~65만</strong></td><td></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="box box-key">
+    <div class="bt">★ 비상금 원칙</div>
+    <p>보험이 있어도 자기부담금·비보장 항목이 남습니다. <strong>강아지 전용 비상금 200~300만 원</strong>을 따로 두고 건드리지 않는 것을 권장합니다. 이물 섭취 수술, 슬개골 수술, 심장초음파+약물 개시 같은 이벤트가 이 범위에서 발생합니다. 매달 5만 원씩만 적립해도 첫 해에 기본 완충이 만들어집니다.</p>
+  </div>
+</section>
+<!-- ===================== 04 사료·간식 ===================== -->
+<section class="tab-panel" id="tab-food">
+  <div class="ch-head">
+    <div class="ch-no">CHAPTER 04</div>
+    <h2 class="serif">사료·간식 — 심장을 지키는 식탁</h2>
+    <p class="lede">카발리에는 식탐이 많고 살이 잘 찌는 견종입니다. 그리고 비만은 곧 심장 부담입니다. 급여 관리가 곧 수명 관리입니다.</p>
+  </div>
+
+  <div class="box box-core">
+    <div class="bt">■ 결론 먼저</div>
+    <ul class="ls">
+      <li>급여량의 기준은 "그램 수"가 아니라 <strong>제품 급여표 + 몸매(BCS)</strong>. 갈비뼈가 만져지되 보이지 않는 상태 유지.</li>
+      <li>급여 횟수: <strong>~6개월 하루 3~4회 → 6~12개월 2~3회 → 성견 2회.</strong></li>
+      <li>간식은 <strong>하루 총열량의 10% 이내.</strong> 훈련 보상은 사료알로도 충분.</li>
+      <li>사람 음식 원칙: <strong>주지 않는다.</strong> 예외를 만들면 식탁 구걸견이 됩니다.</li>
+    </ul>
+  </div>
+
+  <h3 class="sec">사료 선택과 교체</h3>
+  <ul class="ls">
+    <li><strong>퍼피 사료(자견용)</strong>로 시작 — 성장기 열량·칼슘 설계가 다름. 소형견용 작은 알갱이 권장.</li>
+    <li><strong>성견 사료 전환은 대략 10~12개월</strong>(소형견 기준, 수의사와 상의).</li>
+    <li>브랜드 고르는 기준: AAFCO 기준 충족 표기 · 주단백원이 명확한 제품 · 극단적 유행(생식·곡물 무조건 배제 등)보다 검증된 메이저 라인.</li>
+    <li><strong>사료 교체는 7일 법칙:</strong> 기존:신규 = 1일차 75:25 → 3일차 50:50 → 5일차 25:75 → 7일차 100%. 급하게 바꾸면 설사.</li>
+    <li>물은 항상 신선하게, 하루 1회 이상 교체. 자율 급수.</li>
+  </ul>
+
+  <h3 class="sec">체중 관리 — 카발리에의 핵심 과제</h3>
+  <ul class="ls">
+    <li>성견 표준 체중은 대략 <strong>5.9~8.2kg</strong>(개체차 있음). 수치보다 중요한 건 체형(BCS).</li>
+    <li><strong>월 1회 체중 측정 → 08장 기록장에 입력.</strong> 그래프가 우상향하면 간식부터 줄이기.</li>
+    <li>중성화 후에는 필요 열량이 줄어듦 — 같은 양 유지 시 살찌는 게 정상 수순. 급여량 10~20% 하향 조정을 수의사와 상의(07장).</li>
+    <li>식탐이 많아 빨리 먹는다면 슬로우 식기·노즈워크 급여로 속도 조절.</li>
+  </ul>
+
+  <h3 class="sec">절대 금지 음식</h3>
+  <div class="tw"><table>
+    <thead><tr><th>등급</th><th>음식</th><th>이유</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag r">치명</span></td><td><strong>포도·건포도</strong></td><td>소량으로도 급성 신부전 가능. 즉시 병원</td></tr>
+      <tr><td><span class="tag r">치명</span></td><td><strong>자일리톨</strong>(무설탕 껌·과자)</td><td>급격한 저혈당·간 손상. 즉시 병원</td></tr>
+      <tr><td><span class="tag r">치명</span></td><td><strong>초콜릿·카페인</strong></td><td>테오브로민 중독. 다크초콜릿일수록 위험</td></tr>
+      <tr><td><span class="tag r">치명</span></td><td><strong>양파·마늘·파·부추</strong></td><td>적혈구 파괴(빈혈). 국물·양념 포함 주의</td></tr>
+      <tr><td><span class="tag r">위험</span></td><td>마카다미아, 알코올, 날 반죽(이스트)</td><td>신경 증상·중독</td></tr>
+      <tr><td><span class="tag r">위험</span></td><td><strong>익힌 뼈</strong>(닭뼈 등)</td><td>부서지며 식도·장 천공. 음식물 쓰레기 접근 차단 필수</td></tr>
+      <tr><td><span class="tag y">주의</span></td><td>우유·유제품, 짠 음식, 기름진 음식</td><td>설사·췌장염 위험. 사람 음식 전반 금지가 답</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="sec">간식·보상 운용법</h3>
+  <ul class="ls">
+    <li><strong>10% 룰:</strong> 간식 열량은 하루 필요 열량의 10%를 넘기지 않는다. 넘길 것 같으면 그날 사료를 그만큼 감량.</li>
+    <li><strong>훈련용 보상은 쌀알 크기</strong>로 잘라서 — 보상은 "횟수"가 중요하지 "크기"가 아님.</li>
+    <li>서열 없는 급여 예절: 앉아 → 기다려 → "먹어" 신호 후 급여. 매 끼니가 훈련 기회.</li>
+    <li>이갈이 시기(3~6개월): 딱딱한 개껌은 치아 손상 위험 — 퍼피 전용 토이·부드러운 츄 선택.</li>
+    <li>양치 보조 간식(덴탈껌)은 "보조"일 뿐 — 양치를 대체하지 못함.</li>
+  </ul>
+
+  <div class="trainer">
+    <div class="ico">🍖</div>
+    <div>
+      <div class="tt">TRAINER'S NOTE</div>
+      <div class="tb">카발리에가 그 눈으로 식탁 옆에 앉아 있으면 누구든 무너집니다. 한 번 주는 순간, 그 자리는 평생 예약석이 됩니다. 식사 중 구걸엔 눈도 마주치지 마세요. 무시가 유일한 정답이고, 가족·손님 전원에게 같은 규칙을 적용해야 효과가 있습니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 05 산책·훈련·짖음 ===================== -->
+<section class="tab-panel" id="tab-walk">
+  <div class="ch-head">
+    <div class="ch-no">CHAPTER 05</div>
+    <h2 class="serif">산책·사회화·훈련·짖음</h2>
+    <p class="lede">교육의 원칙은 하나입니다 — 처벌 없이, 보상과 일관성으로. 카발리에는 이 방식이 가장 잘 통하는 견종입니다.</p>
+  </div>
+  <div class="jump">
+    <a href="#w-social">사회화</a><a href="#w-walk">산책</a><a href="#w-potty">배변</a><a href="#w-crate">크레이트</a><a href="#w-cmd">기본 명령어</a><a href="#w-bite">깨물기</a><a href="#w-bark">짖음 예방</a>
+  </div>
+
+  <div class="box box-core">
+    <div class="bt">■ 결론 먼저</div>
+    <ul class="ls">
+      <li><strong>생후 3주~14주 = 사회화 골든타임.</strong> 접종이 안 끝났어도 "안고 나가서" 세상 구경은 시켜야 한다.</li>
+      <li>퍼피 운동량은 <strong>월령 × 5분, 하루 2회</strong>(통용 가이드). 성견은 <strong>하루 30분 × 2회</strong> 수준이면 충분한 견종.</li>
+      <li>훈련의 3원칙: <strong>① 보상은 1~2초 안에 ② 명령어는 온 가족이 통일 ③ 처벌·고함 금지.</strong></li>
+      <li>짖음은 "고치는" 게 아니라 <strong>"학습시키지 않는"</strong> 것. 카발리에는 원래 조용한 편 — 요구성 짖음에 한 번도 보상하지 않으면 조용한 개로 자란다.</li>
+    </ul>
+  </div>
+
+  <h3 class="sec" id="w-social">사회화 — 접종 완료를 기다리면 늦는다</h3>
+  <p>사회화 민감기(대략 생후 3~14주)에 경험하지 못한 자극은 평생 "무서운 것"이 되기 쉽습니다. 접종 완료 전이라도 <strong>바닥에 내려놓지 않고, 안거나 이동가방에 넣어</strong> 노출 훈련을 진행합니다.</p>
+  <ul class="ck" data-store="social">
+    <li><input type="checkbox" id="s1"><label for="s1">다양한 소리: 초인종, 청소기, 드라이기, 오토바이, 아이 소리 (낮은 볼륨부터 + 간식 짝지어 좋은 기억으로)</label></li>
+    <li><input type="checkbox" id="s2"><label for="s2">다양한 사람: 남성·여성·아이·모자 쓴 사람·우산 든 사람</label></li>
+    <li><input type="checkbox" id="s3"><label for="s3">다양한 장소: 엘리베이터, 차 타기, 동물병원(진료 없이 간식만 받고 오기), 카페 앞</label></li>
+    <li><input type="checkbox" id="s4"><label for="s4">접종 완료된 건강한 성견과의 짧은 만남 (백신 완료·성격 확인된 개만)</label></li>
+    <li><input type="checkbox" id="s5"><label for="s5">몸 만지기 둔감화: 발·귀·입·꼬리 만지기 + 간식 — 향후 병원·미용·양치의 기초</label></li>
+    <li><input type="checkbox" id="s6"><label for="s6">하네스·리드줄 실내 착용 연습 (착용=간식, 좋은 일의 신호로)</label></li>
+  </ul>
+
+  <h3 class="sec" id="w-walk">산책 — 시기별 운영</h3>
+  <div class="tw"><table>
+    <thead><tr><th>시기</th><th>방식</th><th>기준</th></tr></thead>
+    <tbody>
+      <tr><td>접종 완료 전</td><td>안고 나가는 "구경 산책"</td><td>10~15분, 하루 1~2회. 바닥·다른 개 접촉 금지</td></tr>
+      <tr><td>접종 완료 ~ 12개월</td><td>바닥 산책 시작</td><td><strong>월령 × 5분 × 하루 2회</strong> (예: 4개월 = 20분씩 2회). 성장판 보호를 위해 과한 뜀박질·계단·점프 지양</td></tr>
+      <tr><td>성견 (12개월~)</td><td>일반 산책</td><td>하루 합계 40~60분 (아침 20~30 + 저녁 30). 카발리에는 초고활동 견종이 아니라 이 정도로 충분</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="ls">
+    <li><strong>하네스 필수</strong> — 목줄은 기관·목 압박 + SM 소인 견종엔 특히 비권장(02장).</li>
+    <li>리드줄 당기면 <strong>그 자리에 정지</strong> → 줄이 느슨해지면 출발. "당기면 멈춘다"를 몸으로 학습.</li>
+    <li><strong>여름 주의:</strong> 카발리에는 주둥이가 짧은 편이라 더위·습도에 약함. 한여름엔 이른 아침·밤 산책, 아스팔트 손등 5초 테스트, 물 휴대. 헐떡임이 심해지면 즉시 그늘+중단.</li>
+    <li>겨울: 짧은 산책 + 발바닥 염화칼슘 세척.</li>
+    <li>냄새 맡기는 방해하지 않기 — 개에게 냄새 맡기는 산책의 본질이자 정신적 피로 해소.</li>
+  </ul>
+
+  <h3 class="sec" id="w-potty">배변 훈련 — 3~6주 프로젝트</h3>
+  <ol class="ls">
+    <li><strong>타이밍 공략:</strong> 기상 직후 · 식사 후 15~30분 · 놀이 후 · 낮잠 후 = 배변 확률 최고 구간. 이때 배변판으로 데려간다.</li>
+    <li><strong>성공 = 3초 안에 파티:</strong> 배변판에 싸는 순간 간식+칭찬. 타이밍이 늦으면 연결이 안 됨.</li>
+    <li><strong>실수 = 무반응:</strong> 소리 지르지 않기, 코 박기 금지(관계만 망가짐). 조용히 치우고 효소 세정제로 냄새 제거(냄새가 남으면 그 자리가 화장실이 됨).</li>
+    <li><strong>범위 운영:</strong> 초기엔 패드를 넓게 → 성공률 90%가 되면 한 장씩 축소.</li>
+    <li><strong>월령+1시간 룰:</strong> 어린 강아지가 참을 수 있는 시간은 대략 "월령+1시간". 2개월령 = 약 3시간 → 이 숫자가 06장 직장인 플랜의 근거가 됩니다.</li>
+  </ol>
+
+  <h3 class="sec" id="w-crate">크레이트 훈련 — 혼자 있는 힘의 기초</h3>
+  <ol class="ls">
+    <li>문 열어두고 안에 간식 던지기 → 스스로 들어가면 칭찬 (며칠).</li>
+    <li>안에서 밥 먹기 → 크레이트 = 좋은 일이 생기는 곳.</li>
+    <li>문 닫기 몇 초 → 몇 분 → 보호자가 시야에서 사라지기 → 점진 확장.</li>
+    <li><strong>절대 규칙: 크레이트는 벌 주는 곳이 아니다.</strong> 혼내고 가두는 순간 안식처 기능이 끝남.</li>
+  </ol>
+  <p class="muted small">크레이트를 좋아하는 개는 부재·이동·병원 입원·재해 상황 전부에서 강합니다. 06장 분리불안 예방의 토대이기도 합니다.</p>
+
+  <h3 class="sec" id="w-cmd">기본 명령어 — 진도 체크</h3>
+  <p class="muted small">하루 5~10분 × 2회면 충분. 한 세션에 한 가지만. 성공률 80%가 되면 다음 단계로. 체크는 저장됩니다.</p>
+  <ul class="ck" data-store="cmd">
+    <li><input type="checkbox" id="c1"><label for="c1"><strong>이름 반응</strong> — 이름 부르면 쳐다본다 (이름=좋은 일. 혼낼 때 이름 사용 금지)</label></li>
+    <li><input type="checkbox" id="c2"><label for="c2"><strong>앉아</strong> — 간식을 코앞→머리 위로 올리면 엉덩이가 내려감. 그 순간 "앉아"+보상</label></li>
+    <li><input type="checkbox" id="c3"><label for="c3"><strong>엎드려</strong> — 앉은 상태에서 간식을 바닥으로</label></li>
+    <li><input type="checkbox" id="c4"><label for="c4"><strong>기다려</strong> — 1초부터 시작해 거리·시간 확장. 밥그릇 앞 기다려로 매일 연습</label></li>
+    <li><input type="checkbox" id="c5"><label for="c5"><strong>이리와(콜백)</strong> — 부르면 온다. 와서 좋은 일만 생겨야 함. <u>와서 혼낸 적이 한 번이라도 있으면 무너짐</u></label></li>
+    <li><input type="checkbox" id="c6"><label for="c6"><strong>손·발 닦기, 양치 협조</strong> — 사회화의 몸 만지기 둔감화 연장</label></li>
+    <li><input type="checkbox" id="c7"><label for="c7"><strong>바꾸자(내려놔)</strong> — 물고 있는 것과 간식 교환. 뺏으면 지키려 들고, 바꾸면 내어줌. 이물 삼킴 예방 명령어</label></li>
+    <li><input type="checkbox" id="c8"><label for="c8"><strong>하우스</strong> — 신호에 크레이트로 들어가기</label></li>
+  </ul>
+
+  <h3 class="sec" id="w-bite">입질(깨물기) — 3~6개월 이갈이 대응</h3>
+  <ul class="ls">
+    <li>퍼피 입질은 공격성이 아니라 <strong>탐색+이갈이</strong>. 정상 발달 과정.</li>
+    <li>손을 물면: <strong>"아얏" 짧게 + 놀이 즉시 중단 + 10초 등 돌리기</strong> → "세게 물면 재미가 끝난다"를 학습.</li>
+    <li>손 대신 <strong>물어도 되는 것(터그·이갈이 토이)으로 즉시 교체</strong> 제시. 금지가 아니라 대체.</li>
+    <li>손을 장난감처럼 흔들며 놀아주는 것 금지 — 입질을 가르치는 행동.</li>
+  </ul>
+
+  <h3 class="sec" id="w-bark">짖음 — "예방"이 전부다</h3>
+  <div class="box box-key">
+    <div class="bt">★ 원리</div>
+    <p>카발리에는 태생적으로 짖음이 적은 편입니다. 그런 개가 짖는 개가 되는 경로는 대부분 하나 — <strong>짖었더니 원하는 게 이뤄진 경험.</strong> 짖으니 밥이 나왔다, 짖으니 안아줬다, 짖으니 문 앞 사람이 갔다(택배기사는 원래 가는 사람인데 개는 "내가 쫓아냈다"고 학습). 따라서 전략은 교정이 아니라 <strong>강화 차단</strong>입니다.</p>
+  </div>
+  <h4 class="sub-t">유형별 대응</h4>
+  <div class="tw"><table>
+    <thead><tr><th>유형</th><th>상황</th><th>대응</th></tr></thead>
+    <tbody>
+      <tr><td><strong>요구성</strong></td><td>밥 달라, 놀아 달라, 안아 달라</td><td><strong>완전 무시</strong>(눈맞춤·말·터치 전부 차단) → 조용해지고 4초 후에 원하는 것 제공. 단 한 번의 예외가 훈련을 리셋시킴</td></tr>
+      <tr><td><strong>경계성</strong></td><td>초인종, 복도 발소리, 창밖</td><td>창문 시야 차단(필름·가구 배치) + 백색소음/TV로 복도 소리 마스킹 + 초인종 둔감화(아래)</td></tr>
+      <tr><td><strong>흥분성</strong></td><td>산책 준비, 보호자 귀가</td><td>흥분 상태에선 아무것도 진행하지 않기. 리드줄은 앉아서 얌전할 때만 착용, 귀가 인사는 차분해진 후에</td></tr>
+      <tr><td><strong>불안성</strong></td><td>혼자 있을 때 하울링·짖음</td><td>짖음 문제가 아니라 분리불안 문제 — 06장 프로토콜로 원인 해결</td></tr>
+    </tbody>
+  </table></div>
+  <h4 class="sub-t">초인종 둔감화 절차</h4>
+  <ol class="ls">
+    <li>초인종 소리를 휴대폰으로 아주 작게 재생 + 간식 (소리=간식 신호로 재학습).</li>
+    <li>반응 없이 통과하면 볼륨을 조금씩 올리며 반복 (며칠~몇 주).</li>
+    <li>실제 초인종로 연습: 가족이 밖에서 누르고, 짖기 전에 "자리(매트)" 명령 → 매트에서 기다리면 보상.</li>
+    <li>목표 재정의: "초인종 = 매트에 가면 간식 나오는 소리".</li>
+  </ol>
+  <div class="box box-warn">
+    <div class="bt">⚠ 절대 하지 말 것</div>
+    <ul class="ls">
+      <li><strong>짖음방지 목걸이(전기·스프레이·초음파)</strong> — 공포로 억누르는 방식. 불안을 키워 다른 문제행동으로 전이되며, 관계를 손상시킴.</li>
+      <li><strong>같이 소리 지르기</strong> — 개는 "보호자도 같이 짖는다"로 해석. 짖음 강화.</li>
+      <li><strong>짖을 때 안아주기·간식으로 달래기</strong> — 짖음에 지급되는 보상.</li>
+      <li>성대 수술 — 원인(불안·학습)을 놔둔 채 소리만 없애는 것. 고려 대상 아님.</li>
+    </ul>
+  </div>
+
+  <div class="trainer">
+    <div class="ico">🎓</div>
+    <div>
+      <div class="tt">TRAINER'S NOTE</div>
+      <div class="tb">훈련이 안 되는 개는 없습니다. 기준이 흔들리는 보호자가 있을 뿐입니다. 카발리에는 영리하고 사람에게 맞추려는 개라, 보호자가 일관되기만 하면 대부분 스스로 답을 찾아옵니다. "오늘만 봐주자"가 훈련의 유일한 적입니다.</div>
+    </div>
+  </div>
+</section>
+<!-- ===================== 06 직장인 플랜 ===================== -->
+<section class="tab-panel" id="tab-work">
+  <div class="ch-head">
+    <div class="ch-no">CHAPTER 06</div>
+    <h2 class="serif">직장인 플랜 — 출근 08시 · 퇴근 18시</h2>
+    <p class="lede">통근 포함 시 아이가 혼자 있는 시간은 하루 약 10~11시간. 가능한 패턴이지만, 설계 없이는 안 됩니다. 이 장이 이 핸드북의 심장입니다.</p>
+  </div>
+
+  <div class="box box-core">
+    <div class="bt">■ 결론 먼저</div>
+    <ul class="ls">
+      <li><strong>퍼피 시기(생후 2~5개월)는 11시간 단독 불가.</strong> 방광이 못 버팁니다(월령+1시간 룰). 첫 1~2개월은 반드시 낮 케어 계획이 필요.</li>
+      <li>성견은 <strong>아침·저녁 루틴의 "질" + 분리불안 예방 훈련</strong>이 갖춰지면 이 패턴으로 충분히 건강하게 삽니다.</li>
+      <li>카발리에는 사람을 매우 좋아하는 견종 = <strong>분리불안 취약군.</strong> 아래 6단계 프로토콜을 데려온 첫 주부터 시작하세요.</li>
+    </ul>
+  </div>
+
+  <h3 class="sec">퍼피 시기(2~5개월) — 낮 공백 3가지 해법</h3>
+  <div class="tw"><table>
+    <thead><tr><th>옵션</th><th>내용</th><th>비용감</th><th>적합</th></tr></thead>
+    <tbody>
+      <tr><td><strong>① 연차 + 가족 찬스</strong></td><td>입양 첫 1~2주 연차로 적응 집중 → 이후 가족·지인이 점심시간대 1회 방문(배변·급여·10분 놀이)</td><td>최소</td><td>가족 도움이 가능할 때 최선</td></tr>
+      <tr><td><strong>② 방문 펫시터</strong></td><td>평일 낮 1회 30분 방문 서비스. 배변 정리 + 급여 + 놀이</td><td>회당 1.5~3만 원 수준</td><td>가족 도움이 없을 때 표준 해법</td></tr>
+      <tr><td><strong>③ 강아지 유치원</strong></td><td>등원형 데이케어. 사회화 + 에너지 발산 + 낮 공백 해소를 한 번에</td><td>주 2~3회 월 25~40만 원 수준</td><td>접종 완료 후부터. 사회화 효과가 커서 첫 1년에 특히 가치 있음</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted small">현실적 조합 예: 첫 2주 연차 → 2~4개월령 펫시터 매일 1회 → 접종 완료 후 유치원 주 2회 + 펫시터 주 3회 → 8~10개월경부터 단독 적응 완료 시 축소. 비용은 첫 해에 집중 투자하고 이후 줄어드는 구조로 보면 됩니다.</p>
+
+  <h3 class="sec">분리불안 "예방" 6단계 프로토콜</h3>
+  <p>분리불안은 생긴 뒤 고치는 것보다 <strong>안 생기게 하는 게 10배 쉽습니다.</strong> 데려온 첫 주부터, 아래 순서대로.</p>
+  <ol class="ls">
+    <li><strong>혼자 있는 연습을 "집에 있으면서" 시작</strong> — 같은 집 다른 방에 몇 분씩 분리. 펜스 안에서 혼자 노는 시간을 하루 여러 번. "보호자가 안 보여도 세상 안 무너짐"이 1단계.</li>
+    <li><strong>출입을 이벤트로 만들지 않기</strong> — 나갈 때 애틋한 작별 인사 금지, 들어와서 흥분 환영 금지. 나갈 땐 조용히, 들어와선 아이가 차분해진 뒤 인사. 드라마를 없애면 불안도 없어집니다.</li>
+    <li><strong>출근 신호 둔감화</strong> — 열쇠 들기·신발 신기·외투 입기를 나가지 않으면서 수시로 반복 → "그 소리 = 이별"의 연결 끊기.</li>
+    <li><strong>나감 = 좋은 일 개시</strong> — 나가기 직전에만 주는 특별 아이템(사료 채운 콩, 노즈워크 매트)을 세팅. 현관문 소리가 "간식 타임 시작" 신호가 되게.</li>
+    <li><strong>시간 계단식 확장</strong> — 5분 외출 → 30분 → 2시간 → 반나절. 돌아왔을 때 난리가 나 있으면 단계를 되돌리기. 펫캠으로 30분 시점 상태 확인.</li>
+    <li><strong>유지 관리</strong> — 성견이 된 뒤에도 주말 내내 붙어 있다가 월요일에 11시간 공백을 만들면 흔들립니다. 주말에도 짧은 단독 시간을 일부러 유지.</li>
+  </ol>
+  <div class="box box-warn">
+    <div class="bt">⚠ 분리불안 경고 신호 — 보이면 단계 후퇴</div>
+    <p>부재 중 지속 하울링·짖음(펫캠 확인), 문·바닥 긁기, 침 흘림 흥건, 배변 실수 급증, 귀가 시 과도한 패닉 환영. 2주 이상 지속 시 행동 전문 수의사 상담을 권장합니다. 방치하면 이웃 민원+아이 고통이 함께 커집니다.</p>
+  </div>
+
+  <h3 class="sec">평일 타임테이블 (성견 안착 후 기준)</h3>
+  <div class="tw"><table>
+    <thead><tr><th>시간</th><th>할 일</th><th>포인트</th></tr></thead>
+    <tbody>
+      <tr><td>06:40~07:20</td><td><strong>아침 산책 25~30분</strong> + 배변</td><td>하루 중 가장 중요한 시간. 아침 에너지를 빼야 낮 11시간이 평화로움</td></tr>
+      <tr><td>07:20~07:40</td><td>아침 급여 + 물 교체 + 몸 상태 훑기(눈·귀·걸음)</td><td>급여는 "앉아·기다려" 후에</td></tr>
+      <tr><td>07:50</td><td>부재 세팅: 콩/노즈워크 배치, 실내 온도(여름 26℃ 안팎 에어컨), 커튼·백색소음, 조용히 출발</td><td>작별 인사 없이. 여름 온도 관리는 생명 문제(더위 취약 견종)</td></tr>
+      <tr><td>낮</td><td>(선택) 펫캠 확인 1~2회 / 펫시터·유치원 요일 운영</td><td>확인용이지 말 걸기용 아님 — 스피커로 말 걸면 오히려 불안 자극</td></tr>
+      <tr><td>19:00~19:40</td><td><strong>저녁 산책 30분</strong> + 배변</td><td>귀가 인사는 차분해진 후. 가방 내려놓고 5분 뒤 시작해도 늦지 않음</td></tr>
+      <tr><td>19:40~20:00</td><td>저녁 급여 + 훈련 5~10분(05장 명령어 1개)</td><td>머리 쓰는 10분 = 몸 운동 30분의 피로</td></tr>
+      <tr><td>밤</td><td>같이 쉬기 + 빗질(주 3회) + 양치</td><td>카발리에가 가장 원하는 것 — 옆에 있기</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="sec">부재 환경 세팅 표준</h3>
+  <ul class="ls">
+    <li><strong>공간:</strong> 펜스 구역(퍼피) → 신뢰 쌓이면 거실 개방(성견). 처음부터 전체 개방 금지 — 사고·불안 둘 다 커짐.</li>
+    <li><strong>온도:</strong> 여름 에어컨 필수(26℃ 안팎), 겨울 담요+온도 유지. 카발리에는 더위에 약합니다.</li>
+    <li><strong>물:</strong> 대용량 급수기 2개(하나 엎어도 예비).</li>
+    <li><strong>지루함 대책:</strong> 사료 일부를 노즈워크·콩으로 급여(밥 먹는 데 30분 걸리게), 로테이션 장난감(매일 2~3개만 꺼내고 순환).</li>
+    <li><strong>안전:</strong> 전선·삼킬 것 제거 상태 유지, 창문 잠금, 펫캠 사각 없게.</li>
+    <li><strong>소리:</strong> 라디오·TV 낮은 볼륨 — 복도 소음 마스킹으로 경계성 짖음 예방(05장).</li>
+  </ul>
+
+  <h3 class="sec">휴가·출장 — 맡기기 전략</h3>
+  <div class="tw"><table>
+    <thead><tr><th>방법</th><th>장점</th><th>단점·조건</th></tr></thead>
+    <tbody>
+      <tr><td><strong>방문 펫시터</strong> (집으로 옴)</td><td>환경 변화 없음 — 분리불안 취약견에 최선</td><td>1일 2~3회 방문 필요, 신뢰 검증(후기·보험 가입 업체)</td></tr>
+      <tr><td><strong>지인·가족 집</strong></td><td>아는 사람 = 스트레스 최소</td><td>사전 1박 적응 연습 필수, 급여·산책 매뉴얼 전달</td></tr>
+      <tr><td><strong>펫호텔·유치원 호텔링</strong></td><td>전문 관리, CCTV 제공 업체 多</td><td><strong>켄넬코프 접종 증명 요구</strong>가 일반적. 성수기 조기 마감 — 휴가 확정 즉시 예약</td></tr>
+      <tr><td><strong>동반 여행</strong></td><td>함께</td><td>애견 동반 숙소 사전 확인, 차량 이동 켄넬 적응 필요. 첫 1년은 짧은 근거리부터</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="ls">
+    <li><strong>맡길 때 전달 세트:</strong> 먹던 사료+간식(양 표기), 익숙한 방석·장난감(냄새), 급여·산책 시간표 1장, 병원 연락처, 특이사항(알러지·겁내는 것).</li>
+    <li>장기 위탁 전엔 <strong>반나절 → 1박 예행연습</strong>으로 적응 확인.</li>
+  </ul>
+  <p class="muted small">삼송 인근 실제 병원·유치원·호텔 목록은 <strong>10장 동네 가이드</strong>에 있습니다.</p>
+
+  <div class="trainer">
+    <div class="ico">🕖</div>
+    <div>
+      <div class="tt">TRAINER'S NOTE</div>
+      <div class="tb">직장인의 개는 불행하지 않습니다. 루틴 없는 개가 불행합니다. 매일 같은 시간에 산책이 오고, 같은 시간에 밥이 오고, 현관 소리가 간식의 신호라는 걸 아는 개는 11시간을 "기다림"이 아니라 "일과"로 삽니다. 당신이 지켜야 할 건 시간의 길이가 아니라 약속의 규칙성입니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 07 중성화 ===================== -->
+<section class="tab-panel" id="tab-neuter">
+  <div class="ch-head">
+    <div class="ch-no">CHAPTER 07</div>
+    <h2 class="serif">중성화 — 남아 기준 판단과 절차</h2>
+    <p class="lede">감정이 아니라 근거로 결정합니다. 카발리에 남아는 연구 근거가 비교적 명확한 편입니다.</p>
+  </div>
+
+  <div class="box box-core">
+    <div class="bt">■ 결론 먼저</div>
+    <ul class="ls">
+      <li>카발리에 남아의 통상 권장 시기는 <strong>생후 6~12개월</strong>. UC Davis의 35개 견종 중성화 연구에서 카발리에는 <strong>중성화 시기에 따른 관절 질환·주요 암 위험 증가가 확인되지 않은 견종</strong> — 시기 선택이 비교적 자유로운 편.</li>
+      <li>실무 권장: <strong>마킹·마운팅이 습관으로 굳기 전(대략 6~9개월)</strong>에 하는 게 행동 관리상 유리. 최종 시기는 주치의와 성장 상태 보고 결정.</li>
+      <li>수술 자체는 수컷 기준 비교적 간단(일반적으로 당일 귀가). 관건은 <strong>수술 후 10~14일 관리.</strong></li>
+    </ul>
+  </div>
+
+  <h3 class="sec">왜 하는가 — 남아 기준 득실</h3>
+  <div class="grid2">
+    <div class="card">
+      <div class="ct">기대 효과</div>
+      <ul class="ls small" style="margin-left:16px;">
+        <li>고환 종양 원천 차단, 전립선 비대 등 호르몬성 질환 위험 감소</li>
+        <li>마킹(실내 다리들기)·마운팅·수컷 간 신경전 감소 경향</li>
+        <li>발정 암컷 냄새에 따른 탈주 욕구·스트레스 제거</li>
+        <li>1인 가구 부재 시간이 긴 환경에서 호르몬성 스트레스 요인 축소</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ct">감수할 것</div>
+      <ul class="ls small" style="margin-left:16px;">
+        <li>전신마취 수술 (사전검사로 위험 관리)</li>
+        <li>기초대사 감소 → <strong>살찌기 쉬워짐.</strong> 급여량 10~20% 조정 필요(04장)</li>
+        <li>이미 학습으로 굳은 행동(마킹 습관 등)은 수술로 자동 소거되지 않음 — 훈련 병행</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="sec">수술 절차와 준비</h3>
+  <ol class="ls">
+    <li><strong>사전:</strong> 혈액검사 등 마취 전 검사(비용 포함 여부 확인) · 수술 전 금식 지시(통상 전날 밤부터) 준수.</li>
+    <li><strong>당일:</strong> 오전 수술 → 통상 당일 저녁 귀가. 마취 깬 직후 비틀거림·멍함은 정상 범위.</li>
+    <li><strong>수술 후 10~14일:</strong> <u>넥카라(또는 수술복) 상시 착용</u> — 핥으면 봉합 부위 감염·벌어짐. 여기서 사고의 90%가 남. 격한 놀이·점프·목욕 금지, 짧은 배변 산책만. 처방약 시간 엄수.</li>
+    <li><strong>경과 확인:</strong> 수술 부위 붓기·진물·냄새, 식욕·배변 정상 여부 매일 확인 → 이상 시 병원. 실밥 제거(자연 흡수사면 생략)까지 완주.</li>
+  </ol>
+
+  <h3 class="sec">비용·체크</h3>
+  <ul class="ls">
+    <li>수컷 중성화 대략 <strong>20~40만 원</strong>(사전검사·처치 포함 여부로 차이. 병원별 견적 확인).</li>
+    <li>펫보험은 중성화(예방 목적 수술)를 보장하지 않는 게 일반적 — 비용은 자비 계획.</li>
+    <li>지자체에 따라 등록동물 중성화 지원 사업이 있는 경우가 있으니 시 공고 확인.</li>
+    <li>수술 전 확인 질문 3: ① 마취 전 검사 포함인가 ② 통증 관리(진통제) 계획은 ③ 야간 이상 시 연락 체계는.</li>
+  </ul>
+
+  <div class="box box-key">
+    <div class="bt">★ 시기 결정 간단 가이드</div>
+    <p><strong>6개월 검진 때 주치의와 성장 상태를 보고 6~9개월 사이로 잡는다.</strong> 이르게 하는 이유(행동 습관화 전, 관리 단순)와 늦추는 이유(성장 완료 대기)를 저울질했을 때, 카발리에는 연구상 시기 리스크 차이가 확인되지 않아 관리 편익 쪽으로 결정해도 무리가 없는 견종입니다. 단, 잠복고환(고환이 안 내려온 경우)이면 방침이 달라지므로 검진 때 반드시 확인.</p>
+  </div>
+</section>
+<!-- ===================== 08 기록장 ===================== -->
+<section class="tab-panel" id="tab-record">
+  <div class="ch-head">
+    <div class="ch-no">CHAPTER 08</div>
+    <h2 class="serif">기록장 — 키우면서 쌓는 데이터</h2>
+    <p class="lede">이름·생일을 입력하면 홈 화면이 우리 아이 기준으로 바뀝니다. 체중·병원·지출 기록은 나중에 병원 상담과 예산 관리의 근거가 됩니다.</p>
+  </div>
+
+  <h3 class="sec">아이 프로필</h3>
+  <div class="card">
+    <div class="grid2">
+      <div class="field"><label>이름</label><input type="text" id="pfName" placeholder="예: 초코"></div>
+      <div class="field"><label>생년월일</label><input type="date" id="pfBirth"></div>
+      <div class="field"><label>입양일 (데려온 날)</label><input type="date" id="pfHome"></div>
+      <div class="field"><label>등록번호 (동물등록 후 기입)</label><input type="text" id="pfReg" placeholder="동물등록번호"></div>
+    </div>
+    <p class="muted small">생년월일을 입력하면 홈 탭에 월령과 "지금 단계 할 일"이 자동 표시됩니다.</p>
+  </div>
+
+  <h3 class="sec">체중 기록 <span class="muted small" style="font-weight:400;">— 월 1회 이상 권장</span></h3>
+  <div class="card">
+    <div class="row">
+      <input type="date" id="wDate">
+      <input type="number" id="wKg" step="0.1" min="0" max="30" placeholder="kg" style="width:90px;">
+      <button class="btn sm" id="wAdd">추가</button>
+    </div>
+    <svg class="wchart" id="wChart" viewBox="0 0 640 190" preserveAspectRatio="xMidYMid meet" role="img" aria-label="체중 변화 그래프"></svg>
+    <div id="wList"></div>
+  </div>
+
+  <h3 class="sec">병원 방문 기록</h3>
+  <div class="card">
+    <div class="row">
+      <input type="date" id="vDate">
+      <select id="vType"><option>검진</option><option>접종</option><option>치료</option><option>수술</option><option>기타</option></select>
+      <input type="text" id="vMemo" placeholder="내용 (예: 3차 접종, 심장 청진 이상무)" style="flex:1; min-width:180px;">
+      <button class="btn sm" id="vAdd">추가</button>
+    </div>
+    <div id="vList"></div>
+  </div>
+
+  <h3 class="sec">지출 기록</h3>
+  <div class="card">
+    <div class="row">
+      <input type="date" id="eDate">
+      <select id="eCat"><option>사료·간식</option><option>병원</option><option>용품</option><option>미용·위생</option><option>유치원·시터</option><option>보험</option><option>기타</option></select>
+      <input type="number" id="eAmt" min="0" step="100" placeholder="금액(원)" style="width:110px;">
+      <input type="text" id="eMemo" placeholder="메모" style="flex:1; min-width:120px;">
+      <button class="btn sm" id="eAdd">추가</button>
+    </div>
+    <div class="box box-note" style="margin:12px 0 6px;"><div class="bt">이번 달 합계</div><div id="eMonth" style="font-weight:800; font-size:18px;">0원</div></div>
+    <div id="eList"></div>
+  </div>
+
+  <h3 class="sec">데이터 백업</h3>
+  <div class="card">
+    <p class="muted small">아래 버튼으로 전체 기록을 텍스트(JSON)로 내보내 메모장 등에 보관할 수 있습니다. 복원하려면 붙여넣고 "가져오기".</p>
+    <div class="row" style="margin-bottom:8px;">
+      <button class="btn sm ghost" id="expBtn">내보내기</button>
+      <button class="btn sm ghost" id="impBtn">가져오기</button>
+    </div>
+    <textarea id="ioArea" rows="4" style="width:100%;" placeholder="내보내기를 누르면 여기에 백업 텍스트가 생성됩니다."></textarea>
+
+  <h3 class="sec">기기 간 자동 동기화 — 둘이 같은 기록 보기</h3>
+  <div class="card">
+    <p class="muted small" style="margin-top:0;">같은 주소·같은 가족 코드를 입력한 기기끼리 기록장·달력·체크리스트가 자동으로 맞춰집니다 (저장 후 몇 초 + 20초 주기 + 앱을 다시 열 때).</p>
+    <div class="row"><input type="text" id="syncUrl" placeholder="Firebase 데이터베이스 주소 (https://…firebasedatabase.app)" style="width:100%;"></div>
+    <div class="row" style="margin-top:8px;">
+      <input type="text" id="syncCode" placeholder="가족 코드 — 둘이 동일하게" style="flex:1; min-width:0;">
+      <button class="btn sm" id="syncOn">동기화 켜기</button>
+      <button class="btn sm ghost" id="syncOff">끄기</button>
+    </div>
+    <p id="syncStat" class="muted small" style="margin:8px 0 0;">설정 안 됨</p>
+    <details style="margin-top:10px;">
+      <summary class="small" style="cursor:pointer; font-weight:800; color:var(--chest-d);">최초 1회 설정법 — 한 사람만 하면 됩니다 (약 5분, 무료)</summary>
+      <ol class="ls small" style="margin-top:8px;">
+        <li>console.firebase.google.com 접속 → 구글 로그인 → <strong>프로젝트 만들기</strong> (이름 자유, 애널리틱스는 꺼도 됨)</li>
+        <li>왼쪽 메뉴 <strong>빌드 → Realtime Database → 데이터베이스 만들기</strong> → 위치 아시아(asia-southeast1) → <strong>테스트 모드</strong> 선택</li>
+        <li><strong>규칙</strong> 탭 내용을 아래로 바꾸고 <strong>게시</strong>:<br><code>{ "rules": { "handbook": { "$fam": { ".read": true, ".write": true } } } }</code></li>
+        <li><strong>데이터</strong> 탭 상단의 <code>https://…firebasedatabase.app</code> 주소를 복사 → 위 첫 칸에 붙여넣기</li>
+        <li>가족 코드를 정해 입력 → <strong>동기화 켜기</strong>. 상대 폰에서도 같은 주소·같은 코드 입력이면 끝.</li>
+      </ol>
+      <p class="muted small">주의: 코드를 아는 사람은 이 기록을 읽고 쓸 수 있으니 코드를 비밀번호처럼 길게 만드세요. 두 폰에서 동시에 수정하면 나중에 저장한 쪽이 남습니다.</p>
+    </details>
+  </div>
+  </div>
+</section>
+
+<!-- ===================== 09 구매 가이드 ===================== -->
+<section class="tab-panel" id="tab-shop">
+  <div class="ch-head">
+    <div class="ch-no">CHAPTER 09</div>
+    <h2 class="serif">구매 가이드 — 추천 제품·링크 모음</h2>
+    <p class="lede">전 품목을 구체적 제품명으로 추천하고, 제품명을 누르면 네이버 검색으로 바로 연결됩니다.</p>
+  </div>
+  <div class="box box-note">
+    <div class="bt">✓ 사용 원칙</div>
+    <ul class="ls">
+      <li>제품명을 누르면 <strong>네이버 검색 결과</strong>가 열립니다 — 품절·가격 변동에도 항상 유효한 방식입니다. 특정 판매처 광고가 아닙니다.</li>
+      <li>패드·식기·울타리처럼 상표보다 규격이 중요한 품목은 품목명 검색으로 걸어 최저가 비교가 되게 했습니다.</li>
+      <li><strong>미리보기 화면에서 링크가 반응하지 않으면</strong>, 파일을 저장한 뒤 크롬·사파리 등 브라우저로 열면 모든 링크가 작동합니다.</li>
+      <li>사료만은 예외 원칙 — 첫 1~2주는 브리더가 먹이던 제품 유지(01장), 교체는 7일 법칙(04장).</li>
+    </ul>
+  </div>
+
+  <h3 class="sec">사료·간식</h3>
+  <div class="tw"><table>
+    <thead><tr><th>품목</th><th>추천 제품 · 이유</th></tr></thead>
+    <tbody>
+<tr><td><strong>퍼피 사료</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EB%A1%9C%EC%96%84%EC%BA%90%EB%8B%8C%20%EB%AF%B8%EB%8B%88%20%ED%8D%BC%ED%94%BC" target="_blank" rel="noopener">로얄캐닌 미니 퍼피</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%ED%9E%90%EC%8A%A4%20%ED%8D%BC%ED%94%BC%20%EC%8A%A4%EB%AA%B0%ED%8F%AC" target="_blank" rel="noopener">힐스 사이언스다이어트 퍼피 스몰포</a><br><span class="muted small">소형견 성장기 설계·작은 알갱이. 브리더 사료 소진 후 7일 교체</span></td></tr><tr><td><strong>성견 사료 (10~12개월~)</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EB%A1%9C%EC%96%84%EC%BA%90%EB%8B%8C%20%EC%BA%90%EB%B2%8C%EB%A6%AC%EC%96%B4%20%ED%82%B9%EC%B0%B0%EC%8A%A4%20%EC%96%B4%EB%8D%9C%ED%8A%B8" target="_blank" rel="noopener">로얄캐닌 캐벌리어 킹찰스 어덜트</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%EC%98%A4%EB%A6%AC%EC%A0%A0%20%EC%8A%A4%EB%AA%B0%20%EB%B8%8C%EB%A6%AC%EB%93%9C" target="_blank" rel="noopener">오리젠 스몰 브리드</a><br><span class="muted small">캐벌리어 견종 전용 설계(심장 건강 고려 영양·기호성). 없으면 소형견 성견용</span></td></tr><tr><td><strong>훈련용 트릿</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EC%98%A4%EB%A6%AC%EC%A0%A0%20%ED%94%84%EB%A6%AC%EC%A6%88%EB%93%9C%EB%9D%BC%EC%9D%B4%20%ED%8A%B8%EB%A6%BF" target="_blank" rel="noopener">오리젠 프리즈드라이 트릿</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EB%8F%99%EA%B2%B0%EA%B1%B4%EC%A1%B0%20%EB%8B%AD%EA%B0%80%EC%8A%B4%EC%82%B4" target="_blank" rel="noopener">동결건조 닭가슴살 트릿</a><br><span class="muted small">저칼로리 — 쌀알 크기로 잘라 훈련 보상용(05장). 하루 열량 10% 이내</span></td></tr><tr><td><strong>덴탈껌</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B7%B8%EB%A6%AC%EB%8B%88%EC%A6%88%20%ED%8B%B0%EB%8B%88" target="_blank" rel="noopener">그리니즈 티니</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%EB%B2%84%EB%B0%95%20CET%20%EC%B8%84" target="_blank" rel="noopener">버박 C.E.T. 츄</a><br><span class="muted small">생후 6개월부터. 양치의 보조일 뿐 대체 불가(04장)</span></td></tr><tr><td><strong>콩 충전용</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EB%AC%B4%EC%97%BC%20%EB%95%85%EC%BD%A9%EB%B2%84%ED%84%B0" target="_blank" rel="noopener">강아지 무염 땅콩버터</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%EB%A1%9C%EC%96%84%EC%BA%90%EB%8B%8C%20%ED%8D%BC%ED%94%BC%20%ED%8C%8C%EC%9A%B0%EC%B9%98" target="_blank" rel="noopener">로얄캐닌 퍼피 파우치</a><br><span class="muted small">콩에 발라 얼려서 출근 직전 지급 — 부재 루틴의 핵심(06장)</span></td></tr>    </tbody>
+  </table></div>
+
+  <h3 class="sec">훈련·놀이</h3>
+  <div class="tw"><table>
+    <thead><tr><th>품목</th><th>추천 제품 · 이유</th></tr></thead>
+    <tbody>
+<tr><td><strong>콩(KONG)</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EC%BD%A9%20KONG%20%ED%8D%BC%ED%94%BC%20%EC%9E%A5%EB%82%9C%EA%B0%90" target="_blank" rel="noopener">KONG 퍼피 S</a> — 2개 구매<br><span class="muted small">부재 시간의 핵심 장비. 2개를 세척·냉동 번갈아 로테이션(06장)</span></td></tr><tr><td><strong>노즈워크 매트</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EB%85%B8%EC%A6%88%EC%9B%8C%ED%81%AC%20%EB%A7%A4%ED%8A%B8" target="_blank" rel="noopener">강아지 노즈워크 매트</a><br><span class="muted small">사료를 숨겨 급여 — 머리 쓰는 10분이 산책 30분의 피로(06장)</span></td></tr><tr><td><strong>이갈이 토이</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EB%82%98%EC%9D%BC%EB%9D%BC%EB%B3%B8%20%ED%8D%BC%ED%94%BC%EC%B8%84" target="_blank" rel="noopener">나일라본 퍼피</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%EB%B2%A0%EB%84%A4%EB%B3%B8%20%ED%8D%BC%ED%94%BC" target="_blank" rel="noopener">베네본 퍼피</a><br><span class="muted small">3~6개월 이갈이기 전선·가구·손 보호(05장)</span></td></tr><tr><td><strong>터그 장난감</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EB%B0%94%EC%9E%87%EB%AF%B8%20%ED%84%B0%EA%B7%B8%20%EC%9E%A5%EB%82%9C%EA%B0%90" target="_blank" rel="noopener">바잇미 터그 장난감</a><br><span class="muted small">입질을 손 대신 받아줄 공식 채널(05장)</span></td></tr><tr><td><strong>슬로우 식기</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EC%95%84%EC%9B%83%EC%9B%8C%EB%93%9C%ED%95%98%EC%9A%B4%EB%93%9C%20%ED%8E%80%ED%94%BC%EB%8D%94" target="_blank" rel="noopener">아웃워드하운드 펀피더</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EC%8A%AC%EB%A1%9C%EC%9A%B0%EC%8B%9D%EA%B8%B0" target="_blank" rel="noopener">강아지 슬로우식기</a><br><span class="muted small">식탐 많은 카발리에의 흡입 방지(04장)</span></td></tr>    </tbody>
+  </table></div>
+
+  <h3 class="sec">산책·이동</h3>
+  <div class="tw"><table>
+    <thead><tr><th>품목</th><th>추천 제품 · 이유</th></tr></thead>
+    <tbody>
+<tr><td><strong>하네스</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%ED%8A%B8%EB%A3%A8%EB%9F%AC%EB%B8%8C%20%ED%95%98%EB%84%A4%EC%8A%A4" target="_blank" rel="noopener">트루러브 하네스</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%EB%9F%AC%ED%94%84%EC%9B%A8%EC%96%B4%20%ED%94%84%EB%A1%A0%ED%8A%B8%EB%A0%88%EC%9D%B8%EC%A7%80" target="_blank" rel="noopener">러프웨어 프론트레인지</a><br><span class="muted small">목줄 대신 하네스 — SM·기관 보호 차원의 건강 문제(02장). 조끼형·Y형</span></td></tr><tr><td><strong>리드줄</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EB%A6%AC%EB%93%9C%EC%A4%84%201.5m" target="_blank" rel="noopener">강아지 리드줄 1.5m</a><br><span class="muted small">1.2~1.8m 고정형. 자동줄은 리드 훈련 완성 후에(05장)</span></td></tr><tr><td><strong>슬링백</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EC%8A%AC%EB%A7%81%EB%B0%B1" target="_blank" rel="noopener">강아지 슬링백</a><br><span class="muted small">접종 완료 전 "안고 구경 산책"용(05장) + 병원 이동</span></td></tr><tr><td><strong>하드켄넬</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%ED%8E%98%ED%8A%B8%EB%A7%88%ED%85%8C%20%EB%B0%94%EB%A6%AC%EC%BC%84%EB%84%AC" target="_blank" rel="noopener">페트마테 바리켄넬</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%ED%95%98%EB%93%9C%EC%BC%84%EB%84%AC" target="_blank" rel="noopener">강아지 하드켄넬</a><br><span class="muted small">차량·기차 이동용. KTX 규격 45×30×25cm 참고(13장) — 경량 제품 유리</span></td></tr><tr><td><strong>인식표</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EC%9D%B8%EC%8B%9D%ED%91%9C%20%EA%B0%81%EC%9D%B8" target="_blank" rel="noopener">강아지 인식표 각인</a><br><span class="muted small">성명·연락처·등록번호 각인 — 법적 의무, 미착용 과태료(13장)</span></td></tr>    </tbody>
+  </table></div>
+
+  <h3 class="sec">하우징·급식·부재 장비</h3>
+  <div class="tw"><table>
+    <thead><tr><th>품목</th><th>추천 제품 · 이유</th></tr></thead>
+    <tbody>
+<tr><td><strong>크레이트</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%ED%81%AC%EB%A0%88%EC%9D%B4%ED%8A%B8%20%EC%B2%A0%EC%9E%A5" target="_blank" rel="noopener">강아지 크레이트 철장</a><br><span class="muted small">성견 몸길이 1.5배 기준 + 덮개(01장). 훈련의 중심 도구</span></td></tr><tr><td><strong>울타리</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EC%9A%B8%ED%83%80%EB%A6%AC%208%EA%B0%81" target="_blank" rel="noopener">강아지 울타리 8각</a><br><span class="muted small">높이 60cm 이상 — 퍼피기 부재 시 안전 구역(06장)</span></td></tr><tr><td><strong>방석</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%ED%95%98%EC%9A%B8%ED%8C%9F%20%EB%B0%A9%EC%84%9D" target="_blank" rel="noopener">하울팟 방석</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EB%B0%A9%EC%84%9D%20%EC%BB%A4%EB%B2%84%EB%B6%84%EB%A6%AC" target="_blank" rel="noopener">강아지 방석 커버분리형</a><br><span class="muted small">커버 분리 세탁형이 위생 관리에 유리</span></td></tr><tr><td><strong>배변판·패드</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EB%94%A5%EC%8A%A4%20%EB%B0%B0%EB%B3%80%ED%8C%A8%EB%93%9C" target="_blank" rel="noopener">딥스 배변패드</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EB%B0%B0%EB%B3%80%ED%8C%90" target="_blank" rel="noopener">강아지 배변판</a><br><span class="muted small">초기엔 대형 패드를 넓게, 성공률 오르면 축소(05장)</span></td></tr><tr><td><strong>식기</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EC%8A%A4%ED%85%8C%EC%9D%B8%EB%A6%AC%EC%8A%A4%20%EC%8B%9D%EA%B8%B0" target="_blank" rel="noopener">강아지 스테인리스 식기</a><br><span class="muted small">플라스틱 대비 턱 여드름·세균 예방(01장)</span></td></tr><tr><td><strong>급수기</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EA%B8%89%EC%88%98%EA%B8%B0%20%EB%8C%80%EC%9A%A9%EB%9F%89" target="_blank" rel="noopener">강아지 급수기 대용량</a> — 2개<br><span class="muted small">부재 대비 이중화 — 하나 엎어도 예비(06장)</span></td></tr><tr><td><strong>자동급식기</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EB%B0%94%EB%9E%A8%ED%8E%AB%20%EA%B8%89%EC%8B%9D%EA%B8%B0" target="_blank" rel="noopener">바램펫 급식기</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%ED%8E%AB%ED%82%B7%20%EA%B8%89%EC%8B%9D%EA%B8%B0" target="_blank" rel="noopener">펫킷 급식기</a><br><span class="muted small">정시 급여로 루틴 유지. 카메라 연동형이면 펫캠 겸용</span></td></tr><tr><td><strong>펫캠</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%ED%8D%BC%EB%B3%B4%20%EB%8F%84%EA%B7%B8%EC%B9%B4%EB%A9%94%EB%9D%BC" target="_blank" rel="noopener">퍼보 도그카메라</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%ED%97%A4%EC%9D%B4%ED%99%88%20%ED%99%88%EC%B9%B4%EB%A9%94%EB%9D%BC" target="_blank" rel="noopener">헤이홈 홈카메라</a><br><span class="muted small">분리불안 훈련 단계 확인용(06장). 퍼보는 간식 토스 기능</span></td></tr><tr><td><strong>미끄럼방지 매트</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EB%94%94%ED%8C%A1%20%EB%A1%A4%EB%A7%A4%ED%8A%B8" target="_blank" rel="noopener">디팡 롤매트</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%ED%8E%AB%20%EB%A1%A4%EB%A7%A4%ED%8A%B8" target="_blank" rel="noopener">펫 롤매트</a><br><span class="muted small">주요 동선 전체 — 슬개골 장기 보호(02장)</span></td></tr><tr><td><strong>스텝(계단)</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EA%B3%84%EB%8B%A8%20%EC%8A%A4%ED%85%9D" target="_blank" rel="noopener">강아지 계단 스텝</a><br><span class="muted small">소파·침대 점프 착지 반복 줄이기(02장)</span></td></tr>    </tbody>
+  </table></div>
+
+  <h3 class="sec">위생·미용</h3>
+  <div class="tw"><table>
+    <thead><tr><th>품목</th><th>추천 제품 · 이유</th></tr></thead>
+    <tbody>
+<tr><td><strong>빗</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EB%A1%9C%EB%A0%8C%EC%8A%A4%20%EC%8A%AC%EB%A6%AC%EC%BB%A4%20%EB%B8%8C%EB%9F%AC%EC%8B%9C" target="_blank" rel="noopener">로렌스 슬리커 브러시</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EC%8A%A4%ED%85%8C%EC%9D%B8%EB%A6%AC%EC%8A%A4%20%EC%BD%A4" target="_blank" rel="noopener">강아지 스테인리스 콤</a><br><span class="muted small">귀·가슴·엉덩이 장식털 주 3회 — 카발리에 미용의 90%는 빗질(13장 실전법)</span></td></tr><tr><td><strong>샴푸</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%ED%8E%98%EC%8A%A4%EB%A3%B8%20%EC%83%B4%ED%91%B8" target="_blank" rel="noopener">페스룸 샴푸</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%EC%95%84%EA%BB%B4%EC%A3%BC%EB%8B%A4%20%EC%83%B4%ED%91%B8" target="_blank" rel="noopener">아껴주다 샴푸</a><br><span class="muted small">약산성 저자극. 목욕은 2~4주 1회면 충분</span></td></tr><tr><td><strong>치약·칫솔</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EB%B2%84%EB%B0%95%20CET%20%ED%9A%A8%EC%86%8C%EC%B9%98%EC%95%BD" target="_blank" rel="noopener">버박 치약</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20360%EB%8F%84%20%EC%B9%AB%EC%86%94" target="_blank" rel="noopener">강아지 360도 칫솔</a><br><span class="muted small">효소치약 + 어릴 때부터 습관화(13장 양치 단계법)</span></td></tr><tr><td><strong>귀 세정제</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EB%B2%84%EB%B0%95%20%EC%97%90%ED%94%BC%EC%98%A4%ED%8B%B1" target="_blank" rel="noopener">버박 에피오틱</a><br><span class="muted small">늘어진 귀 주 1회 점검, 이상 시 세정(02장)</span></td></tr><tr><td><strong>발톱 관리</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EB%B0%9C%ED%86%B1%EA%B9%8E%EC%9D%B4" target="_blank" rel="noopener">강아지 발톱깎이</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%ED%80%B5%EC%8A%A4%ED%83%91%20%EC%A7%80%ED%98%88%ED%8C%8C%EC%9A%B0%EB%8D%94" target="_blank" rel="noopener">퀵스탑 지혈파우더</a><br><span class="muted small">2~3주 1회. 지혈파우더는 응급 키트 겸용(11장)</span></td></tr><tr><td><strong>효소 세정제</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EC%9C%A0%EB%A6%B0%EC%98%A4%ED%94%84" target="_blank" rel="noopener">유린오프</a><br><span class="muted small">배변 실수 냄새 분해 — 일반 세제는 냄새가 남아 재발(05장)</span></td></tr><tr><td><strong>넥카라</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EB%8F%84%EB%84%9B%20%EB%84%A5%EC%B9%B4%EB%9D%BC" target="_blank" rel="noopener">강아지 도넛 넥카라</a><br><span class="muted small">중성화 수술 후 10~14일 필수(07장). 도넛형+투명형 이중 준비</span></td></tr>    </tbody>
+  </table></div>
+
+  <h3 class="sec">응급 키트 (11장 연계)</h3>
+  <div class="tw"><table>
+    <thead><tr><th>품목</th><th>추천 제품 · 이유</th></tr></thead>
+    <tbody>
+<tr><td><strong>체온계</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EC%B2%B4%EC%98%A8%EA%B3%84" target="_blank" rel="noopener">강아지 체온계</a><br><span class="muted small">정상 체온 37.5~39.2℃ 기준 판단용(11장)</span></td></tr><tr><td><strong>붕대·거즈</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EC%9E%90%EA%B0%80%EC%A0%90%EC%B0%A9%EB%B6%95%EB%8C%80" target="_blank" rel="noopener">자가점착붕대</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%EB%A9%B8%EA%B7%A0%EA%B1%B0%EC%A6%88" target="_blank" rel="noopener">멸균거즈</a><br><span class="muted small">상처 압박 지혈용</span></td></tr><tr><td><strong>세척용</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EC%83%9D%EB%A6%AC%EC%8B%9D%EC%97%BC%EC%88%98%20500ml" target="_blank" rel="noopener">생리식염수 500ml</a><br><span class="muted small">눈·상처 세척. 소독약 임의 사용보다 안전</span></td></tr>    </tbody>
+  </table></div>
+
+  <h3 class="sec">펫보험 바로가기</h3>
+  <div class="tw"><table>
+    <thead><tr><th>구분</th><th>바로가기</th></tr></thead>
+    <tbody>
+<tr><td><strong>공식 비교</strong></td><td><a class="lnk ext" href="https://e-insmarket.or.kr" target="_blank" rel="noopener">보험다모아 바로가기</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%EB%B3%B4%ED%97%98%EB%8B%A4%EB%AA%A8%EC%95%84" target="_blank" rel="noopener">보험다모아</a><br><span class="muted small">손해보험협회 운영 공시 비교 — 5개사 조건 한눈에</span></td></tr><tr><td>삼성화재</td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EC%82%BC%EC%84%B1%ED%99%94%EC%9E%AC%20%EB%8B%A4%EC%9D%B4%EB%A0%89%ED%8A%B8%20%ED%8E%AB%EB%B3%B4%ED%97%98" target="_blank" rel="noopener">삼성화재 다이렉트 펫보험</a></td></tr><tr><td>메리츠화재</td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EB%A9%94%EB%A6%AC%EC%B8%A0%20%ED%8E%AB%ED%8D%BC%EB%AF%BC%ED%8A%B8" target="_blank" rel="noopener">메리츠 펫퍼민트</a></td></tr><tr><td>현대해상</td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%ED%98%84%EB%8C%80%ED%95%B4%EC%83%81%20%ED%8E%AB%EB%B3%B4%ED%97%98" target="_blank" rel="noopener">현대해상 펫보험</a></td></tr><tr><td>DB손해보험</td><td><a class="lnk" href="https://search.naver.com/search.naver?query=DB%EC%86%90%ED%95%B4%EB%B3%B4%ED%97%98%20%ED%8E%AB%EB%B3%B4%ED%97%98" target="_blank" rel="noopener">DB손해보험 펫보험</a></td></tr><tr><td>KB손해보험</td><td><a class="lnk" href="https://search.naver.com/search.naver?query=KB%EC%86%90%ED%95%B4%EB%B3%B4%ED%97%98%20%ED%8E%AB%EB%B3%B4%ED%97%98" target="_blank" rel="noopener">KB손해보험 펫보험</a></td></tr>    </tbody>
+  </table></div>
+  <div class="box box-warn">
+    <div class="bt">⚠ 가입 전 마지막 점검</div>
+    <p>03장의 7개 비교 항목(심장 보장·슬개골·보장비율·한도·갱신·MRI·할인)으로 견적을 비교하고, <strong>첫 검진에서 심잡음 소견이 나오기 전에 가입을 끝내세요.</strong> 내장칩 동물등록 완료 시 할인되는 상품이 많으니 등록 후 가입이 유리합니다.</p>
+  </div>
+</section>
+<!-- ===================== 10 삼송 동네 가이드 ===================== -->
+<section class="tab-panel" id="tab-place">
+  <div class="ch-head">
+    <div class="ch-no">CHAPTER 10</div>
+    <h2 class="serif">삼송 동네 가이드 — 견주 생활권 지도</h2>
+    <p class="lede">삼송로 240 기준 직선거리. 이름을 누르면 네이버 검색(위치·후기)이 열리고, 전화 버튼으로 바로 걸 수 있습니다. 2026년 7월 기준 — 방문 전 확인 권장.</p>
+  </div>
+  <div class="box box-core">
+    <div class="bt">■ 결론 먼저 — 삼송은 개 키우기 좋은 입지</div>
+    <ul class="ls">
+      <li><strong>도보 5분 안에 24시 동물병원</strong>(라인동물의료센터, 삼송역 상가) — 응급 대응 조건이 이미 갖춰진 동네.</li>
+      <li><strong>스타필드 고양(0.8km)이 반려동물 동반 가능 몰</strong> — 한여름·혹한기 실내 사회화 산책 코스.</li>
+      <li>유치원·호텔·미용·동반 식당까지 반경 2km 내 대부분 해결.</li>
+    </ul>
+  </div>
+
+  <h3 class="sec">동물병원</h3>
+  <div class="tw"><table>
+    <thead><tr><th>이름</th><th>거리</th><th>특징 · 연락처</th></tr></thead>
+    <tbody>
+<tr><td><a class="plink" href="https://search.naver.com/search.naver?query=24%EC%8B%9C%20%EB%9D%BC%EC%9D%B8%EB%8F%99%EB%AC%BC%EC%9D%98%EB%A3%8C%EC%84%BC%ED%84%B0%20%EA%B3%A0%EC%96%91%20%EC%82%BC%EC%86%A1" target="_blank" rel="noopener">24시 라인동물의료센터</a></td><td>0.3km</td><td><strong>24시간 연중무휴</strong> · 힐스테이트 삼송역 상가(역 연결) · 심장 소견 설명이 자세하다는 후기, 야간 응급·수술 대응 · 가격은 다소 높다는 평 → <strong>홈 탭 "24시 응급 병원"에 저장 추천</strong><br><a class="lnk" href="tel:02-381-2475">전화 02-381-2475</a></td></tr><tr><td><a class="plink" href="https://search.naver.com/search.naver?query=%EC%82%BC%EC%86%A1%EB%8F%99%EB%AC%BC%EB%B3%91%EC%9B%90%20%EA%B3%A0%EC%96%91" target="_blank" rel="noopener">삼송동물병원</a></td><td>0.9km</td><td>과잉진료 없이 실속형이라는 후기 다수 · 비용 합리적 → 단골(주치의) 후보<br><a class="lnk" href="tel:02-6015-3624">전화 02-6015-3624</a></td></tr><tr><td><a class="plink" href="https://search.naver.com/search.naver?query=%EC%82%BC%EC%86%A1%EC%82%AC%EB%9E%91%EB%8F%99%EB%AC%BC%EC%9D%98%EB%A3%8C%EC%84%BC%ED%84%B0" target="_blank" rel="noopener">삼송사랑동물의료센터</a></td><td>1.5km</td><td>평일·토 09:30~21:00, 일 ~18:00 — <strong>퇴근 후 진료 가능</strong> · 수의사 2인<br><a class="lnk" href="tel:02-388-8275">전화 02-388-8275</a></td></tr>    </tbody>
+  </table></div>
+  <p class="muted small">운영 전략: 검진·접종은 단골 1곳 고정(기록 축적 = 심장 관리에 유리), 응급은 라인 24시. 두 곳 번호를 홈 탭에 지금 저장해두세요.</p>
+
+  <h3 class="sec">유치원·호텔 (06장 직장인 플랜 실행처)</h3>
+  <div class="tw"><table>
+    <thead><tr><th>이름</th><th>거리</th><th>특징 · 연락처</th></tr></thead>
+    <tbody>
+<tr><td><a class="plink" href="https://search.naver.com/search.naver?query=%EB%8F%84%EA%B7%B8%EC%8A%A4%ED%85%8C%EC%9D%B4%20%EC%82%BC%EC%86%A1" target="_blank" rel="noopener">도그스테이</a></td><td>0.1km</td><td><strong>집에서 도보 2분</strong> · 매일 09:30~19:30 · 데이케어·위탁 최근접 옵션<br><a class="lnk" href="tel:010-3203-7057">전화 010-3203-7057</a></td></tr><tr><td><a class="plink" href="https://search.naver.com/search.naver?query=%ED%8E%AB%ED%95%84%EB%93%9C%ED%98%B8%ED%85%94%20%EA%B3%A0%EC%96%91" target="_blank" rel="noopener">펫필드호텔</a></td><td>0.6km</td><td>동산동 · 매일 09:30~20:00 · 호텔링 위주<br><a class="lnk" href="tel:010-5958-2025">전화 010-5958-2025</a></td></tr><tr><td><a class="plink" href="https://search.naver.com/search.naver?query=%ED%9E%90%EB%A7%81%EB%8F%85%EB%B0%98%EB%A0%A4%EA%B2%AC%EC%84%BC%ED%84%B0%20%EA%B3%A0%EC%96%91" target="_blank" rel="noopener">힐링독 반려견센터</a></td><td>0.3km</td><td>지축동 · 공개 정보 적음 — 프로그램·시간 전화 확인<br><a class="lnk" href="tel:02-381-9476">전화 02-381-9476</a></td></tr><tr><td><a class="plink" href="https://search.naver.com/search.naver?query=%EB%A9%8D%EA%B7%B8%EB%A6%B0%20%EC%95%A0%EA%B2%AC%EC%9C%A0%EC%B9%98%EC%9B%90%20%EA%B3%A0%EC%96%91" target="_blank" rel="noopener">멍그린 애견유치원</a></td><td>5.7km</td><td>원흥 방면 · <strong>평일 07:30~20:00 — 08~18시 근무 완전 커버</strong> · 주말 휴무<br><a class="lnk" href="tel:010-2237-2742">전화 010-2237-2742</a></td></tr><tr><td><a class="plink" href="https://search.naver.com/search.naver?query=%EA%B2%AC%ED%95%99%EB%8B%B9%20%EC%95%A0%EA%B2%AC%EC%9C%A0%EC%B9%98%EC%9B%90%20%EC%95%A0%EA%B2%AC%ED%98%B8%ED%85%94%20%EC%9D%BC%EC%82%B0" target="_blank" rel="noopener">견학당 유치원&호텔</a></td><td>10km</td><td>일산 중산동 · <strong>24시간 운영</strong> — 장기 휴가·출장 위탁 후보<br><a class="lnk" href="tel:010-4882-7261">전화 010-4882-7261</a></td></tr>    </tbody>
+  </table></div>
+  <p class="muted small">유치원은 접종 완료 후 등원 가능, 켄넬코프 접종 증명 요구가 일반적. 반나절 적응 수업·대소형견 분리·CCTV 제공 여부를 확인하세요.</p>
+
+  <h3 class="sec">미용 (목욕·위생미용)</h3>
+  <div class="tw"><table>
+    <thead><tr><th>이름</th><th>거리</th><th>특징 · 연락처</th></tr></thead>
+    <tbody>
+<tr><td><a class="plink" href="https://search.naver.com/search.naver?query=%EB%8F%85%EC%8A%A4%ED%95%98%ED%8A%B8%20%EC%82%BC%EC%86%A1" target="_blank" rel="noopener">독스하트</a></td><td>0.3km</td><td>삼송동 · 겁 많고 예민한 아이 대응이 좋다는 후기 다수<br><a class="lnk" href="tel:02-371-2313">전화 02-371-2313</a></td></tr><tr><td><a class="plink" href="https://search.naver.com/search.naver?query=%ED%8D%BC%ED%94%BC%EB%8F%8C%20%EC%95%A0%EA%B2%AC%EB%AF%B8%EC%9A%A9%20%EA%B3%A0%EC%96%91" target="_blank" rel="noopener">퍼피돌 애견미용</a></td><td>1.9km</td><td>동산동 · 화~일 운영(월 휴무)</td></tr><tr><td><a class="plink" href="https://search.naver.com/search.naver?query=%EC%A7%80%EA%B5%AC%EB%B3%84%EC%95%A0%EA%B2%AC%EB%AF%B8%EC%9A%A9%20%EA%B3%A0%EC%96%91" target="_blank" rel="noopener">지구별 애견미용</a></td><td>2.0km</td><td>원흥동<br><a class="lnk" href="tel:031-384-3900">전화 031-384-3900</a></td></tr>    </tbody>
+  </table></div>
+  <p class="muted small">카발리에는 전신 클리핑이 필요 없는 견종(02장). 목욕+위생(발바닥·항문·귀 주변)+발톱 정도 — 첫 미용은 짧게, 좋은 기억으로.</p>
+
+  <h3 class="sec">애견 동반 식당·카페</h3>
+  <div class="tw"><table>
+    <thead><tr><th>이름</th><th>거리</th><th>특징</th></tr></thead>
+    <tbody>
+<tr><td><a class="plink" href="https://search.naver.com/search.naver?query=%EC%9D%B4%EB%88%84%EB%84%A4%EC%BD%94%EC%8B%9D%EB%8B%B9%20%EA%B3%A0%EC%96%91" target="_blank" rel="noopener">이누네코식당</a></td><td>1.4km</td><td>삼송신도시 일식(돈카츠·스시) · <strong>애견 동반 전문</strong> — 반려견 자리 별도 마련 후기 다수</td></tr><tr><td><a class="plink" href="https://search.naver.com/search.naver?query=%EC%86%94%ED%8A%B8%ED%94%8C%EB%9E%8F%20%EC%82%BC%EC%86%A1" target="_blank" rel="noopener">솔트플랏</a></td><td>2.6km</td><td>삼송동 외곽 카페 · 애견 동반 가능 후기 · 분위기 평 좋음</td></tr><tr><td><a class="plink" href="https://search.naver.com/search.naver?query=%ED%95%98%EC%9D%B4%EC%93%B0%EB%A6%AC%ED%8C%8C%EC%9D%B8%EC%A6%88%20%EC%82%BC%EC%86%A1" target="_blank" rel="noopener">하이쓰리파인즈</a></td><td>0.6km</td><td>삼송역 인근 카페 · 야외석 보유 — 동반 가능 여부 방문 전 확인 권장</td></tr>    </tbody>
+  </table></div>
+
+  <h3 class="sec">나들이·산책</h3>
+  <div class="tw"><table>
+    <thead><tr><th>장소</th><th>거리</th><th>활용</th></tr></thead>
+    <tbody>
+<tr><td><a class="plink" href="https://search.naver.com/search.naver?query=%EC%8A%A4%ED%83%80%ED%95%84%EB%93%9C%20%EA%B3%A0%EC%96%91" target="_blank" rel="noopener">스타필드 고양</a></td><td>0.8km</td><td><strong>반려동물 동반 가능 몰</strong> — 폭염·혹한기 실내 사회화 산책 코스(더위 약한 카발리에에게 특히 유용). 매장별 규정 상이 — 리드줄·유모차 규정 확인</td></tr><tr><td><a class="plink" href="https://search.naver.com/search.naver?query=%EC%B0%BD%EB%A6%89%EC%B2%9C%20%EC%82%B0%EC%B1%85%EB%A1%9C%20%EC%82%BC%EC%86%A1" target="_blank" rel="noopener">창릉천 산책로</a></td><td>도보권</td><td>삼송지구를 지나는 하천변 — 일상 아침·저녁 산책 기본 코스</td></tr><tr><td><a class="plink" href="https://search.naver.com/search.naver?query=%EC%9E%A5%ED%95%AD%EB%8F%99%20%EB%B0%98%EB%A0%A4%EA%B2%AC%EB%86%80%EC%9D%B4%ED%84%B0" target="_blank" rel="noopener">반려견 놀이터(장항동)</a></td><td>11.8km</td><td>일산 호수공원 인근 <strong>무료 놀이터</strong> — 주말 오프리드 사회화. 주차 불편 후기. 접종 완료+콜백 훈련 후 이용</td></tr>    </tbody>
+  </table></div>
+
+  <div class="trainer">
+    <div class="ico">📍</div>
+    <div>
+      <div class="tt">TRAINER'S NOTE</div>
+      <div class="tb">동네 지도는 아이를 데려오기 전에 완성해두는 겁니다. 단골 병원 1곳, 24시 병원 1곳, 낮 케어 1곳 — 이 세 개의 전화번호가 정해져 있으면 첫 3개월의 돌발 상황 대부분이 "당황"이 아니라 "실행"이 됩니다.</div>
+    </div>
+  </div>
+</section>
+<!-- ===================== 11 응급 대처 ===================== -->
+<section class="tab-panel" id="tab-emerg">
+  <div class="ch-head">
+    <div class="ch-no">CHAPTER 11</div>
+    <h2 class="serif">응급 대처 — 골든타임 매뉴얼</h2>
+    <p class="lede">응급의 원칙은 하나 — "집에서 치료"가 아니라 "병원까지 안전하게". 아래 대처는 이동하는 동안 상태를 악화시키지 않기 위한 것입니다. 모든 응급은 병원 전화와 동시에 진행하세요.</p>
+  </div>
+
+  <div class="box box-core">
+    <div class="bt">■ 결론 먼저</div>
+    <ul class="ls">
+      <li>응급의 90%는 예방으로 막습니다 — 삼킬 것 제거(01장), 금지 음식 차단(04장), 여름 온도 관리(06장).</li>
+      <li><strong>절대 하지 말 것: 소금물·손가락으로 억지 구토 유도</strong>(소금 중독·기도 흡인 위험), 사람 약(타이레놀·이부프로펜은 개에게 독), 임의 소독약 사용.</li>
+      <li>정상 활력징후를 알아야 이상을 압니다: <strong>체온 37.5~39.2℃ · 안정 시 호흡 분당 30회 미만 · 잇몸 분홍색(눌렀다 떼면 2초 내 회복)</strong>.</li>
+    </ul>
+  </div>
+
+  <h3 class="sec">상황별 응급 대처</h3>
+  <div class="tw"><table>
+    <thead><tr><th>상황</th><th>대처 순서</th><th>금지</th></tr></thead>
+    <tbody>
+      <tr><td><strong>이물 질식</strong><br><span class="muted small">캑캑거림+숨 못 쉼, 잇몸 파래짐</span></td><td>① 입 벌려 <u>보이는</u> 이물만 제거 ② 소형견은 뒷다리를 들어 머리를 아래로 향하게 세우고 어깨뼈 사이를 손바닥으로 5회 강하게 두드리기 ③ 안 나오면 하임리히 — 갈비뼈 바로 아래 배를 감싸 위쪽 대각선으로 5회 압박 ④ 반복하며 즉시 병원</td><td>안 보이는 이물에 손가락 넣기(더 밀림)</td></tr>
+      <tr><td><strong>중독 섭취</strong><br><span class="muted small">초콜릿·포도·자일리톨·약·양파 등</span></td><td>① 무엇을·얼마나·언제 메모 ② 포장지·남은 것 챙기기 ③ 즉시 병원 전화 후 이동 — 섭취 후 빠를수록 처치 선택지가 많음</td><td>억지 구토 유도, 우유·물 억지로 먹이기</td></tr>
+      <tr><td><strong>열사병</strong><br><span class="muted small">심한 헐떡임+축 처짐+잇몸 검붉음</span></td><td>① 즉시 그늘·실내 이동 ② <u>미지근한</u> 물로 몸 적시기(특히 배·발바닥·귀) ③ 선풍기·에어컨 바람 ④ 스스로 마시면 물 소량 ⑤ 식히면서 즉시 병원 — 회복돼 보여도 장기 손상 확인 필요</td><td>얼음물·얼음 직접 대기(혈관 수축으로 역효과), 물 억지로 먹이기</td></tr>
+      <tr><td><strong>발작</strong></td><td>① 만지지 말고 주변 위험물 치우기 ② 시간 측정 + 영상 촬영(진단에 결정적) ③ 끝나면 조용한 곳에서 안정 ④ 5분 이상 지속되거나 연속 발작이면 즉시 응급실</td><td>혀 잡기·입에 손 넣기(물림 사고)</td></tr>
+      <tr><td><strong>출혈</strong></td><td>① 멸균거즈로 5분 이상 압박(중간에 떼지 않기) ② 발톱 출혈은 지혈파우더(없으면 밀가루 응급 대용) ③ 깊은 상처·멎지 않으면 압박 유지한 채 병원</td><td>소독약 들이붓기, 연고 임의 도포</td></tr>
+      <tr><td><strong>골절 의심</strong><br><span class="muted small">비명+다리 못 디딤+부음</span></td><td>① 만지거나 맞추려 하지 않기 ② 담요로 감싸 최소한으로 움직여 켄넬 이동 ③ 병원</td><td>부목 임의 고정(통증·악화)</td></tr>
+      <tr><td><strong>퍼피 저혈당</strong><br><span class="muted small">어린 강아지가 축 처짐+잇몸 창백</span></td><td>① 꿀·설탕물 소량을 잇몸에 문지르기 ② 반응 확인하며 즉시 병원 — 퍼피는 공복이 길면 위험(06장 낮 케어가 예방)</td><td>의식 없는데 입에 액체 붓기</td></tr>
+      <tr><td><strong>벌 쏘임·알레르기</strong><br><span class="muted small">얼굴 부음, 두드러기</span></td><td>① 침이 보이면 카드로 긁어 제거 ② 냉찜질 ③ 얼굴·목 부으면 기도 위험 — 즉시 병원</td><td>사람 항히스타민제 임의 투여</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="sec">심폐소생(CPR) 기초 — 의식·호흡이 없을 때</h3>
+  <ol class="ls">
+    <li>호흡·심장박동 확인(가슴에 손, 잇몸 색) — 반응 없으면 즉시 시작하며 병원으로 이동.</li>
+    <li>오른쪽으로 눕히고, 앞다리를 접었을 때 팔꿈치가 닿는 지점(심장 위치)을 <strong>소형견은 한 손으로 분당 100~120회</strong> 압박 — 가슴 두께의 1/3 깊이.</li>
+    <li>30회 압박 + 인공호흡 2회(입을 감싸 쥐고 코로 1초씩) 반복.</li>
+    <li>이건 최소한의 기초입니다 — 입양 전 반려동물 CPR 교육 영상을 한 번 봐두는 것을 강하게 권장합니다. <a class="lnk" href="https://search.naver.com/search.naver?query=%EB%B0%98%EB%A0%A4%EB%8F%99%EB%AC%BC%20%EC%8B%AC%ED%8F%90%EC%86%8C%EC%83%9D%EC%88%A0" target="_blank" rel="noopener">반려동물 심폐소생술 영상</a></li>
+  </ol>
+
+  <h3 class="sec">증상 판단표 — 병원, 언제 가야 하나</h3>
+  <div class="tw"><table>
+    <thead><tr><th>등급</th><th>증상</th><th>행동</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag r">즉시<br>(밤이라도)</span></td><td>호흡곤란·청색 잇몸 / 반복 구토+축 처짐 / 혈변·흑변·혈뇨 / 12시간 이상 배뇨 없음 / 발작 / 중독 섭취 / 배가 급격히 팽창하며 헛구역질 / 심한 통증 비명 / 4개월 미만 퍼피의 구토·설사</td><td>24시 병원(라인동물의료센터, 10장) 전화하며 즉시 이동</td></tr>
+      <tr><td><span class="tag y">24시간 내</span></td><td>구토 1~2회지만 컨디션 정상 / 무른 변 이틀 지속 / 절뚝임 지속 / 귀 악취·긁기 / 눈 충혈·눈곱 색 변화 / 식욕부진 하루 이상 / 물 마시는 양 급증</td><td>다음날 단골 병원 예약. 사진·영상 기록</td></tr>
+      <tr><td><span class="tag g">관찰</span></td><td>아침 공복에 노란 거품 토 가끔 / 풀 뜯어먹기 / 하루 무른 변 1회 후 정상 / 재채기 몇 번</td><td>급여 간격 조정 등 관찰. 반복되면 진료. 08장 기록장에 메모</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box box-key">
+    <div class="bt">★ 구토 색 빠른 판독</div>
+    <p><strong>노란 거품</strong>(주로 아침)=공복 담즙, 급여 간격 조정 · <strong>흰 거품+거위 소리 기침</strong>=호흡기·심장 확인 필요(카발리에 주의) · <strong>사료 그대로</strong>=급하게 먹음, 슬로우식기 · <strong>피 섞임·커피색</strong>=즉시 병원 · <strong>반복 구토</strong>=횟수 무관하게 진료.</p>
+  </div>
+
+  <h3 class="sec">응급 키트 — 갖췄는지 체크</h3>
+  <ul class="ck" data-store="ekit">
+    <li><input type="checkbox" id="k1"><label for="k1">지혈파우더(퀵스탑) + 멸균거즈 + 자가점착붕대</label></li>
+    <li><input type="checkbox" id="k2"><label for="k2">체온계 (정상 37.5~39.2℃ 메모 부착)</label></li>
+    <li><input type="checkbox" id="k3"><label for="k3">생리식염수 (눈·상처 세척용)</label></li>
+    <li><input type="checkbox" id="k4"><label for="k4">넥카라 + 여분 하네스·리드줄</label></li>
+    <li><input type="checkbox" id="k5"><label for="k5">꿀 스틱 (퍼피 저혈당 대비)</label></li>
+    <li><input type="checkbox" id="k6"><label for="k6">병원 연락처 카드 (단골 + 24시, 홈 탭과 동일)</label></li>
+    <li><input type="checkbox" id="k7"><label for="k7">이동장 — 항상 꺼내기 쉬운 위치에</label></li>
+  </ul>
+  <p class="muted small">키트 품목 구매 링크는 09장 구매 가이드 "응급 키트" 표에 있습니다.</p>
+</section>
+<!-- ===================== 13 행동 사전 ===================== -->
+<section class="tab-panel" id="tab-behav">
+  <div class="ch-head">
+    <div class="ch-no">CHAPTER 12</div>
+    <h2 class="serif">행동 사전 — 개의 언어와 문제행동 해법</h2>
+    <p class="lede">개는 온몸으로 말합니다. 신호를 읽으면 문제의 절반은 일어나기 전에 막을 수 있습니다.</p>
+  </div>
+
+  <h3 class="sec">카밍 시그널 — 몸짓 읽기</h3>
+  <div class="tw"><table>
+    <thead><tr><th>몸짓</th><th>의미</th><th>보호자 대응</th></tr></thead>
+    <tbody>
+      <tr><td>하품 (졸리지 않은데)</td><td>긴장·스트레스 완화 신호</td><td>상황 강도 낮추기 — 낯선 사람·훈련 압박 중이면 잠시 휴식</td></tr>
+      <tr><td>입술·코 핥기</td><td>불편함, "진정하자"</td><td>다가가기·만지기를 멈추고 공간 주기</td></tr>
+      <tr><td>고개 돌리기·시선 회피</td><td>충돌 회피, 예의 바른 거절</td><td>정면 응시·정면 접근 피하기(개에겐 위협)</td></tr>
+      <tr><td>몸 부르르 털기 (안 젖었는데)</td><td>긴장 리셋 — 방금 상황이 부담스러웠음</td><td>같은 자극 반복 전 강도 조절</td></tr>
+      <tr><td>바닥 냄새 갑자기 맡기</td><td>회피·진정 (다른 개 마주쳤을 때 흔함)</td><td>기다려주기 — 예의 바른 행동 중</td></tr>
+      <tr><td>앞다리 숙이고 엉덩이 들기</td><td>플레이 바우 — "놀자!"</td><td>놀이 시간. 초대에 응해주면 유대 상승</td></tr>
+      <tr><td>배 보이기</td><td>신뢰 또는 "그만"의 항복 — 맥락 구분</td><td>편안한 상황이면 배 만져주기 OK, 긴장 상황이면 압박 중단</td></tr>
+      <tr><td>꼬리 높이 들고 빠르게 흔듦</td><td>고흥분 — 반드시 호의는 아님</td><td>흥분 상태 진정 후 접촉(05장 흥분 관리)</td></tr>
+      <tr><td>꼬리 말아넣음+몸 낮춤+귀 뒤로</td><td>공포</td><td>자극원 제거·거리 확보. 억지로 들이대며 "괜찮아" 금지</td></tr>
+      <tr><td>헐떡임 (덥지 않은데)</td><td>스트레스·통증 가능</td><td>환경 점검, 지속되면 진료(카발리에는 심장·통증 감별)</td></tr>
+      <tr><td>흰자 보이며 곁눈질 (웨일 아이)</td><td>강한 경계 — 물기 전 단계일 수 있음</td><td>즉시 압박 중단 — 특히 음식·장난감 곁일 때</td></tr>
+      <tr><td>허공 긁기 (팬텀 스크래칭)</td><td><strong>카발리에 특이 — SM 의심 증상</strong></td><td>행동 문제가 아니라 의료 문제 — 02장 확인 후 진료</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box box-warn">
+    <div class="bt">⚠ 으르렁을 혼내지 마세요</div>
+    <p>으르렁은 "물기 전 마지막 경고"입니다. 으르렁을 혼내서 억누르면, <strong>경고 없이 무는 개</strong>가 됩니다. 혼낼 대상은 으르렁이 아니라 으르렁하게 만든 상황 — 원인(밥그릇 접근, 아픈 곳 접촉, 갑작스러운 포옹)을 찾아 제거하고, 자원 지키기라면 아래 표의 훈련으로 접근하세요.</p>
+  </div>
+
+  <h3 class="sec">문제행동 사전 A-Z</h3>
+  <div class="tw"><table>
+    <thead><tr><th>행동</th><th>진짜 원인</th><th>해법</th></tr></thead>
+    <tbody>
+      <tr><td><strong>마운팅</strong></td><td>성적 의미만이 아니라 흥분·스트레스 해소 행동</td><td>무반응+조용히 자리 이탈 · 어떤 상황에서 반복되는지 파악해 그 자극을 관리 · 중성화로 감소 경향(07장)</td></tr>
+      <tr><td><strong>실내 마킹</strong></td><td>중성화 전 수컷 호르몬 + 영역 표시 학습</td><td>발견 즉시 무반응 청소(유린오프) — 혼내면 몰래 함 · 중성화 + 배변 재훈련(05장)</td></tr>
+      <tr><td><strong>식분증(변 먹기)</strong></td><td>퍼피기 탐색 행동으로 흔함. 관심 끌기로 강화되기도</td><td>배변 즉시 치워 기회 차단 · 먹어도 소리지르지 않기(관심=보상) · "바꾸자" 명령 활용 · 지속 시 소화흡수·기생충 검진</td></tr>
+      <tr><td><strong>자원 지키기</strong><br><span class="muted small">밥·장난감 곁 으르렁</span></td><td>"뺏긴 경험"의 학습 — 지켜야 산다고 믿음</td><td>뺏지 말고 <strong>더 좋은 것과 교환</strong>("바꾸자", 05장) · 밥 먹을 때 다가가며 간식 던져 "사람 접근=좋은 일" 재학습 · 심하면 전문가</td></tr>
+      <tr><td><strong>산책 중 주저앉기</strong></td><td>공포(사회화 부족) / 더위 / 통증(슬개골) 셋 중 하나</td><td>억지로 끌지 않기 · 무서워하는 대상과 거리 두고 간식 · 더운 날이면 즉시 귀가 · 반복되면 슬개골·발바닥 진료</td></tr>
+      <tr><td><strong>파괴 행동</strong></td><td>지루함·에너지 과잉·이갈이. 부재 중이면 분리불안 신호</td><td>씹기 채널 제공(이갈이 토이)+에너지 소모(산책·노즈워크) · 부재 중 반복이면 06장 분리불안 점검</td></tr>
+      <tr><td><strong>손님에게 과흥분</strong></td><td>"손님=격한 관심"의 학습</td><td>손님에게 "들어와서 무시" 요청 → 차분해지면 손님이 간식 · 매트 대기 훈련(05장 초인종 둔감화와 세트)</td></tr>
+      <tr><td><strong>과도한 핥기</strong></td><td>애정 표현이지만 과하면 스트레스·통증</td><td>특정 부위(발·옆구리)만 계속 핥으면 피부·통증 진료 — 카발리에는 SM 감별 포함(02장)</td></tr>
+      <tr><td><strong>이불·바닥 파기</strong></td><td>잠자리 정리 본능 — 정상 행동</td><td>교정 불필요. 과하면 에너지 부족 신호로 산책·놀이 늘리기</td></tr>
+      <tr><td><strong>엉덩이 끌기</strong></td><td>항문낭 가득참·가려움</td><td>항문낭 짜기(13장), 반복 시 진료</td></tr>
+      <tr><td><strong>밥 거부</strong></td><td>간식 과다 / 더위 / 치아 통증 / 질병</td><td>간식 먼저 끊기 · 15분 후 그릇 치우는 루틴(간 보기 학습 차단) · 물도 안 마시고 처지면 진료</td></tr>
+      <tr><td><strong>노즈워크 중 으르렁·집착</strong></td><td>자원 가치가 너무 높음</td><td>보상 가치 낮추기(사료알로) + "바꾸자" 병행</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="trainer">
+    <div class="ico">🧠</div>
+    <div>
+      <div class="tt">TRAINER'S NOTE</div>
+      <div class="tb">문제행동의 8할은 개의 문제가 아니라 "채워지지 않은 요구 + 우연히 성공한 학습"입니다. 행동만 누르려 하면 다른 구멍으로 터집니다. 순서는 늘 같습니다 — ① 의료 문제 배제(통증은 최다 원인) ② 에너지·자극 충분한지 점검 ③ 그 행동으로 개가 얻는 게 무엇인지 찾기 ④ 그 보상을 차단하고 대체 행동에 보상. 이 네 단계로 안 풀리면 그때 전문가입니다.</div>
+    </div>
+  </div>
+</section>
+<!-- ===================== 12 생활·계절·법규 ===================== -->
+<section class="tab-panel" id="tab-life">
+  <div class="ch-head">
+    <div class="ch-no">CHAPTER 13</div>
+    <h2 class="serif">생활 백과 — 계절·법규·이동·위생 실전</h2>
+    <p class="lede">키우다 보면 반드시 만나는 네 가지 — 계절 관리, 법과 펫티켓, 대중교통·여행, 셀프 위생관리를 한 장에 모았습니다.</p>
+  </div>
+  <div class="jump">
+    <a href="#l-season">계절별 관리</a><a href="#l-law">법규·펫티켓</a><a href="#l-move">이동·여행</a><a href="#l-lost">실종 대비</a><a href="#l-groom">위생 실전</a>
+  </div>
+
+  <h3 class="sec" id="l-season">계절별 관리 — 카발리에 기준</h3>
+  <div class="tw"><table>
+    <thead><tr><th>계절</th><th>핵심 관리</th></tr></thead>
+    <tbody>
+      <tr><td><strong>봄</strong></td><td>진드기 시즌 개시 — 3월부터 외부구충 재점검 · 풀숲 산책 후 귀 뒤·겨드랑이·발가락 사이 진드기 확인 · 꽃가루 알레르기(발 핥기·긁기 증가 시 진료) · 털갈이 시작 — 빗질 횟수 증가</td></tr>
+      <tr><td><strong>여름</strong></td><td><span class="tag r">최대 위험 계절</span> 산책은 이른 아침·저녁 8시 이후 · 아스팔트 손등 5초 테스트 · 물 휴대 · 부재 시 에어컨 26℃ 안팎 유지(06장) · <strong>차 안 잠깐 대기도 절대 금지</strong> · 모기 시즌 = 심장사상충 매월 철저 · 목욕 후 완전 건조(습진 예방) · 열사병 신호는 11장</td></tr>
+      <tr><td><strong>장마</strong></td><td>습도 60% 넘으면 귀 질환 급증 — 주 2회 귀 점검(늘어진 귀 견종 특히) · 제습기 가동 · 산책 후 발가락 사이까지 건조 · 산책 불가한 날은 실내 노즈워크·훈련으로 대체(06장)</td></tr>
+      <tr><td><strong>가을</strong></td><td>진드기 2차 시즌 · 털갈이 — 슬리커 빗질 주 4~5회로 증가 · 일교차 컨디션 관찰</td></tr>
+      <tr><td><strong>겨울</strong></td><td>산책은 낮 시간·짧게 · <strong>염화칼슘(제설제) 밟은 발 반드시 세척</strong> — 핥으면 중독 위험 · 소형견 방한복 고려 · 실내 건조 — 가습 · 노령·심장 이슈 개체는 추위가 심장 부담</td></tr>
+      <tr><td><strong>미세먼지</strong></td><td>"나쁨" 이상이면 산책 단축 또는 실내 대체 · 산책 후 눈 세척(생리식염수)·발 닦기 · 공기청정기 가동</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="sec" id="l-law">법규·펫티켓 — 과태료 총정리 (2026년 기준)</h3>
+  <div class="tw"><table>
+    <thead><tr><th>의무</th><th>내용</th><th>위반 시</th></tr></thead>
+    <tbody>
+      <tr><td><strong>동물등록</strong></td><td>2개월령 이상 등록 의무(01장). 주소·소유자 변경 시 변경신고도 의무</td><td>최대 100만 원 이하 과태료</td></tr>
+      <tr><td><strong>목줄 2m 이내</strong></td><td>외출 시 목줄·가슴줄 착용 + 사람과의 줄 길이 2m 이내 유지. 3개월 미만을 직접 안고 외출하는 경우만 예외</td><td>1차 20 → 2차 30 → 3차 50만 원</td></tr>
+      <tr><td><strong>공용공간 안기</strong></td><td>아파트 등 건물 내부 공용공간(엘리베이터·복도·계단)에서는 안거나 목덜미·손잡이를 잡아 이동 못 하게 조치</td><td>목줄 규정과 동일 적용</td></tr>
+      <tr><td><strong>인식표</strong></td><td>소유자 성명·연락처·동물등록번호 기재 인식표 부착</td><td>1차 5 → 2차 10 → 3차 20만 원</td></tr>
+      <tr><td><strong>배설물 수거</strong></td><td>즉시 수거. 소변도 엘리베이터·계단 등 공용공간과 평상·의자 위는 처리 대상</td><td>1차 5 → 2차 7 → 3차 10만 원</td></tr>
+      <tr><td><strong>이동장 잠금</strong></td><td>목줄 없이 이동장으로 이동할 땐 탈출 방지 잠금장치 필수</td><td>과태료 대상</td></tr>
+      <tr><td>사체 처리</td><td>임의 매장은 사유지여도 불법 — 장례업체(동물장묘) 또는 규정에 따른 처리</td><td>벌금 대상</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box box-note">
+    <div class="bt">✓ 펫티켓 — 법 이전의 기본</div>
+    <ul class="ls">
+      <li>승강기에서는 안고 구석에, "안 물어요" 대신 <strong>거리를 만들어주는 것</strong>이 매너.</li>
+      <li>맹견 5종 규제(입마개 등)는 카발리에와 무관하지만, 짖음·소음 민원은 견종 불문 — 05장 짖음 예방이 아파트 생활의 핵심.</li>
+      <li>어린이가 만지고 싶어 하면 보호자 동의 먼저 → 아이에게 손등 냄새부터 맡게 하는 법을 알려주기.</li>
+    </ul>
+  </div>
+
+  <h3 class="sec" id="l-move">이동·여행 — 교통수단별 규정</h3>
+  <div class="tw"><table>
+    <thead><tr><th>수단</th><th>규정 요점</th></tr></thead>
+    <tbody>
+      <tr><td><strong>자가용</strong></td><td>켄넬 고정 또는 안전벨트형 하네스 — 품 안 탑승은 사고 시 치명적 · 멀미 예방: 출발 2~3시간 전 공복 · 첫 차 타기는 시동만 → 5분 → 동네 한 바퀴로 적응 훈련</td></tr>
+      <tr><td><strong>KTX</strong></td><td>이동장(약 45×30×25cm) 필수, 이동장+반려동물 합계 10kg 이하 · 광견병 등 접종 완료(증명서 지참 권장) · <strong>성인요금으로 반려동물 옆좌석 지정 가능</strong> — 장거리에 유리</td></tr>
+      <tr><td><strong>SRT</strong></td><td>규격·무게 동일, 좌석 지정 불가(발밑 보관) · 접종확인서 요구될 수 있음</td></tr>
+      <tr><td><strong>지하철·버스</strong></td><td>이동장 필수 — 머리·몸이 노출되면 탑승 제한될 수 있음 · 고속버스는 회사별로 달라 사전 문의</td></tr>
+      <tr><td><strong>택시</strong></td><td>기사 사전 동의 필요(이동장 지참이 예의) · 반려동물 전용 <a class="lnk" href="https://search.naver.com/search.naver?query=%ED%8E%AB%ED%83%9D%EC%8B%9C%20%EA%B3%A0%EC%96%91" target="_blank" rel="noopener">펫택시</a> 대안</td></tr>
+      <tr><td><strong>비행기</strong></td><td>기내 반입은 항공사별 규격·무게 제한 상이 — 예약 전 확인 필수. 소형견 카발리에는 기내 가능한 경우가 많으나 성견+켄넬 무게 확인</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted small">참고: 성견 카발리에(약 6~8kg)는 켄넬 무게를 더하면 철도 10kg 규정이 빠듯할 수 있습니다 — 경량 켄넬(09장)을 고르세요. 숙소는 "애견 동반 가능" 명시 + 추가 요금·마리 수 제한 확인.</p>
+
+  <h3 class="sec" id="l-lost">실종 대비·대응 — 골든타임 행동 순서</h3>
+  <ul class="ls">
+    <li><strong>예방이 9할:</strong> 내장칩 등록 + 인식표 이중 장치(01·09장) · 현관 이중 차단 · 하네스 빠짐 여부 정기 점검(뒷걸음질로 빠지는 사고 다발).</li>
+    <li><strong>실종 직후 1시간:</strong> 마지막 목격 지점 반경부터 이름 부르며 수색 — 겁먹은 개는 멀리 안 가고 숨는 경우가 많음. 익숙한 담요·간식 지참.</li>
+    <li><strong>당일 신고:</strong> <a class="lnk ext" href="https://www.animal.go.kr" target="_blank" rel="noopener">국가동물보호정보시스템</a>에 분실 신고 + 보호 공고 수시 확인 · <a class="lnk" href="https://search.naver.com/search.naver?query=%ED%8F%AC%EC%9D%B8%ED%95%B8%EB%93%9C%20%EC%95%B1" target="_blank" rel="noopener">포인핸드</a> 앱과 당근마켓 동네생활에 실종글 · 관할 동물보호센터·인근 동물병원·지구대에 연락 · 동물보호상담센터 <a class="lnk" href="tel:1577-0954">전화 1577-0954</a></li>
+    <li><strong>전단:</strong> 컬러 사진 + 특징 + 실종 장소·시각 + 연락처 + 사례금. 마지막 목격지 중심으로 부착.</li>
+    <li><strong>시한 인지:</strong> 보호센터 공고 후 <strong>10일이 지나면 소유권이 지자체로 넘어갑니다</strong> — 공고 확인은 매일.</li>
+  </ul>
+
+  <h3 class="sec" id="l-groom">위생 실전 — 카발리에 셀프 관리법</h3>
+  <div class="tw"><table>
+    <thead><tr><th>관리</th><th>주기</th><th>방법</th></tr></thead>
+    <tbody>
+      <tr><td><strong>목욕</strong></td><td>2~4주 1회</td><td>① 목욕 전 빗질 필수 — 엉킨 털이 물에 닿으면 펠트처럼 굳음 ② 38℃ 미온수, 샴푸는 희석해서 ③ 귀에 물 안 들어가게 ④ <strong>드라이로 뿌리까지 완전 건조</strong> — 귀 뒤·겨드랑이·가슴 장식털이 포인트, 덜 마르면 피부염</td></tr>
+      <tr><td><strong>빗질</strong></td><td>주 3회<br>(털갈이철 4~5회)</td><td>슬리커로 결 따라 → 콤으로 귀·겨드랑이·엉덩이 장식털 마무리. 엉킴은 끝에서부터 조금씩 풀기</td></tr>
+      <tr><td><strong>귀</strong></td><td>주 1회 점검</td><td>냄새·갈색 귀지 확인 → 이상 시 세정제를 귀에 붓고 귀 아래를 30초 마사지 → 스스로 털게 두기 → 보이는 부분만 솜으로 닦기. <strong>면봉을 깊이 넣지 않기</strong></td></tr>
+      <tr><td><strong>양치</strong></td><td>매일 목표<br>(최소 주 3회)</td><td>1주차 손가락에 치약 맛보기 → 2주차 손가락 칫솔로 바깥면 몇 초 → 3주차부터 칫솔. 바깥면 위주 10초부터 시작해 늘리기. 3세 이상 개 대부분이 치주질환 — 양치가 최고의 예방</td></tr>
+      <tr><td><strong>발톱</strong></td><td>2~3주 1회</td><td>혈관(분홍색) 앞까지 조금씩. 검은 발톱은 단면 중앙에 점이 보이면 정지. 실수로 출혈 시 지혈파우더(11장)</td></tr>
+      <tr><td><strong>항문낭</strong></td><td>목욕 때</td><td>꼬리 들고 항문 4시·8시 방향을 티슈로 감싸 위로 짜기. 엉덩이를 바닥에 끌면 점검 신호</td></tr>
+      <tr><td>눈물자국</td><td>매일</td><td>카발리에 흔함 — 미지근한 물솜으로 닦고 건조. 갑자기 심해지면 눈꺼풀·누관 문제 진료</td></tr>
+    </tbody>
+  </table></div>
+</section>
+<!-- ===================== 14 인덱스·자료실 ===================== -->
+<section class="tab-panel" id="tab-index">
+  <div class="ch-head">
+    <div class="ch-no">CHAPTER 14</div>
+    <h2 class="serif">인덱스 — 자료실·참고문헌</h2>
+    <p class="lede">본문에서 더 깊이 들어갈 수 있는 주제별 영상·글 자료와, 이 핸드북이 근거로 삼은 참고문헌입니다. 링크는 삭제·주소 변경에도 깨지지 않도록 유튜브 검색(&#9654;)·네이버 검색으로 연결되고, 공식 기관만 직접 링크입니다.</p>
+  </div>
+  <div class="jump">
+    <a href="#x-care">몸 관리</a><a href="#x-home">집·환경</a><a href="#x-train">훈련·행동</a><a href="#x-health">건강·응급</a><a href="#x-law">생활·법률</a><a href="#x-ch">추천 채널</a><a href="#x-ref">참고문헌</a>
+  </div>
+
+  <h3 class="sec" id="x-care">몸 관리 — 씻기고 다듬는 법</h3>
+  <div class="tw"><table>
+    <thead><tr><th>주제</th><th>국내 자료</th><th>해외 자료</th></tr></thead>
+    <tbody>
+<tr><td><strong>목욕·샤워법</strong></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EA%B0%95%EC%95%84%EC%A7%80%20%EB%AA%A9%EC%9A%95%EC%8B%9C%ED%82%A4%EB%8A%94%20%EB%B0%A9%EB%B2%95" target="_blank" rel="noopener">&#9654; 목욕 순서 영상</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EB%AA%A9%EC%9A%95%20%EB%B0%A9%EB%B2%95%20%EC%A3%BC%EA%B8%B0" target="_blank" rel="noopener">목욕 꿀팁 글</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=how%20to%20bathe%20a%20puppy%20first%20time" target="_blank" rel="noopener">&#9654; 퍼피 첫 목욕</a> <a class="lnk" href="https://www.youtube.com/results?search_query=Girl%20With%20The%20Dogs%20cavalier" target="_blank" rel="noopener">&#9654; 전문가 목욕 과정</a></td></tr><tr><td><strong>드라이·건조</strong></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EA%B0%95%EC%95%84%EC%A7%80%20%EB%93%9C%EB%9D%BC%EC%9D%B4%20%ED%95%98%EB%8A%94%EB%B2%95" target="_blank" rel="noopener">&#9654; 드라이 방법</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=dog%20blow%20drying%20tutorial" target="_blank" rel="noopener">&#9654; 건조 튜토리얼</a></td></tr><tr><td><strong>빗질·엉킴 풀기</strong></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EA%B0%95%EC%95%84%EC%A7%80%20%EC%8A%AC%EB%A6%AC%EC%BB%A4%20%EB%B8%8C%EB%9F%AC%EC%8B%9C%20%EC%82%AC%EC%9A%A9%EB%B2%95" target="_blank" rel="noopener">&#9654; 슬리커 사용법</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%EC%B9%B4%EB%B0%9C%EB%A6%AC%EC%97%90%20%EB%B9%97%EC%A7%88" target="_blank" rel="noopener">카발리에 빗질</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=cavalier%20king%20charles%20spaniel%20grooming" target="_blank" rel="noopener">&#9654; 카발리에 그루밍</a></td></tr><tr><td><strong>귀 청소</strong></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EA%B0%95%EC%95%84%EC%A7%80%20%EA%B7%80%EC%B2%AD%EC%86%8C%20%ED%95%98%EB%8A%94%EB%B2%95" target="_blank" rel="noopener">&#9654; 귀 세정 방법</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=dog%20ear%20cleaning%20veterinarian" target="_blank" rel="noopener">&#9654; 수의사 시연</a> <a class="lnk ext" href="https://vcahospitals.com" target="_blank" rel="noopener">VCA 백과</a></td></tr><tr><td><strong>양치</strong></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EA%B0%95%EC%95%84%EC%A7%80%20%EC%96%91%EC%B9%98%EC%A7%88%20%ED%9B%88%EB%A0%A8" target="_blank" rel="noopener">&#9654; 양치 적응 훈련</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=how%20to%20brush%20your%20dogs%20teeth" target="_blank" rel="noopener">&#9654; 이 닦는 법</a></td></tr><tr><td><strong>발톱</strong></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EA%B0%95%EC%95%84%EC%A7%80%20%EB%B0%9C%ED%86%B1%20%EA%B9%8E%EB%8A%94%EB%B2%95" target="_blank" rel="noopener">&#9654; 발톱 깎는 법</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=kikopup%20nail%20trimming" target="_blank" rel="noopener">&#9654; 무서워하는 개 발톱</a></td></tr><tr><td><strong>항문낭</strong></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EA%B0%95%EC%95%84%EC%A7%80%20%ED%95%AD%EB%AC%B8%EB%82%AD%20%EC%A7%9C%EB%8A%94%EB%B2%95" target="_blank" rel="noopener">&#9654; 항문낭 짜는 법</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=dog%20anal%20gland%20expression%20how%20to" target="_blank" rel="noopener">&#9654; 시연 영상</a></td></tr><tr><td><strong>눈물자국</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EC%B9%B4%EB%B0%9C%EB%A6%AC%EC%97%90%20%EB%88%88%EB%AC%BC%EC%9E%90%EA%B5%AD" target="_blank" rel="noopener">카발리에 눈물자국 관리</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=dog%20tear%20stain%20removal" target="_blank" rel="noopener">&#9654; 관리법</a></td></tr>    </tbody>
+  </table></div>
+
+  <h3 class="sec" id="x-home">집·환경 관리 — 치우고 지키는 법</h3>
+  <div class="tw"><table>
+    <thead><tr><th>주제</th><th>국내 자료</th><th>해외 자료</th></tr></thead>
+    <tbody>
+<tr><td><strong>털 청소</strong></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EB%B0%98%EB%A0%A4%EB%8F%99%EB%AC%BC%20%ED%84%B8%20%EC%B2%AD%EC%86%8C%20%EA%BF%80%ED%8C%81" target="_blank" rel="noopener">&#9654; 털 청소 꿀팁</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%ED%84%B8%20%EC%B2%AD%EC%86%8C%20%EC%9A%A9%ED%92%88" target="_blank" rel="noopener">강아지 털 청소템</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=dog%20hair%20cleaning%20hacks%20home" target="_blank" rel="noopener">&#9654; 청소 해법 모음</a></td></tr><tr><td><strong>냄새 관리</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EB%83%84%EC%83%88%20%EC%97%86%EC%95%A0%EB%8A%94%20%EB%B2%95%20%EC%A7%91" target="_blank" rel="noopener">냄새 없애는 법</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=how%20to%20remove%20dog%20smell%20from%20house" target="_blank" rel="noopener">&#9654; 집 냄새 제거</a></td></tr><tr><td><strong>소변 얼룩·바닥</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EC%9C%A0%EB%A6%B0%EC%98%A4%ED%94%84%20%EC%82%AC%EC%9A%A9%EB%B2%95" target="_blank" rel="noopener">유린오프 사용법</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=enzyme%20cleaner%20pet%20urine%20how%20it%20works" target="_blank" rel="noopener">&#9654; 효소 세정 원리</a></td></tr><tr><td><strong>퍼피프루핑(집 안전화)</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EC%9C%84%ED%97%98%ED%95%9C%20%EB%AC%BC%EA%B1%B4%20%EC%A0%95%EB%A6%AC" target="_blank" rel="noopener">강아지 집 안전 정리</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=puppy%20proofing%20your%20home%20checklist" target="_blank" rel="noopener">&#9654; 체크리스트</a></td></tr><tr><td><strong>실내 온습도·여름 대비</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EC%97%AC%EB%A6%84%20%EC%8B%A4%EB%82%B4%20%EC%A0%81%EC%A0%95%EC%98%A8%EB%8F%84" target="_blank" rel="noopener">강아지 여름 실내온도</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=keeping%20dogs%20cool%20in%20summer" target="_blank" rel="noopener">&#9654; 폭염 관리</a></td></tr>    </tbody>
+  </table></div>
+
+  <h3 class="sec" id="x-train">훈련·행동 — 가르치고 읽는 법</h3>
+  <div class="tw"><table>
+    <thead><tr><th>주제</th><th>국내 자료</th><th>해외 자료</th></tr></thead>
+    <tbody>
+<tr><td><strong>배변훈련</strong></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EA%B0%95%EC%95%84%EC%A7%80%20%EB%B0%B0%EB%B3%80%ED%9B%88%EB%A0%A8%20%EB%B0%A9%EB%B2%95" target="_blank" rel="noopener">&#9654; 배변훈련 총정리</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=potty%20training%20puppy%20zak%20george" target="_blank" rel="noopener">&#9654; 실전 가이드</a></td></tr><tr><td><strong>크레이트(켄넬) 훈련</strong></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EA%B0%95%EC%95%84%EC%A7%80%20%EC%BC%84%EB%84%AC%20%ED%9B%88%EB%A0%A8%20%EB%B0%A9%EB%B2%95" target="_blank" rel="noopener">&#9654; 켄넬 훈련</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=kikopup%20crate%20training" target="_blank" rel="noopener">&#9654; 단계별 훈련</a></td></tr><tr><td><strong>기본 예절 (앉아·기다려·이리와)</strong></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EA%B0%95%EC%95%84%EC%A7%80%20%EA%B8%B0%EB%B3%B8%ED%9B%88%EB%A0%A8%20%EC%95%89%EC%95%84%20%EA%B8%B0%EB%8B%A4%EB%A0%A4%20%EC%9D%B4%EB%A6%AC%EC%99%80" target="_blank" rel="noopener">&#9654; 기본 훈련</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=puppy%20training%20first%20week%20basics" target="_blank" rel="noopener">&#9654; 첫 주 훈련</a></td></tr><tr><td><strong>리드워킹 (줄 당김)</strong></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EA%B0%95%EC%95%84%EC%A7%80%20%EC%82%B0%EC%B1%85%20%EC%A4%84%20%EB%8B%B9%EA%B9%80%20%ED%9B%88%EB%A0%A8" target="_blank" rel="noopener">&#9654; 산책 줄당김 교정</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=loose%20leash%20walking%20mccann%20dogs" target="_blank" rel="noopener">&#9654; 느슨한 줄 걷기</a></td></tr><tr><td><strong>짖음</strong></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EA%B0%95%EC%95%84%EC%A7%80%20%EC%A7%96%EC%9D%8C%20%EA%B5%90%EC%A0%95%20%EB%B0%A9%EB%B2%95" target="_blank" rel="noopener">&#9654; 짖음 원인별 교정</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=kikopup%20barking" target="_blank" rel="noopener">&#9654; 짖음 훈련</a></td></tr><tr><td><strong>분리불안</strong></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EA%B0%95%EC%95%84%EC%A7%80%20%EB%B6%84%EB%A6%AC%EB%B6%88%EC%95%88%20%ED%9B%88%EB%A0%A8" target="_blank" rel="noopener">&#9654; 분리불안 단계 훈련</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=separation%20anxiety%20dog%20training%20protocol" target="_blank" rel="noopener">&#9654; 프로토콜</a></td></tr><tr><td><strong>카밍 시그널</strong></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EA%B0%95%EC%95%84%EC%A7%80%20%EC%B9%B4%EB%B0%8D%EC%8B%9C%EA%B7%B8%EB%84%90" target="_blank" rel="noopener">&#9654; 카밍시그널 해설</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=calming%20signals%20turid%20rugaas" target="_blank" rel="noopener">&#9654; 원전 강의</a></td></tr><tr><td><strong>노즈워크·실내 놀이</strong></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EA%B0%95%EC%95%84%EC%A7%80%20%EB%85%B8%EC%A6%88%EC%9B%8C%ED%81%AC%20%EC%9E%A5%EB%82%9C%EA%B0%90%20%EB%A7%8C%EB%93%A4%EA%B8%B0" target="_blank" rel="noopener">&#9654; 노즈워크 만들기</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=canine%20enrichment%20diy%20ideas" target="_blank" rel="noopener">&#9654; DIY 두뇌 놀이</a></td></tr><tr><td><strong>사회화</strong></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EA%B0%95%EC%95%84%EC%A7%80%20%EC%82%AC%ED%9A%8C%ED%99%94%20%EC%8B%9C%EA%B8%B0%20%EB%B0%A9%EB%B2%95" target="_blank" rel="noopener">&#9654; 사회화 골든타임</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=puppy%20socialization%20checklist" target="_blank" rel="noopener">&#9654; 체크리스트</a> <a class="lnk ext" href="https://avsab.org" target="_blank" rel="noopener">AVSAB 성명</a></td></tr>    </tbody>
+  </table></div>
+
+  <h3 class="sec" id="x-health">건강·응급 — 지키고 대처하는 법</h3>
+  <div class="tw"><table>
+    <thead><tr><th>주제</th><th>국내 자료</th><th>해외 자료</th></tr></thead>
+    <tbody>
+<tr><td><strong>카발리에 심장병(MVD)</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EC%B9%B4%EB%B0%9C%EB%A6%AC%EC%97%90%20%EC%8A%B9%EB%AA%A8%ED%8C%90%20%ED%8F%90%EC%87%84%EB%B6%80%EC%A0%84" target="_blank" rel="noopener">카발리에 승모판 질환</a></td><td><a class="lnk ext" href="https://cavalierhealth.org" target="_blank" rel="noopener">CavalierHealth</a> <a class="lnk" href="https://www.youtube.com/results?search_query=cavalier%20mitral%20valve%20disease%20explained" target="_blank" rel="noopener">&#9654; 심잡음 이해</a></td></tr><tr><td><strong>SM(척수공동증)</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EC%B9%B4%EB%B0%9C%EB%A6%AC%EC%97%90%20%EC%B2%99%EC%88%98%EA%B3%B5%EB%8F%99%EC%A6%9D" target="_blank" rel="noopener">카발리에 척수공동증</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=syringomyelia%20cavalier%20phantom%20scratching" target="_blank" rel="noopener">&#9654; 허공 긁기 영상</a> <a class="lnk ext" href="https://www.ufaw.org.uk" target="_blank" rel="noopener">UFAW</a></td></tr><tr><td><strong>수면 호흡수 재기 (심장 모니터링)</strong></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EA%B0%95%EC%95%84%EC%A7%80%20%EC%95%88%EC%A0%95%EC%8B%9C%20%ED%98%B8%ED%9D%A1%EC%88%98%20%EC%9E%AC%EB%8A%94%EB%B2%95" target="_blank" rel="noopener">&#9654; 호흡수 세는 법</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=sleeping%20respiratory%20rate%20dog%20heart%20disease" target="_blank" rel="noopener">&#9654; 측정 시연</a></td></tr><tr><td><strong>응급처치·CPR</strong></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EB%B0%98%EB%A0%A4%EB%8F%99%EB%AC%BC%20%EC%8B%AC%ED%8F%90%EC%86%8C%EC%83%9D%EC%88%A0" target="_blank" rel="noopener">&#9654; 반려동물 심폐소생술</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=pet%20cpr%20demonstration%20vet" target="_blank" rel="noopener">&#9654; CPR 시연</a> <a class="lnk ext" href="https://www.redcross.org" target="_blank" rel="noopener">美적십자 응급처치</a></td></tr><tr><td><strong>중독·금지 음식·식물</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EB%A8%B9%EC%9C%BC%EB%A9%B4%20%EC%95%88%EB%90%98%EB%8A%94%20%EC%9D%8C%EC%8B%9D" target="_blank" rel="noopener">강아지 먹으면 안되는 음식</a></td><td><a class="lnk ext" href="https://www.aspca.org" target="_blank" rel="noopener">ASPCA 독성정보</a> <a class="lnk" href="https://www.youtube.com/results?search_query=toxic%20foods%20for%20dogs%20vet" target="_blank" rel="noopener">&#9654; 독성 식품 정리</a></td></tr><tr><td><strong>예방접종 기준</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EC%98%88%EB%B0%A9%EC%A0%91%EC%A2%85%20%EC%8A%A4%EC%BC%80%EC%A4%84" target="_blank" rel="noopener">강아지 접종 스케줄</a></td><td><a class="lnk ext" href="https://wsava.org" target="_blank" rel="noopener">WSAVA 지침</a></td></tr><tr><td><strong>중성화 시기</strong></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EA%B0%95%EC%95%84%EC%A7%80%20%EC%A4%91%EC%84%B1%ED%99%94%20%EC%8B%9C%EA%B8%B0" target="_blank" rel="noopener">&#9654; 중성화 시기 논쟁</a></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=UC%20Davis%20%EC%A4%91%EC%84%B1%ED%99%94%20%EC%8B%9C%EA%B8%B0%20%EC%97%B0%EA%B5%AC%20%EC%86%8C%ED%98%95%EA%B2%AC" target="_blank" rel="noopener">UC Davis 연구</a></td></tr><tr><td><strong>질병 백과 (증상 검색)</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EA%B0%95%EC%95%84%EC%A7%80%20%EC%A6%9D%EC%83%81%EB%B3%84%20%EC%A7%88%EB%B3%91" target="_blank" rel="noopener">강아지 증상 검색</a></td><td><a class="lnk ext" href="https://vcahospitals.com" target="_blank" rel="noopener">VCA</a> <a class="lnk ext" href="https://www.petmd.com" target="_blank" rel="noopener">PetMD</a></td></tr>    </tbody>
+  </table></div>
+
+  <h3 class="sec" id="x-law">생활·법률·이동</h3>
+  <div class="tw"><table>
+    <thead><tr><th>주제</th><th>국내 자료</th><th>해외 자료</th></tr></thead>
+    <tbody>
+<tr><td><strong>동물보호법 원문·해설</strong></td><td><a class="lnk ext" href="https://www.law.go.kr" target="_blank" rel="noopener">국가법령정보센터</a> <a class="lnk ext" href="https://www.easylaw.go.kr" target="_blank" rel="noopener">생활법령정보</a></td><td>—</td></tr><tr><td><strong>동물등록·실종 신고</strong></td><td><a class="lnk ext" href="https://www.animal.go.kr" target="_blank" rel="noopener">국가동물보호정보시스템</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%ED%8F%AC%EC%9D%B8%ED%95%B8%EB%93%9C" target="_blank" rel="noopener">포인핸드</a></td><td>—</td></tr><tr><td><strong>기차·대중교통 규정</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EC%BD%94%EB%A0%88%EC%9D%BC%20%EB%B0%98%EB%A0%A4%EB%8F%99%EB%AC%BC%20%EA%B7%9C%EC%A0%95" target="_blank" rel="noopener">코레일 반려동물 규정</a> <a class="lnk" href="https://search.naver.com/search.naver?query=SRT%20%EB%B0%98%EB%A0%A4%EB%8F%99%EB%AC%BC%20%EA%B7%9C%EC%A0%95" target="_blank" rel="noopener">SRT 반려동물 규정</a></td><td>—</td></tr><tr><td><strong>애견동반 여행·숙소</strong></td><td><a class="lnk" href="https://search.naver.com/search.naver?query=%EC%95%A0%EA%B2%AC%EB%8F%99%EB%B0%98%20%EC%88%99%EC%86%8C%20%EC%B6%94%EC%B2%9C" target="_blank" rel="noopener">애견동반 숙소 추천</a> <a class="lnk" href="https://search.naver.com/search.naver?query=%EC%95%A0%EA%B2%AC%EB%8F%99%EB%B0%98%20%EC%97%AC%ED%96%89%EC%A7%80" target="_blank" rel="noopener">애견동반 여행지</a></td><td><a class="lnk" href="https://www.youtube.com/results?search_query=traveling%20with%20a%20dog%20tips" target="_blank" rel="noopener">&#9654; 개와 여행하기</a></td></tr><tr><td><strong>펫보험 비교</strong></td><td><a class="lnk ext" href="https://e-insmarket.or.kr" target="_blank" rel="noopener">보험다모아</a></td><td>—</td></tr>    </tbody>
+  </table></div>
+
+  <h3 class="sec" id="x-ch">추천 채널·사이트 — 구독해두면 좋은 곳</h3>
+  <div class="tw"><table>
+    <thead><tr><th>이름</th><th>무엇에 좋은가</th></tr></thead>
+    <tbody>
+<tr><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EA%B0%95%ED%98%95%EC%9A%B1%20%EB%B3%B4%EB%93%ACTV" target="_blank" rel="noopener">&#9654; 강형욱의 보듬TV</a></td><td>문제행동의 원인을 보호자 관점에서 풀어주는 국내 대표 채널 — 05·13장 주제 전반</td></tr><tr><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EC%84%A4%EC%B1%84%ED%98%84%20%EC%88%98%EC%9D%98%EC%82%AC" target="_blank" rel="noopener">&#9654; 수의사 설채현</a></td><td>수의행동학 기반 — 행동 문제를 의학과 연결해 설명. 12장과 궁합</td></tr><tr><td><a class="lnk" href="https://www.youtube.com/results?search_query=%EC%84%B8%EC%83%81%EC%97%90%20%EB%82%98%EC%81%9C%20%EA%B0%9C%EB%8A%94%20%EC%97%86%EB%8B%A4" target="_blank" rel="noopener">&#9654; 세상에 나쁜 개는 없다</a></td><td>실제 사례로 배우는 교정 과정 — 문제 상황의 전개를 미리 봄</td></tr><tr><td><a class="lnk" href="https://www.youtube.com/results?search_query=Zak%20George%20dog%20training" target="_blank" rel="noopener">&#9654; Zak George</a></td><td>긍정강화 훈련 세계 최대 채널 — 퍼피 기초 시리즈가 특히 좋음 (자동번역 자막)</td></tr><tr><td><a class="lnk" href="https://www.youtube.com/results?search_query=kikopup%20dog%20training" target="_blank" rel="noopener">&#9654; Kikopup</a></td><td>클리커·세부 스킬의 교과서 — 짖음·매트 훈련·발톱 등 주제별 짧은 강의</td></tr><tr><td><a class="lnk" href="https://www.youtube.com/results?search_query=McCann%20dog%20training" target="_blank" rel="noopener">&#9654; McCann Dog Training</a></td><td>퍼피 월령별 커리큘럼이 체계적 — 06장 직장인 루틴과 병행하기 좋음</td></tr><tr><td><a class="lnk" href="https://www.youtube.com/results?search_query=Girl%20With%20The%20Dogs%20grooming" target="_blank" rel="noopener">&#9654; Girl With The Dogs</a></td><td>견종별 목욕·그루밍 실전 영상 — 카발리에 편도 있음. 13장 위생 실전의 영상판</td></tr><tr><td><a class="lnk ext" href="https://cavalierhealth.org" target="_blank" rel="noopener">CavalierHealth.org</a></td><td>카발리에 건강 백과 — MVD·SM 연구를 견주 눈높이로 집대성한 비영리 사이트</td></tr><tr><td><a class="lnk ext" href="https://www.akc.org" target="_blank" rel="noopener">AKC</a></td><td>미국켄넬클럽 — 견종 정보·훈련·케어 아티클 방대</td></tr>    </tbody>
+  </table></div>
+
+  <h3 class="sec" id="x-ref">참고문헌</h3>
+  <ol class="ls">
+    <li>CavalierHealth.org — Cavalier King Charles Spaniel 건강 라이브러리 (승모판 질환·척수공동증) — 02·04·11장 근거</li>
+    <li>Keene BW et al., <em>ACVIM consensus guidelines for the diagnosis and treatment of myxomatous mitral valve disease in dogs</em>, J Vet Intern Med, 2019 — 02장 심장 단계(B1/B2) 체계</li>
+    <li>Hart BL et al., <em>Assisting Decision-Making on Age of Neutering for 35 Breeds of Dogs</em>, Frontiers in Veterinary Science, 2020 (UC Davis) — 07장 중성화 시기</li>
+    <li>WSAVA Vaccination Guidelines — 02장 접종 체계</li>
+    <li>UFAW, Genetic Welfare Problems of Companion Animals: Cavalier King Charles Spaniel — 02장 유전 질환</li>
+    <li>The Kennel Club(영국)·견종 클럽 관리 지침 — 01·02장 견종 표준·관리</li>
+    <li>Turid Rugaas, <em>On Talking Terms with Dogs: Calming Signals</em> — 12장 카밍 시그널 원전</li>
+    <li>Ian Dunbar, <em>Before &amp; After Getting Your Puppy</em> — 03·05장 사회화 골든타임</li>
+    <li>Sophia Yin, <em>Perfect Puppy in 7 Days</em> — 05장 초기 훈련 설계</li>
+    <li>ASPCA Animal Poison Control — 04장 금지 음식·11장 중독 대처</li>
+    <li>동물보호법·동물보호법 시행규칙 (국가법령정보센터) — 13장 법규·과태료</li>
+    <li>찾기쉬운 생활법령정보 「반려동물과 생활」 — 13장 법규 해설</li>
+    <li>코레일 여객운송약관·SR 운송 규정 — 13장 대중교통 동반 기준</li>
+    <li>국가동물보호정보시스템(animal.go.kr) — 전체 참고문헌·심화 자료는 14장 자료실 — 13장 동물등록·실종 절차</li>
+    <li>American Red Cross, Pet First Aid — 11장 응급처치·CPR 기초</li>
+  </ol>
+  <p class="muted small">서적·논문은 링크 대신 서지 정보로 표기했습니다. 통계·수치가 본문과 다르게 개정될 수 있으니, 의학적 판단은 항상 담당 수의사가 우선입니다.</p>
+
+  <div class="trainer">
+    <div class="ico">&#128218;</div>
+    <div>
+      <div class="tt">TRAINER'S NOTE</div>
+      <div class="tb">자료는 많이 보는 사람보다 하나를 끝까지 따라 하는 사람이 이깁니다. 주제당 영상 하나를 정해서 그대로 2주 해보고, 안 되면 그때 다음 자료로 넘어가세요. 이 핸드북이 뼈대, 여기 링크가 살입니다.</div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="foot-in">
+    <strong>카발리에 킹 찰스 스파니엘 · 첫 반려 핸드북</strong> — 남아 · 직장인 1인 가구 기준 · 2026<br>
+    본 문서는 일반 정보 제공 목적이며, 개별 건강·행동 판단은 수의사 및 행동 전문가 상담이 우선합니다. 비용·제도(동물등록, 펫보험 등)는 2026년 기준 대략 범위로, 시점·지역·병원에 따라 달라질 수 있습니다.<br>
+    참고: cavalierhealth.org · UFAW · 영국 켄넬클럽/견종 클럽 관리 지침 · UC Davis 견종별 중성화 연구 · ACVIM 심장 질환 가이드라인 · 국내 5대 손해보험사 펫보험 공시자료 · 동물보호법 및 시행규칙(찾기쉬운 생활법령정보) · 코레일·SRT 등 운송사 반려동물 규정 · 국가동물보호정보시스템(animal.go.kr) — 전체 참고문헌·심화 자료는 14장 자료실
+  </div>
+</footer>
+
+<script>
+/* =============== State =============== */
+const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[]};
+let S = JSON.parse(JSON.stringify(DEFAULT_S));
+let storageOK = false, artOK = false, saveTimer = null, lastEditAt = 0;
+
+function esc(s){return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function todayKey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+
+function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function lsSet(k,v){ try{ localStorage.setItem(k,v); return true; }catch(e){ return false; } }
+async function loadState(){
+  artOK = (typeof window.storage!=='undefined' && window.storage && typeof window.storage.get==='function');
+  let raw=null;
+  if(artOK){
+    try{ const r=await window.storage.get('ckcs-data'); if(r && r.value) raw=r.value; }catch(e){ /* 첫 실행 */ }
+  }
+  if(!raw) raw=lsGet('ckcs-data');
+  if(raw){ try{ const p=JSON.parse(raw); S=Object.assign(JSON.parse(JSON.stringify(DEFAULT_S)), p); }catch(e){} }
+  storageOK = artOK || lsSet('__probe','1');
+}
+function persistLocal(){
+  const raw=JSON.stringify(S);
+  lsSet('ckcs-data', raw);
+  if(artOK){ try{ window.storage.set('ckcs-data', raw); }catch(e){ console.error('save fail', e); } }
+}
+function saveState(){
+  clearTimeout(saveTimer);
+  lastEditAt=Date.now();
+  saveTimer=setTimeout(()=>{
+    // 오래된 일일 체크 정리(최근 90일만 유지)
+    const keys=Object.keys(S.daily).sort();
+    while(keys.length>90){ delete S.daily[keys.shift()]; }
+    S._at=Date.now(); S._dev=DEV_ID;
+    persistLocal();
+    syncPushSoon();
+  }, 500);
+}
+
+/* =============== 기기 간 동기화 (Firebase Realtime DB REST) =============== */
+const DEV_ID=(function(){ let d=lsGet('_dev'); if(!d){ d='d'+Math.random().toString(36).slice(2,10); lsSet('_dev',d); } return d; })();
+const SYNC={url:'',code:'',on:false,timer:null,pushT:null,lastRemoteAt:0,busy:false};
+function syncPath(){ return SYNC.url.replace(/\/+$/,'')+'/handbook/'+SYNC.code+'.json'; }
+function syncConfigured(){ return SYNC.on && SYNC.url && SYNC.code; }
+function syncStat(msg){ const el=document.getElementById('syncStat'); if(el) el.textContent=msg; }
+function loadSyncCfg(){
+  SYNC.url=lsGet('_sync_url')||''; SYNC.code=lsGet('_sync_code')||''; SYNC.on=(lsGet('_sync_on')==='1');
+  const u=document.getElementById('syncUrl'), c=document.getElementById('syncCode');
+  if(u) u.value=SYNC.url; if(c) c.value=SYNC.code;
+  if(!SYNC.on) syncStat(SYNC.url?'동기화 꺼짐 — 이 기기에만 저장됩니다.':'설정 안 됨');
+}
+async function syncFetch(method, body){
+  const ctl=new AbortController(); const to=setTimeout(()=>ctl.abort(), 8000);
+  try{
+    const r=await fetch(syncPath(), {method:method, body:body||undefined, signal:ctl.signal});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    return await r.json();
+  }finally{ clearTimeout(to); }
+}
+function syncPushSoon(){ if(!syncConfigured()) return; clearTimeout(SYNC.pushT); SYNC.pushT=setTimeout(syncPushNow, 1200); }
+async function syncPushNow(){
+  if(!syncConfigured()||SYNC.busy) return;
+  SYNC.busy=true;
+  try{
+    await syncFetch('PUT', JSON.stringify(S));
+    SYNC.lastRemoteAt=S._at||Date.now();
+    syncStat('동기화됨 · '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}));
+  }catch(e){ syncStat('오프라인 — 로컬에만 저장됨 (연결되면 자동 재시도)'); }
+  finally{ SYNC.busy=false; }
+}
+async function syncPull(){
+  if(!syncConfigured()||SYNC.busy) return;
+  const ae=document.activeElement;
+  if(ae && (ae.tagName==='INPUT'||ae.tagName==='TEXTAREA')) return;
+  if(Date.now()-lastEditAt<6000) return;
+  SYNC.busy=true;
+  try{
+    const remote=await syncFetch('GET');
+    if(remote && remote._at && remote._at>(S._at||0) && remote._dev!==DEV_ID){
+      S=Object.assign(JSON.parse(JSON.stringify(DEFAULT_S)), remote);
+      persistLocal(); renderAll();
+      syncStat('상대 기기 변경 반영됨 · '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}));
+    } else if(remote===null && (S._at||0)>0){
+      syncPushSoon();
+    }
+    if(remote && remote._at) SYNC.lastRemoteAt=remote._at;
+  }catch(e){ /* 다음 주기에 재시도 */ }
+  finally{ SYNC.busy=false; }
+}
+function startSync(){
+  clearInterval(SYNC.timer);
+  if(!syncConfigured()){ syncStat('설정 안 됨 — 데이터베이스 주소와 가족 코드를 입력하세요.'); return; }
+  syncPull().then(function(){ if(!SYNC.lastRemoteAt) syncPushSoon(); });
+  SYNC.timer=setInterval(syncPull, 20000);
+  syncStat('동기화 켜짐 — 20초마다 확인합니다.');
+}
+function bindSync(){
+  const on=document.getElementById('syncOn'), off=document.getElementById('syncOff');
+  if(!on) return;
+  on.addEventListener('click', function(){
+    const url=(document.getElementById('syncUrl').value||'').trim();
+    const code=(document.getElementById('syncCode').value||'').trim().replace(/[^a-zA-Z0-9_-]/g,'');
+    if(!/^https:\/\/.+(firebasedatabase\.app|firebaseio\.com)/.test(url)){ alert('데이터베이스 주소 형식이 아닙니다. https:// 로 시작하는 Firebase Realtime Database 주소를 붙여넣어 주세요.'); return; }
+    if(code.length<6){ alert('가족 코드는 영문·숫자 6자 이상으로 정해주세요. 예: dowoo-coco-2026'); return; }
+    document.getElementById('syncCode').value=code;
+    SYNC.url=url; SYNC.code=code; SYNC.on=true;
+    lsSet('_sync_url',url); lsSet('_sync_code',code); lsSet('_sync_on','1');
+    startSync();
+  });
+  off.addEventListener('click', function(){
+    SYNC.on=false; lsSet('_sync_on','0'); clearInterval(SYNC.timer);
+    syncStat('동기화 꺼짐 — 이 기기에만 저장됩니다.');
+  });
+  document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='visible') syncPull(); });
+}
+
+/* =============== Tabs =============== */
+const tabBtns = document.querySelectorAll('.tab-btn');
+function goTab(id){
+  tabBtns.forEach(b=>b.classList.toggle('on', b.dataset.tab===id));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('on', p.id==='tab-'+id));
+  window.scrollTo({top:0});
+  const ab=document.querySelector('.tab-btn.on');
+  if(ab && ab.scrollIntoView){ try{ ab.scrollIntoView({inline:'center', block:'nearest', behavior:'smooth'}); }catch(e){} }
+}
+tabBtns.forEach(b=>b.addEventListener('click', ()=>goTab(b.dataset.tab)));
+
+/* =============== 월령 스테이지 =============== */
+const STAGES = [
+ {min:0, max:7, name:'가정 대기기 (생후 8주 미만)', tasks:['아직 모견 곁에 있어야 할 시기 — 8주 미만 인도는 거절(01장)','용품 준비·집 안전화·브리더 검증 체크리스트 진행','단골 병원·24시 병원 정해서 홈 탭에 저장']},
+ {min:8, max:11, name:'적응 · 1차 접종기 (2~3개월)', tasks:['데려온 지 3일 내 첫 건강검진(분변 포함)','이상 없으면 그 주에 펫보험 가입 완료(03장 — 타이밍이 전부)','접종 스케줄 개시(02장 표에 날짜 기록)','배변·크레이트 훈련 시작, 밥·잠 시간 고정','실내 사회화(소리 둔감화) + 안고 나가는 구경 산책','짧은 단독 시간 연습 시작 — 같은 집 다른 방부터(06장)','낮 케어 계획 가동(연차·가족·펫시터) — 월령+1시간 룰']},
+ {min:12, max:15, name:'사회화 골든타임 막바지 (3~4개월)', tasks:['사회화 체크리스트 집중 소화(05장) — 14주 전이 가장 효율 높음','접종 이어가기 + 이름 반응·앉아 완성','출근 신호 둔감화 훈련(열쇠·신발) 병행','동물등록(2개월 이상 의무) 완료 확인']},
+ {min:16, max:25, name:'이갈이 · 기초 훈련기 (4~6개월)', tasks:['접종 완료 + 항체가검사 → 본격 바닥 산책 개시','산책량 = 월령×5분×2회 (예: 5개월=25분씩)','이갈이 입질 대응(05장) — 손 무는 습관 여기서 결정','기본 명령어 8종 진도 나가기(05장 체크리스트)','유치원 등원 검토(접종 완료 후) — 사회화+낮 공백 해소','6개월 검진 때 중성화 시기 상담(07장)']},
+ {min:26, max:39, name:'사춘기 · 중성화 검토기 (6~9개월)', tasks:['중성화 실행 창(통상 6~9개월) — 주치의와 확정','"말 안 듣는 시기" 정상 — 규칙을 바꾸지 말고 버티기','단독 시간 계단식 확장 계속(06장 5단계)','중성화 후 급여량 10~20% 조정 상담(04장)']},
+ {min:40, max:51, name:'성견 전환기 (9~12개월)', tasks:['성견 사료 전환 상담(10~12개월, 7일 교체법)','산책 성견 수준(하루 40~60분)으로 확대','평일 타임테이블(06장) 완전 정착']},
+ {min:52, max:99999, name:'성견기 (12개월~)', tasks:['매년: 보강접종 + 심장 청진 검진 — 카발리에 관리의 핵심(02장)','매월: 심장사상충 예방 + 체중 기록(08장)','가끔 잘 때 호흡수 세기(분당 30회 미만이 대체적 정상 기준)','주말에도 짧은 단독 시간 유지 — 월요일 격차 방지','7세부터 연 1~2회 심화 검진으로 상향']}
+];
+function renderHome(){
+  const nameEl=document.getElementById('homeName'), ageEl=document.getElementById('homeAge'),
+        stEl=document.getElementById('homeStage'), tkEl=document.getElementById('stageTasks');
+  nameEl.textContent = S.profile.name ? S.profile.name : '이름 미등록';
+  if(!S.profile.birth){ ageEl.textContent='기록장 탭에서 생년월일을 입력하세요'; stEl.style.display='none'; tkEl.innerHTML=''; return; }
+  const b=new Date(S.profile.birth+'T00:00:00'), now=new Date();
+  const days=Math.max(0, Math.floor((now-b)/86400000));
+  const weeks=Math.floor(days/7);
+  const months=Math.floor(days/30.44);
+  ageEl.textContent='생후 약 '+months+'개월 ('+weeks+'주차, '+days+'일)';
+  const st = STAGES.find(s=>weeks>=s.min && weeks<=s.max) || STAGES[STAGES.length-1];
+  stEl.style.display='inline-block'; stEl.textContent='현재 단계: '+st.name;
+  tkEl.innerHTML='<h4 class="sub-t" style="margin-top:14px;">지금 단계에서 할 일</h4><ul class="ls">'+st.tasks.map(t=>'<li>'+t+'</li>').join('')+'</ul>';
+}
+
+/* =============== 일일 루틴 =============== */
+const DAILY_ITEMS=['아침 산책 + 배변','아침 급여 + 물 교체','출근 전 노즈워크·콩 세팅 (부재 준비)','저녁 산책 + 배변','저녁 급여','훈련 5~10분 (명령어 1개)','빗질·몸 상태 확인 (귀·눈·걸음)','양치'];
+function renderDaily(){
+  const key=todayKey();
+  const st=S.daily[key]||{};
+  const ul=document.getElementById('dailyList');
+  document.getElementById('dailyDate').textContent=key+' (오늘)';
+  ul.innerHTML=DAILY_ITEMS.map((t,i)=>{
+    const c=st['i'+i]?'checked':''; const d=st['i'+i]?'done':'';
+    return '<li><input type="checkbox" id="d'+i+'" '+c+'><label for="d'+i+'" class="'+d+'">'+t+'</label></li>';
+  }).join('');
+  DAILY_ITEMS.forEach((t,i)=>{
+    document.getElementById('d'+i).addEventListener('change', e=>{
+      if(!S.daily[key]) S.daily[key]={};
+      S.daily[key]['i'+i]=e.target.checked;
+      saveState(); renderDaily();
+    });
+  });
+  const n=DAILY_ITEMS.filter((t,i)=>st['i'+i]).length;
+  document.getElementById('dailyCount').textContent=n+' / '+DAILY_ITEMS.length;
+  document.getElementById('dailyBar').style.width=Math.round(n/DAILY_ITEMS.length*100)+'%';
+}
+
+/* =============== 범용 체크리스트 (준비·사회화·명령어) =============== */
+function bindChecklists(){
+  document.querySelectorAll('ul.ck[data-store]').forEach(ul=>{
+    ul.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+      const key=ul.dataset.store+':'+cb.id;
+      if(S.checks[key]) { cb.checked=true; const lb=ul.querySelector('label[for="'+cb.id+'"]'); if(lb) lb.classList.add('done'); }
+      cb.addEventListener('change', ()=>{
+        S.checks[key]=cb.checked; if(!cb.checked) delete S.checks[key];
+        const lb=ul.querySelector('label[for="'+cb.id+'"]'); if(lb) lb.classList.toggle('done', cb.checked);
+        saveState();
+      });
+    });
+  });
+}
+
+/* =============== 접종 표 =============== */
+function bindVax(){
+  document.querySelectorAll('#vaxTable tr[data-vx]').forEach(tr=>{
+    const id=tr.dataset.vx, done=tr.querySelector('.vx-done'), date=tr.querySelector('.vx-date');
+    const v=S.vax[id]||{};
+    done.checked=!!v.done; if(v.date) date.value=v.date;
+    const upd=()=>{ S.vax[id]={done:done.checked, date:date.value}; saveState(); renderCal(); };
+    done.addEventListener('change',upd); date.addEventListener('change',upd);
+  });
+}
+
+/* =============== 프로필·병원 메모 =============== */
+function bindProfile(){
+  const map={pfName:'name', pfBirth:'birth', pfHome:'home', pfReg:'reg'};
+  Object.keys(map).forEach(id=>{
+    const el=document.getElementById(id);
+    el.value=S.profile[map[id]]||'';
+    el.addEventListener('input', ()=>{ S.profile[map[id]]=el.value; saveState(); renderHome(); renderCal(); });
+  });
+  const vm=document.getElementById('vetMain'), v2=document.getElementById('vet24');
+  vm.value=S.vet.main||''; v2.value=S.vet.e24||'';
+  vm.addEventListener('input',()=>{S.vet.main=vm.value; saveState();});
+  v2.addEventListener('input',()=>{S.vet.e24=v2.value; saveState();});
+}
+
+/* =============== 체중 =============== */
+function renderWeight(){
+  const list=document.getElementById('wList'), svg=document.getElementById('wChart');
+  const data=[...S.weight].sort((a,b)=>a.d.localeCompare(b.d));
+  list.innerHTML = data.length? data.slice().reverse().map((w,ri)=>{
+    const i=data.length-1-ri;
+    return '<div class="log-item"><span>'+esc(w.d)+' — <strong>'+esc(w.kg)+'kg</strong></span><button class="del" data-i="'+i+'" aria-label="삭제">✕</button></div>';
+  }).join('') : '<p class="muted small" style="margin-top:8px;">아직 기록이 없습니다. 첫 검진 때 잰 체중부터 입력해보세요.</p>';
+  list.querySelectorAll('.del').forEach(b=>b.addEventListener('click',()=>{ 
+    const sorted=[...S.weight].sort((a,b)=>a.d.localeCompare(b.d));
+    const target=sorted[parseInt(b.dataset.i)];
+    S.weight=S.weight.filter(w=>w!==target);
+    saveState(); renderWeight();
+  }));
+  // chart
+  svg.innerHTML='';
+  if(data.length<2){ svg.innerHTML='<text x="320" y="95" text-anchor="middle" fill="#A79B87" font-size="13">기록이 2개 이상이면 그래프가 표시됩니다</text>'; return; }
+  const kgs=data.map(w=>parseFloat(w.kg));
+  let min=Math.min(...kgs), max=Math.max(...kgs);
+  if(max-min<1){ const mid=(max+min)/2; min=mid-0.6; max=mid+0.6; }
+  const pad={l:42,r:14,t:14,b:26}, W=640,H=190;
+  const x=i=>pad.l+(W-pad.l-pad.r)*(data.length===1?0.5:i/(data.length-1));
+  const y=v=>H-pad.b-(H-pad.t-pad.b)*((v-min)/(max-min));
+  let g='';
+  for(let k=0;k<=2;k++){ const v=min+(max-min)*k/2, yy=y(v);
+    g+='<line x1="'+pad.l+'" y1="'+yy+'" x2="'+(W-pad.r)+'" y2="'+yy+'" stroke="#E6DECF" stroke-width="1"/>';
+    g+='<text x="'+(pad.l-6)+'" y="'+(yy+4)+'" text-anchor="end" font-size="11" fill="#8C7F6B">'+v.toFixed(1)+'</text>';
+  }
+  const pts=data.map((w,i)=>x(i)+','+y(parseFloat(w.kg))).join(' ');
+  g+='<polyline points="'+pts+'" fill="none" stroke="#8A3324" stroke-width="2.5" stroke-linejoin="round"/>';
+  data.forEach((w,i)=>{ g+='<circle cx="'+x(i)+'" cy="'+y(parseFloat(w.kg))+'" r="4" fill="#8A3324"/>'; });
+  g+='<text x="'+x(0)+'" y="'+(H-8)+'" font-size="10.5" fill="#8C7F6B" text-anchor="start">'+esc(data[0].d.slice(2))+'</text>';
+  g+='<text x="'+x(data.length-1)+'" y="'+(H-8)+'" font-size="10.5" fill="#8C7F6B" text-anchor="end">'+esc(data[data.length-1].d.slice(2))+'</text>';
+  svg.innerHTML=g;
+}
+function bindWeight(){
+  document.getElementById('wDate').value=todayKey();
+  document.getElementById('wAdd').addEventListener('click',()=>{
+    const d=document.getElementById('wDate').value, kg=document.getElementById('wKg').value;
+    if(!d||!kg){ alert('날짜와 체중을 입력하세요.'); return; }
+    S.weight.push({d, kg:parseFloat(kg).toFixed(1)});
+    document.getElementById('wKg').value='';
+    saveState(); renderWeight();
+  });
+}
+
+/* =============== 병원 방문 =============== */
+function renderVisits(){
+  const el=document.getElementById('vList');
+  const data=[...S.visits].sort((a,b)=>b.d.localeCompare(a.d));
+  el.innerHTML=data.length? data.map((v)=>{
+    const idx=S.visits.indexOf(v);
+    return '<div class="log-item"><span><strong>'+esc(v.d)+'</strong> · <span class="tag">'+esc(v.t)+'</span> '+esc(v.m)+'</span><button class="del" data-i="'+idx+'" aria-label="삭제">✕</button></div>';
+  }).join('') : '<p class="muted small" style="margin-top:8px;">기록이 없습니다.</p>';
+  el.querySelectorAll('.del').forEach(b=>b.addEventListener('click',()=>{ S.visits.splice(parseInt(b.dataset.i),1); saveState(); renderVisits(); }));
+}
+function bindVisits(){
+  document.getElementById('vDate').value=todayKey();
+  document.getElementById('vAdd').addEventListener('click',()=>{
+    const d=document.getElementById('vDate').value, t=document.getElementById('vType').value, m=document.getElementById('vMemo').value.trim();
+    if(!d){ alert('날짜를 입력하세요.'); return; }
+    S.visits.push({d,t,m}); document.getElementById('vMemo').value='';
+    saveState(); renderVisits();
+  });
+}
+
+/* =============== 지출 =============== */
+function renderExpenses(){
+  const el=document.getElementById('eList');
+  const data=[...S.expenses].sort((a,b)=>b.d.localeCompare(a.d));
+  el.innerHTML=data.length? data.slice(0,50).map((v)=>{
+    const idx=S.expenses.indexOf(v);
+    return '<div class="log-item"><span><strong>'+esc(v.d)+'</strong> · <span class="tag y">'+esc(v.c)+'</span> '+Number(v.a).toLocaleString()+'원 <span class="muted small">'+esc(v.m||'')+'</span></span><button class="del" data-i="'+idx+'" aria-label="삭제">✕</button></div>';
+  }).join('') : '<p class="muted small" style="margin-top:8px;">기록이 없습니다.</p>';
+  el.querySelectorAll('.del').forEach(b=>b.addEventListener('click',()=>{ S.expenses.splice(parseInt(b.dataset.i),1); saveState(); renderExpenses(); }));
+  const ym=todayKey().slice(0,7);
+  const tot=S.expenses.filter(e=>e.d && e.d.startsWith(ym)).reduce((s,e)=>s+Number(e.a||0),0);
+  document.getElementById('eMonth').textContent=tot.toLocaleString()+'원';
+}
+function bindExpenses(){
+  document.getElementById('eDate').value=todayKey();
+  document.getElementById('eAdd').addEventListener('click',()=>{
+    const d=document.getElementById('eDate').value, c=document.getElementById('eCat').value,
+          a=document.getElementById('eAmt').value, m=document.getElementById('eMemo').value.trim();
+    if(!d||!a){ alert('날짜와 금액을 입력하세요.'); return; }
+    S.expenses.push({d,c,a:Number(a),m}); document.getElementById('eAmt').value=''; document.getElementById('eMemo').value='';
+    saveState(); renderExpenses();
+  });
+}
+
+/* =============== 백업 =============== */
+function bindIO(){
+  document.getElementById('expBtn').addEventListener('click',()=>{
+    document.getElementById('ioArea').value=JSON.stringify(S);
+    document.getElementById('ioArea').select();
+  });
+  document.getElementById('impBtn').addEventListener('click',()=>{
+    try{
+      const p=JSON.parse(document.getElementById('ioArea').value);
+      S=Object.assign(JSON.parse(JSON.stringify(DEFAULT_S)), p);
+      saveState(); renderAll();
+      alert('가져오기 완료.');
+    }catch(e){ alert('형식이 올바르지 않습니다. 내보내기한 텍스트 전체를 붙여넣어 주세요.'); }
+  });
+}
+
+/* =============== Storage badge =============== */
+function renderStorage(){
+  const el=document.getElementById('storageState');
+  el.innerHTML = storageOK
+    ? '<span class="storage-badge ok">✓ 자동 저장 작동 중 — 기록이 유지됩니다</span>'
+    : '<span class="storage-badge no">저장 비활성 — 미리보기 환경입니다. 파일을 브라우저로 열면 자동 저장됩니다.</span>';
+}
+
+/* =============== 관리 달력 (정비 알림) =============== */
+let calY=(new Date()).getFullYear(), calM=(new Date()).getMonth(), calSel=todayKey();
+const VAX_PLAN=[
+ {id:'v1', wk:7,  t:'접종 1차 (종합+코로나)'},
+ {id:'v2', wk:9,  t:'접종 2차 (종합+코로나)'},
+ {id:'v3', wk:11, t:'접종 3차 (종합+켄넬코프)'},
+ {id:'v4', wk:13, t:'접종 4차 (종합+켄넬코프)'},
+ {id:'v5', wk:15, t:'접종 5차 (종합+인플루)'},
+ {id:'v6', wk:17, t:'접종 6차 (인플루+광견병)'},
+ {id:'v7', wk:19, t:'항체가 검사'}
+];
+const MILESTONES=[[98,'사회화 골든타임 마감 (14주)'],[183,'중성화 상담 권장 시점 (6개월)'],[304,'성견 사료 전환 검토 (10개월)']];
+function d2s(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function addD(base,n){const d=new Date(base.getTime()); d.setDate(d.getDate()+n); return d;}
+function autoEventsRange(from,to){
+  const out=[]; const tk=todayKey();
+  const b=S.profile.birth? new Date(S.profile.birth+'T00:00:00') : null;
+  if(!b) return out;
+  VAX_PLAN.forEach(v=>{
+    const st=S.vax[v.id]||{};
+    if(st.done){ if(st.date){ const dd=new Date(st.date+'T00:00:00'); if(dd>=from&&dd<=to) out.push({d:d2s(dd), t:v.t+' — 완료', cls:'d'}); } }
+    else{ const dd=addD(b, v.wk*7); const s=d2s(dd);
+      if(dd>=from&&dd<=to) out.push({d:s, t:v.t+(s<tk?' — 지연':' 예정'), cls: s<tk?'l':'a'});
+    }
+  });
+  const hw=S.vax.v8||{};
+  const anchor = hw.date? parseInt(hw.date.slice(8,10),10) : (S.profile.home? parseInt(S.profile.home.slice(8,10),10) : b.getDate());
+  const hwStart=addD(b,56);
+  let cur=new Date(from.getFullYear(), from.getMonth(), 1);
+  while(cur<=to){
+    const dim=new Date(cur.getFullYear(),cur.getMonth()+1,0).getDate();
+    const dd=new Date(cur.getFullYear(),cur.getMonth(),Math.min(anchor,dim));
+    if(dd>=from&&dd<=to&&dd>=hwStart) out.push({d:d2s(dd), t:'심장사상충·구충 예방일', cls:'a'});
+    cur=new Date(cur.getFullYear(),cur.getMonth()+1,1);
+  }
+  MILESTONES.forEach(ms=>{ const dd=addD(b,ms[0]); if(dd>=from&&dd<=to) out.push({d:d2s(dd), t:ms[1], cls:'a'}); });
+  for(let age=1; age<=20; age++){
+    const bd=new Date(b.getFullYear()+age, b.getMonth(), b.getDate());
+    if(bd>=from&&bd<=to) out.push({d:d2s(bd), t:age+'번째 생일 — 연간검진·심장청진·보강접종', cls:'a'});
+  }
+  return out;
+}
+function eventsForMonth(y,m){
+  const from=new Date(y,m,1), to=new Date(y,m,new Date(y,m+1,0).getDate(),23,59,59);
+  const evs=autoEventsRange(from,to);
+  const mk=y+'-'+String(m+1).padStart(2,'0');
+  (S.events||[]).forEach((e,i)=>{ if(e.d && e.d.slice(0,7)===mk) evs.push({d:e.d, t:e.t, cls:'u', idx:i}); });
+  return evs;
+}
+function renderCal(){
+  const dowEl=document.getElementById('calDow'); if(!dowEl) return;
+  dowEl.innerHTML=['일','월','화','수','목','금','토'].map(function(d,i){return '<div class="cal-dow'+(i===0?' sun':'')+'">'+d+'</div>';}).join('');
+  document.getElementById('calTitle').textContent=calY+'년 '+(calM+1)+'월';
+  const evs=eventsForMonth(calY,calM);
+  const byDay={}; evs.forEach(e=>{ (byDay[e.d]=byDay[e.d]||[]).push(e); });
+  const first=new Date(calY,calM,1).getDay(), dim=new Date(calY,calM+1,0).getDate();
+  let html='';
+  for(let i=0;i<first;i++) html+='<div class="cal-cell empty"></div>';
+  const tk=todayKey();
+  for(let d=1; d<=dim; d++){
+    const ds=calY+'-'+String(calM+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const dow=(first+d-1)%7;
+    const cls=['cal-cell']; if(dow===0)cls.push('sun'); if(ds===tk)cls.push('today'); if(ds===calSel)cls.push('sel');
+    const dots=(byDay[ds]||[]).slice(0,4).map(e=>'<span class="dot '+e.cls+'"></span>').join('');
+    html+='<div class="'+cls.join(' ')+'" data-d="'+ds+'"><span class="dn">'+d+'</span><div class="dots">'+dots+'</div></div>';
+  }
+  const grid=document.getElementById('calGrid');
+  grid.innerHTML=html;
+  grid.querySelectorAll('.cal-cell[data-d]').forEach(c=>c.addEventListener('click',function(){ calSel=this.dataset.d; renderCal(); }));
+  renderSel(byDay); renderUpcoming();
+}
+function renderSel(byDay){
+  const t=document.getElementById('selTitle'), box=document.getElementById('selEvents');
+  const p=calSel.split('-');
+  const dt=new Date(parseInt(p[0],10), parseInt(p[1],10)-1, parseInt(p[2],10));
+  t.textContent=parseInt(p[1],10)+'월 '+parseInt(p[2],10)+'일 ('+['일','월','화','수','목','금','토'][dt.getDay()]+')';
+  const evs=(byDay&&byDay[calSel])||[];
+  const TAGN={a:'알림',l:'지연',d:'완료',u:'내 일정'};
+  box.innerHTML=evs.length? evs.map(function(e){
+    return '<div class="ev-row"><span><span class="ev-tag '+e.cls+'">'+TAGN[e.cls]+'</span> '+esc(e.t)+'</span>'+(e.cls==='u'?'<button class="del" data-i="'+e.idx+'" aria-label="삭제">✕</button>':'')+'</div>';
+  }).join('') : '<p class="muted small" style="margin:6px 0;">일정이 없습니다. 아래에서 추가할 수 있습니다.</p>';
+  box.querySelectorAll('.del').forEach(b=>b.addEventListener('click',function(){ S.events.splice(parseInt(this.dataset.i,10),1); saveState(); renderCal(); }));
+}
+function renderUpcoming(){
+  const el=document.getElementById('upList'); if(!el) return;
+  if(!S.profile.birth){ el.innerHTML='<p class="muted small">기록장 탭에서 생년월일을 입력하면 접종·검진 알림이 자동 생성됩니다.</p>'; return; }
+  const now=new Date(); now.setHours(0,0,0,0);
+  const to=addD(now,60); const tk=todayKey();
+  let evs=autoEventsRange(now,to).filter(e=>e.cls!=='d');
+  const b=new Date(S.profile.birth+'T00:00:00');
+  const overdue=[];
+  VAX_PLAN.forEach(v=>{ const st=S.vax[v.id]||{}; if(!st.done){ const s=d2s(addD(b,v.wk*7)); if(s<tk) overdue.push({d:s, t:v.t+' — 지연됨, 병원 예약 필요', cls:'l'}); } });
+  (S.events||[]).forEach(e=>{ if(e.d>=tk && e.d<=d2s(to)) evs.push({d:e.d, t:e.t, cls:'u'}); });
+  evs=evs.filter(e=>e.cls!=='l');
+  evs.sort(function(a,b2){return a.d.localeCompare(b2.d);});
+  const all=overdue.concat(evs).slice(0,7);
+  el.innerHTML= all.length? all.map(function(e){
+    const dd=Math.round((new Date(e.d+'T00:00:00')-now)/86400000);
+    const dl= e.cls==='l'? '지연' : (dd===0?'오늘':'D-'+dd);
+    return '<div class="up-item"><span class="up-d"'+(e.cls==='l'?' style="color:var(--red);"':'')+'>'+dl+'</span><span>'+esc(e.t)+' <span class="muted small">('+e.d.slice(5)+')</span></span></div>';
+  }).join('') : '<p class="muted small">향후 60일 내 예정된 알림이 없습니다.</p>';
+}
+function bindCal(){
+  const p=document.getElementById('calPrev'); if(!p) return;
+  p.addEventListener('click',function(){ calM--; if(calM<0){calM=11;calY--;} renderCal(); animCal(); });
+  document.getElementById('calNext').addEventListener('click',function(){ calM++; if(calM>11){calM=0;calY++;} renderCal(); animCal(); });
+  document.getElementById('calToday').addEventListener('click',function(){ const n=new Date(); calY=n.getFullYear(); calM=n.getMonth(); calSel=todayKey(); renderCal(); animCal(); });
+  document.getElementById('cvAdd').addEventListener('click',function(){
+    const v=document.getElementById('cvTitle').value.trim();
+    if(!v){ alert('일정 내용을 입력하세요.'); return; }
+    if(!S.events) S.events=[];
+    S.events.push({d:calSel, t:v});
+    document.getElementById('cvTitle').value='';
+    saveState(); renderCal();
+  });
+}
+/* =============== 페이지 이동 (이전 장 / 다음 장) =============== */
+const TAB_ORDER=[['home','00 홈'],['cal','달력'],['prep','01 분양 준비'],['health','02 건강·병원'],['money','03 보험·비용'],['food','04 사료·간식'],['walk','05 산책·훈련·짖음'],['work','06 직장인 플랜'],['neuter','07 중성화'],['record','08 기록장'],['shop','09 구매 가이드'],['place','10 삼송 동네 가이드'],['emerg','11 응급 대처'],['behav','12 행동 사전'],['life','13 생활·계절·법규'],['index','14 인덱스·자료실']];
+function buildPagers(){
+  TAB_ORDER.forEach(function(tb,i){
+    const sec=document.getElementById('tab-'+tb[0]); if(!sec) return;
+    const div=document.createElement('div'); div.className='pager';
+    const prev=i>0?TAB_ORDER[i-1]:null, next=i<TAB_ORDER.length-1?TAB_ORDER[i+1]:null;
+    div.innerHTML=(prev?'<button class="pg" data-go="'+prev[0]+'">← '+prev[1]+'</button>':'<span></span>')
+                 +(next?'<button class="pg" data-go="'+next[0]+'">'+next[1]+' →</button>':'<span></span>');
+    div.querySelectorAll('.pg').forEach(function(bt){ bt.addEventListener('click',function(){ goTab(this.dataset.go); }); });
+    sec.appendChild(div);
+  });
+}
+/* =============== 구매·지도 링크 빌더 =============== */
+function buildLinks(){
+  const map={c:'https://search.naver.com/search.naver?query=', n:'https://search.naver.com/search.naver?query=', s:'https://search.naver.com/search.naver?query=', m:'https://map.naver.com/p/search/'};
+  document.querySelectorAll('a.lnk[data-q]').forEach(function(a){
+    a.href=map[a.dataset.s||'n']+encodeURIComponent(a.dataset.q);
+    a.target='_blank'; a.rel='noopener';
+  });
+}
+
+/* =============== 모바일 표 라벨 주입 =============== */
+function mobileTables(){
+  document.querySelectorAll('.tw table').forEach(function(tb){
+    const heads=[].map.call(tb.querySelectorAll('thead th'), function(th){ return th.textContent.trim(); });
+    tb.querySelectorAll('tbody tr').forEach(function(tr){
+      [].forEach.call(tr.children, function(td,i){ td.setAttribute('data-label', heads[i]||''); });
+    });
+  });
+}
+/* =============== 스크롤 등장 애니메이션 =============== */
+const REDUCED = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+function initReveal(){
+  const els=document.querySelectorAll('.card, .box, .tw, .trainer, .age-nav, .cal-wrap, h3.sec, ul.ck');
+  els.forEach(function(el){ el.classList.add('rv'); });
+  if(REDUCED || !('IntersectionObserver' in window)){ els.forEach(function(el){ el.classList.add('vis'); }); return; }
+  const io=new IntersectionObserver(function(entries){
+    entries.filter(function(e){ return e.isIntersecting; }).forEach(function(en,i){
+      en.target.style.transitionDelay=Math.min(i*60,240)+'ms';
+      en.target.classList.add('vis');
+      io.unobserve(en.target);
+      setTimeout(function(){ en.target.style.transitionDelay=''; }, 800);
+    });
+  }, {threshold:.08, rootMargin:'0px 0px -6% 0px'});
+  els.forEach(function(el){ io.observe(el); });
+}
+/* =============== 맨 위로 버튼 =============== */
+function initTopBtn(){
+  const b=document.createElement('button');
+  b.id='topBtn'; b.setAttribute('aria-label','맨 위로'); b.textContent='↑';
+  document.body.appendChild(b);
+  window.addEventListener('scroll', function(){ b.classList.toggle('show', window.scrollY>500); }, {passive:true});
+  b.addEventListener('click', function(){ window.scrollTo({top:0, behavior: REDUCED?'auto':'smooth'}); });
+}
+/* =============== 달력 전환 애니메이션 =============== */
+function animCal(){
+  if(REDUCED) return;
+  const g=document.getElementById('calGrid'); if(!g) return;
+  g.classList.remove('cal-anim'); void g.offsetWidth; g.classList.add('cal-anim');
+}
+
+/* =============== Init =============== */
+function renderAll(){ renderHome(); renderDaily(); renderWeight(); renderVisits(); renderExpenses(); renderStorage(); renderCal();
+  // re-sync inputs & checklists after import
+  const map={pfName:'name', pfBirth:'birth', pfHome:'home', pfReg:'reg'};
+  Object.keys(map).forEach(id=>{ document.getElementById(id).value=S.profile[map[id]]||''; });
+  document.getElementById('vetMain').value=S.vet.main||''; document.getElementById('vet24').value=S.vet.e24||'';
+  document.querySelectorAll('ul.ck[data-store]').forEach(ul=>{
+    ul.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+      const key=ul.dataset.store+':'+cb.id; cb.checked=!!S.checks[key];
+      const lb=ul.querySelector('label[for="'+cb.id+'"]'); if(lb) lb.classList.toggle('done', !!S.checks[key]);
+    });
+  });
+  document.querySelectorAll('#vaxTable tr[data-vx]').forEach(tr=>{
+    const v=S.vax[tr.dataset.vx]||{};
+    tr.querySelector('.vx-done').checked=!!v.done;
+    tr.querySelector('.vx-date').value=v.date||'';
+  });
+}
+document.addEventListener('DOMContentLoaded', async ()=>{
+  await loadState();
+  bindChecklists(); bindVax(); bindProfile(); bindWeight(); bindVisits(); bindExpenses(); bindIO(); bindCal(); buildPagers(); buildLinks(); mobileTables(); initReveal(); initTopBtn(); loadSyncCfg(); bindSync();
+  renderAll();
+  if(SYNC.on) startSync();
+});
+</script>
+</body>
+</html>
