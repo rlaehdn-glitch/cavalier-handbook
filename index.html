@@ -270,6 +270,24 @@ section.tab-panel.on{animation:panelIn .34s cubic-bezier(.22,.8,.36,1);}
   #topBtn{transition:none;}
 }
 </style>
+<style>
+/* =============== 15 성장 앨범 =============== */
+.alb-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:14px;}
+.alb-mon{grid-column:1/-1; font-weight:800; color:var(--chest-d); font-size:13px; margin:10px 0 2px;}
+.alb-cell{position:relative; aspect-ratio:1; border-radius:10px; overflow:hidden; background:#EFE7D8; border:1.5px solid var(--line); cursor:pointer;}
+.alb-th{width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .35s ease; display:block;}
+.alb-th.ld{opacity:1;}
+.alb-d{position:absolute; left:0; right:0; bottom:0; padding:12px 6px 4px; font-size:10.5px; font-weight:700; color:#fff; background:linear-gradient(transparent, rgba(38,32,24,.6)); text-align:right;}
+.alb-vid{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; text-decoration:none; background:#3A3128; color:#F6EAD6;}
+.alb-play{font-size:20px;}
+.alb-vm{font-size:11px; padding:0 6px; text-align:center; overflow:hidden; max-height:2.7em; word-break:break-all;}
+#albLb{position:fixed; inset:0; background:rgba(20,16,12,.93); z-index:80; display:none; flex-direction:column;}
+#albLb.on{display:flex;}
+#albLbImg{flex:1; width:100%; min-height:0; object-fit:contain;}
+.alb-lb-bar{display:flex; gap:8px; align-items:center; padding:12px 12px calc(12px + env(safe-area-inset-bottom));}
+.alb-cap{flex:1; font-size:13px; line-height:1.4; color:#F6EAD6; word-break:break-all;}
+label.btn{display:inline-flex; align-items:center; cursor:pointer;}
+</style>
 </head>
 <body>
 
@@ -304,6 +322,7 @@ section.tab-panel.on{animation:panelIn .34s cubic-bezier(.22,.8,.36,1);}
     <button class="tab-btn" data-tab="behav"><span class="num">12</span>행동 사전</button>
     <button class="tab-btn" data-tab="life"><span class="num">13</span>생활·법규</button>
     <button class="tab-btn" data-tab="index"><span class="num">14</span>자료실</button>
+    <button class="tab-btn" data-tab="album"><span class="num">15</span>성장 앨범</button>
   </div>
 </nav>
 
@@ -1111,6 +1130,7 @@ section.tab-panel.on{animation:panelIn .34s cubic-bezier(.22,.8,.36,1);}
       <button class="btn sm ghost" id="syncOff">끄기</button>
     </div>
     <p id="syncStat" class="muted small" style="margin:8px 0 0;">설정 안 됨</p>
+    <p class="muted small" style="margin:8px 0 0;">사진·영상은 <strong>15장 성장 앨범</strong>에 올릴 수 있습니다(이 동기화를 켠 뒤 사용).</p>
     <details style="margin-top:10px;">
       <summary class="small" style="cursor:pointer; font-weight:800; color:var(--chest-d);">최초 1회 설정법 — 한 사람만 하면 됩니다 (약 5분, 무료)</summary>
       <ol class="ls small" style="margin-top:8px;">
@@ -1546,6 +1566,54 @@ section.tab-panel.on{animation:panelIn .34s cubic-bezier(.22,.8,.36,1);}
     </div>
   </div>
 </section>
+<!-- ===================== 15 성장 앨범 ===================== -->
+<section class="tab-panel" id="tab-album">
+  <div class="ch-head">
+    <div class="ch-no">CHAPTER 15</div>
+    <h2 class="serif">성장 앨범 — 함께 쓰는 사진첩</h2>
+    <p class="lede">여기 올린 사진은 두 사람 폰에 똑같이 보입니다. 사진은 자동 압축돼 지금 쓰는 클라우드(파이어베이스)에 저장되고, 영상은 유튜브 '일부공개' 링크로 남깁니다.</p>
+  </div>
+
+  <div class="box box-warn" id="albGate" style="display:none;">
+    <div class="bt">⚠ 먼저 동기화를 켜주세요</div>
+    <p>앨범은 클라우드 저장 기능이라, 08 기록장 탭의 "기기 간 자동 동기화"(주소 + 가족 코드)를 켠 뒤 사용할 수 있습니다.</p>
+    <button class="btn sm" id="albGoSync">기록장 탭으로 이동</button>
+  </div>
+
+  <div id="albMain" style="display:none;">
+    <div class="card">
+      <div class="row" style="gap:8px; flex-wrap:wrap;">
+        <label class="btn" for="albFile">&#128247; 사진 올리기</label>
+        <input type="file" id="albFile" accept="image/*" multiple style="display:none;">
+        <button class="btn sm ghost" id="albVidBtn">&#9654; 영상 링크 추가</button>
+        <button class="btn sm ghost" id="albRefresh">새로고침</button>
+      </div>
+      <div id="albVidForm" style="display:none; margin-top:10px;">
+        <div class="row"><input type="text" id="albVidUrl" placeholder="유튜브 일부공개 링크 (https://…)" style="width:100%;"></div>
+        <div class="row" style="margin-top:8px;">
+          <input type="text" id="albVidMemo" placeholder="메모 (예: 첫 산책 영상)" style="flex:1; min-width:0;">
+          <button class="btn sm" id="albVidAdd">추가</button>
+        </div>
+      </div>
+      <p id="albStat" class="muted small" style="margin:10px 0 0;">불러오는 중…</p>
+    </div>
+
+    <div class="alb-grid" id="albGrid"></div>
+    <div style="text-align:center; margin-top:14px;"><button class="btn sm ghost" id="albMore" style="display:none;">더 보기</button></div>
+
+    <div class="box box-note" style="margin-top:16px;">
+      <div class="bt">✓ 사용 메모</div>
+      <ul class="ls">
+        <li>사진은 긴 변 1280px로 자동 압축됩니다 — <strong>원본은 폰 갤러리에 보관</strong>하세요.</li>
+        <li>무료 용량 1GB ≈ 2,000~3,000장. 위 상태줄에 사용량이 표시됩니다.</li>
+        <li>영상은: 유튜브 앱 → 업로드 → 공개 범위 <strong>'일부공개'</strong> → 링크 복사 → 위 칸에 붙여넣기.</li>
+        <li>사진을 누르면 크게 보이고, 그 화면에서 메모 수정·삭제할 수 있습니다. 삭제하면 두 폰 모두에서 사라집니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="albLb"><img id="albLbImg" alt=""><div class="alb-lb-bar"><div class="alb-cap" id="albLbCap"></div><button class="btn sm ghost" id="albLbMemo">메모</button><button class="btn sm ghost" id="albLbDel">삭제</button><button class="btn sm" id="albLbClose">닫기</button></div></div>
+</section>
 </main>
 
 <footer>
@@ -1678,6 +1746,7 @@ function goTab(id){
   tabBtns.forEach(b=>b.classList.toggle('on', b.dataset.tab===id));
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('on', p.id==='tab-'+id));
   window.scrollTo({top:0});
+  if(id==='album'){ try{ albumOnOpen(); }catch(e){} }
   const ab=document.querySelector('.tab-btn.on');
   if(ab && ab.scrollIntoView){ try{ ab.scrollIntoView({inline:'center', block:'nearest', behavior:'smooth'}); }catch(e){} }
 }
@@ -2002,7 +2071,7 @@ function bindCal(){
   });
 }
 /* =============== 페이지 이동 (이전 장 / 다음 장) =============== */
-const TAB_ORDER=[['home','00 홈'],['cal','달력'],['prep','01 분양 준비'],['health','02 건강·병원'],['money','03 보험·비용'],['food','04 사료·간식'],['walk','05 산책·훈련·짖음'],['work','06 직장인 플랜'],['neuter','07 중성화'],['record','08 기록장'],['shop','09 구매 가이드'],['place','10 삼송 동네 가이드'],['emerg','11 응급 대처'],['behav','12 행동 사전'],['life','13 생활·계절·법규'],['index','14 인덱스·자료실']];
+const TAB_ORDER=[['home','00 홈'],['cal','달력'],['prep','01 분양 준비'],['health','02 건강·병원'],['money','03 보험·비용'],['food','04 사료·간식'],['walk','05 산책·훈련·짖음'],['work','06 직장인 플랜'],['neuter','07 중성화'],['record','08 기록장'],['shop','09 구매 가이드'],['place','10 삼송 동네 가이드'],['emerg','11 응급 대처'],['behav','12 행동 사전'],['life','13 생활·계절·법규'],['index','14 인덱스·자료실'],['album','15 성장 앨범']];
 function buildPagers(){
   TAB_ORDER.forEach(function(tb,i){
     const sec=document.getElementById('tab-'+tb[0]); if(!sec) return;
@@ -2063,6 +2132,193 @@ function animCal(){
   g.classList.remove('cal-anim'); void g.offsetWidth; g.classList.add('cal-anim');
 }
 
+/* =============== 15 성장 앨범 =============== */
+const ALB={meta:null, thumbs:new Map(), fulls:new Map(), shown:24, lastRev:null, busy:false, cur:null};
+function albPath(p){ return SYNC.url.replace(/\/+$/,'')+'/handbook/'+SYNC.code+'-album/'+p+'.json'; }
+async function albFetch(p, method, body){
+  const ctl=new AbortController(); const to=setTimeout(function(){ ctl.abort(); }, 20000);
+  try{
+    const r=await fetch(albPath(p), {method:method||'GET', body:body||undefined, signal:ctl.signal});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    return await r.json();
+  }finally{ clearTimeout(to); }
+}
+function albStat(msg){ const el=document.getElementById('albStat'); if(el) el.textContent=msg; }
+function renderAlbumHead(){
+  if(!ALB.meta) return;
+  let p=0,v=0,bytes=0;
+  Object.values(ALB.meta).forEach(function(m){ if(m.t==='v') v++; else p++; bytes+=(m.s||0); });
+  albStat('사진 '+p+'장 · 영상 '+v+'개 · 약 '+(bytes/1048576).toFixed(1)+'MB / 1,000MB');
+}
+function albumOnOpen(){
+  const gate=document.getElementById('albGate'), main=document.getElementById('albMain');
+  if(!gate) return;
+  if(syncConfigured()){ gate.style.display='none'; main.style.display='block'; albumPull(true); }
+  else{ gate.style.display='block'; main.style.display='none'; }
+}
+async function albumPull(force){
+  if(!syncConfigured()||ALB.busy) return;
+  ALB.busy=true;
+  try{
+    const idx=await albFetch('idx');
+    const rev=(idx&&idx.rev)||0;
+    if(force || rev!==ALB.lastRev || !ALB.meta){
+      const meta=await albFetch('meta');
+      ALB.meta=meta||{}; ALB.lastRev=rev;
+      renderAlbum();
+    }
+  }catch(e){ albStat('불러오기 실패 — 인터넷 확인 후 "새로고침"을 눌러주세요.'); }
+  finally{ ALB.busy=false; }
+}
+const albThIO=('IntersectionObserver' in window)? new IntersectionObserver(function(es){
+  es.forEach(function(en){
+    if(!en.isIntersecting) return;
+    const img=en.target, id=img.dataset.aid;
+    albThIO.unobserve(img);
+    albFetch('th/'+id).then(function(v){ if(v){ ALB.thumbs.set(id,v); img.src=v; img.classList.add('ld'); } }).catch(function(){});
+  });
+},{rootMargin:'250px'}) : null;
+function renderAlbum(){
+  renderAlbumHead();
+  const grid=document.getElementById('albGrid'); if(!grid||!ALB.meta) return;
+  const ids=Object.keys(ALB.meta).sort(function(a,b){ return (ALB.meta[b].at||0)-(ALB.meta[a].at||0); });
+  const show=ids.slice(0,ALB.shown);
+  let out='', lastMon='';
+  show.forEach(function(id){
+    const m=ALB.meta[id]; const d=m.d||''; const mon=d.slice(0,7);
+    if(mon && mon!==lastMon){ lastMon=mon; out+='<div class="alb-mon">'+esc(mon.replace('-','년 '))+'월</div>'; }
+    const dd=esc(d.slice(5).replace('-','.'));
+    if(m.t==='v'){
+      out+='<a class="alb-cell alb-vid" href="'+esc(m.u||'#')+'" target="_blank" rel="noopener"><span class="alb-play">&#9654;</span><span class="alb-vm">'+esc(m.m||'영상')+'</span><span class="alb-d">'+dd+'</span></a>';
+    }else{
+      out+='<div class="alb-cell" data-open="'+id+'"><img class="alb-th" data-aid="'+id+'" alt=""><span class="alb-d">'+dd+'</span></div>';
+    }
+  });
+  grid.innerHTML = out || '<p class="muted small" style="grid-column:1/-1;">아직 사진이 없습니다. 위의 "사진 올리기"로 첫 장을 남겨보세요.</p>';
+  document.getElementById('albMore').style.display = ids.length>ALB.shown ? 'inline-block' : 'none';
+  grid.querySelectorAll('img.alb-th').forEach(function(img){
+    const id=img.dataset.aid;
+    if(ALB.thumbs.has(id)){ img.src=ALB.thumbs.get(id); img.classList.add('ld'); }
+    else if(albThIO){ albThIO.observe(img); }
+    else{ albFetch('th/'+id).then(function(v){ if(v){ img.src=v; img.classList.add('ld'); ALB.thumbs.set(id,v); } }).catch(function(){}); }
+  });
+}
+function albCompress(file, maxSide, q){
+  return new Promise(function(res, rej){
+    const url=URL.createObjectURL(file);
+    const img=new Image();
+    img.onload=function(){
+      try{
+        const sc=Math.min(1, maxSide/Math.max(img.width,img.height));
+        const w=Math.max(1,Math.round(img.width*sc)), h=Math.max(1,Math.round(img.height*sc));
+        const c=document.createElement('canvas'); c.width=w; c.height=h;
+        c.getContext('2d').drawImage(img,0,0,w,h);
+        URL.revokeObjectURL(url);
+        res(c.toDataURL('image/jpeg', q));
+      }catch(e){ rej(e); }
+    };
+    img.onerror=function(){ URL.revokeObjectURL(url); rej(new Error('decode')); };
+    img.src=url;
+  });
+}
+async function albBumpIdx(){
+  try{ const rev=Date.now(); await albFetch('idx','PUT',JSON.stringify({rev:rev})); ALB.lastRev=rev; }catch(e){}
+}
+function bindAlbum(){
+  const f=document.getElementById('albFile'); if(!f) return;
+  document.getElementById('albGoSync').addEventListener('click', function(){ goTab('record'); });
+  f.addEventListener('change', async function(){
+    const files=Array.prototype.slice.call(this.files,0,10);
+    this.value='';
+    if(!files.length) return;
+    if(!syncConfigured()){ alert('08 기록장 탭에서 동기화를 먼저 켜주세요.'); return; }
+    for(let i=0;i<files.length;i++){
+      albStat('올리는 중 '+(i+1)+'/'+files.length+'… (화면을 닫지 마세요)');
+      try{
+        let fu=await albCompress(files[i],1280,0.72);
+        if(fu.length>1200000) fu=await albCompress(files[i],1280,0.55);
+        const th=await albCompress(files[i],360,0.7);
+        const id='a'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+        await albFetch('full/'+id,'PUT',JSON.stringify(fu));
+        await albFetch('th/'+id,'PUT',JSON.stringify(th));
+        const meta={t:'p', d:todayKey(), m:'', at:Date.now(), s:fu.length+th.length};
+        await albFetch('meta/'+id,'PUT',JSON.stringify(meta));
+        ALB.meta=ALB.meta||{}; ALB.meta[id]=meta; ALB.thumbs.set(id,th);
+      }catch(e){ alert((i+1)+'번째 사진 업로드에 실패했습니다. 인터넷 확인 후 다시 시도해주세요.'); break; }
+    }
+    await albBumpIdx();
+    renderAlbum();
+  });
+  document.getElementById('albVidBtn').addEventListener('click', function(){
+    const fm=document.getElementById('albVidForm');
+    fm.style.display = fm.style.display==='none' ? 'block' : 'none';
+  });
+  document.getElementById('albVidAdd').addEventListener('click', async function(){
+    if(!syncConfigured()){ alert('08 기록장 탭에서 동기화를 먼저 켜주세요.'); return; }
+    const u=(document.getElementById('albVidUrl').value||'').trim();
+    const mm=(document.getElementById('albVidMemo').value||'').trim();
+    if(!/^https?:\/\//.test(u)){ alert('링크는 https:// 로 시작해야 합니다. 유튜브 공유 버튼에서 복사한 주소를 붙여넣어 주세요.'); return; }
+    const id='a'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+    const meta={t:'v', d:todayKey(), m:mm, u:u, at:Date.now(), s:0};
+    try{
+      await albFetch('meta/'+id,'PUT',JSON.stringify(meta));
+      await albBumpIdx();
+      ALB.meta=ALB.meta||{}; ALB.meta[id]=meta;
+      document.getElementById('albVidUrl').value=''; document.getElementById('albVidMemo').value='';
+      document.getElementById('albVidForm').style.display='none';
+      renderAlbum();
+    }catch(e){ alert('저장 실패 — 인터넷 확인 후 다시 시도해주세요.'); }
+  });
+  document.getElementById('albRefresh').addEventListener('click', function(){ albumPull(true); });
+  document.getElementById('albMore').addEventListener('click', function(){ ALB.shown+=24; renderAlbum(); });
+  document.getElementById('albGrid').addEventListener('click', function(ev){
+    const cell=ev.target.closest('[data-open]');
+    if(cell) albOpen(cell.dataset.open);
+  });
+  document.getElementById('albLbClose').addEventListener('click', albClose);
+  document.getElementById('albLbMemo').addEventListener('click', async function(){
+    if(!ALB.cur) return;
+    const m=ALB.meta[ALB.cur];
+    const v=prompt('메모 입력', m.m||'');
+    if(v===null) return;
+    m.m=v.trim();
+    try{ await albFetch('meta/'+ALB.cur,'PUT',JSON.stringify(m)); await albBumpIdx(); }catch(e){ alert('저장 실패'); }
+    document.getElementById('albLbCap').textContent=(m.d||'')+(m.m?' · '+m.m:'');
+    renderAlbum();
+  });
+  document.getElementById('albLbDel').addEventListener('click', async function(){
+    if(!ALB.cur) return;
+    if(!confirm('이 항목을 앨범에서 삭제할까요? 두 폰 모두에서 사라지며 되돌릴 수 없습니다.')) return;
+    const id=ALB.cur;
+    try{
+      await albFetch('meta/'+id,'DELETE');
+      await albFetch('th/'+id,'DELETE');
+      await albFetch('full/'+id,'DELETE');
+      await albBumpIdx();
+      delete ALB.meta[id]; ALB.thumbs.delete(id); ALB.fulls.delete(id);
+      albClose(); renderAlbum();
+    }catch(e){ alert('삭제 실패 — 인터넷 확인 후 다시 시도해주세요.'); }
+  });
+  setInterval(function(){
+    const p=document.getElementById('tab-album');
+    if(p && p.classList.contains('on') && document.visibilityState==='visible') albumPull(false);
+  }, 25000);
+}
+async function albOpen(id){
+  ALB.cur=id;
+  const m=ALB.meta[id]; if(!m) return;
+  document.getElementById('albLb').classList.add('on');
+  const im=document.getElementById('albLbImg'); im.src='';
+  document.getElementById('albLbCap').textContent=(m.d||'')+' — 불러오는 중…';
+  try{
+    let f=ALB.fulls.get(id);
+    if(!f){ f=await albFetch('full/'+id); if(ALB.fulls.size>10) ALB.fulls.clear(); ALB.fulls.set(id,f); }
+    im.src=f;
+    document.getElementById('albLbCap').textContent=(m.d||'')+(m.m?' · '+m.m:'');
+  }catch(e){ document.getElementById('albLbCap').textContent='불러오기 실패 — 닫고 다시 열어보세요.'; }
+}
+function albClose(){ document.getElementById('albLb').classList.remove('on'); document.getElementById('albLbImg').src=''; ALB.cur=null; }
+
 /* =============== Init =============== */
 function renderAll(){ renderHome(); renderDaily(); renderWeight(); renderVisits(); renderExpenses(); renderStorage(); renderCal();
   // re-sync inputs & checklists after import
@@ -2083,7 +2339,7 @@ function renderAll(){ renderHome(); renderDaily(); renderWeight(); renderVisits(
 }
 document.addEventListener('DOMContentLoaded', async ()=>{
   await loadState();
-  bindChecklists(); bindVax(); bindProfile(); bindWeight(); bindVisits(); bindExpenses(); bindIO(); bindCal(); buildPagers(); buildLinks(); mobileTables(); initReveal(); initTopBtn(); loadSyncCfg(); bindSync();
+  bindChecklists(); bindVax(); bindProfile(); bindWeight(); bindVisits(); bindExpenses(); bindIO(); bindCal(); buildPagers(); buildLinks(); mobileTables(); initReveal(); initTopBtn(); loadSyncCfg(); bindSync(); bindAlbum();
   renderAll();
   if(SYNC.on) startSync();
 });
