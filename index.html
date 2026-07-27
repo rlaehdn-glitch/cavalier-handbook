@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>카발리에 킹 찰스 스파니엘 · 첫 반려 핸드북</title>
+<title>빼꼼 · 카발리에 킹 찰스 스파니엘 핸드북</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
@@ -286,6 +286,11 @@ section.tab-panel.on{animation:panelIn .34s cubic-bezier(.22,.8,.36,1);}
 #albLbImg{flex:1; width:100%; min-height:0; object-fit:contain;}
 .alb-lb-bar{display:flex; gap:8px; align-items:center; padding:12px 12px calc(12px + env(safe-area-inset-bottom));}
 .alb-cap{flex:1; font-size:13px; line-height:1.4; color:#F6EAD6; word-break:break-all;}
+.alb-nav{position:absolute; top:50%; transform:translateY(-50%); width:44px; height:92px; display:flex; align-items:center; justify-content:center; background:rgba(20,16,12,.34); border:0; border-radius:12px; color:#F6EAD6; font-size:30px; line-height:1; cursor:pointer; z-index:2; padding:0 0 4px;}
+#albLbPrev{left:6px;} #albLbNext{right:6px;}
+.alb-nav[disabled]{opacity:.14; pointer-events:none;}
+.alb-nav:focus-visible{outline:2px solid #F6EAD6; outline-offset:2px;}
+.alb-cnt{font-size:12px; font-weight:800; color:#F6EAD6; opacity:.75; white-space:nowrap;}
 label.btn{display:inline-flex; align-items:center; cursor:pointer;}
 
 /* ---------- 오늘의 공지 팝업 ---------- */
@@ -304,13 +309,13 @@ label.btn{display:inline-flex; align-items:center; cursor:pointer;}
 
 <header class="hero">
   <div class="hero-in">
-    <div class="eyebrow">First Dog Handbook · Male · Est. 2026</div>
-    <h1 class="serif">카발리에 킹 찰스 스파니엘<br>첫 반려 핸드북
+    <div class="eyebrow">BBAEKKOM · BLENHEIM FEMALE · BORN 2026.05.20</div>
+    <h1 class="serif">카발리에 킹 찰스 스파니엘<br>빼꼼의 첫 반려 핸드북
       <span class="en">CAVALIER KING CHARLES SPANIEL — OWNER'S MANUAL &amp; RECORD BOOK</span>
     </h1>
     <p class="sub">분양 준비부터 중성화까지. 출근 08시 · 퇴근 18시 직장인 1인 가구 기준으로 설계된 실전 가이드 + 기록장. 해외 견종 클럽·수의학 연구 기반.</p>
     <div class="badges">
-      <span class="bdg">여아 기준</span><span class="bdg">직장인 플랜 내장</span><span class="bdg">기록 저장 기능</span>
+      <span class="bdg">빼꼼 · 여아 블렌하임</span><span class="bdg">2026.05.20생</span><span class="bdg">직장인 플랜 내장</span><span class="bdg">기록 저장</span>
     </div>
   </div>
 </header>
@@ -359,6 +364,7 @@ label.btn{display:inline-flex; align-items:center; cursor:pointer;}
     </div>
     <div id="stageTasks"></div>
   </div>
+  <div id="warrantyBox"></div>
 
   <h3 class="sec">오늘의 루틴 체크</h3>
   <div class="card">
@@ -454,7 +460,8 @@ label.btn{display:inline-flex; align-items:center; cursor:pointer;}
   <div class="box box-key" style="margin-top:14px;">
     <div class="bt">★ 달력이 자동으로 챙겨주는 것</div>
     <ul class="ls">
-      <li><strong>접종 1~6차 + 항체검사</strong> — 생후 7·9·11·13·15·17·19주 기준 예정일, 지나면 "지연" 표시</li>
+      <li><strong>접종 2~6차 + 항체검사</strong> — 계약서상 2차 예정일(2026.08.02) 기준 2주 간격으로 자동 계산, 지나면 "지연" 표시. 1차는 마리켄넬에서 완료 처리됨</li>
+      <li><strong>분양 보상기간 만료</strong> — 입양일 +15일(2026.08.09)</li>
       <li><strong>심장사상충·구충</strong> — 매월 반복 (생후 8주 이후부터)</li>
       <li><strong>성장 이정표</strong> — 사회화 골든타임 마감(14주) · 중성화 상담(6개월) · 성견 사료 전환 검토(10개월)</li>
       <li><strong>매년 생일</strong> — 연간검진 + 심장 청진 + 보강접종 알림 (카발리에 관리의 핵심)</li>
@@ -479,6 +486,7 @@ label.btn{display:inline-flex; align-items:center; cursor:pointer;}
     <textarea id="ntcText" rows="8" style="width:100%;" placeholder="예) 07:30에 사료 __g 급여 완료. 다음은 12시·16시·20시에 __g씩 불려서.&#10;아침 변 약간 무름 — 오늘 변 사진 찍어서 보내줘."></textarea>
     <div class="row" style="margin-top:10px;">
       <button class="btn" id="ntcSave">공지 저장</button>
+      <button class="btn sm ghost" id="ntcPrev">팝업 미리보기</button>
       <button class="btn ghost" id="ntcDel">공지 삭제</button>
     </div>
     <p class="muted small" id="ntcStat" style="margin:8px 0 0;"></p>
@@ -496,7 +504,7 @@ label.btn{display:inline-flex; align-items:center; cursor:pointer;}
       <li><strong>닫기</strong> — 이번만 닫습니다. 앱을 새로 열면 다시 보입니다.</li>
       <li><strong>오늘 다시 보지 않기</strong> — 그 폰에서 오늘 하루만 숨깁니다. 내일이 되거나 공지가 새로 저장되면 다시 뜹니다.</li>
       <li>공지는 <strong>1건만 유지</strong>됩니다 — 새로 저장하면 이전 내용을 덮어씁니다. 기록으로 남길 내용은 08 기록장에 적어주세요.</li>
-      <li>내가 쓴 공지는 내 폰에서는 오늘 팝업이 생략됩니다 (직접 썼으니까).</li>
+      <li>내가 쓴 공지는 내 폰에서는 오늘 팝업이 생략됩니다 (직접 썼으니까). 어떻게 보이는지는 <strong>[팝업 미리보기]</strong>로 언제든 확인할 수 있습니다.</li>
     </ul>
   </div>
 </section>
@@ -509,6 +517,50 @@ label.btn{display:inline-flex; align-items:center; cursor:pointer;}
     <p class="lede">카발리에는 "어디서 데려오느냐"가 향후 10년 병원비와 직결되는 견종입니다. 준비의 절반은 브리더 검증입니다.</p>
   </div>
 
+  <h3 class="sec">우리 아이 분양 기록 — 2026.07.25 계약</h3>
+  <div class="tw"><table>
+    <thead><tr><th style="width:104px;">항목</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td><strong>이름</strong></td><td><strong>빼꼼</strong> · 여아(암컷) · 블렌하임 · 중성화 전</td></tr>
+      <tr><td><strong>견종</strong></td><td>카발리에 킹 찰스 스파니엘</td></tr>
+      <tr><td><strong>생년월일</strong></td><td>2026년 5월 20일</td></tr>
+      <tr><td><strong>동물등록번호</strong></td><td>410160013217268</td></tr>
+      <tr><td><strong>분양일</strong></td><td>2026년 7월 25일 (방문 인도) · 켄넬 입수일 2026년 7월 12일</td></tr>
+      <tr><td><strong>분양가</strong></td><td>125만 원</td></tr>
+      <tr><td><strong>켄넬</strong></td><td>마리켄넬 · 생산업허가번호 357000003720190007</td></tr>
+      <tr><td><strong>분양업체</strong></td><td>바크바크 · <strong>010-2999-4743</strong><br><span class="muted small">경기 부천시 원미구 중동 1073-12 1층 · 동물판매업번호 3860000-045-2025-0005</span></td></tr>
+      <tr><td><strong>인계 상태</strong></td><td>건강상태 양호 · 수의사 치료기록 없음 · 약물투여기록 없음</td></tr>
+      <tr><td><strong>접종·구충</strong></td><td>1차 접종 완료(종합백신만) · 원충·구충 3회 완료<br><strong>2차 접종 예정 2026.08.02</strong> — 달력 탭에 반영됨</td></tr>
+      <tr><td><strong>급여 사료</strong></td><td>로얄캐닌 미니스타터 (급여법은 04장)</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="box box-warn">
+    <div class="bt">⚠ 보상기간 — 2026년 8월 9일까지 (분양일 +15일)</div>
+    <ul class="ls">
+      <li><strong>순서가 전부입니다. 병원보다 바크바크(010-2999-4743)에 먼저 연락.</strong> 계약서상 임의로 다른 병원에서 진료받으면 병원비를 청구할 수 없다고 되어 있습니다.</li>
+      <li><strong>보상되는 것</strong> — 15일 이내 전염성 질병(파보·코로나·홍역)이 의심되어 수의사 소견서 + 양성 반응으로 확인된 경우: 업체 지정병원에서 업체가 진료비 전액 부담, 완치 후 인계. 같은 기간 내 전염성 질병으로 폐사 시 환불 또는 동종 재분양.</li>
+      <li><strong>보상 안 되는 것</strong> — 단순 변심 환불·교환·반품 / 전염성 외 질병(위탁관리 시 1일 3만 원 별도 부담) / 분양 당시 확인되지 않은 <strong>선천 기형(슬개골 탈구·심장·간·뇌 질환)</strong>.</li>
+      <li>선천 기형이 보상에서 빠져 있다는 점이 카발리에에서는 특히 중요합니다. <strong>심장 잡음·슬개골은 이 15일 안에 확인해도 계약상 보상 대상이 아니므로</strong>, 대비책은 보상이 아니라 <u>펫보험 가입 타이밍</u>입니다(03장).</li>
+    </ul>
+  </div>
+
+  <h3 class="sec">계약서상 "보호자 책임"으로 분류되는 사유</h3>
+  <ul class="ls small">
+    <li>예방접종·구충제·심장사상충 예방약을 규칙적으로 하지 않은 경우</li>
+    <li>사료를 충분히 주지 않거나 물을 주지 않아 생긴 저혈당증</li>
+    <li>부적절한 식이로 인한 구토·설사 — 뼈, 족발, 갈비, 생선, 양파, 오징어, 어패류, 새우, 과일씨, 마늘, 고추 등 자극성 음식과 사람 음식. <strong>우유·초콜릿·포도 금지</strong></li>
+    <li>타박·낙상에 의한 뇌진탕·골절·외상</li>
+    <li>자가 치료로 인한 부작용</li>
+    <li>감기(비염·기관지염), 피부 질환(타 지역에서 전염)</li>
+    <li>분양 후 타 장소에서의 감염 — 애견미용실·병원·고수부지·공원·놀이공원 등</li>
+  </ul>
+  <div class="box box-key">
+    <div class="bt">★ 실전 요약</div>
+    <p>계약상 보호자 의무는 결국 세 가지입니다. <strong>① 접종·구충을 달력대로 지킬 것 ② 사람 음식을 주지 않을 것 ③ 낙상을 막을 것.</strong> ①은 달력 탭이 자동으로 챙기고, ②는 04장 금지 음식표, ③은 소파·침대 점프 방지(13장)로 관리합니다. 병원 진료기록은 버리지 말고 08장에 날짜와 함께 남기세요 — 분쟁이 생기면 그게 유일한 증빙입니다.</p>
+    <p class="muted small" style="margin-top:8px;">참고: 공정거래위원회 소비자분쟁해결기준(애완동물 판매업)은 "구입 후 15일 이내 폐사 시 동종 애완동물로 교환 또는 구입가 환급"을 기준으로 두고 있습니다. 계약서 개별 조항과 이 기준이 다를 경우 다툼의 여지가 있으므로, 실제 분쟁이 생기면 1372 소비자상담센터에 먼저 문의하는 것이 안전합니다. 이 문단은 일반 정보이며 법률 자문이 아닙니다.</p>
+  </div>
+
   <div class="box box-core">
     <div class="bt">■ 결론 먼저</div>
     <ul class="ls">
@@ -518,7 +570,7 @@ label.btn{display:inline-flex; align-items:center; cursor:pointer;}
     </ul>
   </div>
 
-  <h3 class="sec">건강한 남아 고르기 — 브리더 검증 체크리스트</h3>
+  <h3 class="sec">건강한 여아 고르기 — 브리더 검증 체크리스트</h3>
   <ul class="ck" data-store="prep">
     <li><input type="checkbox" id="p1"><label for="p1"><strong>부모견 심장 청진·검진 이력 확인</strong> — 카발리에 최우선. "검사했다" 말이 아니라 기록(진단서·검진 결과)으로. 부모 모두 잡음 없는 개체가 이상적</label></li>
     <li><input type="checkbox" id="p2"><label for="p2"><strong>켄넬 직접 방문</strong> — 방문을 거절하는 곳은 제외. 부모견·형제견이 크는 환경을 눈으로 확인</label></li>
@@ -620,7 +672,7 @@ label.btn{display:inline-flex; align-items:center; cursor:pointer;}
   <div class="tw"><table id="vaxTable">
     <thead><tr><th style="width:52px;">완료</th><th>회차 / 시기</th><th>접종 내용</th><th style="width:150px;">접종일</th></tr></thead>
     <tbody>
-      <tr data-vx="v1"><td><input type="checkbox" class="vx-done"></td><td><strong>1차</strong> · 6~8주</td><td>종합백신(DHPPL) 1차 + 코로나 장염 1차</td><td><input type="date" class="vx-date"></td></tr>
+      <tr data-vx="v1"><td><input type="checkbox" class="vx-done"></td><td><strong>1차</strong> · 6~8주</td><td>종합백신(DHPPL) 1차 <span class="muted small">— 마리켄넬에서 완료(코로나 장염은 미접종). 원충·구충 3회도 완료</span></td><td><input type="date" class="vx-date"></td></tr>
       <tr data-vx="v2"><td><input type="checkbox" class="vx-done"></td><td><strong>2차</strong> · 8~10주</td><td>종합백신 2차 + 코로나 장염 2차</td><td><input type="date" class="vx-date"></td></tr>
       <tr data-vx="v3"><td><input type="checkbox" class="vx-done"></td><td><strong>3차</strong> · 10~12주</td><td>종합백신 3차 + 켄넬코프 1차</td><td><input type="date" class="vx-date"></td></tr>
       <tr data-vx="v4"><td><input type="checkbox" class="vx-done"></td><td><strong>4차</strong> · 12~14주</td><td>종합백신 4차 + 켄넬코프 2차</td><td><input type="date" class="vx-date"></td></tr>
@@ -737,7 +789,7 @@ label.btn{display:inline-flex; align-items:center; cursor:pointer;}
       <tr><td>용품 일체 (크레이트·펜스·식기·하네스 등)</td><td>30~60만 원</td><td>01장 리스트 기준</td></tr>
       <tr><td>접종 풀코스 + 항체검사 + 초기 검진</td><td>30~45만 원</td><td>회당 2~5만 원 수준 × 횟수 + 검사</td></tr>
       <tr><td>동물등록(내장칩)</td><td>3~5만 원</td><td>지자체 지원 시 더 저렴</td></tr>
-      <tr><td>중성화(수컷)</td><td>20~40만 원</td><td>07장 참고, 사전검사 포함 여부 확인</td></tr>
+      <tr><td>중성화(암컷)</td><td>30~60만 원</td><td>07장 참고. 개복 수술이라 수컷보다 높음 · 사전검사 포함 여부 확인</td></tr>
       <tr><td><strong>합계 (분양가 제외)</strong></td><td><strong>약 85~150만 원</strong></td><td>분양가는 별도</td></tr>
     </tbody>
   </table></div>
@@ -788,6 +840,28 @@ label.btn{display:inline-flex; align-items:center; cursor:pointer;}
     <li><strong>사료 교체는 7일 법칙:</strong> 기존:신규 = 1일차 75:25 → 3일차 50:50 → 5일차 25:75 → 7일차 100%. 급하게 바꾸면 설사.</li>
     <li>물은 항상 신선하게, 하루 1회 이상 교체. 자율 급수.</li>
   </ul>
+
+  <h3 class="sec">지금 급여 — 마리켄넬 인계 지침 (2개월령 기준)</h3>
+  <div class="box box-key">
+    <div class="bt">★ 계약서에 적힌 급여법</div>
+    <ul class="ls">
+      <li>사료: <strong>로얄캐닌 미니스타터.</strong> 다른 사료로 바꾸려면 위의 7일 교체법으로 천천히.</li>
+      <li>하루 총량: <strong>종이컵 1/2이 2개월령 권장량.</strong></li>
+      <li>1회 급여: 불린 사료 기준 <strong>성인 숟가락 1~2스푼, 하루 3번.</strong></li>
+      <li>불리는 법: 찬물에 뜨거운 물을 섞어 <strong>40~50분</strong> 불린 뒤 급여. 건사료로 넘어갈수록 물그릇 물을 더 신경 쓸 것.</li>
+      <li>증량은 <strong>한 번에 늘리지 말고 10%씩.</strong></li>
+      <li>목욕은 <strong>접종 후 4일 이후</strong>부터. 귀 청소는 <strong>7~10일에 1회</strong>(늘어진 귀 견종이라 빠뜨리지 말 것).</li>
+    </ul>
+  </div>
+  <div class="box box-warn">
+    <div class="bt">⚠ 하루 3번인데 08~18시 부재 — 어떻게 맞출 것인가</div>
+    <ul class="ls">
+      <li><strong>07:00 · 18:30 · 22:00</strong> 3회로 배치하면 출퇴근과 충돌하지 않습니다. 저녁 쪽에 몰려 보여도 2~3개월령에는 굶기는 시간을 줄이는 쪽이 안전합니다.</li>
+      <li>낮 공백이 길 때 가장 큰 위험은 <strong>저혈당</strong>입니다. 계약서에도 "사료 부족 급여로 인한 저혈당증"이 보호자 책임 사유로 명시돼 있습니다.</li>
+      <li>자동급식기로 낮 1회를 추가하면 안전 마진이 생깁니다. 단 <u>불린 사료는 상하므로 낮 급여는 반드시 건사료</u>로.</li>
+      <li>저혈당 신호: 축 늘어짐 · 비틀거림 · 잇몸 창백 · 반응 둔해짐. 이때는 꿀이나 설탕물을 잇몸에 발라주고 <strong>즉시 병원</strong>(11장).</li>
+    </ul>
+  </div>
 
   <h3 class="sec">체중 관리 — 카발리에의 핵심 과제</h3>
   <ul class="ls">
@@ -1053,36 +1127,37 @@ label.btn{display:inline-flex; align-items:center; cursor:pointer;}
 <section class="tab-panel" id="tab-neuter">
   <div class="ch-head">
     <div class="ch-no">CHAPTER 07</div>
-    <h2 class="serif">중성화 — 남아 기준 판단과 절차</h2>
-    <p class="lede">감정이 아니라 근거로 결정합니다. 카발리에 남아는 연구 근거가 비교적 명확한 편입니다.</p>
+    <h2 class="serif">중성화 — 여아 기준 판단과 절차</h2>
+    <p class="lede">감정이 아니라 근거로 결정합니다. 암컷 중성화는 유선종양·자궁축농증 예방이라는 뚜렷한 의학적 이유가 있고, 그래서 <strong>시기</strong>가 남아보다 중요합니다.</p>
   </div>
 
   <div class="box box-core">
     <div class="bt">■ 결론 먼저</div>
     <ul class="ls">
-      <li>카발리에 남아의 통상 권장 시기는 <strong>생후 6~12개월</strong>. UC Davis의 35개 견종 중성화 연구에서 카발리에는 <strong>중성화 시기에 따른 관절 질환·주요 암 위험 증가가 확인되지 않은 견종</strong> — 시기 선택이 비교적 자유로운 편.</li>
-      <li>실무 권장: <strong>마킹·마운팅이 습관으로 굳기 전(대략 6~9개월)</strong>에 하는 게 행동 관리상 유리. 최종 시기는 주치의와 성장 상태 보고 결정.</li>
-      <li>수술 자체는 수컷 기준 비교적 간단(일반적으로 당일 귀가). 관건은 <strong>수술 후 10~14일 관리.</strong></li>
+      <li>실무 권장 시기는 <strong>첫 발정 전</strong>. 소형견 첫 발정은 보통 생후 6~10개월에 오므로, 현실적으로는 <strong>생후 6~8개월</strong>에 실행하는 경우가 많습니다.</li>
+      <li>UC Davis의 35개 견종 중성화 연구에서 카발리에는 암수 모두 <strong>중성화 시기에 따른 관절 질환·주요 암 위험 증가가 확인되지 않은 견종</strong> — 견종 자체의 시기 리스크는 낮은 편.</li>
+      <li>따라서 시기 판단의 축은 <strong>유선종양 예방 효과</strong>입니다. 널리 인용되는 보고에 따르면 유선종양 발생 위험은 첫 발정 전 수술 시 가장 낮고, 발정을 한 번·두 번 겪을수록 뚜렷이 올라갑니다(다만 이 수치의 근거 수준은 논쟁이 있습니다).</li>
+      <li>암컷 수술은 <strong>개복(난소 또는 난소·자궁 제거)</strong>이라 수컷보다 범위가 큼 — 당일 귀가 또는 1박은 병원 방침에 따름. 관건은 <strong>수술 후 10~14일 관리.</strong></li>
     </ul>
   </div>
 
-  <h3 class="sec">왜 하는가 — 남아 기준 득실</h3>
+  <h3 class="sec">왜 하는가 — 여아 기준 득실</h3>
   <div class="grid2">
     <div class="card">
       <div class="ct">기대 효과</div>
       <ul class="ls small" style="margin-left:16px;">
-        <li>고환 종양 원천 차단, 전립선 비대 등 호르몬성 질환 위험 감소</li>
-        <li>마킹(실내 다리들기)·마운팅·수컷 간 신경전 감소 경향</li>
-        <li>발정 암컷 냄새에 따른 탈주 욕구·스트레스 제거</li>
-        <li>1인 가구 부재 시간이 긴 환경에서 호르몬성 스트레스 요인 축소</li>
+        <li><strong>자궁축농증 원천 차단</strong> — 자궁이 곪는 응급 질환. 중성화 안 한 암컷에서 노령까지 상당 비율이 겪는 것으로 보고되며, 발병하면 응급 수술이라 비용·위험이 훨씬 큼</li>
+        <li><strong>유선종양 위험 감소</strong> — 첫 발정 전 수술일수록 예방 효과가 크다고 보고됨</li>
+        <li>연 2회 전후의 발정기 관리(2~3주 출혈, 예민함, 상상임신)에서 해방</li>
+        <li>원치 않는 임신 차단 + 1인 가구 부재 시간이 긴 환경에서 관리 변수 축소</li>
       </ul>
     </div>
     <div class="card">
       <div class="ct">감수할 것</div>
       <ul class="ls small" style="margin-left:16px;">
-        <li>전신마취 수술 (사전검사로 위험 관리)</li>
+        <li>전신마취 + 개복 수술 (사전검사로 위험 관리 · 수컷보다 회복 관리가 중요)</li>
         <li>기초대사 감소 → <strong>살찌기 쉬워짐.</strong> 급여량 10~20% 조정 필요(04장)</li>
-        <li>이미 학습으로 굳은 행동(마킹 습관 등)은 수술로 자동 소거되지 않음 — 훈련 병행</li>
+        <li>중성화 암컷에서 요실금이 보고됨 — 대형견에 더 흔하고 소형견은 빈도가 낮은 편. 이상 시 병원 상담</li>
       </ul>
     </div>
   </div>
@@ -1090,14 +1165,14 @@ label.btn{display:inline-flex; align-items:center; cursor:pointer;}
   <h3 class="sec">수술 절차와 준비</h3>
   <ol class="ls">
     <li><strong>사전:</strong> 혈액검사 등 마취 전 검사(비용 포함 여부 확인) · 수술 전 금식 지시(통상 전날 밤부터) 준수.</li>
-    <li><strong>당일:</strong> 오전 수술 → 통상 당일 저녁 귀가. 마취 깬 직후 비틀거림·멍함은 정상 범위.</li>
+    <li><strong>당일:</strong> 오전 수술 → 당일 저녁 귀가 또는 1박(개복 수술이라 병원 방침에 따름). 마취 깬 직후 비틀거림·멍함은 정상 범위.</li>
     <li><strong>수술 후 10~14일:</strong> <u>넥카라(또는 수술복) 상시 착용</u> — 핥으면 봉합 부위 감염·벌어짐. 여기서 사고의 90%가 남. 격한 놀이·점프·목욕 금지, 짧은 배변 산책만. 처방약 시간 엄수.</li>
     <li><strong>경과 확인:</strong> 수술 부위 붓기·진물·냄새, 식욕·배변 정상 여부 매일 확인 → 이상 시 병원. 실밥 제거(자연 흡수사면 생략)까지 완주.</li>
   </ol>
 
   <h3 class="sec">비용·체크</h3>
   <ul class="ls">
-    <li>수컷 중성화 대략 <strong>20~40만 원</strong>(사전검사·처치 포함 여부로 차이. 병원별 견적 확인).</li>
+    <li>암컷 중성화 대략 <strong>30~60만 원</strong>(개복 수술이라 수컷보다 높음. 사전검사·처치·입원 포함 여부로 차이가 크니 병원별 견적 확인).</li>
     <li>펫보험은 중성화(예방 목적 수술)를 보장하지 않는 게 일반적 — 비용은 자비 계획.</li>
     <li>지자체에 따라 등록동물 중성화 지원 사업이 있는 경우가 있으니 시 공고 확인.</li>
     <li>수술 전 확인 질문 3: ① 마취 전 검사 포함인가 ② 통증 관리(진통제) 계획은 ③ 야간 이상 시 연락 체계는.</li>
@@ -1105,8 +1180,22 @@ label.btn{display:inline-flex; align-items:center; cursor:pointer;}
 
   <div class="box box-key">
     <div class="bt">★ 시기 결정 간단 가이드</div>
-    <p><strong>6개월 검진 때 주치의와 성장 상태를 보고 6~9개월 사이로 잡는다.</strong> 이르게 하는 이유(행동 습관화 전, 관리 단순)와 늦추는 이유(성장 완료 대기)를 저울질했을 때, 카발리에는 연구상 시기 리스크 차이가 확인되지 않아 관리 편익 쪽으로 결정해도 무리가 없는 견종입니다. 단, 잠복고환(고환이 안 내려온 경우)이면 방침이 달라지므로 검진 때 반드시 확인.</p>
+    <p><strong>6개월 검진 때 주치의와 성장 상태를 보고, 첫 발정이 오기 전으로 날짜를 잡는다.</strong> 이르게 하는 이유(유선종양 예방 효과 최대, 자궁·혈관이 덜 발달해 수술 부담이 적음)와 늦추는 이유(성장·성숙 완료 대기)를 저울질했을 때, 카발리에는 연구상 시기 리스크 차이가 확인되지 않아 예방 편익 쪽으로 결정해도 무리가 없는 견종입니다.</p>
+    <p style="margin-top:8px;"><strong>첫 발정이 먼저 왔다면</strong> 당황하지 말 것. 발정 중에는 자궁·난소 혈관이 부풀어 출혈 위험이 커지므로, 보통 <strong>발정이 끝나고 2~3개월 뒤</strong>로 일정을 다시 잡습니다. 예방 효과가 0이 되는 게 아니라 최대치가 아닐 뿐입니다.</p>
   </div>
+
+  <h3 class="sec">중성화 전이라면 — 첫 발정 관리</h3>
+  <div class="tw"><table>
+    <thead><tr><th>구분</th><th>알아둘 것</th></tr></thead>
+    <tbody>
+      <tr><td><strong>시기</strong></td><td>소형견 첫 발정은 보통 생후 6~10개월. 이후 연 2회 전후 주기(개체차 큼)</td></tr>
+      <tr><td><strong>신호</strong></td><td>외음부가 붓고 혈액성 분비물 · 소변을 자주 봄 · 평소보다 예민하거나 반대로 달라붙음 · 식욕 변화</td></tr>
+      <tr><td><strong>기간</strong></td><td>출혈은 통상 1~2주, 전체 발정 주기는 2~3주 정도로 봄</td></tr>
+      <tr><td><strong>집에서 할 일</strong></td><td>매너팬티(생리팬티) 준비 · 잠자리와 이동장에 방수패드 · 자주 갈아주고 외음부 주변 청결 유지</td></tr>
+      <tr><td><strong>산책</strong></td><td>이 기간 <u>애견운동장·카페 등 자유 견 접촉 공간은 피함.</u> 짧은 리드 산책만. 수컷이 냄새를 맡고 따라붙을 수 있으니 목줄·하네스 이중 확인</td></tr>
+      <tr><td><strong>병원 갈 상황</strong></td><td>발정이 끝난 뒤 <strong>2~8주</strong>에 무기력·물 많이 마심·구토·고름 같은 분비물 → <strong>자궁축농증 의심, 즉시 병원</strong>. 출혈이 3주 넘게 계속돼도 진료</td></tr>
+    </tbody>
+  </table></div>
 </section>
 <!-- ===================== 08 기록장 ===================== -->
 <section class="tab-panel" id="tab-record">
@@ -1124,7 +1213,7 @@ label.btn{display:inline-flex; align-items:center; cursor:pointer;}
       <div class="field"><label>입양일 (데려온 날)</label><input type="date" id="pfHome"></div>
       <div class="field"><label>등록번호 (동물등록 후 기입)</label><input type="text" id="pfReg" placeholder="동물등록번호"></div>
     </div>
-    <p class="muted small">생년월일을 입력하면 홈 탭에 월령과 "지금 단계 할 일"이 자동 표시됩니다.</p>
+    <p class="muted small">분양계약서 내용(빼꼼 · 2026.05.20생 · 입양 2026.07.25 · 등록번호 410160013217268)이 자동으로 채워져 있습니다. 고치면 그대로 저장되고 상대 기기에도 반영됩니다.</p>
   </div>
 
   <h3 class="sec">체중 기록 <span class="muted small" style="font-weight:400;">— 월 1회 이상 권장</span></h3>
@@ -1431,7 +1520,7 @@ label.btn{display:inline-flex; align-items:center; cursor:pointer;}
     <thead><tr><th>행동</th><th>진짜 원인</th><th>해법</th></tr></thead>
     <tbody>
       <tr><td><strong>마운팅</strong></td><td>성적 의미만이 아니라 흥분·스트레스 해소 행동</td><td>무반응+조용히 자리 이탈 · 어떤 상황에서 반복되는지 파악해 그 자극을 관리 · 중성화로 감소 경향(07장)</td></tr>
-      <tr><td><strong>실내 마킹</strong></td><td>중성화 전 수컷 호르몬 + 영역 표시 학습</td><td>발견 즉시 무반응 청소(유린오프) — 혼내면 몰래 함 · 중성화 + 배변 재훈련(05장)</td></tr>
+      <tr><td><strong>실내 마킹</strong></td><td>영역 표시 학습 + 호르몬 영향(암컷은 드문 편이나 발정 전후 늘 수 있음)</td><td>발견 즉시 무반응 청소(유린오프) — 혼내면 몰래 함 · 중성화 후 감소 경향 + 배변 재훈련(05장)</td></tr>
       <tr><td><strong>식분증(변 먹기)</strong></td><td>퍼피기 탐색 행동으로 흔함. 관심 끌기로 강화되기도</td><td>배변 즉시 치워 기회 차단 · 먹어도 소리지르지 않기(관심=보상) · "바꾸자" 명령 활용 · 지속 시 소화흡수·기생충 검진</td></tr>
       <tr><td><strong>자원 지키기</strong><br><span class="muted small">밥·장난감 곁 으르렁</span></td><td>"뺏긴 경험"의 학습 — 지켜야 산다고 믿음</td><td>뺏지 말고 <strong>더 좋은 것과 교환</strong>("바꾸자", 05장) · 밥 먹을 때 다가가며 간식 던져 "사람 접근=좋은 일" 재학습 · 심하면 전문가</td></tr>
       <tr><td><strong>산책 중 주저앉기</strong></td><td>공포(사회화 부족) / 더위 / 통증(슬개골) 셋 중 하나</td><td>억지로 끌지 않기 · 무서워하는 대상과 거리 두고 간식 · 더운 날이면 즉시 귀가 · 반복되면 슬개골·발바닥 진료</td></tr>
@@ -1658,18 +1747,19 @@ label.btn{display:inline-flex; align-items:center; cursor:pointer;}
         <li>사진은 긴 변 1280px로 자동 압축됩니다 — <strong>원본은 폰 갤러리에 보관</strong>하세요.</li>
         <li>무료 용량 1GB ≈ 2,000~3,000장. 위 상태줄에 사용량이 표시됩니다.</li>
         <li>영상은: 유튜브 앱 → 업로드 → 공개 범위 <strong>'일부공개'</strong> → 링크 복사 → 위 칸에 붙여넣기.</li>
-        <li>사진을 누르면 크게 보이고, 그 화면에서 메모 수정·삭제할 수 있습니다. 삭제하면 두 폰 모두에서 사라집니다.</li>
+        <li>사진을 누르면 크게 보이고, <strong>좌우로 밀거나(스와이프) 양옆 화살표를 누르면</strong> 닫지 않고 다음·이전 사진으로 넘어갑니다. PC에서는 좌우 방향키, 닫기는 Esc.</li>
+        <li>확대 화면에서 메모 수정·삭제가 가능합니다. 삭제하면 두 폰 모두에서 사라집니다.</li>
       </ul>
     </div>
   </div>
 
-  <div id="albLb"><img id="albLbImg" alt=""><div class="alb-lb-bar"><div class="alb-cap" id="albLbCap"></div><button class="btn sm ghost" id="albLbMemo">메모</button><button class="btn sm ghost" id="albLbDel">삭제</button><button class="btn sm" id="albLbClose">닫기</button></div></div>
+  <div id="albLb"><img id="albLbImg" alt=""><button class="alb-nav" id="albLbPrev" aria-label="이전 사진">&#8249;</button><button class="alb-nav" id="albLbNext" aria-label="다음 사진">&#8250;</button><div class="alb-lb-bar"><span class="alb-cnt" id="albLbCnt"></span><div class="alb-cap" id="albLbCap"></div><button class="btn sm ghost" id="albLbMemo">메모</button><button class="btn sm ghost" id="albLbDel">삭제</button><button class="btn sm" id="albLbClose">닫기</button></div></div>
 </section>
 </main>
 
 <footer>
   <div class="foot-in">
-    <strong>카발리에 킹 찰스 스파니엘 · 첫 반려 핸드북</strong> — 여아 · 직장인 1인 가구 기준 · 2026<br>
+    <strong>카발리에 킹 찰스 스파니엘 · 첫 반려 핸드북</strong> — 빼꼼(여아 · 블렌하임 · 2026.05.20생) · 직장인 1인 가구 기준<br>
     본 문서는 일반 정보 제공 목적이며, 개별 건강·행동 판단은 수의사 및 행동 전문가 상담이 우선합니다. 비용·제도(동물등록, 펫보험 등)는 2026년 기준 대략 범위로, 시점·지역·병원에 따라 달라질 수 있습니다.<br>
     참고: cavalierhealth.org · UFAW · 영국 켄넬클럽/견종 클럽 관리 지침 · UC Davis 견종별 중성화 연구 · ACVIM 심장 질환 가이드라인 · 국내 5대 손해보험사 펫보험 공시자료 · 동물보호법 및 시행규칙(찾기쉬운 생활법령정보) · 코레일·SRT 등 운송사 반려동물 규정 · 국가동물보호정보시스템(animal.go.kr) — 전체 참고문헌·심화 자료는 14장 자료실
   </div>
@@ -1849,6 +1939,14 @@ function bindNotice(){
     const ta=document.getElementById('ntcText'); if(ta) ta.value='';
     const st=document.getElementById('ntcStat'); if(st) st.textContent='삭제됨';
   });
+  document.getElementById('ntcPrev').addEventListener('click', function(){
+    const t=(document.getElementById('ntcText').value||'').trim() || ((S.notice&&S.notice.text)||'');
+    if(!t){ alert('미리 볼 내용이 없습니다. 위 칸에 먼저 써주세요.'); return; }
+    const by=(document.getElementById('ntcBy').value||'').trim();
+    document.getElementById('ntcPopMeta').textContent=(by?by+' · ':'')+'미리보기';
+    document.getElementById('ntcPopBody').textContent=t;
+    document.getElementById('ntcOvl').classList.add('on');
+  });
   document.getElementById('ntcTpl').addEventListener('click', function(){
     const ta=document.getElementById('ntcText');
     const d=todayKey().slice(5).replace('-','/');
@@ -1880,11 +1978,33 @@ const STAGES = [
  {min:0, max:7, name:'가정 대기기 (생후 8주 미만)', tasks:['아직 모견 곁에 있어야 할 시기 — 8주 미만 인도는 거절(01장)','용품 준비·집 안전화·브리더 검증 체크리스트 진행','단골 병원·24시 병원 정해서 홈 탭에 저장']},
  {min:8, max:11, name:'적응 · 1차 접종기 (2~3개월)', tasks:['데려온 지 3일 내 첫 건강검진(분변 포함)','이상 없으면 그 주에 펫보험 가입 완료(03장 — 타이밍이 전부)','접종 스케줄 개시(02장 표에 날짜 기록)','배변·크레이트 훈련 시작, 밥·잠 시간 고정','실내 사회화(소리 둔감화) + 안고 나가는 구경 산책','짧은 단독 시간 연습 시작 — 같은 집 다른 방부터(06장)','낮 케어 계획 가동(연차·가족·펫시터) — 월령+1시간 룰']},
  {min:12, max:15, name:'사회화 골든타임 막바지 (3~4개월)', tasks:['사회화 체크리스트 집중 소화(05장) — 14주 전이 가장 효율 높음','접종 이어가기 + 이름 반응·앉아 완성','출근 신호 둔감화 훈련(열쇠·신발) 병행','동물등록(2개월 이상 의무) 완료 확인']},
- {min:16, max:25, name:'이갈이 · 기초 훈련기 (4~6개월)', tasks:['접종 완료 + 항체가검사 → 본격 바닥 산책 개시','산책량 = 월령×5분×2회 (예: 5개월=25분씩)','이갈이 입질 대응(05장) — 손 무는 습관 여기서 결정','기본 명령어 8종 진도 나가기(05장 체크리스트)','유치원 등원 검토(접종 완료 후) — 사회화+낮 공백 해소','6개월 검진 때 중성화 시기 상담(07장)']},
- {min:26, max:39, name:'사춘기 · 중성화 검토기 (6~9개월)', tasks:['중성화 실행 창(통상 6~9개월) — 주치의와 확정','"말 안 듣는 시기" 정상 — 규칙을 바꾸지 말고 버티기','단독 시간 계단식 확장 계속(06장 5단계)','중성화 후 급여량 10~20% 조정 상담(04장)']},
+ {min:16, max:25, name:'이갈이 · 기초 훈련기 (4~6개월)', tasks:['접종 완료 + 항체가검사 → 본격 바닥 산책 개시','산책량 = 월령×5분×2회 (예: 5개월=25분씩)','이갈이 입질 대응(05장) — 손 무는 습관 여기서 결정','기본 명령어 8종 진도 나가기(05장 체크리스트)','유치원 등원 검토(접종 완료 후) — 사회화+낮 공백 해소','6개월 검진 때 중성화 시기 상담 — 첫 발정 전 목표(07장)']},
+ {min:26, max:39, name:'사춘기 · 발정/중성화 검토기 (6~9개월)', tasks:['중성화 실행 창 — 첫 발정 전 목표, 주치의와 확정(발정이 먼저 오면 종료 후 2~3개월 뒤로)','"말 안 듣는 시기" 정상 — 규칙을 바꾸지 말고 버티기','단독 시간 계단식 확장 계속(06장 5단계)','중성화 후 급여량 10~20% 조정 상담(04장)']},
  {min:40, max:51, name:'성견 전환기 (9~12개월)', tasks:['성견 사료 전환 상담(10~12개월, 7일 교체법)','산책 성견 수준(하루 40~60분)으로 확대','평일 타임테이블(06장) 완전 정착']},
  {min:52, max:99999, name:'성견기 (12개월~)', tasks:['매년: 보강접종 + 심장 청진 검진 — 카발리에 관리의 핵심(02장)','매월: 심장사상충 예방 + 체중 기록(08장)','가끔 잘 때 호흡수 세기(분당 30회 미만이 대체적 정상 기준)','주말에도 짧은 단독 시간 유지 — 월요일 격차 방지','7세부터 연 1~2회 심화 검진으로 상향']}
 ];
+/* 계약서 기준 초기값 — 비어 있는 항목만 채웁니다 */
+const CONTRACT={name:'빼꼼', birth:'2026-05-20', home:'2026-07-25', reg:'410160013217268'};
+function seedProfile(){
+  let ch=false;
+  ['name','birth','home','reg'].forEach(function(k){
+    if(!S.profile[k]){ S.profile[k]=CONTRACT[k]; ch=true; }
+  });
+  if(S._seed!==1){ if(!S.vax.v1) S.vax.v1={}; S.vax.v1.done=true; S._seed=1; ch=true; }
+  if(ch) saveState();
+}
+function renderWarranty(){
+  const el=document.getElementById('warrantyBox'); if(!el) return;
+  const h=S.profile.home;
+  if(!h){ el.innerHTML=''; return; }
+  const end=addD(new Date(h+'T00:00:00'), 15);
+  const left=Math.round((end-new Date(todayKey()+'T00:00:00'))/86400000);
+  if(left<0){ el.innerHTML=''; return; }
+  el.innerHTML='<div class="box box-warn" style="margin-top:14px;">'
+    +'<div class="bt">&#9888; 분양 보상기간 D-'+left+' &mdash; '+d2s(end)+'까지</div>'
+    +'<p class="small">이 기간 안에 전염성 질병(파보·코로나·홍역)이 확인되면 업체 부담 치료 대상입니다. 단 <strong>병원에 가기 전 바크바크 010-2999-4743으로 먼저 연락</strong>해야 하고, 업체 지정병원에서 진료받아야 합니다.</p>'
+    +'<p class="small" style="margin-top:6px;"><strong>지금 할 일</strong> — 아직 병원 초진 전이면 이번 주 안에 다녀오세요. 진료기록이 곧 증빙입니다. 이상 징후는 날짜·사진으로 남기세요.</p></div>';
+}
 function renderHome(){
   const nameEl=document.getElementById('homeName'), ageEl=document.getElementById('homeAge'),
         stEl=document.getElementById('homeStage'), tkEl=document.getElementById('stageTasks');
@@ -2079,17 +2199,26 @@ function renderStorage(){
 
 /* =============== 관리 달력 (정비 알림) =============== */
 let calY=(new Date()).getFullYear(), calM=(new Date()).getMonth(), calSel=todayKey();
+/* 계약서 명시 2차 접종 예정일. 병원에서 일정이 바뀌면 이 값만 고치면 3~7차가 함께 밀립니다. */
+const VAX_ANCHOR='2026-08-02';
 const VAX_PLAN=[
- {id:'v1', wk:7,  t:'접종 1차 (종합+코로나)'},
- {id:'v2', wk:9,  t:'접종 2차 (종합+코로나)'},
- {id:'v3', wk:11, t:'접종 3차 (종합+켄넬코프)'},
- {id:'v4', wk:13, t:'접종 4차 (종합+켄넬코프)'},
- {id:'v5', wk:15, t:'접종 5차 (종합+인플루)'},
- {id:'v6', wk:17, t:'접종 6차 (인플루+광견병)'},
- {id:'v7', wk:19, t:'항체가 검사'}
+ {id:'v1', seq:1, wk:7,  t:'접종 1차 (종합) — 켄넬 완료'},
+ {id:'v2', seq:2, wk:9,  t:'접종 2차 (종합+코로나)'},
+ {id:'v3', seq:3, wk:11, t:'접종 3차 (종합+켄넬코프)'},
+ {id:'v4', seq:4, wk:13, t:'접종 4차 (종합+켄넬코프)'},
+ {id:'v5', seq:5, wk:15, t:'접종 5차 (종합+인플루)'},
+ {id:'v6', seq:6, wk:17, t:'접종 6차 (인플루+광견병)'},
+ {id:'v7', seq:7, wk:19, t:'항체가 검사'}
 ];
+/* 입양일 기준 이벤트 */
+const HOME_EVENTS=[[15,'★ 분양 보상기간(15일) 만료 — 바크바크 계약']];
 const MILESTONES=[[98,'사회화 골든타임 마감 (14주)'],[183,'중성화 상담 권장 시점 (6개월)'],[304,'성견 사료 전환 검토 (10개월)']];
 function d2s(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function vaxDue(v,b){
+  /* 2차부터는 계약서 예정일 기준 2주 간격. 앵커가 없으면 기존 주령 계산으로 되돌아감 */
+  if(VAX_ANCHOR && v.seq && v.seq>=2) return addD(new Date(VAX_ANCHOR+'T00:00:00'), (v.seq-2)*14);
+  return addD(b, v.wk*7);
+}
 function addD(base,n){const d=new Date(base.getTime()); d.setDate(d.getDate()+n); return d;}
 function autoEventsRange(from,to){
   const out=[]; const tk=todayKey();
@@ -2098,7 +2227,7 @@ function autoEventsRange(from,to){
   VAX_PLAN.forEach(v=>{
     const st=S.vax[v.id]||{};
     if(st.done){ if(st.date){ const dd=new Date(st.date+'T00:00:00'); if(dd>=from&&dd<=to) out.push({d:d2s(dd), t:v.t+' — 완료', cls:'d'}); } }
-    else{ const dd=addD(b, v.wk*7); const s=d2s(dd);
+    else{ const dd=vaxDue(v,b); const s=d2s(dd);
       if(dd>=from&&dd<=to) out.push({d:s, t:v.t+(s<tk?' — 지연':' 예정'), cls: s<tk?'l':'a'});
     }
   });
@@ -2113,6 +2242,10 @@ function autoEventsRange(from,to){
     cur=new Date(cur.getFullYear(),cur.getMonth()+1,1);
   }
   MILESTONES.forEach(ms=>{ const dd=addD(b,ms[0]); if(dd>=from&&dd<=to) out.push({d:d2s(dd), t:ms[1], cls:'a'}); });
+  if(S.profile.home){
+    const hb=new Date(S.profile.home+'T00:00:00');
+    HOME_EVENTS.forEach(function(ev){ const dd=addD(hb,ev[0]); if(dd>=from&&dd<=to) out.push({d:d2s(dd), t:ev[1], cls:'a'}); });
+  }
   for(let age=1; age<=20; age++){
     const bd=new Date(b.getFullYear()+age, b.getMonth(), b.getDate());
     if(bd>=from&&bd<=to) out.push({d:d2s(bd), t:age+'번째 생일 — 연간검진·심장청진·보강접종', cls:'a'});
@@ -2422,28 +2555,74 @@ function bindAlbum(){
       albClose(); renderAlbum();
     }catch(e){ alert('삭제 실패 — 인터넷 확인 후 다시 시도해주세요.'); }
   });
+  document.getElementById('albLbPrev').addEventListener('click', function(){ albNav(-1); });
+  document.getElementById('albLbNext').addEventListener('click', function(){ albNav(1); });
+  const lb=document.getElementById('albLb');
+  let swX=0, swY=0, swOn=false;
+  lb.addEventListener('touchstart', function(e){
+    if(e.touches.length!==1){ swOn=false; return; }
+    swOn=true; swX=e.touches[0].clientX; swY=e.touches[0].clientY;
+  }, {passive:true});
+  lb.addEventListener('touchend', function(e){
+    if(!swOn) return; swOn=false;
+    if(e.target && e.target.closest && e.target.closest('button')) return;
+    const t=e.changedTouches[0], dx=t.clientX-swX, dy=t.clientY-swY;
+    if(Math.abs(dx)>55 && Math.abs(dx)>Math.abs(dy)*1.4) albNav(dx<0 ? 1 : -1);
+  }, {passive:true});
+  document.addEventListener('keydown', function(e){
+    if(!lb.classList.contains('on')) return;
+    if(e.key==='ArrowLeft') albNav(-1);
+    else if(e.key==='ArrowRight') albNav(1);
+    else if(e.key==='Escape') albClose();
+  });
   setInterval(function(){
     const p=document.getElementById('tab-album');
     if(p && p.classList.contains('on') && document.visibilityState==='visible') albumPull(false);
   }, 25000);
 }
+function albPhotoIds(){
+  if(!ALB.meta) return [];
+  return Object.keys(ALB.meta)
+    .filter(function(id){ return ALB.meta[id].t!=='v'; })
+    .sort(function(a,b){ return (ALB.meta[b].at||0)-(ALB.meta[a].at||0); });
+}
+function albNav(dir){
+  if(!ALB.cur) return;
+  const ids=albPhotoIds(), i=ids.indexOf(ALB.cur);
+  if(i<0) return;
+  const n=i+dir;
+  if(n<0||n>=ids.length) return;
+  albOpen(ids[n]);
+}
+function albPrefetch(id){
+  if(!id || ALB.fulls.has(id)) return;
+  albFetch('full/'+id).then(function(v){
+    if(v){ if(ALB.fulls.size>10) ALB.fulls.clear(); ALB.fulls.set(id,v); }
+  }).catch(function(){});
+}
 async function albOpen(id){
   ALB.cur=id;
   const m=ALB.meta[id]; if(!m) return;
   document.getElementById('albLb').classList.add('on');
+  const ids=albPhotoIds(), pos=ids.indexOf(id);
+  document.getElementById('albLbCnt').textContent = pos>=0 ? (pos+1)+' / '+ids.length : '';
+  document.getElementById('albLbPrev').disabled = pos<=0;
+  document.getElementById('albLbNext').disabled = pos<0 || pos>=ids.length-1;
   const im=document.getElementById('albLbImg'); im.src='';
   document.getElementById('albLbCap').textContent=(m.d||'')+' — 불러오는 중…';
   try{
     let f=ALB.fulls.get(id);
     if(!f){ f=await albFetch('full/'+id); if(ALB.fulls.size>10) ALB.fulls.clear(); ALB.fulls.set(id,f); }
+    if(ALB.cur!==id) return; /* 빠르게 넘긴 경우 지난 요청 결과는 버림 */
     im.src=f;
     document.getElementById('albLbCap').textContent=(m.d||'')+(m.m?' · '+m.m:'');
-  }catch(e){ document.getElementById('albLbCap').textContent='불러오기 실패 — 닫고 다시 열어보세요.'; }
+    albPrefetch(ids[pos-1]); albPrefetch(ids[pos+1]); /* 앞뒤 한 장씩 미리 받아 넘김을 끊김 없이 */
+  }catch(e){ if(ALB.cur===id) document.getElementById('albLbCap').textContent='불러오기 실패 — 닫고 다시 열어보세요.'; }
 }
 function albClose(){ document.getElementById('albLb').classList.remove('on'); document.getElementById('albLbImg').src=''; ALB.cur=null; }
 
 /* =============== Init =============== */
-function renderAll(){ renderHome(); renderDaily(); renderWeight(); renderVisits(); renderExpenses(); renderStorage(); renderCal(); renderNotice();
+function renderAll(){ seedProfile(); renderHome(); renderWarranty(); renderDaily(); renderWeight(); renderVisits(); renderExpenses(); renderStorage(); renderCal(); renderNotice();
   // re-sync inputs & checklists after import
   const map={pfName:'name', pfBirth:'birth', pfHome:'home', pfReg:'reg'};
   Object.keys(map).forEach(id=>{ document.getElementById(id).value=S.profile[map[id]]||''; });
