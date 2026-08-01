@@ -565,6 +565,31 @@ input[type=text],input[type=date],input[type=number],input[type=search],input[ty
 .nt-f{display:flex; gap:8px; align-items:center;}
 .nt-ack{flex:1; font-size:11px; color:var(--sage); font-weight:700; line-height:1.5;}
 </style>
+<style>
+/* V3.1 빠른기록 타임스탬프 */
+.ql-stamps{display:flex; flex-wrap:wrap; gap:6px; margin-top:9px;}
+.ql-chip{display:inline-flex; align-items:center; gap:4px; background:var(--panel); border:1.5px solid var(--line); border-radius:999px; padding:4px 10px; font-size:12px; font-weight:700; color:var(--chest-d);}
+.qd-day{margin-bottom:12px;}
+.qd-head{display:flex; justify-content:space-between; font-weight:800; font-size:12.5px; color:var(--sub); margin-bottom:6px;}
+.qd-chips{display:flex; flex-wrap:wrap; gap:6px;}
+.qd-chips .ql-chip button{background:none; border:none; color:var(--sub); font-size:12px; cursor:pointer; padding:0 0 0 2px; line-height:1; font-family:inherit;}
+</style>
+<style>
+/* V3.2 배변·식사 로그 표 */
+.qd-table{width:100%; border-collapse:collapse; font-size:12.5px;}
+.qd-table th{background:var(--panel); text-align:left; padding:8px 9px; font-size:11.5px; color:var(--sub); border-bottom:1.5px solid var(--line);}
+.qd-table td{padding:9px; border-bottom:1px solid var(--line); vertical-align:top;}
+.qd-table tr:last-child td{border-bottom:none;}
+.qd-today td{background:var(--sage-bg);}
+.qd-d{font-weight:800; color:var(--chest-d); white-space:nowrap;}
+.qd-d span{display:block; font-size:10.5px; color:var(--sub); font-weight:700; margin-top:1px;}
+.qd-cnt{font-weight:800; font-size:11px; color:var(--sub); margin-bottom:4px;}
+.qd-cell{display:flex; flex-wrap:wrap; gap:5px;}
+.qd-cell .ql-chip button{background:none; border:none; color:var(--sub); font-size:12px; cursor:pointer; padding:0 0 0 2px; line-height:1; font-family:inherit;}
+.qd-none{color:var(--sub);}
+.qs-row{display:flex; align-items:center; flex-wrap:wrap; gap:5px; margin-top:6px;}
+.qs-i{font-size:14px;}
+</style>
 </head>
 <body>
 
@@ -613,7 +638,7 @@ input[type=text],input[type=date],input[type=number],input[type=search],input[ty
     <p class="muted small" style="margin-top:8px;">체크는 날짜별로 저장됩니다. 자정이 지나면 새 체크리스트로 시작됩니다.</p>
   </div>
 
-  <h3 class="sec">빠른 기록 <span class="muted small" style="font-weight:400;">— 탭하면 바로 저장</span></h3>
+  <h3 class="sec">빠른 기록 <span class="muted small" style="font-weight:400;">— 탭하면 현재 시각으로 저장</span></h3>
   <div class="card">
     <div class="ql-grid">
       <button class="ql" id="qlPoo" type="button"><span class="qi">💩</span><span>배변</span><b id="qlPooN">0</b></button>
@@ -621,6 +646,7 @@ input[type=text],input[type=date],input[type=number],input[type=search],input[ty
       <button class="ql" id="qlWt" type="button"><span class="qi">⚖️</span><span>체중</span><b id="qlWtV">—</b></button>
       <button class="ql" id="qlPhoto" type="button"><span class="qi">📷</span><span>사진</span><b>＋</b></button>
     </div>
+    <div class="ql-stamps" id="qlStamps"></div>
     <div class="ql-undo"><span class="muted small" id="qlSum" style="flex:1;"></span><button id="qlUndoPoo" type="button">배변 −1</button><button id="qlUndoMeal" type="button">식사 −1</button></div>
   </div>
 
@@ -1485,6 +1511,11 @@ input[type=text],input[type=date],input[type=number],input[type=search],input[ty
     </div>
     <svg class="wchart" id="wChart" viewBox="0 0 640 190" preserveAspectRatio="xMidYMid meet" role="img" aria-label="체중 변화 그래프"></svg>
     <div id="wList"></div>
+  </div>
+
+  <h3 class="sec">배변·식사 로그 <span class="muted small" style="font-weight:400;">— 홈 빠른 기록이 여기 쌓입니다</span></h3>
+  <div class="card">
+    <div id="qdList"></div>
   </div>
 
   <h3 class="sec">병원 방문 기록</h3>
@@ -3167,19 +3198,32 @@ function renderHomeWt(){
   else{ el.style.display='none'; }
 }
 function renderQlog(){
-  const q=(S.qlog && S.qlog[todayKey()]) || {};
   const p=document.getElementById('qlPooN'); if(!p) return;
-  p.textContent=q.poo||0;
-  document.getElementById('qlMealN').textContent=q.meal||0;
+  const q=qlNorm(todayKey());
+  p.textContent=q.poo.length;
+  document.getElementById('qlMealN').textContent=q.meal.length;
   const lw=latestWeight();
   document.getElementById('qlWtV').textContent = lw ? lw.kg+'kg' : '—';
-  document.getElementById('qlSum').textContent='오늘 배변 '+(q.poo||0)+'회 · 식사 '+(q.meal||0)+'회';
+  document.getElementById('qlSum').textContent='오늘 배변 '+q.poo.length+'회 · 식사 '+q.meal.length+'회';
+  const st=document.getElementById('qlStamps');
+  if(st){
+    const row=function(ic, arr){
+      if(!arr.length) return '';
+      return '<div class="qs-row"><span class="qs-i">'+ic+'</span>'+arr.map(function(t){ return '<span class="ql-chip">'+esc(t||'--:--')+'</span>'; }).join('')+'</div>';
+    };
+    st.innerHTML=row('💩', q.poo)+row('🍚', q.meal);
+  }
+  renderQlogDays();
 }
 function qlBump(k, delta){
   const key=todayKey();
-  S.qlog=S.qlog||{};
-  const q=S.qlog[key]=S.qlog[key]||{};
-  q[k]=Math.max(0,(q[k]||0)+delta);
+  const q=qlNorm(key);
+  if(delta>0){
+    const n=new Date();
+    q[k].push(String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0'));
+  }else{
+    q[k].pop();
+  }
   const keys=Object.keys(S.qlog).sort();
   while(keys.length>60){ delete S.qlog[keys.shift()]; }
   saveState(); renderQlog();
@@ -3431,6 +3475,46 @@ function goCalDate(ds){
   calY=parseInt(p[0],10); calM=parseInt(p[1],10)-1; calSel=ds;
   renderCal();
   const w=document.querySelector('.cal-wrap'); if(w && w.scrollIntoView){ try{ w.scrollIntoView({behavior:'smooth', block:'start'}); }catch(e){} }
+}
+
+/* =============== V3.1: 빠른기록 타임스탬프 =============== */
+function qlNorm(key){
+  S.qlog=S.qlog||{};
+  const q=S.qlog[key]=S.qlog[key]||{};
+  ['poo','meal'].forEach(function(x){
+    if(typeof q[x]==='number'){ const n=q[x]; q[x]=[]; for(let i=0;i<n;i++) q[x].push(''); }
+    if(!Array.isArray(q[x])) q[x]=[];
+  });
+  return q;
+}
+function renderQlogDays(){
+  const el=document.getElementById('qdList'); if(!el) return;
+  const keys=Object.keys(S.qlog||{}).sort().reverse().slice(0,14);
+  const days=keys.filter(function(k){ const q=qlNorm(k); return q.poo.length||q.meal.length; });
+  if(!days.length){ el.innerHTML='<p class="muted small" style="margin:0;">기록 없음 — 홈의 빠른 기록 버튼을 눌러보세요.</p>'; return; }
+  const DOW=['일','월','화','수','목','금','토'];
+  const cell=function(k, kind, arr){
+    if(!arr.length) return '<span class="qd-none">—</span>';
+    return '<div class="qd-cnt">'+arr.length+'회</div><div class="qd-cell">'
+      +arr.map(function(t,i){ return '<span class="ql-chip">'+esc(t||'--:--')+'<button type="button" data-qd="'+k+'" data-qk="'+kind+'" data-qi="'+i+'" aria-label="삭제">✕</button></span>'; }).join('')
+      +'</div>';
+  };
+  el.innerHTML='<div class="tw"><table class="qd-table"><thead><tr><th style="width:72px;">날짜</th><th>💩 배변</th><th>🍚 식사</th></tr></thead><tbody>'
+    +days.map(function(k){
+      const q=qlNorm(k);
+      const dt=new Date(k+'T00:00:00');
+      const today=k===todayKey();
+      return '<tr'+(today?' class="qd-today"':'')+'><td class="qd-d">'+k.slice(5).replace('-','/')+'<span>'+DOW[dt.getDay()]+(today?' · 오늘':'')+'</span></td>'
+        +'<td>'+cell(k,'poo',q.poo)+'</td><td>'+cell(k,'meal',q.meal)+'</td></tr>';
+    }).join('')
+    +'</tbody></table></div>';
+  el.querySelectorAll('[data-qd]').forEach(function(b){
+    b.addEventListener('click', function(){
+      const q=qlNorm(this.dataset.qd);
+      q[this.dataset.qk].splice(parseInt(this.dataset.qi,10),1);
+      saveState(); renderQlog();
+    });
+  });
 }
 
 /* =============== Init =============== */
