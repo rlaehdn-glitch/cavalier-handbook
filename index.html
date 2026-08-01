@@ -3485,7 +3485,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
       <textarea id="chInput" rows="1" placeholder="빼꼼에 대해 물어보세요" maxlength="600"></textarea>
       <button id="chSend" type="button">보내기</button>
     </div>
-    <p class="ch-note">AI 답변은 참고용입니다. 실제 판단은 수의사 진료가 우선입니다. 응급 시 24시 라인동물의료센터 02-381-2475.</p>
+    <p class="ch-note">AI 답변은 참고용 — 최신 정보는 웹 검색으로 찾아 답합니다. 응급 시 24시 라인동물의료센터 02-381-2475.</p>
   </div>
 </div>
 
@@ -3494,12 +3494,12 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 (function(){
   const CHAT_API = 'https://cavalier-chat.dowoo0204.workers.dev';
   const QUICK = [
-    '지금 몇 개월이야?',
     '다음 접종 언제야?',
-    '밤에 계속 낑낑대요',
     '설사를 두 번 했어요',
     '사료 얼마나 줘야 해?',
-    '산책 언제부터 가능해?'
+    '삼송 근처 애견동반 카페',
+    '요즘 강아지 계단 뭐가 좋아?',
+    '오늘 산책 가도 되는 날씨야?'
   ];
 
   const fab   = document.getElementById('chatFab');
@@ -3592,9 +3592,10 @@ document.addEventListener('DOMContentLoaded', async ()=>{
       if(!res.ok || data.error){
         bubble('err', data.error || '답변을 가져오지 못했습니다. 잠시 후 다시 시도해주세요.');
       }else{
-        bubble('ai', data.text);
+        const clean=String(data.text||'').replace(/\*\*/g,'').replace(/^#{1,3}\s*/gm,'');
+        bubble('ai', clean);
         history.push({role:'user', content:q});
-        history.push({role:'assistant', content:data.text});
+        history.push({role:'assistant', content:clean});
         if(history.length > 6) history = history.slice(-6);
       }
     }catch(e){
