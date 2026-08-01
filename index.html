@@ -590,6 +590,30 @@ input[type=text],input[type=date],input[type=number],input[type=search],input[ty
 .qs-row{display:flex; align-items:center; flex-wrap:wrap; gap:5px; margin-top:6px;}
 .qs-i{font-size:14px;}
 </style>
+<style>
+/* V3.3 혼자시간·증상 */
+.aw-stat{font-size:13px; line-height:1.6;}
+.aw-stat strong{color:var(--chest);}
+.btn:disabled{opacity:.4; pointer-events:none;}
+.box-warnline{background:var(--red-bg); border:1.5px solid var(--red); color:var(--chest-d); border-radius:12px; padding:9px 11px; font-size:12.5px; font-weight:700; margin:10px 0 0;}
+</style>
+<style>
+/* V4 빠른기록 6종 + 통계 */
+.ql-6{grid-template-columns:repeat(3,1fr);}
+.ql.walking{border-color:var(--chest); background:var(--amber-bg);}
+.ql.walking b{color:var(--red); font-size:12.5px;}
+.st-chips{display:flex; flex-wrap:wrap; gap:7px;}
+.st-chips button{background:var(--paper); border:1.5px solid var(--line); border-radius:999px; padding:7px 13px; font-family:inherit; font-size:12.5px; font-weight:800; color:var(--sub); cursor:pointer; box-shadow:var(--shadow);}
+.st-chips button.on{background:var(--chest); border-color:var(--chest-d); color:#FBF6EC;}
+.st-seg{display:flex; margin-top:10px; border:1.5px solid var(--line); border-radius:12px; overflow:hidden; width:max-content; background:var(--paper);}
+.st-seg button{background:transparent; border:none; padding:8px 16px; font-family:inherit; font-size:12.5px; font-weight:800; color:var(--sub); cursor:pointer;}
+.st-seg button.on{background:var(--panel); color:var(--chest-d);}
+.st-cards{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:12px;}
+.st-card{background:var(--paper); border:1.5px solid var(--line); border-radius:13px; padding:11px 12px; box-shadow:var(--shadow);}
+.st-card .l{font-size:11px; font-weight:800; color:var(--sub);}
+.st-card .v{font-family:'Gowun Batang',serif; font-size:18px; font-weight:700; color:var(--chest-d); margin-top:3px; line-height:1.25; word-break:keep-all;}
+.st-card .s{font-size:10.5px; color:var(--sub); margin-top:2px;}
+</style>
 </head>
 <body>
 
@@ -627,27 +651,27 @@ input[type=text],input[type=date],input[type=number],input[type=search],input[ty
 
   <div id="homeNotice"></div>
 
-  <h3 class="sec">오늘의 루틴 체크</h3>
+  <h3 class="sec">혼자 있는 시간 <span class="muted small" style="font-weight:400;">— 분리불안 관리의 기본 데이터</span></h3>
   <div class="card">
-    <div class="row" style="justify-content:space-between;">
-      <span class="daily-date" id="dailyDate"></span>
-      <span class="muted small" id="dailyCount">0 / 8</span>
+    <div class="row">
+      <button class="btn" id="awOut" type="button" style="flex:1;">🚪 외출 — 혼자 시작</button>
+      <button class="btn ghost" id="awIn" type="button" style="flex:1;">🏠 귀가</button>
     </div>
-    <div class="progress-bar"><div class="progress-fill" id="dailyBar"></div></div>
-    <ul class="ck" id="dailyList"></ul>
-    <p class="muted small" style="margin-top:8px;">체크는 날짜별로 저장됩니다. 자정이 지나면 새 체크리스트로 시작됩니다.</p>
+    <p class="aw-stat" id="awStat" style="margin:10px 0 0;"></p>
   </div>
 
   <h3 class="sec">빠른 기록 <span class="muted small" style="font-weight:400;">— 탭하면 현재 시각으로 저장</span></h3>
   <div class="card">
-    <div class="ql-grid">
+    <div class="ql-grid ql-6">
       <button class="ql" id="qlPoo" type="button"><span class="qi">💩</span><span>배변</span><b id="qlPooN">0</b></button>
+      <button class="ql" id="qlDiar" type="button"><span class="qi">💧</span><span>설사</span><b id="qlDiarN">0</b></button>
       <button class="ql" id="qlMeal" type="button"><span class="qi">🍚</span><span>식사</span><b id="qlMealN">0</b></button>
+      <button class="ql" id="qlWalk" type="button"><span class="qi">🐕</span><span id="qlWalkT">산책</span><b id="qlWalkN">0</b></button>
       <button class="ql" id="qlWt" type="button"><span class="qi">⚖️</span><span>체중</span><b id="qlWtV">—</b></button>
       <button class="ql" id="qlPhoto" type="button"><span class="qi">📷</span><span>사진</span><b>＋</b></button>
     </div>
     <div class="ql-stamps" id="qlStamps"></div>
-    <div class="ql-undo"><span class="muted small" id="qlSum" style="flex:1;"></span><button id="qlUndoPoo" type="button">배변 −1</button><button id="qlUndoMeal" type="button">식사 −1</button></div>
+    <div class="ql-undo"><span class="muted small" id="qlSum" style="flex:1;"></span><button id="qlUndo" type="button">마지막 취소</button><button class="btn sm ghost" id="qlStats" type="button">📊 통계</button></div>
   </div>
 
   <h3 class="sec" style="display:flex; justify-content:space-between; align-items:center;">최근 사진 <button class="btn sm ghost" onclick="goTab('album')">앨범 →</button></h3>
@@ -1513,9 +1537,10 @@ input[type=text],input[type=date],input[type=number],input[type=search],input[ty
     <div id="wList"></div>
   </div>
 
-  <h3 class="sec">배변·식사 로그 <span class="muted small" style="font-weight:400;">— 홈 빠른 기록이 여기 쌓입니다</span></h3>
+  <h3 class="sec">활동 기록 통계</h3>
   <div class="card">
-    <div id="qdList"></div>
+    <p class="muted small" style="margin:0 0 10px;">배변·설사·식사·산책·혼자 시간의 그래프·평균·전체 로그는 서재의 기록 통계에 있습니다. 90일 보관.</p>
+    <button class="btn sm" onclick="goTab('stats')">📊 기록 통계 열기</button>
   </div>
 
   <h3 class="sec">병원 방문 기록</h3>
@@ -2048,6 +2073,30 @@ input[type=text],input[type=date],input[type=number],input[type=search],input[ty
 
   <div id="albLb"><img id="albLbImg" alt=""><button class="alb-nav" id="albLbPrev" aria-label="이전 사진">&#8249;</button><button class="alb-nav" id="albLbNext" aria-label="다음 사진">&#8250;</button><div class="alb-lb-bar"><span class="alb-cnt" id="albLbCnt"></span><div class="alb-cap" id="albLbCap"></div><button class="btn sm ghost" id="albLbRep">대표</button><button class="btn sm ghost" id="albLbMemo">메모</button><button class="btn sm ghost" id="albLbDel">삭제</button><button class="btn sm" id="albLbClose">닫기</button></div></div>
 </section>
+<!-- ===================== STATS 기록 통계 ===================== -->
+<section class="tab-panel" id="tab-stats">
+  <div class="ch-head">
+    <div class="ch-no">STATS</div>
+    <h2 class="serif">기록 통계</h2>
+    <p class="lede">빠른 기록·혼자 시간이 그래프와 표로 쌓입니다. 90일 보관.</p>
+  </div>
+  <div class="st-chips" id="stCats"></div>
+  <div class="st-seg" id="stUnits">
+    <button data-u="d" class="on" type="button">일별</button>
+    <button data-u="w" type="button">주별</button>
+    <button data-u="m" type="button">월별</button>
+  </div>
+  <div class="st-cards" id="stCards"></div>
+  <div class="card" style="margin-top:12px;">
+    <div class="ct" id="stChartT"></div>
+    <svg id="stChart" viewBox="0 0 640 190" style="width:100%; height:auto;" role="img" aria-label="기록 그래프"></svg>
+  </div>
+  <h3 class="sec">숫자 데이터</h3>
+  <div class="card"><div id="stTable"></div></div>
+  <h3 class="sec">전체 로그 <span class="muted small" style="font-weight:400;">— 개별 삭제 가능 · 최근 90일</span></h3>
+  <div class="card"><div id="stLog"></div></div>
+</section>
+
 <!-- ===================== LIB 서재 ===================== -->
 <section class="tab-panel" id="tab-lib">
   <div class="ch-head">
@@ -2124,7 +2173,7 @@ input[type=text],input[type=date],input[type=number],input[type=search],input[ty
 
 <script>
 /* =============== State =============== */
-const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}};
+const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}};
 let S = JSON.parse(JSON.stringify(DEFAULT_S));
 let storageOK = false, artOK = false, saveTimer = null, lastEditAt = 0;
 
@@ -2388,9 +2437,10 @@ function renderHome(){
 /* =============== 일일 루틴 =============== */
 const DAILY_ITEMS=['아침 산책 + 배변','아침 급여 + 물 교체','출근 전 노즈워크·콩 세팅 (부재 준비)','저녁 산책 + 배변','저녁 급여','훈련 5~10분 (명령어 1개)','빗질·몸 상태 확인 (귀·눈·걸음)','양치'];
 function renderDaily(){
+  const ul=document.getElementById('dailyList');
+  if(!ul) return;
   const key=todayKey();
   const st=S.daily[key]||{};
-  const ul=document.getElementById('dailyList');
   document.getElementById('dailyDate').textContent=key+' (오늘)';
   ul.innerHTML=DAILY_ITEMS.map((t,i)=>{
     const c=st['i'+i]?'checked':''; const d=st['i'+i]?'done':'';
@@ -3047,6 +3097,7 @@ function albClose(){ document.getElementById('albLb').classList.remove('on'); do
 
 /* =============== V2: 서재 메타 + 내비게이션 =============== */
 const LIB_META=[
+  ['stats','📊','기록 통계','배변·설사·식사·산책·혼자 시간 — 그래프·전체 로그', false],
   ['prep','01','분양 준비','계약·보상기간·용품·첫 2주 로드맵', true],
   ['health','02','건강·병원','접종 스케줄·카발리에 4대 질환', false],
   ['money','03','보험·비용','펫보험 비교 7항목·비용 총정리', false],
@@ -3084,6 +3135,7 @@ function goTab(id, silent){
   window.scrollTo({top:0});
   if(id==='album'){ try{ albumOnOpen(); }catch(e){} }
   if(id==='lib'){ try{ renderLib(); }catch(e){} }
+  if(id==='stats'){ try{ renderStats(); }catch(e){} }
   if(!silent){
     if(NAV_HIST[NAV_HIST.length-1]!==id){ NAV_HIST.push(id); if(NAV_HIST.length>30) NAV_HIST.shift(); }
     try{ history.pushState({tab:id}, '', '#'+id); }catch(e){}
@@ -3201,43 +3253,54 @@ function renderQlog(){
   const p=document.getElementById('qlPooN'); if(!p) return;
   const q=qlNorm(todayKey());
   p.textContent=q.poo.length;
+  document.getElementById('qlDiarN').textContent=q.diar.length;
   document.getElementById('qlMealN').textContent=q.meal.length;
   const lw=latestWeight();
   document.getElementById('qlWtV').textContent = lw ? lw.kg+'kg' : '—';
-  document.getElementById('qlSum').textContent='오늘 배변 '+q.poo.length+'회 · 식사 '+q.meal.length+'회';
+  const wl=(S.walkLog||{})[todayKey()]||[];
+  const wb=document.getElementById('qlWalk'), wn=document.getElementById('qlWalkN'), wtl=document.getElementById('qlWalkT');
+  if(wb){
+    if(S.walkCur){ wb.classList.add('walking'); wtl.textContent='산책 중'; wn.textContent='⏱'+fmtDur(Date.now()-S.walkCur); }
+    else{ wb.classList.remove('walking'); wtl.textContent='산책'; wn.textContent=wl.length; }
+  }
   const st=document.getElementById('qlStamps');
   if(st){
-    const row=function(ic, arr){
-      if(!arr.length) return '';
-      return '<div class="qs-row"><span class="qs-i">'+ic+'</span>'+arr.map(function(t){ return '<span class="ql-chip">'+esc(t||'--:--')+'</span>'; }).join('')+'</div>';
-    };
-    st.innerHTML=row('💩', q.poo)+row('🍚', q.meal);
+    const row=function(ic, html){ return html? '<div class="qs-row"><span class="qs-i">'+ic+'</span>'+html+'</div>' : ''; };
+    const chips=function(arr){ return arr.map(function(t){ return '<span class="ql-chip">'+esc(String(t||'--:--').slice(0,5))+'</span>'; }).join(''); };
+    let wk=wl.map(function(s){ return '<span class="ql-chip">'+fmtHM(s.o)+'→'+fmtHM(s.i)+' · '+fmtDur(s.i-s.o)+'</span>'; }).join('');
+    if(S.walkCur) wk+='<span class="ql-chip">'+fmtHM(S.walkCur)+'→ 진행 중</span>';
+    st.innerHTML=row('💩',chips(q.poo))+row('💧',chips(q.diar))+row('🍚',chips(q.meal))+row('🐕',wk);
   }
-  renderQlogDays();
+  let wmin=0; wl.forEach(function(s){ wmin+=Math.max(0,s.i-s.o); });
+  const su=document.getElementById('qlSum');
+  if(su) su.textContent='오늘 배변 '+q.poo.length+' · 설사 '+q.diar.length+' · 식사 '+q.meal.length+' · 산책 '+wl.length+'회'+(wmin? ' '+fmtDur(wmin):'');
+  try{ renderStats(); }catch(e){}
 }
 function qlBump(k, delta){
-  const key=todayKey();
-  const q=qlNorm(key);
+  const q=qlNorm(todayKey());
   if(delta>0){
     const n=new Date();
-    q[k].push(String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0'));
+    q[k].push(String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')+':'+String(n.getSeconds()).padStart(2,'0'));
+    QL_STACK.push({t:'q', k:k}); if(QL_STACK.length>60) QL_STACK.shift();
   }else{
     q[k].pop();
   }
   const keys=Object.keys(S.qlog).sort();
-  while(keys.length>60){ delete S.qlog[keys.shift()]; }
+  while(keys.length>100){ delete S.qlog[keys.shift()]; }
   saveState(); renderQlog();
   if(delta>0){
-    const el=document.getElementById(k==='poo'?'qlPooN':'qlMealN');
+    const el=document.getElementById(k==='poo'?'qlPooN':(k==='diar'?'qlDiarN':'qlMealN'));
     if(el){ el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
   }
 }
 function bindQlog(){
   if(!document.getElementById('qlPoo')) return;
   document.getElementById('qlPoo').addEventListener('click', function(){ qlBump('poo',1); });
+  document.getElementById('qlDiar').addEventListener('click', function(){ qlBump('diar',1); });
   document.getElementById('qlMeal').addEventListener('click', function(){ qlBump('meal',1); });
-  document.getElementById('qlUndoPoo').addEventListener('click', function(){ qlBump('poo',-1); });
-  document.getElementById('qlUndoMeal').addEventListener('click', function(){ qlBump('meal',-1); });
+  document.getElementById('qlWalk').addEventListener('click', walkToggle);
+  document.getElementById('qlUndo').addEventListener('click', qlUndoLast);
+  const sb=document.getElementById('qlStats'); if(sb) sb.addEventListener('click', function(){ goTab('stats'); });
   document.getElementById('qlWt').addEventListener('click', function(){
     const v=prompt('오늘 체중(kg) — 숫자만, 예: 2.4');
     if(v===null) return;
@@ -3251,6 +3314,7 @@ function bindQlog(){
     goTab('album');
     if(syncConfigured()){ setTimeout(function(){ const f=document.getElementById('albFile'); if(f) f.click(); }, 400); }
   });
+  setInterval(function(){ if(S.walkCur) renderQlog(); }, 30000);
 }
 function renderAppbar(){
   const nm=document.getElementById('abName'), sb=document.getElementById('abSub');
@@ -3481,44 +3545,273 @@ function goCalDate(ds){
 function qlNorm(key){
   S.qlog=S.qlog||{};
   const q=S.qlog[key]=S.qlog[key]||{};
-  ['poo','meal'].forEach(function(x){
+  ['poo','diar','meal'].forEach(function(x){
     if(typeof q[x]==='number'){ const n=q[x]; q[x]=[]; for(let i=0;i<n;i++) q[x].push(''); }
     if(!Array.isArray(q[x])) q[x]=[];
   });
   return q;
 }
-function renderQlogDays(){
-  const el=document.getElementById('qdList'); if(!el) return;
-  const keys=Object.keys(S.qlog||{}).sort().reverse().slice(0,14);
-  const days=keys.filter(function(k){ const q=qlNorm(k); return q.poo.length||q.meal.length; });
-  if(!days.length){ el.innerHTML='<p class="muted small" style="margin:0;">기록 없음 — 홈의 빠른 기록 버튼을 눌러보세요.</p>'; return; }
+
+/* =============== V3.3: 혼자 시간 + 증상 기록 =============== */
+function fmtHM(ms){ const d=new Date(ms); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+function fmtDur(ms){ const m=Math.max(0,Math.round(ms/60000)); const h=Math.floor(m/60), r=m%60; return h? (h+'시간'+(r?' '+r+'분':'')) : (r+'분'); }
+function awayToday(){
+  const key=todayKey();
+  let total=0, cnt=0;
+  (((S.awayLog||{})[key])||[]).forEach(function(s){ total+=Math.max(0,s.i-s.o); cnt++; });
+  return {total:total, cnt:cnt, ongoing: S.awayCur? (Date.now()-S.awayCur) : 0};
+}
+function renderAway(){
+  const st=document.getElementById('awStat'); if(!st) return;
+  const out=document.getElementById('awOut'), inn=document.getElementById('awIn');
+  const a=awayToday();
+  if(S.awayCur){
+    out.disabled=true; inn.disabled=false;
+    st.innerHTML='🔴 <strong>'+fmtDur(a.ongoing)+'째 혼자</strong> ('+fmtHM(S.awayCur)+' 외출)'+(a.total? ' · 오늘 누적 '+fmtDur(a.total+a.ongoing):'');
+  }else{
+    out.disabled=false; inn.disabled=true;
+    st.innerHTML= a.cnt? '🟢 지금 함께 · 오늘 혼자 합계 <strong>'+fmtDur(a.total)+'</strong> ('+a.cnt+'회)' : '🟢 지금 함께 · 오늘 혼자 둔 기록 없음';
+  }
+  try{ renderStats(); }catch(e){}
+}
+function bindAway(){
+  const out=document.getElementById('awOut'); if(!out) return;
+  out.addEventListener('click', function(){ S.awayCur=Date.now(); saveState(); renderAway(); });
+  document.getElementById('awIn').addEventListener('click', function(){
+    if(!S.awayCur) return;
+    const key=todayKey();
+    S.awayLog=S.awayLog||{};
+    (S.awayLog[key]=S.awayLog[key]||[]).push({o:S.awayCur, i:Date.now()});
+    S.awayCur=0;
+    const ks=Object.keys(S.awayLog).sort(); while(ks.length>100){ delete S.awayLog[ks.shift()]; }
+    saveState(); renderAway();
+  });
+  setInterval(function(){ if(S.awayCur) renderAway(); }, 30000);
+}
+
+/* =============== V4: 산책 토글 + 통합 취소 =============== */
+let QL_STACK=[];
+function walkToggle(){
+  if(S.walkCur){
+    const key=todayKey();
+    S.walkLog=S.walkLog||{};
+    (S.walkLog[key]=S.walkLog[key]||[]).push({o:S.walkCur, i:Date.now()});
+    S.walkCur=0;
+    for(let i=QL_STACK.length-1;i>=0;i--){ if(QL_STACK[i].t==='ws'){ QL_STACK.splice(i,1); break; } }
+    const ks=Object.keys(S.walkLog).sort(); while(ks.length>100){ delete S.walkLog[ks.shift()]; }
+  }else{
+    S.walkCur=Date.now();
+    QL_STACK.push({t:'ws'}); if(QL_STACK.length>60) QL_STACK.shift();
+  }
+  saveState(); renderQlog();
+}
+function qlUndoLast(){
+  while(QL_STACK.length){
+    const a=QL_STACK.pop();
+    if(a.t==='ws'){ if(S.walkCur){ S.walkCur=0; saveState(); renderQlog(); return; } }
+    else if(a.t==='q'){
+      const q=qlNorm(todayKey());
+      if(q[a.k] && q[a.k].length){ q[a.k].pop(); saveState(); renderQlog(); return; }
+    }
+  }
+  const q=qlNorm(todayKey());
+  let best=null;
+  ['poo','diar','meal'].forEach(function(k){
+    const arr=q[k];
+    if(arr.length){ const t=String(arr[arr.length-1]); if(!best || t>=best.t) best={k:k, t:t}; }
+  });
+  if(best){ q[best.k].pop(); saveState(); renderQlog(); }
+}
+
+/* =============== V4: 기록 통계 엔진 =============== */
+const STAT_CATS=[
+  {id:'poo',  ic:'💩', nm:'배변',      kind:'count'},
+  {id:'diar', ic:'💧', nm:'설사',      kind:'count'},
+  {id:'meal', ic:'🍚', nm:'식사',      kind:'count'},
+  {id:'walk', ic:'🐕', nm:'산책',      kind:'dur'},
+  {id:'away', ic:'🚪', nm:'혼자 시간', kind:'dur'}
+];
+const STAT={cat:'poo', unit:'d'};
+function statDayVal(cat, k){
+  if(cat==='walk'){ let m=0; (((S.walkLog||{})[k])||[]).forEach(function(s){ m+=Math.max(0,s.i-s.o); }); return Math.round(m/60000); }
+  if(cat==='away'){ let m=0; (((S.awayLog||{})[k])||[]).forEach(function(s){ m+=Math.max(0,s.i-s.o); }); return Math.round(m/60000); }
+  const s=(S.qlog||{})[k]; if(!s) return 0;
+  const a=s[cat];
+  return Array.isArray(a)? a.length : (typeof a==='number'? a : 0);
+}
+function statFirstDate(cat){
+  const src = cat==='walk'? (S.walkLog||{}) : (cat==='away'? (S.awayLog||{}) : (S.qlog||{}));
+  const keys=Object.keys(src).sort();
+  for(let i=0;i<keys.length;i++){ if(statDayVal(cat, keys[i])>0) return keys[i]; }
+  return null;
+}
+function statDaily(cat, maxDays){
+  const first=statFirstDate(cat);
+  if(!first) return [];
+  const today=new Date(); today.setHours(0,0,0,0);
+  const lo=addD(today, -(maxDays-1));
+  const start=new Date(Math.max(new Date(first+'T00:00:00').getTime(), lo.getTime()));
+  const out=[];
+  for(let d=new Date(start); d<=today; d=addD(d,1)){
+    const k=d2s(d);
+    out.push({k:k, v:statDayVal(cat,k)});
+  }
+  return out;
+}
+function statSeries(cat, unit){
+  if(unit==='d'){
+    return statDaily(cat,30).map(function(x){ return {l:x.k.slice(5).replace('-','/'), v:x.v}; });
+  }
+  const daily=statDaily(cat,92);
+  if(!daily.length) return [];
+  const map={}, ord=[];
+  daily.forEach(function(x){
+    let kk;
+    if(unit==='w'){
+      const d=new Date(x.k+'T00:00:00');
+      kk=d2s(addD(d, -((d.getDay()+6)%7)));
+    }else{
+      kk=x.k.slice(0,7);
+    }
+    if(!(kk in map)){ map[kk]=0; ord.push(kk); }
+    map[kk]+=x.v;
+  });
+  const tail= unit==='w'? ord.slice(-13) : ord.slice(-6);
+  return tail.map(function(kk){
+    return {l: unit==='w'? kk.slice(5).replace('-','/')+'~' : parseInt(kk.slice(5),10)+'월', v:map[kk]};
+  });
+}
+function statFmt(cat, v){
+  const c=STAT_CATS.find(function(x){ return x.id===cat; });
+  if(c.kind==='dur'){
+    return v>=60? (Math.floor(v/60)+'시간'+(v%60? ' '+(v%60)+'분' : '')) : (v+'분');
+  }
+  return v+'회';
+}
+function renderStats(){
+  const wrap=document.getElementById('stCats'); if(!wrap) return;
+  wrap.innerHTML=STAT_CATS.map(function(c){
+    return '<button type="button" data-c="'+c.id+'" class="'+(STAT.cat===c.id?'on':'')+'">'+c.ic+' '+c.nm+'</button>';
+  }).join('');
+  wrap.querySelectorAll('button').forEach(function(b){
+    b.addEventListener('click', function(){ STAT.cat=this.dataset.c; renderStats(); });
+  });
+  document.querySelectorAll('#stUnits button').forEach(function(b){ b.classList.toggle('on', b.dataset.u===STAT.unit); });
+  const cat=STAT.cat, unit=STAT.unit;
+  const c=STAT_CATS.find(function(x){ return x.id===cat; });
+  const UNITN={d:'일', w:'주', m:'월'};
+  const ser=statSeries(cat, unit);
+  const cards=document.getElementById('stCards');
+  const chartT=document.getElementById('stChartT');
+  const svg=document.getElementById('stChart');
+  const tbl=document.getElementById('stTable');
+  if(!ser.length){
+    cards.innerHTML='';
+    chartT.textContent=c.ic+' '+c.nm+' — 기록 없음';
+    svg.innerHTML='';
+    tbl.innerHTML='<p class="muted small" style="margin:0;">아직 기록이 없습니다. 홈의 빠른 기록으로 쌓아보세요.</p>';
+    renderStatLog();
+    return;
+  }
+  const vs=ser.map(function(x){ return x.v; });
+  const sum=vs.reduce(function(a,b){ return a+b; },0);
+  const avg=Math.round(sum/vs.length*10)/10;
+  const mn=Math.min.apply(null,vs), mx=Math.max.apply(null,vs);
+  const mnL=(ser.filter(function(x){ return x.v===mn; }).pop()||{}).l||'';
+  const mxL=(ser.filter(function(x){ return x.v===mx; }).pop()||{}).l||'';
+  let extra='';
+  if(cat==='walk'){
+    let cnt=0, tot=0;
+    Object.keys(S.walkLog||{}).forEach(function(k){ (S.walkLog[k]||[]).forEach(function(s){ cnt++; tot+=Math.max(0,s.i-s.o); }); });
+    if(cnt) extra='<div class="st-card"><div class="l">평균 1회 길이</div><div class="v">'+statFmt(cat, Math.round(tot/60000/cnt))+'</div><div class="s">전체 '+cnt+'회</div></div>';
+  }
+  if(cat==='away'){
+    let longest=0;
+    Object.keys(S.awayLog||{}).forEach(function(k){ (S.awayLog[k]||[]).forEach(function(s){ longest=Math.max(longest, s.i-s.o); }); });
+    if(longest) extra='<div class="st-card"><div class="l">최장 1회</div><div class="v">'+statFmt(cat, Math.round(longest/60000))+'</div><div class="s">단일 구간</div></div>';
+  }
+  const avgV = c.kind==='dur'? statFmt(cat, Math.round(avg)) : (avg+'회');
+  cards.innerHTML=
+    '<div class="st-card"><div class="l">평균 / '+UNITN[unit]+'</div><div class="v">'+avgV+'</div><div class="s">최근 '+ser.length+UNITN[unit]+' 기준</div></div>'
+    +'<div class="st-card"><div class="l">최소</div><div class="v">'+statFmt(cat,mn)+'</div><div class="s">'+mnL+'</div></div>'
+    +'<div class="st-card"><div class="l">최대</div><div class="v">'+statFmt(cat,mx)+'</div><div class="s">'+mxL+'</div></div>'
+    +extra;
+  chartT.textContent=c.ic+' '+c.nm+' · '+UNITN[unit]+'별 '+(c.kind==='dur'?'(분)':'(회)');
+  const W=640, H=190, padL=8, padB=24, padT=18;
+  const n=ser.length, gap= n>20? 2 : 6;
+  const bw=Math.max(4, (W-padL*2-gap*(n-1))/n);
+  const maxV=Math.max(mx,1);
+  let out='';
+  const step= n>20? 5 : (n>8? 2 : 1);
+  ser.forEach(function(x,i){
+    const h=Math.round((x.v/maxV)*(H-padB-padT));
+    const px=padL+i*(bw+gap), py=H-padB-h;
+    out+='<rect x="'+px.toFixed(1)+'" y="'+py+'" width="'+bw.toFixed(1)+'" height="'+Math.max(h,1)+'" rx="'+Math.min(5,bw/2).toFixed(1)+'" fill="'+(i===n-1?'#8A3324':'#D8C9AE')+'"/>';
+    if(x.v>0 && (n<=14 || i===n-1 || x.v===mx)){
+      out+='<text x="'+(px+bw/2).toFixed(1)+'" y="'+(py-4)+'" text-anchor="middle" font-size="10" fill="#6E6254">'+x.v+'</text>';
+    }
+    if(i%step===0 || i===n-1){
+      out+='<text x="'+(px+bw/2).toFixed(1)+'" y="'+(H-7)+'" text-anchor="middle" font-size="9.5" fill="#6E6254">'+x.l+'</text>';
+    }
+  });
+  svg.innerHTML=out;
+  const rows=ser.slice().reverse().slice(0,15);
+  tbl.innerHTML='<div class="tw"><table class="qd-table"><thead><tr><th>'+UNITN[unit]+'</th><th>'+c.ic+' '+c.nm+'</th></tr></thead><tbody>'
+    + rows.map(function(x){ return '<tr><td class="qd-d">'+x.l+'</td><td>'+statFmt(cat, x.v)+'</td></tr>'; }).join('')
+    + '</tbody></table></div>'
+    + (ser.length>15? '<p class="muted small" style="margin:8px 0 0;">표는 최근 15'+UNITN[unit]+'만 — 그래프·통계는 전체 범위 기준.</p>' : '');
+  renderStatLog();
+}
+function renderStatLog(){
+  const el=document.getElementById('stLog'); if(!el) return;
+  const cat=STAT.cat;
   const DOW=['일','월','화','수','목','금','토'];
-  const cell=function(k, kind, arr){
-    if(!arr.length) return '<span class="qd-none">—</span>';
-    return '<div class="qd-cnt">'+arr.length+'회</div><div class="qd-cell">'
-      +arr.map(function(t,i){ return '<span class="ql-chip">'+esc(t||'--:--')+'<button type="button" data-qd="'+k+'" data-qk="'+kind+'" data-qi="'+i+'" aria-label="삭제">✕</button></span>'; }).join('')
-      +'</div>';
-  };
-  el.innerHTML='<div class="tw"><table class="qd-table"><thead><tr><th style="width:72px;">날짜</th><th>💩 배변</th><th>🍚 식사</th></tr></thead><tbody>'
-    +days.map(function(k){
-      const q=qlNorm(k);
-      const dt=new Date(k+'T00:00:00');
-      const today=k===todayKey();
-      return '<tr'+(today?' class="qd-today"':'')+'><td class="qd-d">'+k.slice(5).replace('-','/')+'<span>'+DOW[dt.getDay()]+(today?' · 오늘':'')+'</span></td>'
-        +'<td>'+cell(k,'poo',q.poo)+'</td><td>'+cell(k,'meal',q.meal)+'</td></tr>';
-    }).join('')
-    +'</tbody></table></div>';
-  el.querySelectorAll('[data-qd]').forEach(function(b){
+  if(cat==='walk' || cat==='away'){
+    const src= cat==='walk'? (S.walkLog||{}) : (S.awayLog||{});
+    const keys=Object.keys(src).sort().reverse().slice(0,92).filter(function(k){ return (src[k]||[]).length; });
+    if(!keys.length){ el.innerHTML='<p class="muted small" style="margin:0;">기록 없음.</p>'; return; }
+    el.innerHTML='<div class="tw"><table class="qd-table"><thead><tr><th style="width:72px;">날짜</th><th>구간</th><th style="width:80px;">합계</th></tr></thead><tbody>'
+      + keys.map(function(k){
+          let tot=0;
+          const chips=src[k].map(function(s,i){
+            tot+=Math.max(0,s.i-s.o);
+            return '<span class="ql-chip">'+fmtHM(s.o)+'→'+fmtHM(s.i)+' · '+fmtDur(s.i-s.o)+'<button type="button" data-sl="'+cat+'" data-sld="'+k+'" data-sli="'+i+'" aria-label="삭제">✕</button></span>';
+          }).join('');
+          const today=k===todayKey();
+          return '<tr'+(today?' class="qd-today"':'')+'><td class="qd-d">'+k.slice(5).replace('-','/')+'<span>'+DOW[new Date(k+'T00:00:00').getDay()]+(today?' · 오늘':'')+'</span></td><td><div class="qd-cell">'+chips+'</div></td><td class="qd-d">'+fmtDur(tot)+'</td></tr>';
+        }).join('')+'</tbody></table></div>';
+  }else{
+    const keys=Object.keys(S.qlog||{}).sort().reverse().slice(0,92).filter(function(k){ return qlNorm(k)[cat].length; });
+    if(!keys.length){ el.innerHTML='<p class="muted small" style="margin:0;">기록 없음.</p>'; return; }
+    el.innerHTML='<div class="tw"><table class="qd-table"><thead><tr><th style="width:72px;">날짜</th><th>시각</th><th style="width:56px;">횟수</th></tr></thead><tbody>'
+      + keys.map(function(k){
+          const arr=qlNorm(k)[cat];
+          const chips=arr.map(function(t,i){
+            return '<span class="ql-chip">'+esc(String(t||'--:--').slice(0,5))+'<button type="button" data-sl="'+cat+'" data-sld="'+k+'" data-sli="'+i+'" aria-label="삭제">✕</button></span>';
+          }).join('');
+          const today=k===todayKey();
+          return '<tr'+(today?' class="qd-today"':'')+'><td class="qd-d">'+k.slice(5).replace('-','/')+'<span>'+DOW[new Date(k+'T00:00:00').getDay()]+(today?' · 오늘':'')+'</span></td><td><div class="qd-cell">'+chips+'</div></td><td class="qd-d">'+arr.length+'회</td></tr>';
+        }).join('')+'</tbody></table></div>';
+  }
+  el.querySelectorAll('[data-sl]').forEach(function(b){
     b.addEventListener('click', function(){
-      const q=qlNorm(this.dataset.qd);
-      q[this.dataset.qk].splice(parseInt(this.dataset.qi,10),1);
-      saveState(); renderQlog();
+      const c=this.dataset.sl, k=this.dataset.sld, i=parseInt(this.dataset.sli,10);
+      if(c==='walk'){ S.walkLog[k].splice(i,1); }
+      else if(c==='away'){ S.awayLog[k].splice(i,1); }
+      else{ qlNorm(k)[c].splice(i,1); }
+      saveState(); renderQlog(); renderAway();
     });
+  });
+}
+function bindStats(){
+  const u=document.getElementById('stUnits'); if(!u) return;
+  u.querySelectorAll('button').forEach(function(b){
+    b.addEventListener('click', function(){ STAT.unit=this.dataset.u; renderStats(); });
   });
 }
 
 /* =============== Init =============== */
-function renderAll(){ seedProfile(); renderHome(); renderDaily(); renderWeight(); renderVisits(); renderExpenses(); renderStorage(); renderCal(); renderNotice(); renderDash(); renderEChart(); renderLib();
+function renderAll(){ seedProfile(); renderHome(); renderDaily(); renderWeight(); renderVisits(); renderExpenses(); renderStorage(); renderCal(); renderNotice(); renderDash(); renderEChart(); renderLib(); renderAway();
   // re-sync inputs & checklists after import
   const map={pfName:'name', pfBirth:'birth', pfHome:'home', pfReg:'reg'};
   Object.keys(map).forEach(id=>{ document.getElementById(id).value=S.profile[map[id]]||''; });
@@ -3537,7 +3830,7 @@ function renderAll(){ seedProfile(); renderHome(); renderDaily(); renderWeight()
 }
 document.addEventListener('DOMContentLoaded', async ()=>{
   await loadState();
-  bindChecklists(); bindVax(); bindProfile(); bindWeight(); bindVisits(); bindExpenses(); bindIO(); bindCal(); buildPagers(); buildLinks(); mobileTables(); initReveal(); initTopBtn(); loadSyncCfg(); bindSync(); bindAlbum(); bindNotice(); bindNav(); bindSOS(); bindQlog(); bindLib(); bindRep();
+  bindChecklists(); bindVax(); bindProfile(); bindWeight(); bindVisits(); bindExpenses(); bindIO(); bindCal(); buildPagers(); buildLinks(); mobileTables(); initReveal(); initTopBtn(); loadSyncCfg(); bindSync(); bindAlbum(); bindNotice(); bindNav(); bindSOS(); bindQlog(); bindLib(); bindRep(); bindAway(); bindStats();
   ntcMigrate();
   renderAll();
   const h0=(location.hash||'').slice(1);
