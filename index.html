@@ -633,6 +633,33 @@ input[type=text],input[type=date],input[type=number],input[type=search],input[ty
 .ql-stat{background:var(--panel); border-style:dashed;}
 .ql-stat b{color:var(--sub); font-size:17px;}
 </style>
+<meta name="theme-color" content="#8A3324">
+<link rel="manifest" href='data:application/manifest+json;charset=utf-8,{"name":"%EB%B9%BC%EA%BC%BC %ED%95%B8%EB%93%9C%EB%B6%81","short_name":"%EB%B9%BC%EA%BC%BC","start_url":"/cavalier-handbook/","scope":"/cavalier-handbook/","display":"standalone","background_color":"%23FCFAF6","theme_color":"%238A3324","icons":[{"src":"data:image/svg%2Bxml,%3Csvg xmlns%3D'http://www.w3.org/2000/svg' viewBox%3D'0 0 512 512'%3E%3Crect width%3D'512' height%3D'512' rx%3D'110' fill%3D'%238A3324'/%3E%3Cellipse cx%3D'160' cy%3D'170' rx%3D'46' ry%3D'60' fill%3D'%23FBF6EC'/%3E%3Cellipse cx%3D'256' cy%3D'140' rx%3D'46' ry%3D'60' fill%3D'%23FBF6EC'/%3E%3Cellipse cx%3D'352' cy%3D'170' rx%3D'46' ry%3D'60' fill%3D'%23FBF6EC'/%3E%3Cellipse cx%3D'108' cy%3D'268' rx%3D'40' ry%3D'52' fill%3D'%23FBF6EC'/%3E%3Cellipse cx%3D'404' cy%3D'268' rx%3D'40' ry%3D'52' fill%3D'%23FBF6EC'/%3E%3Cpath d%3D'M256 240c76 0 138 58 138 128 0 44-34 74-78 74-22 0-42-8-60-8s-38 8-60 8c-44 0-78-30-78-74 0-70 62-128 138-128z' fill%3D'%23FBF6EC'/%3E%3C/svg%3E","sizes":"any","type":"image/svg%2Bxml","purpose":"any"}]}'>
+<style>
+/* V5 */
+.mg-line{margin:8px 0 0; font-size:12.5px; font-weight:800;}
+.mg-ok{color:var(--sage);}
+.mg-warn{color:#B4530A;}
+.mg-night{color:var(--sub); font-weight:700;}
+mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px; box-shadow:0 0 0 3px #FFE79E;}
+#wtOvl{position:fixed; inset:0; z-index:88; background:rgba(30,10,6,.55); display:none; align-items:center; justify-content:center; padding:20px;}
+#wtOvl.on{display:flex;}
+.wt-card{width:100%; max-width:340px; background:var(--paper); border:1.5px solid var(--line); border-radius:16px; padding:16px; box-shadow:0 12px 40px rgba(0,0,0,.25);}
+.wt-card .ct{margin-bottom:10px;}
+.wt-card input{width:100%; font-family:inherit; font-size:22px; font-weight:800; text-align:center; padding:12px; border:1.5px solid var(--line); border-radius:12px; color:var(--chest-d);}
+.wt-row{display:flex; gap:8px; margin-top:12px;}
+.wt-row button{flex:1; font-family:inherit; font-weight:800; border-radius:11px; padding:12px; cursor:pointer; font-size:14px;}
+#wtSave{background:var(--chest); border:none; color:#FBF6EC;}
+#wtCancel{background:var(--paper); border:1.5px solid var(--line); color:var(--sub);}
+.feed-out{font-family:'Gowun Batang',serif; font-size:18px; font-weight:700; color:var(--chest-d); margin:8px 0; line-height:1.5;}
+.feed-set{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px;}
+.feed-set label{font-size:11px; font-weight:800; color:var(--sub); display:block; margin-bottom:3px;}
+.feed-set input, .feed-set select{width:100%; font-family:inherit; font-size:13.5px; padding:9px 10px; border:1.5px solid var(--line); border-radius:11px; background:var(--paper); color:var(--ink);}
+.nt-ed{margin-top:4px;}
+.nt-ed textarea{width:100%; font-family:inherit; font-size:13.5px; padding:9px 11px; border:1.5px solid var(--sage); border-radius:11px; min-height:84px;}
+.nt-edrow{display:flex; gap:8px; margin-top:8px;}
+.aw-fix{display:flex; gap:8px; margin-top:9px;}
+</style>
 </head>
 <body>
 
@@ -693,6 +720,7 @@ input[type=text],input[type=date],input[type=number],input[type=search],input[ty
     </div>
     <div class="ql-stamps" id="qlStamps"></div>
     <div class="ql-undo"><span class="muted small" id="qlSum" style="flex:1;"></span></div>
+    <p class="mg-line" id="mealGap"></p>
     <p class="muted small" style="margin:7px 0 0;">기록된 시각을 누르면 삭제됩니다.</p>
   </div>
 
@@ -812,9 +840,9 @@ input[type=text],input[type=date],input[type=number],input[type=search],input[ty
       <span class="muted small">— 작성·확인에 함께 쓰입니다</span>
     </div>
     <div class="nt-tpls">
-      <button class="nt-tpl" type="button" data-t="🍚 사료 __:__에 __g 급여 완료">🍚 밥</button>
-      <button class="nt-tpl" type="button" data-t="🐕 산책 __분 — 배변 O/X">🐕 산책</button>
-      <button class="nt-tpl" type="button" data-t="💩 배변 상태: 정상 / 무름 (사진 톡)">💩 배변</button>
+      <button class="nt-tpl" type="button" data-k="meal" data-t="🍚 사료 __:__에 __g 급여 완료">🍚 밥</button>
+      <button class="nt-tpl" type="button" data-k="walk" data-t="🐕 산책 __분 — 배변 O/X">🐕 산책</button>
+      <button class="nt-tpl" type="button" data-k="potty" data-t="💩 배변 상태: 정상 / 무름 (사진 톡)">💩 배변</button>
       <button class="nt-tpl" type="button" data-t="💊 약·영양제 챙김">💊 약</button>
       <button class="nt-tpl" type="button" data-t="🏥 병원: ">🏥 병원</button>
       <button class="nt-tpl" type="button" data-t="⚠️ 특이사항: ">⚠️ 특이</button>
@@ -1559,10 +1587,25 @@ input[type=text],input[type=date],input[type=number],input[type=search],input[ty
     <div id="wList"></div>
   </div>
 
+  <h3 class="sec">권장 급여량 <span class="muted small" style="font-weight:400;">— 체중 기준 참고치</span></h3>
+  <div class="card">
+    <div class="feed-out" id="fdOut">체중을 먼저 입력하세요.</div>
+    <div class="feed-set">
+      <div><label>사료 칼로리 (kcal/kg — 봉지 뒷면)</label><input type="number" id="fdKcal" inputmode="numeric" step="50" min="2500" max="6000"></div>
+      <div><label>하루 끼니 수</label><select id="fdMeals"><option value="3">3회</option><option value="4">4회</option><option value="5">5회</option></select></div>
+    </div>
+    <p class="muted small" style="margin:10px 0 0;">수의 표준 RER 공식 기준 참고치입니다. <strong>봉지 급여표와 수의사 지시가 우선</strong>이며 개체차 ±20%, 간식은 하루 열량의 10% 이내로 계산에서 빼세요.</p>
+  </div>
+
+
   <h3 class="sec">활동 기록 통계</h3>
   <div class="card">
     <p class="muted small" style="margin:0 0 10px;">배변·설사·식사·산책·혼자 시간의 그래프·평균·전체 로그는 서재의 기록 통계에 있습니다. 90일 보관.</p>
-    <button class="btn sm" onclick="goTab('stats')">📊 기록 통계 열기</button>
+    <div class="row">
+      <button class="btn sm" onclick="goTab('stats')">📊 기록 통계 열기</button>
+      <button class="btn sm ghost" id="bkupBtn" type="button">💾 전체 기록 백업</button>
+    </div>
+    <p class="muted small" style="margin:8px 0 0;">백업은 기록·설정을 JSON 파일로 저장합니다 (앨범 사진 제외 — 사진은 클라우드에 있음).</p>
   </div>
 
   <h3 class="sec">병원 방문 기록</h3>
@@ -2185,6 +2228,15 @@ input[type=text],input[type=date],input[type=number],input[type=search],input[ty
   </div>
 </div>
 
+<div id="wtOvl" role="dialog" aria-modal="true" aria-label="체중 입력">
+  <div class="wt-card">
+    <div class="ct">⚖️ 오늘 체중 (kg)</div>
+    <input type="number" id="wtInput" inputmode="decimal" step="0.05" min="0.2" max="30" placeholder="2.40">
+    <p class="muted small" style="margin:8px 0 0;" id="wtPrev"></p>
+    <div class="wt-row"><button id="wtCancel" type="button">취소</button><button id="wtSave" type="button">저장</button></div>
+  </div>
+</div>
+
 <div id="ntcOvl" role="dialog" aria-modal="true" aria-label="오늘의 공지">
   <div class="ntc-box">
     <div class="ntc-head"><span>📢</span><span class="tt">공지</span><span class="ntc-meta" id="ntcPopMeta"></span></div>
@@ -2195,7 +2247,7 @@ input[type=text],input[type=date],input[type=number],input[type=search],input[ty
 
 <script>
 /* =============== State =============== */
-const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}};
+const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, feed:{kcal:4000, meals:4}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}};
 let S = JSON.parse(JSON.stringify(DEFAULT_S));
 let storageOK = false, artOK = false, saveTimer = null, lastEditAt = 0;
 
@@ -2310,7 +2362,7 @@ function bindSync(){
 }
 
 /* =============== 오늘의 공지 (교대 인수인계 팝업) =============== */
-const NTC={shownAt:0, shownId:'', show:10};
+const NTC={shownAt:0, shownId:'', show:10, editId:''};
 function ntcDismissGet(){ try{ return JSON.parse(lsGet('_ntc_dismiss')||'null'); }catch(e){ return null; } }
 function ntcDismissSet(at){ lsSet('_ntc_dismiss', JSON.stringify({at:at, day:todayKey()})); }
 function ntcFmt(ts){ if(!ts) return ''; const d=new Date(ts); return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
@@ -2321,19 +2373,41 @@ function renderNotice(){
     const list=S.ntc||[];
     const shown=list.slice(0, NTC.show||10);
     feed.innerHTML = shown.length? shown.map(function(n){
+      if(NTC.editId===n.id){
+        return '<div class="nt-card cur"><div class="nt-h"><span class="nt-by">✏️ 공지 수정</span><span class="nt-t">'+esc(n.by||'')+'</span></div>'
+          +'<div class="nt-ed"><textarea id="ntcEditTa">'+esc(n.text)+'</textarea>'
+          +'<div class="nt-edrow"><button class="btn sm" data-nsv="'+n.id+'">저장</button><button class="btn sm ghost" data-ncx="1">취소</button></div>'
+          +'<p class="muted small" style="margin:7px 0 0;">저장하면 상대 폰에 팝업이 다시 뜹니다 (읽음 초기화).</p></div></div>';
+      }
       const mine = me && n.by===me;
       const needAck = !mine && !(me && n.ack && n.ack[me]);
       return '<div class="nt-card'+(n===list[0]?' cur':'')+'">'
-        +'<div class="nt-h"><span class="nt-by">'+esc(n.by||'작성자 미입력')+(mine?' <span class="nt-me">나</span>':'')+'</span><span class="nt-t">'+ntcFmt(n.at)+'</span></div>'
+        +'<div class="nt-h"><span class="nt-by">'+esc(n.by||'작성자 미입력')+(mine?' <span class="nt-me">나</span>':'')+'</span><span class="nt-t">'+(n.ed? '✏️ 수정 '+ntcFmt(n.ed) : ntcFmt(n.at))+'</span></div>'
         +'<div class="nt-b">'+esc(n.text)+'</div>'
         +'<div class="nt-f"><span class="nt-ack">'+ntcAckLine(n)+'</span>'
         +(needAck?'<button class="btn sm" data-ack="'+n.id+'">✓ 확인</button>':'')
+        +'<button class="btn sm ghost" data-ned="'+n.id+'">수정</button>'
         +'<button class="btn sm ghost" data-ndel="'+n.id+'">삭제</button></div>'
       +'</div>';
     }).join('') : '<p class="muted small">아직 공지가 없습니다. 위에서 첫 공지를 남겨보세요.</p>';
     const more=document.getElementById('ntcMore');
     if(more) more.style.display = list.length>shown.length ? 'inline-block' : 'none';
     feed.querySelectorAll('[data-ack]').forEach(function(b){ b.addEventListener('click', function(){ ntcAck(this.dataset.ack); }); });
+    feed.querySelectorAll('[data-ned]').forEach(function(b){ b.addEventListener('click', function(){ NTC.editId=this.dataset.ned; renderNotice(); }); });
+    feed.querySelectorAll('[data-ncx]').forEach(function(b){ b.addEventListener('click', function(){ NTC.editId=''; renderNotice(); }); });
+    feed.querySelectorAll('[data-nsv]').forEach(function(b){ b.addEventListener('click', function(){
+      const id=this.dataset.nsv;
+      const ta=document.getElementById('ntcEditTa');
+      const v=(ta && ta.value || '').trim();
+      if(!v){ alert('내용을 입력하세요.'); return; }
+      const n=(S.ntc||[]).find(function(x){ return x.id===id; }); if(!n) return;
+      n.text=v; n.ed=Date.now(); n.ack={};
+      n.id='n'+n.ed;
+      ntcSeenSet(n.id); NTC.shownId=n.id;
+      if(n===S.ntc[0]) S.notice={text:v, by:n.by||'', at:n.at, day:todayKey()};
+      NTC.editId='';
+      saveState(); renderNotice(); renderHomeNotice();
+    }); });
     feed.querySelectorAll('[data-ndel]').forEach(function(b){ b.addEventListener('click', function(){
       if(!confirm('이 공지를 삭제할까요? 두 폰 모두에서 사라집니다.')) return;
       const id=this.dataset.ndel;
@@ -2354,7 +2428,7 @@ function maybeShowNoticePopup(){
   if(ntcSeenGet()[n.id]) return;
   if(NTC.shownId===n.id) return;
   const ovl=document.getElementById('ntcOvl'); if(!ovl) return;
-  document.getElementById('ntcPopMeta').textContent=(n.by?n.by+' · ':'')+ntcFmt(n.at);
+  document.getElementById('ntcPopMeta').textContent=(n.ed? '✏️ 수정된 공지 · ':'')+(n.by? n.by+' · ':'')+ntcFmt(n.ed||n.at);
   document.getElementById('ntcPopBody').textContent=n.text;
   ovl.dataset.nid=n.id;
   ovl.classList.add('on');
@@ -2381,7 +2455,7 @@ function bindNotice(){
   document.querySelectorAll('.nt-tpl').forEach(function(b){
     b.addEventListener('click', function(){
       const ta=document.getElementById('ntcText');
-      const add=this.dataset.t;
+      const add=ntcSmartTpl(this.dataset.k, this.dataset.t);
       ta.value = ta.value ? (ta.value.replace(/\s+$/,'')+'\n'+add) : add;
       ta.focus();
     });
@@ -3144,8 +3218,11 @@ function tabTitle(id){
   const m=LIB_META.find(function(x){ return x[0]===id; });
   return m ? (m[1]+' '+m[2]) : (MAIN_TITLES[id]||'');
 }
+const SCROLL_POS={};
 function goTab(id, silent){
   if(!document.getElementById('tab-'+id)) id='home';
+  const cur=document.querySelector('.tab-panel.on');
+  if(cur) SCROLL_POS[cur.id.replace('tab-','')]=window.scrollY||0;
   document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.toggle('on', p.id==='tab-'+id); });
   const bkey = BNAV_KEYS[id] ? id : (LIB_TABS.indexOf(id)>-1 ? 'lib' : 'home');
   document.querySelectorAll('.bn-btn').forEach(function(b){ b.classList.toggle('on', b.dataset.tab===bkey); });
@@ -3154,7 +3231,8 @@ function goTab(id, silent){
     if(id==='home'){ bb.style.display='none'; }
     else{ bb.style.display='flex'; document.getElementById('libBackT').textContent=tabTitle(id); }
   }
-  window.scrollTo({top:0});
+  const keep=(LIB_TABS.indexOf(id)>-1 || id==='lib') && SCROLL_POS[id];
+  window.scrollTo({top: keep? SCROLL_POS[id] : 0});
   if(id==='album'){ try{ albumOnOpen(); }catch(e){} }
   if(id==='lib'){ try{ renderLib(); }catch(e){} }
   if(id==='stats'){ try{ renderStats(); }catch(e){} }
@@ -3257,7 +3335,7 @@ function renderHomeNotice(){
     const n=list[0]; const me=myName();
     const mine = me && n.by===me;
     const needAck = !mine && !(me && n.ack && n.ack[me]);
-    el.innerHTML='<div class="hn"><div class="h"><span>📢 '+esc(n.by||'공지')+' · '+ntcFmt(n.at)+'</span>'
+    el.innerHTML='<div class="hn"><div class="h"><span>📢 '+esc(n.by||'공지')+' · '+(n.ed? '✏️ '+ntcFmt(n.ed) : ntcFmt(n.at))+'</span>'
       +(needAck?'<button class="btn sm" id="hnAck" type="button">✓ 확인</button>':'<button class="btn sm ghost" id="hnEdit" type="button">게시판 '+list.length+'건</button>')
       +'</div><div class="b">'+esc(n.text)+'</div>'
       +'<div class="m">'+ntcAckLine(n)+'</div></div>';
@@ -3299,6 +3377,7 @@ function renderQlog(){
   let wmin=0; wl.forEach(function(s){ wmin+=Math.max(0,s.i-s.o); });
   const su=document.getElementById('qlSum');
   if(su) su.textContent='오늘 대변 '+q.poo.length+' · 소변 '+q.pee.length+' · 설사 '+q.diar.length+' · 식사 '+q.meal.length+' · 산책 '+wl.length+'회'+(wmin? ' '+fmtDur(wmin):'');
+  renderMealGap();
   try{ renderStats(); }catch(e){}
 }
 function qlBump(k, delta){
@@ -3322,18 +3401,24 @@ function bindQlog(){
   document.getElementById('qlPoo').addEventListener('click', function(){ qlBump('poo',1); });
   document.getElementById('qlPee').addEventListener('click', function(){ qlBump('pee',1); });
   document.getElementById('qlDiar').addEventListener('click', function(){ qlBump('diar',1); });
-  document.getElementById('qlMeal').addEventListener('click', function(){ qlBump('meal',1); });
+  document.getElementById('qlMeal').addEventListener('click', function(){
+    const lm=lastMealTs();
+    if(lm && (Date.now()-lm) < 2*3600000){
+      if(!confirm('마지막 식사가 '+fmtDur(Date.now()-lm)+' 전입니다. 중복 급여일 수 있어요. 그래도 기록할까요?')) return;
+    }
+    qlBump('meal',1);
+  });
   document.getElementById('qlWalk').addEventListener('click', walkToggle);
   document.getElementById('qlStamps').addEventListener('click', qlChipTap);
   const sb=document.getElementById('qlStats'); if(sb) sb.addEventListener('click', function(){ goTab('stats'); });
   document.getElementById('qlWt').addEventListener('click', function(){
-    const v=prompt('오늘 체중(kg) — 숫자만, 예: 2.4');
-    if(v===null) return;
-    const kg=parseFloat(String(v).replace(',','.'));
-    if(!(kg>0.2 && kg<30)){ alert('숫자를 확인해주세요 (0.2~30 사이 kg).'); return; }
-    S.weight=S.weight.filter(function(x){ return x.d!==todayKey(); });
-    S.weight.push({d:todayKey(), kg:String(kg)});
-    saveState(); renderWeight(); renderQlog(); renderHomeWt();
+    const ov=document.getElementById('wtOvl');
+    const inp=document.getElementById('wtInput');
+    const lw=latestWeight();
+    inp.value = lw? lw.kg : '';
+    document.getElementById('wtPrev').textContent = lw? '최근: '+lw.kg+'kg ('+lw.d.slice(5).replace('-','/')+')' : '첫 체중 기록입니다.';
+    ov.classList.add('on');
+    setTimeout(function(){ inp.focus(); inp.select(); }, 60);
   });
   document.getElementById('qlPhoto').addEventListener('click', function(){
     goTab('album');
@@ -3526,7 +3611,7 @@ function bindLib(){
       res.innerHTML = hits.length
         ? hits.slice(0,8).map(function(h){ return '<div class="lr-item" data-go="'+h.id+'"><div class="t">'+esc(h.num)+' '+esc(h.title)+'</div><div class="s">'+esc(h.snip)+'</div></div>'; }).join('')
         : '<p class="muted small">"'+esc(kw)+'" 검색 결과가 없습니다. 우측 하단 🐾 AI 상담에 물어보세요.</p>';
-      res.querySelectorAll('.lr-item').forEach(function(r){ r.addEventListener('click', function(){ goTab(r.dataset.go); }); });
+      res.querySelectorAll('.lr-item').forEach(function(r){ r.addEventListener('click', function(){ const id=r.dataset.go; goTab(id); setTimeout(function(){ libJump(id, kw); }, 90); }); });
     }, 200);
   });
 }
@@ -3592,7 +3677,16 @@ function renderAway(){
   const a=awayToday();
   if(S.awayCur){
     out.disabled=true; inn.disabled=false;
-    st.innerHTML='🔴 <strong>'+fmtDur(a.ongoing)+'째 혼자</strong> ('+fmtHM(S.awayCur)+' 외출)'+(a.total? ' · 오늘 누적 '+fmtDur(a.total+a.ongoing):'');
+    const over = a.ongoing > 12*3600000;
+    st.innerHTML='🔴 <strong>'+fmtDur(a.ongoing)+'째 혼자</strong> ('+fmtHM(S.awayCur)+' 외출)'+(a.total? ' · 오늘 누적 '+fmtDur(a.total+a.ongoing):'')
+      +(over? '<br><span class="mg-warn">귀가 버튼을 잊으셨나요? 아래에서 정리하세요.</span><div class="aw-fix"><button class="btn sm" id="awFixIn" type="button">지금 귀가로 기록</button><button class="btn sm ghost" id="awFixX" type="button">이 외출 취소</button></div>' : '');
+    const f1=document.getElementById('awFixIn');
+    if(f1) f1.addEventListener('click', function(){ document.getElementById('awIn').click(); });
+    const f2=document.getElementById('awFixX');
+    if(f2) f2.addEventListener('click', function(){
+      if(!confirm('이 외출 기록을 취소할까요? 시간이 저장되지 않습니다.')) return;
+      S.awayCur=0; saveState(); renderAway();
+    });
   }else{
     out.disabled=false; inn.disabled=true;
     st.innerHTML= a.cnt? '🟢 지금 함께 · 오늘 혼자 합계 <strong>'+fmtDur(a.total)+'</strong> ('+a.cnt+'회)' : '🟢 지금 함께 · 오늘 혼자 둔 기록 없음';
@@ -3647,6 +3741,187 @@ function qlChipTap(e){
     S.walkCur=0;
     saveState(); renderQlog();
   }
+}
+
+/* =============== V5 헬퍼 =============== */
+/* S1: 검색 위치 점프 + 하이라이트 */
+let LIB_HL=null;
+function libClearHl(){
+  if(LIB_HL && LIB_HL.parentNode){
+    const p=LIB_HL.parentNode;
+    p.replaceChild(document.createTextNode(LIB_HL.textContent), LIB_HL);
+    p.normalize();
+  }
+  LIB_HL=null;
+}
+function libJump(id, kw){
+  libClearHl();
+  const sec=document.getElementById('tab-'+id); if(!sec || !kw) return;
+  const low=kw.toLowerCase();
+  const walker=document.createTreeWalker(sec, NodeFilter.SHOW_TEXT, null);
+  let node;
+  while((node=walker.nextNode())){
+    const tag=node.parentNode && node.parentNode.tagName;
+    if(tag==='SCRIPT' || tag==='STYLE') continue;
+    const idx=node.textContent.toLowerCase().indexOf(low);
+    if(idx===-1) continue;
+    try{
+      const target=node.splitText(idx);
+      target.splitText(kw.length);
+      const mk=document.createElement('mark');
+      mk.className='lib-hl';
+      target.parentNode.replaceChild(mk, target);
+      mk.appendChild(target);
+      LIB_HL=mk;
+      mk.scrollIntoView({behavior:'smooth', block:'center'});
+    }catch(e){}
+    return;
+  }
+}
+/* F1: 식사 텀 */
+function lastMealTs(){
+  const tk=todayKey();
+  const q=qlNorm(tk);
+  let d=tk, arr=q.meal;
+  if(!arr.length){
+    const y=addD(new Date(tk+'T00:00:00'), -1);
+    d=d2s(y);
+    const s=(S.qlog||{})[d];
+    arr=(s && Array.isArray(s.meal))? s.meal : [];
+    if(!arr.length) return null;
+  }
+  const t=String(arr[arr.length-1]||'');
+  if(!/^\d\d:\d\d/.test(t)) return null;
+  return new Date(d+'T'+(t.length===5? t+':00' : t)).getTime();
+}
+function renderMealGap(){
+  const el=document.getElementById('mealGap'); if(!el) return;
+  const hr=new Date().getHours();
+  const lm=lastMealTs();
+  const fd=feedCalc();
+  const per=fd? ' · 권장 약 '+fd.per+'g/끼' : '';
+  if(hr>=22 || hr<6){ el.className='mg-line mg-night'; el.textContent='🌙 야간 — 아침 첫 식사는 06~08시'+per; return; }
+  if(!lm){ el.className='mg-line mg-warn'; el.textContent='⚠ 식사 기록 없음 — 어린 강아지는 5시간 이상 공복 금지'+per; return; }
+  const gap=Date.now()-lm;
+  if(gap>5*3600000){
+    el.className='mg-line mg-warn';
+    el.textContent='⚠ 마지막 식사 후 '+fmtDur(gap)+' — 5시간 초과, 저혈당 주의'+per;
+  }else{
+    const next=new Date(lm+5*3600000);
+    el.className='mg-line mg-ok';
+    el.textContent='✓ 다음 식사 ~'+fmtHM(next.getTime())+' (마지막 '+fmtHM(lm)+')'+per;
+  }
+}
+/* F2: 급여량 (RER) */
+function feedCalc(){
+  const lw=latestWeight(); if(!lw || !S.profile.birth) return null;
+  const kg=parseFloat(lw.kg); if(!(kg>0)) return null;
+  const days=Math.floor((new Date()-new Date(S.profile.birth+'T00:00:00'))/86400000);
+  const mult = days<122? 3.0 : (days<365? 2.0 : 1.6);
+  const rer=70*Math.pow(kg,0.75);
+  const kcal=rer*mult;
+  const f=S.feed||{kcal:4000, meals:4};
+  const grams=Math.round(kcal/(f.kcal/1000));
+  const per=Math.round(grams/(f.meals||4));
+  return {kcal:Math.round(kcal), grams:grams, per:per, meals:f.meals||4, mult:mult};
+}
+function renderFeed(){
+  const out=document.getElementById('fdOut'); if(!out) return;
+  const kc=document.getElementById('fdKcal'), ms=document.getElementById('fdMeals');
+  if(kc && document.activeElement!==kc) kc.value=(S.feed&&S.feed.kcal)||4000;
+  if(ms) ms.value=String((S.feed&&S.feed.meals)||4);
+  const fd=feedCalc();
+  if(!fd){ out.textContent='체중과 생년월일을 입력하면 계산됩니다.'; return; }
+  const lw=latestWeight();
+  out.innerHTML='하루 약 <u>'+fd.grams+'g</u> ('+fd.kcal+'kcal) → '+fd.meals+'끼 기준 <u>끼당 약 '+fd.per+'g</u><br><span class="muted small" style="font-family:\'Gowun Dodum\';">체중 '+lw.kg+'kg · 성장기 배수 ×'+fd.mult+'</span>';
+}
+function bindFeed(){
+  const kc=document.getElementById('fdKcal'); if(!kc) return;
+  kc.addEventListener('change', function(){
+    const v=parseInt(this.value,10);
+    if(v>=2500 && v<=6000){ S.feed=S.feed||{}; S.feed.kcal=v; saveState(); renderFeed(); renderMealGap(); }
+  });
+  document.getElementById('fdMeals').addEventListener('change', function(){
+    S.feed=S.feed||{}; S.feed.meals=parseInt(this.value,10); saveState(); renderFeed(); renderMealGap();
+  });
+}
+/* R2: 체중 시트 */
+function bindWt(){
+  const ov=document.getElementById('wtOvl'); if(!ov) return;
+  document.getElementById('wtCancel').addEventListener('click', function(){ ov.classList.remove('on'); });
+  ov.addEventListener('click', function(e){ if(e.target===ov) ov.classList.remove('on'); });
+  document.getElementById('wtSave').addEventListener('click', function(){
+    const kg=parseFloat(String(document.getElementById('wtInput').value).replace(',','.'));
+    if(!(kg>0.2 && kg<30)){ alert('0.2~30 사이 숫자를 입력하세요.'); return; }
+    S.weight=S.weight.filter(function(x){ return x.d!==todayKey(); });
+    S.weight.push({d:todayKey(), kg:String(kg)});
+    ov.classList.remove('on');
+    saveState(); renderWeight(); renderQlog(); renderHomeWt(); renderFeed();
+  });
+}
+/* H2: 템플릿 스마트 채움 */
+function ntcSmartTpl(k, fallback){
+  const tk=todayKey(); const q=qlNorm(tk);
+  const hm=function(t){ return String(t||'').slice(0,5); };
+  if(k==='meal' && q.meal.length){
+    return '🍚 오늘 급여 '+q.meal.length+'회 ('+q.meal.map(hm).join(' · ')+'). 다음 __:__';
+  }
+  if(k==='walk'){
+    const wl=(S.walkLog||{})[tk]||[];
+    if(wl.length){
+      let m=0; wl.forEach(function(s){ m+=Math.max(0,s.i-s.o); });
+      return '🐕 산책 '+wl.length+'회 · 총 '+fmtDur(m)+' ('+wl.map(function(s){ return fmtHM(s.o)+'→'+fmtHM(s.i); }).join(', ')+')';
+    }
+  }
+  if(k==='potty' && (q.poo.length||q.pee.length||q.diar.length)){
+    return '💩 오늘 대변 '+q.poo.length+' · 소변 '+q.pee.length+' · 설사 '+q.diar.length+(q.diar.length? ' — 상태 확인 필요':' — 상태 정상');
+  }
+  return fallback;
+}
+/* A1: 챗봇 컨텍스트 */
+function petCtx(){
+  try{
+    const out=[];
+    if(S.profile.birth){
+      const days=Math.floor((new Date()-new Date(S.profile.birth+'T00:00:00'))/86400000);
+      out.push('생후 '+days+'일(약 '+Math.floor(days/30.44)+'개월)');
+    }
+    const lw=latestWeight();
+    if(lw) out.push('체중 '+lw.kg+'kg('+lw.d.slice(5)+')');
+    const q=qlNorm(todayKey());
+    const wl=(S.walkLog||{})[todayKey()]||[];
+    let wm=0; wl.forEach(function(s){ wm+=Math.max(0,s.i-s.o); });
+    out.push('오늘: 대변'+q.poo.length+' 소변'+q.pee.length+' 설사'+q.diar.length+' 식사'+q.meal.length+(q.meal.length? '(마지막 '+String(q.meal[q.meal.length-1]).slice(0,5)+')':'')+' 산책'+wl.length+'회'+(wm? ' '+Math.round(wm/60000)+'분':''));
+    if(S.awayCur) out.push('지금 '+fmtDur(Date.now()-S.awayCur)+'째 혼자');
+    const fd=feedCalc();
+    if(fd) out.push('권장급여(참고): 하루 '+fd.grams+'g, 끼당 '+fd.per+'g');
+    return out.join(' | ').slice(0,500);
+  }catch(e){ return ''; }
+}
+/* D1: 백업 */
+function bindBackup(){
+  const b=document.getElementById('bkupBtn'); if(!b) return;
+  b.addEventListener('click', function(){
+    try{
+      const data=JSON.stringify({app:'cavalier-handbook', exported:new Date().toISOString(), data:S}, null, 1);
+      const blob=new Blob([data], {type:'application/json'});
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(blob);
+      a.download='빼꼼기록_'+todayKey().replace(/-/g,'')+'.json';
+      document.body.appendChild(a); a.click();
+      setTimeout(function(){ if(URL.revokeObjectURL) URL.revokeObjectURL(a.href); a.remove(); }, 800);
+    }catch(e){ alert('백업 생성에 실패했습니다: '+e.message); }
+  });
+}
+/* 자정 리셋 */
+let DAY_KEY=todayKey();
+function bindMidnight(){
+  setInterval(function(){
+    if(todayKey()!==DAY_KEY){
+      DAY_KEY=todayKey();
+      try{ renderAll(); }catch(e){}
+    }
+  }, 60000);
 }
 
 /* =============== V4: 기록 통계 엔진 =============== */
@@ -3752,6 +4027,22 @@ function renderStats(){
     Object.keys(S.walkLog||{}).forEach(function(k){ (S.walkLog[k]||[]).forEach(function(s){ cnt++; tot+=Math.max(0,s.i-s.o); }); });
     if(cnt) extra='<div class="st-card"><div class="l">평균 1회 길이</div><div class="v">'+statFmt(cat, Math.round(tot/60000/cnt))+'</div><div class="s">전체 '+cnt+'회</div></div>';
   }
+  if(cat==='meal'){
+    let gaps=[], cntD=0;
+    Object.keys(S.qlog||{}).sort().slice(-14).forEach(function(k){
+      const arr=qlNorm(k).meal.map(function(t){ return String(t).slice(0,5); }).filter(function(t){ return /^\d\d:\d\d$/.test(t); }).sort();
+      if(arr.length>1){ cntD++;
+        for(let i=1;i<arr.length;i++){
+          const a=arr[i-1].split(':'), b2=arr[i].split(':');
+          gaps.push((parseInt(b2[0],10)*60+parseInt(b2[1],10))-(parseInt(a[0],10)*60+parseInt(a[1],10)));
+        }
+      }
+    });
+    if(gaps.length){
+      const avgG=Math.round(gaps.reduce(function(x,y){ return x+y; },0)/gaps.length);
+      extra='<div class="st-card"><div class="l">평균 간격</div><div class="v">'+Math.floor(avgG/60)+'시간 '+(avgG%60)+'분</div><div class="s">최근 14일 · 하루 내 간격</div></div>';
+    }
+  }
   if(cat==='away'){
     let longest=0;
     Object.keys(S.awayLog||{}).forEach(function(k){ (S.awayLog[k]||[]).forEach(function(s){ longest=Math.max(longest, s.i-s.o); }); });
@@ -3839,7 +4130,7 @@ function bindStats(){
 }
 
 /* =============== Init =============== */
-function renderAll(){ seedProfile(); renderHome(); renderDaily(); renderWeight(); renderVisits(); renderExpenses(); renderStorage(); renderCal(); renderNotice(); renderDash(); renderEChart(); renderLib(); renderAway();
+function renderAll(){ seedProfile(); renderHome(); renderDaily(); renderWeight(); renderVisits(); renderExpenses(); renderStorage(); renderCal(); renderNotice(); renderDash(); renderEChart(); renderLib(); renderAway(); renderFeed();
   // re-sync inputs & checklists after import
   const map={pfName:'name', pfBirth:'birth', pfHome:'home', pfReg:'reg'};
   Object.keys(map).forEach(id=>{ document.getElementById(id).value=S.profile[map[id]]||''; });
@@ -3858,8 +4149,9 @@ function renderAll(){ seedProfile(); renderHome(); renderDaily(); renderWeight()
 }
 document.addEventListener('DOMContentLoaded', async ()=>{
   await loadState();
-  bindChecklists(); bindVax(); bindProfile(); bindWeight(); bindVisits(); bindExpenses(); bindIO(); bindCal(); buildPagers(); buildLinks(); mobileTables(); initReveal(); initTopBtn(); loadSyncCfg(); bindSync(); bindAlbum(); bindNotice(); bindNav(); bindSOS(); bindQlog(); bindLib(); bindRep(); bindAway(); bindStats();
+  bindChecklists(); bindVax(); bindProfile(); bindWeight(); bindVisits(); bindExpenses(); bindIO(); bindCal(); buildPagers(); buildLinks(); mobileTables(); initReveal(); initTopBtn(); loadSyncCfg(); bindSync(); bindAlbum(); bindNotice(); bindNav(); bindSOS(); bindQlog(); bindLib(); bindRep(); bindAway(); bindStats(); bindWt(); bindFeed(); bindBackup(); bindMidnight();
   ntcMigrate();
+  ['vDate','eDate'].forEach(function(i){ const el=document.getElementById(i); if(el && !el.value) el.value=todayKey(); });
   renderAll();
   const h0=(location.hash||'').slice(1);
   if(h0 && h0!=='home' && document.getElementById('tab-'+h0)){ goTab(h0, true); NAV_HIST=['home', h0]; }
@@ -3989,7 +4281,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
       const res = await fetch(CHAT_API, {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ code: code, q: q, history: history })
+        body: JSON.stringify({ code: code, q: q, history: history, ctx: (window.petCtx? petCtx() : '') })
       });
       const data = await res.json().catch(function(){ return {}; });
       t.remove();
