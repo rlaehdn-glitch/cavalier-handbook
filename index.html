@@ -693,6 +693,9 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
 .hn.hc .h span{color:var(--chest-d);}
 .hc-b{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 </style>
+<style>
+[id^="w-"], [id^="l-"], [id^="x-"]{scroll-margin-top:106px;}
+</style>
 </head>
 <body>
 
@@ -3323,9 +3326,10 @@ function navBack(){
   }
 }
 window.addEventListener('popstate', function(e){
-  const t=(e.state && e.state.tab) || (location.hash||'#home').slice(1) || 'home';
+  const t=(e.state && e.state.tab) || (location.hash||'').slice(1);
+  if(!t || !document.getElementById('tab-'+t)) return; /* 장내 앵커 등 탭이 아닌 해시는 무시 */
   if(NAV_HIST.length>1) NAV_HIST.pop();
-  goTab(document.getElementById('tab-'+t) ? t : 'home', true);
+  goTab(t, true);
 });
 function bindNav(){
   document.querySelectorAll('.bn-btn').forEach(function(b){ b.addEventListener('click', function(){ goTab(b.dataset.tab); }); });
@@ -3812,6 +3816,22 @@ function qlChipTap(e){
     S.walkCur=0;
     saveState(); renderQlog();
   }
+}
+
+/* 장내 앵커: 주소를 건드리지 않고 스크롤만 */
+function bindAnchors(){
+  document.addEventListener('click', function(e){
+    const a=e.target.closest('a[href^="#"]');
+    if(!a) return;
+    const id=(a.getAttribute('href')||'').slice(1);
+    e.preventDefault();
+    if(!id) return;
+    const el=document.getElementById(id);
+    if(el && el.scrollIntoView){
+      try{ el.scrollIntoView({behavior:'smooth', block:'start'}); }
+      catch(_e){ el.scrollIntoView(); }
+    }
+  });
 }
 
 /* =============== V6: 실시간 채팅 =============== */
@@ -4467,7 +4487,7 @@ function renderAll(){ seedProfile(); renderHome(); renderDaily(); renderWeight()
 }
 document.addEventListener('DOMContentLoaded', async ()=>{
   await loadState();
-  bindChecklists(); bindVax(); bindProfile(); bindWeight(); bindVisits(); bindExpenses(); bindIO(); bindCal(); buildPagers(); buildLinks(); mobileTables(); initReveal(); initTopBtn(); loadSyncCfg(); bindSync(); bindAlbum(); bindNotice(); bindNav(); bindSOS(); bindQlog(); bindLib(); bindRep(); bindAway(); bindStats(); bindWt(); bindFeed(); bindBackup(); bindMidnight(); bindChat();
+  bindChecklists(); bindVax(); bindProfile(); bindWeight(); bindVisits(); bindExpenses(); bindIO(); bindCal(); buildPagers(); buildLinks(); mobileTables(); initReveal(); initTopBtn(); loadSyncCfg(); bindSync(); bindAlbum(); bindNotice(); bindNav(); bindSOS(); bindQlog(); bindLib(); bindRep(); bindAway(); bindStats(); bindWt(); bindFeed(); bindBackup(); bindMidnight(); bindChat(); bindAnchors();
   ntcMigrate();
   ['vDate','eDate'].forEach(function(i){ const el=document.getElementById(i); if(el && !el.value) el.value=todayKey(); });
   renderAll();
