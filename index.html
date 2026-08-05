@@ -2477,7 +2477,9 @@ function renderNotice(){
     feed.querySelectorAll('[data-ndel]').forEach(function(b){ b.addEventListener('click', function(){
       if(!confirm('이 공지를 삭제할까요? 두 폰 모두에서 사라집니다.')) return;
       const id=this.dataset.ndel;
+      const victim=(S.ntc||[]).find(function(x){ return x.id===id; });
       S.ntc=S.ntc.filter(function(x){ return x.id!==id; });
+      if(victim && S.notice && S.notice.at===victim.at){ S.notice={text:'',by:'',at:0,day:''}; }
       saveState(); renderNotice(); renderHomeNotice();
     }); });
   }
@@ -3694,10 +3696,12 @@ function ntcSeenGet(){ try{ return JSON.parse(lsGet('_ntc_seen')||'{}'); }catch(
 function ntcSeenSet(id){ const s=ntcSeenGet(); s[id]=1; const k=Object.keys(s); while(k.length>60){ delete s[k.shift()]; } lsSet('_ntc_seen', JSON.stringify(s)); }
 function ntcMigrate(){
   if(!Array.isArray(S.ntc)) S.ntc=[];
+  if(S.ntcMig) return;
   const o=S.notice||{};
   if(o.text && o.text.trim() && o.at && !S.ntc.some(function(n){ return n.at===o.at; })){
     S.ntc.unshift({id:'n'+o.at, text:o.text, by:o.by||'', at:o.at, ack:{}});
   }
+  S.ntcMig=1;
 }
 function ntcAck(id){
   const me=ntcRequireName(); if(!me) return false;
