@@ -660,6 +660,39 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
 .nt-edrow{display:flex; gap:8px; margin-top:8px;}
 .aw-fix{display:flex; gap:8px; margin-top:9px;}
 </style>
+<style>
+/* ===== V6 채팅 ===== */
+.nseg{display:flex; background:var(--paper); border:1.5px solid var(--line); border-radius:14px; overflow:hidden; margin-bottom:12px; box-shadow:var(--shadow);}
+.nseg button{flex:1; background:none; border:none; font-family:inherit; font-size:13.5px; font-weight:800; color:var(--sub); padding:11px 0; cursor:pointer;}
+.nseg button.on{color:var(--chest-d); background:var(--panel);}
+#segNtcDot{color:var(--red); font-size:9px; vertical-align:3px;}
+.ch-pres{min-height:17px; font-size:11.5px; font-weight:800; color:var(--sage); margin:0 2px 6px;}
+.ch-box{display:flex; flex-direction:column; height:calc(100dvh - 305px); min-height:360px; max-height:640px; background:var(--paper); border:1.5px solid var(--line); border-radius:16px; box-shadow:var(--shadow); overflow:hidden; position:relative;}
+.ch-msgs{flex:1; overflow-y:auto; padding:12px 10px; display:flex; flex-direction:column; gap:7px; -webkit-overflow-scrolling:touch;}
+.ch-day{align-self:center; font-size:10px; color:var(--sub); background:var(--pearl); border-radius:999px; padding:2px 11px; margin:4px 0; flex:0 0 auto;}
+.ch-m{max-width:80%; display:flex; flex-direction:column; user-select:none; -webkit-user-select:none; flex:0 0 auto;}
+.ch-m .who{font-size:10px; font-weight:800; color:var(--sub); margin:0 0 2px 5px;}
+.ch-m .bb{border-radius:14px; padding:9px 12px; font-size:13.5px; line-height:1.55; box-shadow:var(--shadow); white-space:pre-wrap; word-break:break-word;}
+.ch-m.them{align-self:flex-start;}
+.ch-m.them .bb{background:#fff; border:1.2px solid var(--line); border-top-left-radius:5px;}
+.ch-m.me{align-self:flex-end; align-items:flex-end;}
+.ch-m.me .bb{background:var(--chest); color:#FBF6EC; border-top-right-radius:5px;}
+.ch-m .tm{font-size:9.5px; color:var(--sub); margin:2px 5px 0;}
+.ch-m .rd{color:var(--sage); font-weight:800;}
+.ch-new{position:absolute; left:50%; transform:translateX(-50%); bottom:118px; background:var(--ink); color:#FBF6EC; border:none; border-radius:999px; font-family:inherit; font-size:11.5px; font-weight:800; padding:7px 14px; box-shadow:0 4px 14px rgba(0,0,0,.3); cursor:pointer; z-index:3;}
+.ch-inbar{flex:0 0 auto; border-top:1.5px solid var(--line); background:var(--pearl); padding:8px 9px 9px;}
+.ch-chips{display:flex; gap:6px; overflow-x:auto; padding-bottom:7px; -webkit-overflow-scrolling:touch;}
+.ch-chips button{flex:0 0 auto; background:var(--panel); border:1.2px solid var(--line); border-radius:999px; font-family:inherit; font-size:11px; font-weight:800; color:var(--chest-d); padding:5px 11px; cursor:pointer;}
+.ch-irow{display:flex; gap:7px; align-items:flex-end;}
+.ch-irow textarea{flex:1; background:#fff; border:1.5px solid var(--line); border-radius:16px; font-family:inherit; font-size:13.5px; padding:10px 14px; resize:none; max-height:96px; color:var(--ink);}
+.ch-irow textarea:focus{outline:2px solid var(--chest); outline-offset:-1px;}
+.ch-send{width:40px; height:40px; border-radius:50%; background:var(--chest); color:#FBF6EC; border:none; font-size:15px; cursor:pointer; box-shadow:var(--shadow); flex:0 0 auto;}
+.ch-send:disabled{opacity:.4;}
+.bn-badge{position:absolute; top:1px; right:14px; background:var(--red); color:#fff; font-size:9px; font-weight:800; border-radius:999px; min-width:15px; height:15px; padding:0 4px; display:none; align-items:center; justify-content:center; border:1.5px solid var(--paper); line-height:1;}
+.hn.hc{background:var(--paper); border-color:var(--chest);}
+.hn.hc .h span{color:var(--chest-d);}
+.hc-b{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+</style>
 </head>
 <body>
 
@@ -694,6 +727,8 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
     <div class="dd-go">›</div>
   </div>
 
+
+  <div id="homeChat"></div>
 
   <div id="homeNotice"></div>
 
@@ -828,11 +863,38 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
 <!-- ===================== NOTICE 오늘의 공지 ===================== -->
 <section class="tab-panel" id="tab-notice">
   <div class="ch-head">
-    <div class="ch-no">FAMILY BOARD</div>
-    <h2 class="serif">공지 — 우리끼리 게시판</h2>
-    <p class="lede">쓰면 상대 폰에 팝업으로 뜨고, 지난 공지는 아래에 쌓입니다. "확인"을 누르면 서로 읽었는지 보입니다.</p>
+    <div class="ch-no">FAMILY</div>
+    <h2 class="serif">채팅 · 공지</h2>
+    <p class="lede">채팅은 실시간 대화, 공지는 확인이 남는 인수인계. 이름은 함께 씁니다.</p>
   </div>
 
+  <div class="nseg">
+    <button id="segChat" type="button" class="on">💬 채팅</button>
+    <button id="segNtc" type="button">📢 공지 <span id="segNtcDot" style="display:none;">●</span></button>
+  </div>
+
+  <div id="chatPane">
+    <p class="ch-pres" id="chPres"></p>
+    <div class="ch-box">
+      <div class="ch-msgs" id="chMsgs"><p class="muted small" style="text-align:center; margin:22px 0;">기록 탭에서 동기화를 켜면 채팅이 활성화됩니다.</p></div>
+      <button class="ch-new" id="chNew" type="button" style="display:none;">새 메시지 ↓</button>
+      <div class="ch-inbar">
+        <div class="ch-chips">
+          <button type="button" data-ck="meal">🍚 급여 요약</button>
+          <button type="button" data-ck="walk">🐕 산책 요약</button>
+          <button type="button" data-ck="potty">💩 배변 요약</button>
+          <button type="button" data-ck="warn">⚠️ 특이</button>
+        </div>
+        <div class="ch-irow">
+          <textarea id="cmInput" rows="1" maxlength="1000" placeholder="메시지 입력…"></textarea>
+          <button class="ch-send" id="cmSend" type="button" disabled>➤</button>
+        </div>
+        <p class="muted small" style="margin:6px 2px 0; font-size:10.5px;">평문 저장 — 비밀번호·금융정보 금지 · 최근 300개 보관 · 내 말풍선 길게 누르면 삭제</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="ntcPane" style="display:none;">
   <div class="card" style="margin-bottom:14px;">
     <div class="ct">공지 쓰기</div>
     <div class="row" style="margin-bottom:8px; align-items:center;">
@@ -840,9 +902,9 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
       <span class="muted small">— 작성·확인에 함께 쓰입니다</span>
     </div>
     <div class="nt-tpls">
-      <button class="nt-tpl" type="button" data-k="meal" data-t="🍚 사료 __:__에 __g 급여 완료">🍚 밥</button>
-      <button class="nt-tpl" type="button" data-k="walk" data-t="🐕 산책 __분 — 배변 O/X">🐕 산책</button>
-      <button class="nt-tpl" type="button" data-k="potty" data-t="💩 배변 상태: 정상 / 무름 (사진 톡)">💩 배변</button>
+      <button class="nt-tpl" type="button" data-t="🍚 사료 __:__에 __g 급여 완료">🍚 밥</button>
+      <button class="nt-tpl" type="button" data-t="🐕 산책 __분 — 배변 O/X">🐕 산책</button>
+      <button class="nt-tpl" type="button" data-t="💩 배변 상태: 정상 / 무름 (사진 톡)">💩 배변</button>
       <button class="nt-tpl" type="button" data-t="💊 약·영양제 챙김">💊 약</button>
       <button class="nt-tpl" type="button" data-t="🏥 병원: ">🏥 병원</button>
       <button class="nt-tpl" type="button" data-t="⚠️ 특이사항: ">⚠️ 특이</button>
@@ -866,6 +928,7 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
       <li>닫기 → 이번만 닫음. 다음에 열면 다시 뜸.</li>
       <li>최근 40건 보관. 넘으면 오래된 것부터 삭제.</li>
     </ul>
+  </div>
   </div>
 </section>
 
@@ -2199,7 +2262,7 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
   <button class="bn-btn" data-tab="cal" type="button"><span class="bn-i">📅</span>달력</button>
   <button class="bn-btn" data-tab="record" type="button"><span class="bn-i">✏️</span>기록</button>
   <button class="bn-btn" data-tab="album" type="button"><span class="bn-i">📷</span>앨범</button>
-  <button class="bn-btn" data-tab="lib" type="button"><span class="bn-i">📚</span>서재</button>
+  <button class="bn-btn" data-tab="lib" type="button" style="position:relative;"><span class="bn-i">📚</span>서재<span class="bn-badge" id="bnChatBadge"></span></button>
 </nav>
 
 <div id="sosOvl" role="dialog" aria-modal="true" aria-label="응급 연락">
@@ -2245,6 +2308,8 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
   </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
 <script>
 /* =============== State =============== */
 const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, feed:{kcal:4000, meals:4}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}};
@@ -2352,6 +2417,7 @@ function bindSync(){
     document.getElementById('syncCode').value=code;
     SYNC.url=url; SYNC.code=code; SYNC.on=true;
     lsSet('_sync_url',url); lsSet('_sync_code',code); lsSet('_sync_on','1');
+    try{ chatStart(); }catch(e){}
     startSync();
   });
   off.addEventListener('click', function(){
@@ -3207,7 +3273,7 @@ const LIB_META=[
   ['behav','12','행동 사전','카밍 시그널·문제행동 A-Z', false],
   ['life','13','생활·법규','계절 관리·과태료·이동·위생', false],
   ['index','14','자료실','주제별 영상·참고문헌', false],
-  ['notice','📢','공지 게시판','작성 · 지난 공지 보관 · 읽음 확인', false]
+  ['notice','💬','채팅 · 공지','실시간 대화 + 인수인계 게시판', false]
 ];
 const LIB_TABS=LIB_META.map(function(x){ return x[0]; });
 const BNAV_KEYS={home:1, cal:1, record:1, album:1, lib:1};
@@ -3236,6 +3302,7 @@ function goTab(id, silent){
   if(id==='album'){ try{ albumOnOpen(); }catch(e){} }
   if(id==='lib'){ try{ renderLib(); }catch(e){} }
   if(id==='stats'){ try{ renderStats(); }catch(e){} }
+  if(id==='notice'){ try{ chatTabOpen(); }catch(e){} }
   if(!silent){
     if(NAV_HIST[NAV_HIST.length-1]!==id){ NAV_HIST.push(id); if(NAV_HIST.length>30) NAV_HIST.shift(); }
     try{ history.pushState({tab:id}, '', '#'+id); }catch(e){}
@@ -3743,6 +3810,253 @@ function qlChipTap(e){
   }
 }
 
+/* =============== V6: 실시간 채팅 =============== */
+const CHAT={mode:'', app:null, db:null, msgs:{}, meta:{}, lastRead:parseInt(lsGet('_chat_read')||'0',10)||0, unread:0, lastOther:null, atBottom:true, started:false, pollT:null, hbT:null};
+function chatPath(p){ return SYNC.url.replace(/\/+$/,'')+'/chat/'+SYNC.code+p+'.json'; }
+function chatMe(){ return myName(); }
+function chatVisible(){
+  const p=document.getElementById('chatPane'); const tab=document.getElementById('tab-notice');
+  return !!(p && tab && tab.classList.contains('on') && p.style.display!=='none');
+}
+function chatStart(){
+  if(CHAT.started || !syncConfigured()) return;
+  CHAT.started=true;
+  if(window.firebase && window.firebase.initializeApp){
+    try{
+      CHAT.app=firebase.initializeApp({databaseURL:SYNC.url}, 'chat');
+      CHAT.db=firebase.database(CHAT.app);
+      CHAT.db.ref('chat/'+SYNC.code+'/msgs').limitToLast(300).on('value', function(s){ CHAT.msgs=s.val()||{}; chatOnData(); });
+      CHAT.db.ref('chat/'+SYNC.code+'/meta').on('value', function(s){ CHAT.meta=s.val()||{}; chatRenderMeta(); });
+      CHAT.mode='rt';
+    }catch(e){ CHAT.mode=''; CHAT.db=null; }
+  }
+  if(!CHAT.mode){
+    CHAT.mode='poll';
+    chatPoll();
+    CHAT.pollT=setInterval(chatPoll, 15000);
+  }
+  CHAT.hbT=setInterval(chatBeat, 25000);
+  chatBeat();
+}
+async function chatPoll(){
+  if(!syncConfigured()) return;
+  try{
+    const r=await fetch(chatPath('/msgs'));
+    if(r.ok){ CHAT.msgs=(await r.json())||{}; chatOnData(); }
+    const m=await fetch(chatPath('/meta'));
+    if(m.ok){ CHAT.meta=(await m.json())||{}; chatRenderMeta(); }
+  }catch(e){}
+}
+function chatMetaWrite(name, obj){
+  if(!syncConfigured() || !name) return;
+  if(CHAT.mode==='rt' && CHAT.db){ try{ CHAT.db.ref('chat/'+SYNC.code+'/meta/'+name).update(obj); }catch(e){} }
+  else{ try{ fetch(chatPath('/meta/'+encodeURIComponent(name)), {method:'PATCH', body:JSON.stringify(obj)}); }catch(e){} }
+}
+function chatBeat(){
+  const me=chatMe(); if(!me || !syncConfigured()) return;
+  const p={seen:Date.now()};
+  if(chatVisible()) p.read=Date.now();
+  chatMetaWrite(me, p);
+}
+function chatKeys(){ return Object.keys(CHAT.msgs||{}).sort(); }
+function chatOnData(){
+  const me=chatMe();
+  let un=0, lastOther=null;
+  chatKeys().forEach(function(k){
+    const m=CHAT.msgs[k]; if(!m) return;
+    if(m.by!==me && (m.at||0)>CHAT.lastRead){ un++; lastOther=m; }
+  });
+  CHAT.lastOther=lastOther;
+  if(chatVisible()){ chatMarkRead(); un=0; }
+  CHAT.unread=un;
+  chatRenderBadge(); renderHomeChat(); chatRender();
+}
+function chatMarkRead(){
+  const ks=chatKeys();
+  if(ks.length){
+    const last=CHAT.msgs[ks[ks.length-1]].at||Date.now();
+    if(last>CHAT.lastRead){ CHAT.lastRead=last; lsSet('_chat_read', String(last)); }
+  }
+  CHAT.unread=0;
+  const me=chatMe();
+  if(me) chatMetaWrite(me, {read:Date.now(), seen:Date.now()});
+  chatRenderBadge(); renderHomeChat();
+}
+function theirRead(){
+  const me=chatMe(); let t=0;
+  Object.keys(CHAT.meta||{}).forEach(function(n){
+    if(n!==me && CHAT.meta[n] && (CHAT.meta[n].read||0)>t) t=CHAT.meta[n].read;
+  });
+  return t;
+}
+function chatRenderMeta(){
+  const el=document.getElementById('chPres');
+  if(el){
+    const me=chatMe(); let on=null;
+    Object.keys(CHAT.meta||{}).forEach(function(n){
+      if(n!==me && CHAT.meta[n] && Date.now()-(CHAT.meta[n].seen||0)<60000) on=n;
+    });
+    el.textContent = on? '🟢 '+on+' 접속 중' : '';
+  }
+  chatRender();
+}
+function chatRender(){
+  const box=document.getElementById('chMsgs'); if(!box) return;
+  if(!syncConfigured()){ box.innerHTML='<p class="muted small" style="text-align:center; margin:22px 0;">기록 탭에서 동기화를 켜면 채팅이 활성화됩니다.</p>'; return; }
+  const ks=chatKeys();
+  if(!ks.length){ box.innerHTML='<p class="muted small" style="text-align:center; margin:22px 0;">첫 메시지를 보내보세요 🐾</p>'; return; }
+  const me=chatMe(); const tr=theirRead();
+  let readKey='';
+  ks.forEach(function(k){ const m=CHAT.msgs[k]; if(m && m.by===me && (m.at||0)<=tr) readKey=k; });
+  let html='', prevDay='', prevBy='', prevAt=0;
+  const DOW=['일','월','화','수','목','금','토'];
+  ks.forEach(function(k){
+    const m=CHAT.msgs[k]; if(!m || !m.t) return;
+    const dt=new Date(m.at||0);
+    const day=m.at? (dt.getMonth()+1)+'월 '+dt.getDate()+'일 ('+DOW[dt.getDay()]+')' : '';
+    if(day && day!==prevDay){ html+='<div class="ch-day">'+day+'</div>'; prevDay=day; prevBy=''; }
+    const mine=m.by===me;
+    const grp=(m.by===prevBy && (m.at-prevAt)<60000);
+    html+='<div class="ch-m '+(mine?'me':'them')+'" data-id="'+k+'"'+(mine?' data-mine="1"':'')+'>'
+      +((!mine && !grp)? '<div class="who">'+esc(m.by||'?')+'</div>':'')
+      +'<div class="bb">'+esc(m.t)+'</div>'
+      +'<div class="tm">'+(mine && k===readKey? '<span class="rd">읽음</span> · ':'')+String(dt.getHours()).padStart(2,'0')+':'+String(dt.getMinutes()).padStart(2,'0')+'</div>'
+    +'</div>';
+    prevBy=m.by; prevAt=m.at||0;
+  });
+  box.innerHTML=html;
+  chatBindBubbles(box);
+  if(CHAT.atBottom){ box.scrollTop=box.scrollHeight; chatHideNew(); }
+  else{ const nb=document.getElementById('chNew'); if(nb && ks.length) nb.style.display='block'; }
+}
+function chatHideNew(){ const nb=document.getElementById('chNew'); if(nb) nb.style.display='none'; }
+function chatBindBubbles(box){
+  box.querySelectorAll('.ch-m[data-mine]').forEach(function(el){
+    let t=null;
+    const start=function(){ clearTimeout(t); t=setTimeout(function(){ chatDelete(el.dataset.id); }, 600); };
+    const stop=function(){ clearTimeout(t); };
+    el.addEventListener('touchstart', start, {passive:true});
+    el.addEventListener('touchend', stop); el.addEventListener('touchmove', stop);
+    el.addEventListener('mousedown', start); el.addEventListener('mouseup', stop); el.addEventListener('mouseleave', stop);
+    el.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+  });
+}
+function chatDelete(id){
+  const m=CHAT.msgs[id];
+  if(!m || m.by!==chatMe()) return;
+  if(!confirm('이 메시지를 삭제할까요? 두 폰 모두에서 사라집니다.')) return;
+  if(CHAT.mode==='rt' && CHAT.db){ try{ CHAT.db.ref('chat/'+SYNC.code+'/msgs/'+id).remove(); }catch(e){} }
+  else{
+    fetch(chatPath('/msgs/'+id), {method:'DELETE'}).catch(function(){});
+    delete CHAT.msgs[id];
+    chatOnData();
+  }
+}
+async function chatSend(){
+  const inp=document.getElementById('cmInput');
+  const t=(inp.value||'').trim();
+  if(!t) return;
+  if(!syncConfigured()){ alert('기록 탭에서 동기화를 먼저 켜주세요.'); return; }
+  const me=ntcRequireName(); if(!me) return;
+  const msg={by:me, t:t.slice(0,1000), at:Date.now()};
+  inp.value=''; chSendState();
+  CHAT.atBottom=true;
+  if(CHAT.mode==='rt' && CHAT.db){
+    try{ CHAT.db.ref('chat/'+SYNC.code+'/msgs').push(msg); }catch(e){ alert('전송 실패 — 잠시 후 다시 시도하세요.'); }
+  }else{
+    try{
+      const r=await fetch(chatPath('/msgs'), {method:'POST', body:JSON.stringify(msg)});
+      const j=await r.json();
+      if(j && j.name){ CHAT.msgs[j.name]=msg; chatOnData(); }
+    }catch(e){ alert('전송 실패 — 네트워크를 확인하세요.'); }
+  }
+  chatMarkRead();
+  chatTrim();
+}
+function chatTrim(){
+  const ks=chatKeys();
+  if(ks.length<=320) return;
+  const del=ks.slice(0, ks.length-300);
+  if(CHAT.mode==='rt' && CHAT.db){
+    const up={}; del.forEach(function(k){ up[k]=null; });
+    try{ CHAT.db.ref('chat/'+SYNC.code+'/msgs').update(up); }catch(e){}
+  }else{
+    del.forEach(function(k){ fetch(chatPath('/msgs/'+k), {method:'DELETE'}).catch(function(){}); delete CHAT.msgs[k]; });
+  }
+}
+function chSendState(){
+  const b=document.getElementById('cmSend'), i=document.getElementById('cmInput');
+  if(b && i) b.disabled = !(i.value||'').trim();
+}
+function chatSeg(which){
+  const c=document.getElementById('segChat'); if(!c) return;
+  c.classList.toggle('on', which==='chat');
+  document.getElementById('segNtc').classList.toggle('on', which==='ntc');
+  document.getElementById('chatPane').style.display = which==='chat'? 'block':'none';
+  document.getElementById('ntcPane').style.display = which==='ntc'? 'block':'none';
+  if(which==='chat'){
+    chatMarkRead();
+    chatRender();
+    setTimeout(function(){ const b=document.getElementById('chMsgs'); if(b) b.scrollTop=b.scrollHeight; }, 40);
+  }
+}
+function chatTabOpen(){
+  chatStart();
+  const n=(S.ntc||[])[0]; const me=myName();
+  const needNtc = !!(n && !(me && n.by===me) && !(me && n.ack && n.ack[me]) && !ntcSeenGet()[n.id]);
+  const dot=document.getElementById('segNtcDot');
+  if(dot) dot.style.display = needNtc? 'inline':'none';
+  chatSeg(needNtc? 'ntc':'chat');
+}
+function chatRenderBadge(){
+  const b=document.getElementById('bnChatBadge'); if(!b) return;
+  if(CHAT.unread>0 && !chatVisible()){
+    b.style.display='inline-flex';
+    b.textContent = CHAT.unread>9? '9+' : String(CHAT.unread);
+  }else{
+    b.style.display='none';
+  }
+}
+function renderHomeChat(){
+  const el=document.getElementById('homeChat'); if(!el) return;
+  if(CHAT.unread>0 && CHAT.lastOther && !chatVisible()){
+    const m=CHAT.lastOther;
+    el.innerHTML='<div class="hn hc"><div class="h"><span>💬 '+esc(m.by||'')+(CHAT.unread>1? ' · 새 메시지 '+CHAT.unread+'개':'')+'</span><button class="btn sm" id="hcGo" type="button">답장</button></div><div class="b hc-b">'+esc(m.t)+'</div></div>';
+    const g=document.getElementById('hcGo');
+    if(g) g.addEventListener('click', function(){ goTab('notice'); chatSeg('chat'); });
+  }else{
+    el.innerHTML='';
+  }
+}
+function bindChat(){
+  const sc=document.getElementById('segChat'); if(!sc) return;
+  sc.addEventListener('click', function(){ chatSeg('chat'); });
+  document.getElementById('segNtc').addEventListener('click', function(){ chatSeg('ntc'); });
+  const inp=document.getElementById('cmInput');
+  inp.addEventListener('input', chSendState);
+  inp.addEventListener('keydown', function(e){ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); chatSend(); } });
+  document.getElementById('cmSend').addEventListener('click', chatSend);
+  document.querySelectorAll('.ch-chips button').forEach(function(b){
+    b.addEventListener('click', function(){
+      const k=this.dataset.ck;
+      const txt = k==='warn'? '⚠️ 특이사항: ' : ntcSmartTpl(k, {meal:'🍚 ', walk:'🐕 ', potty:'💩 '}[k]);
+      inp.value = inp.value? inp.value.replace(/\s+$/,'')+'\n'+txt : txt;
+      chSendState(); inp.focus();
+    });
+  });
+  const box=document.getElementById('chMsgs');
+  box.addEventListener('scroll', function(){
+    CHAT.atBottom = box.scrollTop+box.clientHeight >= box.scrollHeight-30;
+    if(CHAT.atBottom){ chatHideNew(); if(chatVisible()) chatMarkRead(); }
+  });
+  document.getElementById('chNew').addEventListener('click', function(){
+    CHAT.atBottom=true;
+    box.scrollTop=box.scrollHeight;
+    chatHideNew();
+    chatMarkRead();
+  });
+}
+
 /* =============== V5 헬퍼 =============== */
 /* S1: 검색 위치 점프 + 하이라이트 */
 let LIB_HL=null;
@@ -4130,7 +4444,7 @@ function bindStats(){
 }
 
 /* =============== Init =============== */
-function renderAll(){ seedProfile(); renderHome(); renderDaily(); renderWeight(); renderVisits(); renderExpenses(); renderStorage(); renderCal(); renderNotice(); renderDash(); renderEChart(); renderLib(); renderAway(); renderFeed();
+function renderAll(){ seedProfile(); renderHome(); renderDaily(); renderWeight(); renderVisits(); renderExpenses(); renderStorage(); renderCal(); renderNotice(); renderDash(); renderEChart(); renderLib(); renderAway(); renderFeed(); renderHomeChat();
   // re-sync inputs & checklists after import
   const map={pfName:'name', pfBirth:'birth', pfHome:'home', pfReg:'reg'};
   Object.keys(map).forEach(id=>{ document.getElementById(id).value=S.profile[map[id]]||''; });
@@ -4149,7 +4463,7 @@ function renderAll(){ seedProfile(); renderHome(); renderDaily(); renderWeight()
 }
 document.addEventListener('DOMContentLoaded', async ()=>{
   await loadState();
-  bindChecklists(); bindVax(); bindProfile(); bindWeight(); bindVisits(); bindExpenses(); bindIO(); bindCal(); buildPagers(); buildLinks(); mobileTables(); initReveal(); initTopBtn(); loadSyncCfg(); bindSync(); bindAlbum(); bindNotice(); bindNav(); bindSOS(); bindQlog(); bindLib(); bindRep(); bindAway(); bindStats(); bindWt(); bindFeed(); bindBackup(); bindMidnight();
+  bindChecklists(); bindVax(); bindProfile(); bindWeight(); bindVisits(); bindExpenses(); bindIO(); bindCal(); buildPagers(); buildLinks(); mobileTables(); initReveal(); initTopBtn(); loadSyncCfg(); bindSync(); bindAlbum(); bindNotice(); bindNav(); bindSOS(); bindQlog(); bindLib(); bindRep(); bindAway(); bindStats(); bindWt(); bindFeed(); bindBackup(); bindMidnight(); bindChat();
   ntcMigrate();
   ['vDate','eDate'].forEach(function(i){ const el=document.getElementById(i); if(el && !el.value) el.value=todayKey(); });
   renderAll();
@@ -4158,6 +4472,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   try{ history.replaceState({tab:(h0 && document.getElementById('tab-'+h0)) ? h0 : 'home'}, '', location.hash||'#home'); }catch(e){}
   if(SYNC.on) startSync();
   if(syncConfigured()) albumPull(true);
+  if(syncConfigured()) chatStart();
 });
 </script>
 <!-- ===================== 빼꼼 상담 채팅 ===================== -->
