@@ -613,6 +613,23 @@ input[type=text],input[type=date],input[type=number],input[type=search],input[ty
 .st-card .l{font-size:11px; font-weight:800; color:var(--sub);}
 .st-card .v{font-family:'Gowun Batang',serif; font-size:18px; font-weight:700; color:var(--chest-d); margin-top:3px; line-height:1.25; word-break:keep-all;}
 .st-card .s{font-size:10.5px; color:var(--sub); margin-top:2px;}
+/* V5: 적정성 진단 + 수면 + 대변 양 */
+.ql-9{grid-template-columns:repeat(3,1fr);}
+.hc-row{display:flex; align-items:flex-start; gap:9px; padding:9px 2px; border-bottom:1px dashed var(--line); font-size:13px;}
+.hc-row:last-child{border-bottom:none; padding-bottom:2px;}
+.hc-i{font-size:17px; flex:0 0 22px; text-align:center; line-height:1.4;}
+.hc-m{flex:1; min-width:0;}
+.hc-m .n{font-weight:800; color:var(--ink); font-size:13px;}
+.hc-m .v2{margin-left:7px; font-weight:800; color:var(--chest-d); font-size:12.5px;}
+.hc-m .d{font-size:11.5px; color:var(--sub); margin-top:2px; line-height:1.5; word-break:keep-all;}
+.hc-b{flex:0 0 auto; font-size:11px; font-weight:800; padding:3px 9px; border-radius:999px; white-space:nowrap; margin-top:1px;}
+.hc-ok{background:var(--sage-bg); color:var(--sage);}
+.hc-watch{background:#FBF3DC; color:#8A6A12;}
+.hc-warn{background:var(--red-bg); color:var(--red);}
+.hc-na{background:var(--panel); color:var(--sub);}
+.ql-amt{display:none; margin-top:9px; gap:7px; align-items:center; flex-wrap:wrap; font-size:12.5px; font-weight:800; color:var(--sub);}
+.ql-amt button{font-family:inherit; font-size:12.5px; font-weight:800; padding:5px 15px; border-radius:999px; border:1.5px solid var(--line); background:var(--paper); color:var(--chest-d); cursor:pointer;}
+.ql-amt button:active{background:var(--pearl);}
 </style>
 <style>
 /* V4.1 스탬프 = 삭제 버튼 */
@@ -746,20 +763,22 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
 
   <h3 class="sec">빠른 기록 <span class="muted small" style="font-weight:400;">— 탭하면 현재 시각으로 저장</span></h3>
   <div class="card">
-    <div class="ql-grid ql-6">
+    <div class="ql-grid ql-6 ql-9">
       <button class="ql" id="qlPoo" type="button"><span class="qi">💩</span><span>대변</span><b id="qlPooN">0</b></button>
       <button class="ql" id="qlPee" type="button"><span class="qi">💧</span><span>소변</span><b id="qlPeeN">0</b></button>
       <button class="ql" id="qlDiar" type="button"><span class="qi">💦</span><span>설사</span><b id="qlDiarN">0</b></button>
       <button class="ql" id="qlMeal" type="button"><span class="qi">🍚</span><span>식사</span><b id="qlMealN">0</b></button>
       <button class="ql" id="qlWalk" type="button"><span class="qi">🐕</span><span id="qlWalkT">산책</span><b id="qlWalkN">0</b></button>
+      <button class="ql" id="qlSleep" type="button"><span class="qi">😴</span><span id="qlSleepT">수면</span><b id="qlSleepN">—</b></button>
       <button class="ql" id="qlWt" type="button"><span class="qi">⚖️</span><span>체중</span><b id="qlWtV">—</b></button>
       <button class="ql" id="qlPhoto" type="button"><span class="qi">📷</span><span>사진</span><b>＋</b></button>
       <button class="ql ql-stat" id="qlStats" type="button"><span class="qi">📊</span><span>통계</span><b>›</b></button>
     </div>
+    <div class="ql-amt" id="pooAmt"></div>
     <div class="ql-stamps" id="qlStamps"></div>
     <div class="ql-undo"><span class="muted small" id="qlSum" style="flex:1;"></span></div>
     <p class="mg-line" id="mealGap"></p>
-    <p class="muted small" style="margin:7px 0 0;">기록된 시각을 누르면 삭제됩니다.</p>
+    <p class="muted small" style="margin:7px 0 0;">😴 수면은 잘 때 한 번, 일어나면 한 번 — 산책처럼 시작·종료로 기록됩니다. 기록된 시각을 누르면 삭제됩니다.</p>
   </div>
 
   <h3 class="sec" style="display:flex; justify-content:space-between; align-items:center;">최근 사진 <button class="btn sm ghost" onclick="goTab('album')">앨범 →</button></h3>
@@ -1666,7 +1685,7 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
 
   <h3 class="sec">활동 기록 통계</h3>
   <div class="card">
-    <p class="muted small" style="margin:0 0 10px;">배변·설사·식사·산책·혼자 시간의 그래프·평균·전체 로그는 서재의 기록 통계에 있습니다. 90일 보관.</p>
+    <p class="muted small" style="margin:0 0 10px;">배변·설사·식사·산책·수면·혼자 시간의 적정성 진단·추세 그래프·전체 로그는 기록 통계에 있습니다. 90일 보관.</p>
     <div class="row">
       <button class="btn sm" onclick="goTab('stats')">📊 기록 통계 열기</button>
       <button class="btn sm ghost" id="bkupBtn" type="button">💾 전체 기록 백업</button>
@@ -2209,8 +2228,15 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
   <div class="ch-head">
     <div class="ch-no">STATS</div>
     <h2 class="serif">기록 통계</h2>
-    <p class="lede">빠른 기록·혼자 시간이 그래프와 표로 쌓입니다. 90일 보관.</p>
+    <p class="lede">빠른 기록·수면·혼자 시간이 그래프와 표로 쌓이고, 월령 기준 적정 범위와 비교해 진단합니다. 90일 보관.</p>
   </div>
+
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ct" id="hcHead">적정성 진단</div>
+    <div id="hcList"><p class="muted small" style="margin:0;">불러오는 중…</p></div>
+    <p class="muted small" style="margin:10px 0 0;">월령별 일반 범위(수의학 통용 가이드)와 최근 7일 추세로 판정한 <strong>참고용</strong>입니다 — 진단이 아니며, ⚠ 주의가 이어지거나 컨디션 저하(무기력·구토·잇몸 창백)가 함께 보이면 병원 진료가 우선입니다.</p>
+  </div>
+
   <div class="st-chips" id="stCats"></div>
   <div class="st-seg" id="stUnits">
     <button data-u="d" class="on" type="button">일별</button>
@@ -2315,7 +2341,7 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
 <script>
 /* =============== State =============== */
-const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, feed:{kcal:4000, meals:4}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}};
+const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, sleepCur:0, sleepLog:{}, feed:{kcal:4000, meals:4}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}};
 let S = JSON.parse(JSON.stringify(DEFAULT_S));
 let storageOK = false, artOK = false, saveTimer = null, lastEditAt = 0;
 
@@ -3264,7 +3290,7 @@ function albClose(){ document.getElementById('albLb').classList.remove('on'); do
 
 /* =============== V2: 서재 메타 + 내비게이션 =============== */
 const LIB_META=[
-  ['stats','📊','기록 통계','배변·설사·식사·산책·혼자 시간 — 그래프·전체 로그', false],
+  ['stats','📊','기록 통계','적정성 진단 · 배변·식사·산책·수면 추세 그래프·전체 로그', false],
   ['prep','01','분양 준비','계약·보상기간·용품·첫 2주 로드맵', true],
   ['health','02','건강·병원','접종 스케줄·카발리에 4대 질환', false],
   ['money','03','보험·비용','펫보험 비교 7항목·비용 총정리', false],
@@ -3437,19 +3463,32 @@ function renderQlog(){
     if(S.walkCur){ wb.classList.add('walking'); wtl.textContent='산책 중'; wn.textContent='⏱'+fmtDur(Date.now()-S.walkCur); }
     else{ wb.classList.remove('walking'); wtl.textContent='산책'; wn.textContent=wl.length; }
   }
+  const sl=(S.sleepLog||{})[todayKey()]||[];
+  let smin=0; sl.forEach(function(s){ smin+=Math.max(0,s.i-s.o); });
+  const slb=document.getElementById('qlSleep'), sln=document.getElementById('qlSleepN'), slt=document.getElementById('qlSleepT');
+  if(slb){
+    if(S.sleepCur){ slb.classList.add('walking'); slt.textContent='수면 중'; sln.textContent='⏱'+fmtHrs(Date.now()-S.sleepCur); }
+    else{ slb.classList.remove('walking'); slt.textContent='수면'; sln.textContent= smin? fmtHrs(smin) : '—'; }
+  }
   const st=document.getElementById('qlStamps');
   if(st){
     const row=function(ic, html){ return html? '<div class="qs-row"><span class="qs-i">'+ic+'</span>'+html+'</div>' : ''; };
     const chips=function(arr, k){
-      return arr.map(function(t,i){ return '<span class="ql-chip" role="button" data-qk="'+k+'" data-qi="'+i+'">'+esc(String(t||'--:--').slice(0,5))+'</span>'; }).join('');
+      return arr.map(function(t,i){
+        const parts=String(t||'').split('|');
+        const lbl=esc(String(parts[0]||'--:--').slice(0,5)) + ((k==='poo' && parts[1] && QL_AMT_NM[parts[1]])? '·'+QL_AMT_NM[parts[1]] : '');
+        return '<span class="ql-chip" role="button" data-qk="'+k+'" data-qi="'+i+'">'+lbl+'</span>';
+      }).join('');
     };
     let wk=wl.map(function(s,i){ return '<span class="ql-chip" role="button" data-wk="'+i+'">'+fmtHM(s.o)+'→'+fmtHM(s.i)+' · '+fmtDur(s.i-s.o)+'</span>'; }).join('');
     if(S.walkCur) wk+='<span class="ql-chip" role="button" data-wcur="1">'+fmtHM(S.walkCur)+'→ 진행 중 ✕</span>';
-    st.innerHTML=row('💩',chips(q.poo,'poo'))+row('💧',chips(q.pee,'pee'))+row('💦',chips(q.diar,'diar'))+row('🍚',chips(q.meal,'meal'))+row('🐕',wk);
+    let sk=sl.map(function(s,i){ return '<span class="ql-chip" role="button" data-sk="'+i+'">'+fmtHM(s.o)+'→'+fmtHM(s.i)+' · '+fmtDur(s.i-s.o)+'</span>'; }).join('');
+    if(S.sleepCur) sk+='<span class="ql-chip" role="button" data-scur="1">'+fmtHM(S.sleepCur)+'→ 수면 중 ✕</span>';
+    st.innerHTML=row('💩',chips(q.poo,'poo'))+row('💧',chips(q.pee,'pee'))+row('💦',chips(q.diar,'diar'))+row('🍚',chips(q.meal,'meal'))+row('🐕',wk)+row('😴',sk);
   }
   let wmin=0; wl.forEach(function(s){ wmin+=Math.max(0,s.i-s.o); });
   const su=document.getElementById('qlSum');
-  if(su) su.textContent='오늘 대변 '+q.poo.length+' · 소변 '+q.pee.length+' · 설사 '+q.diar.length+' · 식사 '+q.meal.length+' · 산책 '+wl.length+'회'+(wmin? ' '+fmtDur(wmin):'');
+  if(su) su.textContent='오늘 대변 '+q.poo.length+' · 소변 '+q.pee.length+' · 설사 '+q.diar.length+' · 식사 '+q.meal.length+' · 산책 '+wl.length+'회'+(wmin? ' '+fmtDur(wmin):'')+(smin? ' · 수면 '+fmtDur(smin):'');
   renderMealGap();
   try{ renderStats(); }catch(e){}
 }
@@ -3467,7 +3506,32 @@ function qlBump(k, delta){
   if(delta>0){
     const el=document.getElementById({poo:'qlPooN', pee:'qlPeeN', diar:'qlDiarN', meal:'qlMealN'}[k]);
     if(el){ el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
+    if(k==='poo') pooAmtAsk();
   }
+}
+/* V5: 대변 양 (소/중/대) — 방금 기록에 선택 부여, 미선택 시 '중' */
+const QL_AMT_NM={s:'소', m:'중', l:'대'};
+let POO_AMT_T=null;
+function pooAmtAsk(){
+  const el=document.getElementById('pooAmt'); if(!el) return;
+  el.innerHTML='<span>💩 양은?</span><button type="button" data-pa="s">소</button><button type="button" data-pa="m">중</button><button type="button" data-pa="l">대</button><span style="font-weight:400;" class="muted small">안 누르면 \'중\'</span>';
+  el.style.display='flex';
+  clearTimeout(POO_AMT_T);
+  POO_AMT_T=setTimeout(function(){ el.style.display='none'; }, 12000);
+}
+function bindPooAmt(){
+  const el=document.getElementById('pooAmt'); if(!el) return;
+  el.addEventListener('click', function(e){
+    const b=e.target.closest('button[data-pa]'); if(!b) return;
+    const q=qlNorm(todayKey());
+    if(q.poo.length){
+      const last=String(q.poo[q.poo.length-1]||'');
+      q.poo[q.poo.length-1]=last.split('|')[0]+'|'+b.dataset.pa;
+      saveState();
+    }
+    el.style.display='none'; clearTimeout(POO_AMT_T);
+    renderQlog();
+  });
 }
 function bindQlog(){
   if(!document.getElementById('qlPoo')) return;
@@ -3482,6 +3546,7 @@ function bindQlog(){
     qlBump('meal',1);
   });
   document.getElementById('qlWalk').addEventListener('click', walkToggle);
+  const slBtn=document.getElementById('qlSleep'); if(slBtn) slBtn.addEventListener('click', sleepToggle);
   document.getElementById('qlStamps').addEventListener('click', qlChipTap);
   const sb=document.getElementById('qlStats'); if(sb) sb.addEventListener('click', function(){ goTab('stats'); });
   document.getElementById('qlWt').addEventListener('click', function(){
@@ -3497,7 +3562,7 @@ function bindQlog(){
     goTab('album');
     if(syncConfigured()){ setTimeout(function(){ const f=document.getElementById('albFile'); if(f) f.click(); }, 400); }
   });
-  setInterval(function(){ if(S.walkCur) renderQlog(); }, 30000);
+  setInterval(function(){ if(S.walkCur||S.sleepCur) renderQlog(); }, 30000);
 }
 function renderAppbar(){
   const nm=document.getElementById('abName'), sb=document.getElementById('abSub');
@@ -3797,6 +3862,23 @@ function walkToggle(){
   saveState(); renderQlog();
 }
 
+/* =============== V5: 수면 토글 — 취침 1탭, 기상 1탭. 자정 넘김은 기상일에 저장 =============== */
+function fmtHrs(ms){ const h=Math.round(ms/360000)/10; return (h%1===0? h.toFixed(0) : h.toFixed(1))+'시간'; }
+function sleepToggle(){
+  if(S.sleepCur){
+    const dur=Date.now()-S.sleepCur;
+    if(dur>16*3600000 && !confirm('수면이 '+fmtDur(dur)+'로 기록됩니다. 기상 버튼을 잊으신 거라면 취소를 누른 뒤, 😴 줄의 "수면 중 ✕" 칩으로 이 기록을 취소하세요. 그래도 저장할까요?')) return;
+    const key=todayKey();
+    S.sleepLog=S.sleepLog||{};
+    (S.sleepLog[key]=S.sleepLog[key]||[]).push({o:S.sleepCur, i:Date.now()});
+    S.sleepCur=0;
+    const ks=Object.keys(S.sleepLog).sort(); while(ks.length>100){ delete S.sleepLog[ks.shift()]; }
+  }else{
+    S.sleepCur=Date.now();
+  }
+  saveState(); renderQlog();
+}
+
 /* =============== V4.1: 스탬프 탭 → 확인 후 삭제 =============== */
 function qlChipTap(e){
   const chip=e.target.closest('.ql-chip'); if(!chip) return;
@@ -3814,6 +3896,14 @@ function qlChipTap(e){
   }else if(chip.dataset.wcur!==undefined){
     if(!confirm('진행 중인 산책을 취소할까요? 이번 산책은 기록되지 않습니다.')) return;
     S.walkCur=0;
+    saveState(); renderQlog();
+  }else if(chip.dataset.sk!==undefined){
+    if(!confirm('수면 '+label+' 기록을 삭제할까요?')) return;
+    ((S.sleepLog||{})[key]||[]).splice(parseInt(chip.dataset.sk,10),1);
+    saveState(); renderQlog();
+  }else if(chip.dataset.scur!==undefined){
+    if(!confirm('진행 중인 수면 기록을 취소할까요? 이번 수면은 저장되지 않습니다.')) return;
+    S.sleepCur=0;
     saveState(); renderQlog();
   }
 }
@@ -4269,21 +4359,191 @@ const STAT_CATS=[
   {id:'diar', ic:'💦', nm:'설사',      kind:'count'},
   {id:'meal', ic:'🍚', nm:'식사',      kind:'count'},
   {id:'walk', ic:'🐕', nm:'산책',      kind:'dur'},
+  {id:'sleep',ic:'😴', nm:'수면',      kind:'dur'},
   {id:'away', ic:'🚪', nm:'혼자 시간', kind:'dur'}
 ];
 const STAT={cat:'poo', unit:'d'};
 function statDayVal(cat, k){
   if(cat==='walk'){ let m=0; (((S.walkLog||{})[k])||[]).forEach(function(s){ m+=Math.max(0,s.i-s.o); }); return Math.round(m/60000); }
   if(cat==='away'){ let m=0; (((S.awayLog||{})[k])||[]).forEach(function(s){ m+=Math.max(0,s.i-s.o); }); return Math.round(m/60000); }
+  if(cat==='sleep'){ let m=0; (((S.sleepLog||{})[k])||[]).forEach(function(s){ m+=Math.max(0,s.i-s.o); }); return Math.round(m/60000); }
   const s=(S.qlog||{})[k]; if(!s) return 0;
   const a=s[cat];
   return Array.isArray(a)? a.length : (typeof a==='number'? a : 0);
 }
 function statFirstDate(cat){
-  const src = cat==='walk'? (S.walkLog||{}) : (cat==='away'? (S.awayLog||{}) : (S.qlog||{}));
+  const src = cat==='walk'? (S.walkLog||{}) : (cat==='away'? (S.awayLog||{}) : (cat==='sleep'? (S.sleepLog||{}) : (S.qlog||{})));
   const keys=Object.keys(src).sort();
   for(let i=0;i<keys.length;i++){ if(statDayVal(cat, keys[i])>0) return keys[i]; }
   return null;
+}
+
+/* =============== V5: 적정성 진단 (월령 기준 절대 범위 + 최근 급변 감지) =============== */
+function qlArr(k, cat){ const q=(S.qlog||{})[k]; if(!q) return []; const a=q[cat]; return Array.isArray(a)? a : []; }
+function ageMo(){ if(!S.profile.birth) return null; const d=Math.floor((Date.now()-new Date(S.profile.birth+'T00:00:00').getTime())/86400000); return d/30.44; }
+function walkStage(){ return !!((((S.vax||{}).v7)||{}).done); }
+function statBand(cat){
+  const mo=ageMo(); if(mo==null) return null;
+  if(cat==='meal'){
+    if(mo<4)  return {lo:4, hi:5, why:'생후 4개월 미만 · 저혈당 예방'};
+    if(mo<6)  return {lo:3, hi:4, why:'생후 4~6개월'};
+    if(mo<12) return {lo:2, hi:3, why:'생후 6~12개월'};
+    return {lo:1, hi:2, why:'성견'};
+  }
+  if(cat==='poo'){
+    if(mo<6)  return {lo:2, hi:5, why:'퍼피 일반 범위'};
+    if(mo<12) return {lo:1, hi:4, why:'생후 6~12개월'};
+    return {lo:1, hi:3, why:'성견'};
+  }
+  if(cat==='pee'){
+    if(mo<4)  return {lo:6, hi:12, why:'퍼피 — 범위가 넓어 급변 감지가 더 중요'};
+    if(mo<12) return {lo:4, hi:10, why:'성장기'};
+    return {lo:3, hi:6, why:'성견'};
+  }
+  if(cat==='walk'){
+    if(mo>=12) return {lo:40, hi:60, why:'성견 · 하루 합계'};
+    if(!walkStage()) return {lo:10, hi:30, why:'접종 완료 전 — 안고 외출 10~15분×1~2회'};
+    const t=Math.max(5, Math.round(mo*5));
+    return {lo:t, hi:t*2, why:'월령×5분×1~2회 · 성장판 보호'};
+  }
+  if(cat==='sleep'){ return {lo:420, hi:660, why:'야간 7~11시간 (낮잠 포함 총수면은 18~20시간)'}; }
+  return null;
+}
+function statMA(vs, w){
+  return vs.map(function(_, i){
+    const s=Math.max(0, i-w+1); let sum=0;
+    for(let j=s;j<=i;j++) sum+=vs[j];
+    return sum/(i-s+1);
+  });
+}
+function hcDaily(cat, days, inclToday){
+  const first=statFirstDate(cat);
+  if(!first) return [];
+  const end=new Date(); end.setHours(0,0,0,0);
+  if(!inclToday) end.setDate(end.getDate()-1);
+  const lo=addD(end, -(days-1));
+  const start=new Date(Math.max(new Date(first+'T00:00:00').getTime(), lo.getTime()));
+  if(start>end) return [];
+  const out=[];
+  for(let d=new Date(start); d<=end; d=addD(d,1)){ const k=d2s(d); out.push({k:k, v:statDayVal(cat,k)}); }
+  return out;
+}
+function hcAvg(cat){
+  /* 오늘은 아직 진행 중이라 평균에서 제외(왜곡 방지) — 수면은 오늘 아침 기상 기록이 완결이므로 포함 */
+  const d=hcDaily(cat, 7, cat==='sleep');
+  if(!d.length) return null;
+  if(cat==='sleep'){
+    const rec=d.filter(function(x){ return x.v>0; });
+    if(!rec.length) return null;
+    return {avg:rec.reduce(function(a,x){ return a+x.v; },0)/rec.length, days:rec.length};
+  }
+  return {avg:d.reduce(function(a,x){ return a+x.v; },0)/d.length, days:d.length};
+}
+function hcTrend(cat){
+  const d=hcDaily(cat, 14, false);
+  if(d.length<10) return null;
+  const rec=d.slice(-3), prev=d.slice(0,-3);
+  const a=rec.reduce(function(x,y){ return x+y.v; },0)/rec.length;
+  const b=prev.reduce(function(x,y){ return x+y.v; },0)/prev.length;
+  if(b>=2 && a>=b*1.6 && (a-b)>=2) return 'up';
+  if(b>=2 && a<=b*0.45 && (b-a)>=2) return 'down';
+  return null;
+}
+function renderHealth(){
+  const el=document.getElementById('hcList'); if(!el) return;
+  const head=document.getElementById('hcHead');
+  const mo=ageMo();
+  if(mo==null){
+    if(head) head.textContent='적정성 진단';
+    el.innerHTML='<p class="muted small" style="margin:0;">기록 탭에서 생년월일을 입력하면 월령 기준 진단이 표시됩니다.</p>';
+    return;
+  }
+  if(head) head.textContent='적정성 진단 — 생후 약 '+(Math.round(mo*10)/10)+'개월 · '+(mo>=12? '성견' : (walkStage()? '지면 산책' : '안고 외출'))+' 단계 · 최근 7일 기준';
+  const B={ok:'<span class="hc-b hc-ok">✓ 적정</span>', watch:'<span class="hc-b hc-watch">관찰</span>', warn:'<span class="hc-b hc-warn">⚠ 주의</span>', na:'<span class="hc-b hc-na">기록 부족</span>'};
+  const rows=[];
+  const row=function(ic, nm, lv, val, desc){
+    rows.push('<div class="hc-row"><span class="hc-i">'+ic+'</span><div class="hc-m"><span class="n">'+nm+'</span><span class="v2">'+val+'</span><div class="d">'+desc+'</div></div>'+B[lv]+'</div>');
+  };
+  // 식사·대변·소변 — 7일 평균 vs 월령 범위 + 급변
+  [['meal','🍚','식사'],['poo','💩','대변'],['pee','💧','소변']].forEach(function(cf){
+    const cat=cf[0], band=statBand(cat), a=hcAvg(cat), tr=hcTrend(cat);
+    if(!a || a.days<3){ row(cf[1], cf[2], 'na', '—', '기록이 3일 이상 쌓이면 판정됩니다'); return; }
+    const avg=Math.round(a.avg*10)/10;
+    let lv=(avg>=band.lo && avg<=band.hi)? 'ok' : ((avg>=band.lo-1 && avg<=band.hi+1)? 'watch' : 'warn');
+    let note='적정 '+band.lo+'~'+band.hi+'회/일 · '+band.why;
+    if(cat==='pee' && tr==='up'){ if(lv==='ok') lv='watch'; note+=' · 최근 3일 빈도 급증 — 음수량·배뇨 시 불편 신호 확인'; }
+    if(cat==='poo' && tr==='down'){ if(lv==='ok') lv='watch'; note+=' · 최근 3일 급감 — 변비·식사량 확인'; }
+    if(cat==='meal' && avg<band.lo){ lv='warn'; note+=' · 어린 강아지는 5시간 이상 공복 금지(저혈당)'; }
+    row(cf[1], cf[2], lv, '하루 '+avg+'회', note);
+  });
+  // 설사 — 발생 자체를 신호로
+  (function(){
+    const t0=new Date(); t0.setHours(0,0,0,0);
+    let sum7=0; for(let i=0;i<7;i++){ sum7+=statDayVal('diar', d2s(addD(t0,-i))); }
+    const t=statDayVal('diar', d2s(t0)), y=statDayVal('diar', d2s(addD(t0,-1)));
+    if(!sum7){ row('💦','설사','ok','0회','최근 7일 없음'); }
+    else if(t>=3 || (t>0 && y>0)){ row('💦','설사','warn','오늘 '+t+'회','이틀 연속 또는 하루 다회 — 24시간 내 진료 권장'+(mo<4? ' · 4개월 미만은 반복 시 즉시 병원' : '')); }
+    else if(t>0 || y>0){ row('💦','설사','watch', t? '오늘 '+t+'회' : '어제 '+y+'회', '1회 발생 — 수분 급여하며 변 상태 관찰, 반복 시 진료'); }
+    else{ row('💦','설사','watch','7일 내 '+sum7+'회','최근 이틀은 없음 — 재발 여부 관찰'); }
+  })();
+  // 산책 — 단계별 분/일
+  (function(){
+    const band=statBand('walk'), a=hcAvg('walk');
+    if(!a || a.days<3){ row('🐕','산책','na','—','기록이 3일 이상 쌓이면 판정됩니다'); return; }
+    const avg=Math.round(a.avg);
+    let lv=(avg>=band.lo && avg<=band.hi)? 'ok' : ((avg>=band.lo*0.6 && avg<=band.hi*1.5)? 'watch' : 'warn');
+    let note='적정 '+band.lo+'~'+band.hi+'분/일 · '+band.why;
+    if(avg>band.hi) note+=' · 초과 — '+(mo<12? '성장판 보호를 위해 짧게 나눠서' : '짧게 나눠 진행');
+    if(avg<band.lo) note+=' · 부족';
+    row('🐕','산책',lv,'하루 '+avg+'분',note);
+  })();
+  // 수면 — 야간 수면, 기록된 밤만 평균
+  (function(){
+    const band=statBand('sleep'), a=hcAvg('sleep');
+    if(!a){ row('😴','수면','na','—','😴 버튼으로 취침·기상을 기록하면 판정됩니다'); return; }
+    if(a.days<3){ row('😴','수면','na','밤 '+fmtDur(Math.round(a.avg)*60000),'기록이 3일 이상 쌓이면 판정됩니다 (현재 '+a.days+'일)'); return; }
+    const avg=Math.round(a.avg);
+    const lv=(avg>=band.lo && avg<=band.hi)? 'ok' : ((avg>=band.lo-60 && avg<=band.hi+60)? 'watch' : 'warn');
+    row('😴','수면',lv,'밤 평균 '+fmtDur(avg*60000),'적정 '+Math.round(band.lo/60)+'~'+Math.round(band.hi/60)+'시간/밤 · '+band.why+' · 기록 '+a.days+'일');
+  })();
+  // 혼자 시간 — 월령+1시간 룰, 최근 7일 최장 1회
+  (function(){
+    const limH=Math.min(Math.floor(mo)+1, 9);
+    const t0=new Date(); t0.setHours(0,0,0,0);
+    let longest=0, any=false;
+    for(let i=0;i<7;i++){
+      const k=d2s(addD(t0,-i));
+      (((S.awayLog||{})[k])||[]).forEach(function(s){ any=true; longest=Math.max(longest, s.i-s.o); });
+    }
+    if(!any){ row('🚪','혼자 시간','na','—','최근 7일 기록 없음'); return; }
+    const lm=Math.round(longest/60000);
+    const lv= lm<=limH*60? 'ok' : (lm<=limH*75? 'watch' : 'warn');
+    row('🚪','혼자 시간',lv,'최장 1회 '+fmtDur(longest),'권장 한도 '+limH+'시간 — 월령+1시간 룰'+(mo>=8? ' (상한 9시간)' : '')+(lv!=='ok'? ' · 초과 — 중간 케어(가족·시터) 필요' : ''));
+  })();
+  // 체중 — 성장기: 증가 여부 / 성견: 급변 여부
+  (function(){
+    const ws=(S.weight||[]).slice().sort(function(a,b){ return String(a.d).localeCompare(String(b.d)); });
+    if(ws.length<2){ row('⚖️','체중','na', ws.length? esc(ws[ws.length-1].kg)+'kg' : '—', '주 1회 이상 기록하면 성장 판정이 표시됩니다'); return; }
+    const last=ws[ws.length-1];
+    let ref=null;
+    for(let i=ws.length-2;i>=0;i--){
+      const gap=(new Date(last.d+'T00:00:00')-new Date(ws[i].d+'T00:00:00'))/86400000;
+      if(gap>=5){ ref=ws[i]; break; }
+    }
+    if(!ref){ row('⚖️','체중','na', esc(last.kg)+'kg', '5일 이상 간격의 이전 기록이 쌓이면 판정됩니다'); return; }
+    const dd=Math.max(1,(new Date(last.d+'T00:00:00')-new Date(ref.d+'T00:00:00'))/86400000);
+    const diff=parseFloat(last.kg)-parseFloat(ref.kg);
+    const wk=Math.round(diff/dd*7*100)/100;
+    if(mo<12){
+      const lv= diff>0.03? 'ok' : (diff>=-0.03? 'watch' : 'warn');
+      row('⚖️','체중',lv, esc(last.kg)+'kg', '주당 '+(wk>=0?'+':'')+wk+'kg ('+esc(ref.d.slice(5).replace('-','/'))+' 대비)'+(lv==='ok'? ' · 성장 중' : (lv==='watch'? ' · 정체 — 지속되면 급여량·건강 상담' : ' · 감소 — 성장기 체중 감소는 병원 상담 권장')));
+    }else{
+      const pct=Math.abs(diff)/Math.max(0.1,parseFloat(ref.kg));
+      const lv= pct<=0.05? 'ok' : 'watch';
+      row('⚖️','체중',lv, esc(last.kg)+'kg', '변화 '+(diff>=0?'+':'')+(Math.round(diff*100)/100)+'kg'+(lv==='watch'? ' — ±5% 이상 급변, 급여·건강 확인' : ''));
+    }
+  })();
+  el.innerHTML=rows.join('');
 }
 function statDaily(cat, maxDays){
   const first=statFirstDate(cat);
@@ -4329,6 +4589,7 @@ function statFmt(cat, v){
   return v+'회';
 }
 function renderStats(){
+  try{ renderHealth(); }catch(e){}
   const wrap=document.getElementById('stCats'); if(!wrap) return;
   wrap.innerHTML=STAT_CATS.map(function(c){
     return '<button type="button" data-c="'+c.id+'" class="'+(STAT.cat===c.id?'on':'')+'">'+c.ic+' '+c.nm+'</button>';
@@ -4386,6 +4647,26 @@ function renderStats(){
     Object.keys(S.awayLog||{}).forEach(function(k){ (S.awayLog[k]||[]).forEach(function(s){ longest=Math.max(longest, s.i-s.o); }); });
     if(longest) extra='<div class="st-card"><div class="l">최장 1회</div><div class="v">'+statFmt(cat, Math.round(longest/60000))+'</div><div class="s">단일 구간</div></div>';
   }
+  if(cat==='poo'){
+    const t0=new Date(); t0.setHours(0,0,0,0);
+    const cntA={s:0, m:0, l:0};
+    for(let i=0;i<7;i++){
+      qlArr(d2s(addD(t0,-i)),'poo').forEach(function(t){
+        const a=String(t||'').split('|')[1];
+        cntA[a==='s'? 's' : (a==='l'? 'l' : 'm')]++;
+      });
+    }
+    const totA=cntA.s+cntA.m+cntA.l;
+    if(totA) extra='<div class="st-card"><div class="l">양 분포 · 7일</div><div class="v" style="font-size:14px;">소 '+cntA.s+' · 중 '+cntA.m+' · 대 '+cntA.l+'</div><div class="s">미선택 기록은 \'중\'</div></div>';
+  }
+  if(cat==='sleep'){
+    const keysS=Object.keys(S.sleepLog||{}).sort().filter(function(k){ return ((S.sleepLog[k]||[]).length)>0; });
+    if(keysS.length){
+      const lastK=keysS[keysS.length-1];
+      let lm=0; (S.sleepLog[lastK]||[]).forEach(function(s){ lm+=Math.max(0,s.i-s.o); });
+      extra='<div class="st-card"><div class="l">최근 밤</div><div class="v">'+statFmt(cat, Math.round(lm/60000))+'</div><div class="s">'+lastK.slice(5).replace('-','/')+' 기상</div></div>';
+    }
+  }
   const avgV = c.kind==='dur'? statFmt(cat, Math.round(avg)) : (avg+'회');
   cards.innerHTML=
     '<div class="st-card"><div class="l">평균 / '+UNITN[unit]+'</div><div class="v">'+avgV+'</div><div class="s">최근 '+ser.length+UNITN[unit]+' 기준</div></div>'
@@ -4396,11 +4677,27 @@ function renderStats(){
   const W=640, H=190, padL=8, padB=24, padT=18;
   const n=ser.length, gap= n>20? 2 : 6;
   const bw=Math.max(4, (W-padL*2-gap*(n-1))/n);
-  const maxV=Math.max(mx,1);
+  const band=(unit==='d' && cat!=='away')? statBand(cat) : null;
+  const awayLim=(unit==='d' && cat==='away' && ageMo()!=null)? Math.min(Math.floor(ageMo())+1, 9)*60 : 0;
+  const maxV=Math.max(mx, band? band.hi*1.12 : 0, awayLim? awayLim*1.12 : 0, 1);
+  const chH=H-padB-padT;
+  const yOf=function(v){ return H-padB-(v/maxV)*chH; };
   let out='';
+  if(band){
+    const yT=yOf(band.hi), yB=yOf(band.lo);
+    out+='<rect x="0" y="'+yT.toFixed(1)+'" width="'+W+'" height="'+Math.max(1, yB-yT).toFixed(1)+'" fill="#4F6B58" opacity="0.10"/>';
+    out+='<line x1="0" y1="'+yT.toFixed(1)+'" x2="'+W+'" y2="'+yT.toFixed(1)+'" stroke="#4F6B58" stroke-width="1" stroke-dasharray="3 4" opacity="0.5"/>';
+    out+='<line x1="0" y1="'+yB.toFixed(1)+'" x2="'+W+'" y2="'+yB.toFixed(1)+'" stroke="#4F6B58" stroke-width="1" stroke-dasharray="3 4" opacity="0.5"/>';
+    out+='<text x="'+(W-4)+'" y="'+(yT+11).toFixed(1)+'" text-anchor="end" font-size="9.5" fill="#4F6B58" font-weight="800">적정 '+band.lo+'~'+band.hi+(c.kind==='dur'?'분':'회')+'</text>';
+  }
+  if(awayLim){
+    const yL=yOf(awayLim);
+    out+='<line x1="0" y1="'+yL.toFixed(1)+'" x2="'+W+'" y2="'+yL.toFixed(1)+'" stroke="#AC3A28" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.75"/>';
+    out+='<text x="'+(W-4)+'" y="'+(yL-4).toFixed(1)+'" text-anchor="end" font-size="9.5" fill="#AC3A28" font-weight="800">한도 '+Math.round(awayLim/60)+'시간 · 월령+1 룰</text>';
+  }
   const step= n>20? 5 : (n>8? 2 : 1);
   ser.forEach(function(x,i){
-    const h=Math.round((x.v/maxV)*(H-padB-padT));
+    const h=Math.round((x.v/maxV)*chH);
     const px=padL+i*(bw+gap), py=H-padB-h;
     out+='<rect x="'+px.toFixed(1)+'" y="'+py+'" width="'+bw.toFixed(1)+'" height="'+Math.max(h,1)+'" rx="'+Math.min(5,bw/2).toFixed(1)+'" fill="'+(i===n-1?'#8A3324':'#D8C9AE')+'"/>';
     if(x.v>0 && (n<=14 || i===n-1 || x.v===mx)){
@@ -4410,6 +4707,16 @@ function renderStats(){
       out+='<text x="'+(px+bw/2).toFixed(1)+'" y="'+(H-7)+'" text-anchor="middle" font-size="9.5" fill="#6E6254">'+x.l+'</text>';
     }
   });
+  if(n>=3){
+    const maW= unit==='d'? Math.min(7,n) : (unit==='w'? Math.min(3,n) : 2);
+    const ma=statMA(vs, maW);
+    const pts=ma.map(function(v,i){
+      const px=padL+i*(bw+gap)+bw/2;
+      return px.toFixed(1)+','+yOf(v).toFixed(1);
+    }).join(' ');
+    out+='<polyline points="'+pts+'" fill="none" stroke="#4F6B58" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="0.9"/>';
+    out+='<text x="4" y="12" font-size="9.5" fill="#4F6B58" font-weight="800">— 추세 · '+maW+UNITN[unit]+' 이동평균</text>';
+  }
   svg.innerHTML=out;
   const rows=ser.slice().reverse().slice(0,15);
   tbl.innerHTML='<div class="tw"><table class="qd-table"><thead><tr><th>'+UNITN[unit]+'</th><th>'+c.ic+' '+c.nm+'</th></tr></thead><tbody>'
@@ -4422,8 +4729,8 @@ function renderStatLog(){
   const el=document.getElementById('stLog'); if(!el) return;
   const cat=STAT.cat;
   const DOW=['일','월','화','수','목','금','토'];
-  if(cat==='walk' || cat==='away'){
-    const src= cat==='walk'? (S.walkLog||{}) : (S.awayLog||{});
+  if(cat==='walk' || cat==='away' || cat==='sleep'){
+    const src= cat==='walk'? (S.walkLog||{}) : (cat==='sleep'? (S.sleepLog||{}) : (S.awayLog||{}));
     const keys=Object.keys(src).sort().reverse().slice(0,92).filter(function(k){ return (src[k]||[]).length; });
     if(!keys.length){ el.innerHTML='<p class="muted small" style="margin:0;">기록 없음.</p>'; return; }
     el.innerHTML='<div class="tw"><table class="qd-table"><thead><tr><th style="width:72px;">날짜</th><th>구간</th><th style="width:80px;">합계</th></tr></thead><tbody>'
@@ -4443,7 +4750,9 @@ function renderStatLog(){
       + keys.map(function(k){
           const arr=qlNorm(k)[cat];
           const chips=arr.map(function(t,i){
-            return '<span class="ql-chip">'+esc(String(t||'--:--').slice(0,5))+'<button type="button" data-sl="'+cat+'" data-sld="'+k+'" data-sli="'+i+'" aria-label="삭제">✕</button></span>';
+            const parts=String(t||'').split('|');
+            const lbl=esc(String(parts[0]||'--:--').slice(0,5)) + ((cat==='poo' && parts[1] && QL_AMT_NM[parts[1]])? '·'+QL_AMT_NM[parts[1]] : '');
+            return '<span class="ql-chip">'+lbl+'<button type="button" data-sl="'+cat+'" data-sld="'+k+'" data-sli="'+i+'" aria-label="삭제">✕</button></span>';
           }).join('');
           const today=k===todayKey();
           return '<tr'+(today?' class="qd-today"':'')+'><td class="qd-d">'+k.slice(5).replace('-','/')+'<span>'+DOW[new Date(k+'T00:00:00').getDay()]+(today?' · 오늘':'')+'</span></td><td><div class="qd-cell">'+chips+'</div></td><td class="qd-d">'+arr.length+'회</td></tr>';
@@ -4455,6 +4764,7 @@ function renderStatLog(){
       if(!confirm('이 기록을 삭제할까요?')) return;
       if(c==='walk'){ S.walkLog[k].splice(i,1); }
       else if(c==='away'){ S.awayLog[k].splice(i,1); }
+      else if(c==='sleep'){ S.sleepLog[k].splice(i,1); }
       else{ qlNorm(k)[c].splice(i,1); }
       saveState(); renderQlog(); renderAway();
     });
@@ -4487,7 +4797,7 @@ function renderAll(){ seedProfile(); renderHome(); renderDaily(); renderWeight()
 }
 document.addEventListener('DOMContentLoaded', async ()=>{
   await loadState();
-  bindChecklists(); bindVax(); bindProfile(); bindWeight(); bindVisits(); bindExpenses(); bindIO(); bindCal(); buildPagers(); buildLinks(); mobileTables(); initReveal(); initTopBtn(); loadSyncCfg(); bindSync(); bindAlbum(); bindNotice(); bindNav(); bindSOS(); bindQlog(); bindLib(); bindRep(); bindAway(); bindStats(); bindWt(); bindFeed(); bindBackup(); bindMidnight(); bindChat(); bindAnchors();
+  bindChecklists(); bindVax(); bindProfile(); bindWeight(); bindVisits(); bindExpenses(); bindIO(); bindCal(); buildPagers(); buildLinks(); mobileTables(); initReveal(); initTopBtn(); loadSyncCfg(); bindSync(); bindAlbum(); bindNotice(); bindNav(); bindSOS(); bindQlog(); bindLib(); bindRep(); bindAway(); bindStats(); bindWt(); bindFeed(); bindBackup(); bindMidnight(); bindChat(); bindAnchors(); bindPooAmt();
   ntcMigrate();
   ['vDate','eDate'].forEach(function(i){ const el=document.getElementById(i); if(el && !el.value) el.value=todayKey(); });
   renderAll();
