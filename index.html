@@ -2598,7 +2598,9 @@ function seedProfile(){
     if(!S.profile[k]){ S.profile[k]=CONTRACT[k]; ch=true; }
   });
   if(S._seed!==1){ if(!S.vax.v1) S.vax.v1={}; S.vax.v1.done=true; S._seed=1; ch=true; }
-  if(ch) saveState();
+  /* V5.2: 시드는 사용자 편집이 아니므로 _at을 찍지 않는다 —
+     캐시 삭제 후 빈 상태가 "최신"으로 둔갑해 서버 기록을 못 받아오거나 덮어쓰는 사고 방지 */
+  if(ch) persistLocal();
 }
 function renderWarranty(){
   const el=document.getElementById('warrantyBox'); if(!el) return;
