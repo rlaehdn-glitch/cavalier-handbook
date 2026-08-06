@@ -4235,9 +4235,25 @@ function renderMealGap(){
     el.className='mg-line mg-warn';
     el.textContent='⚠ 마지막 식사 후 '+fmtDur(gap)+' — 5시간 초과, 저혈당 주의'+per;
   }else{
-    const next=new Date(lm+5*3600000);
+    const next=lm+5*3600000;
+    const nh=new Date(next).getHours();
+    if(nh>=22 || nh<6){
+      /* V5.1: 다음 끼니가 야간(22~06시)에 걸림 → 새벽 급여 안내 대신 하루 마감 처리 */
+      const lmH=new Date(lm).getHours();
+      const mo=(typeof ageMo==='function')? ageMo() : null;
+      const eaten=qlNorm(todayKey()).meal.length;
+      const fm=(S.feed&&S.feed.meals)||4;
+      if(mo!=null && mo<6 && lmH<19){
+        el.className='mg-line mg-warn';
+        el.textContent='⚠ 마지막 '+fmtHM(lm)+' — 이대로 자면 야간 공복이 길어져요. 취침 전(21시 전후) 한 끼 더 권장'+per;
+      }else{
+        el.className='mg-line mg-ok';
+        el.textContent='✓ 오늘 식사 마감 ('+eaten+'/'+fm+'끼 · 마지막 '+fmtHM(lm)+') — 다음은 내일 아침 06~08시'+per;
+      }
+      return;
+    }
     el.className='mg-line mg-ok';
-    el.textContent='✓ 다음 식사 ~'+fmtHM(next.getTime())+' (마지막 '+fmtHM(lm)+')'+per;
+    el.textContent='✓ 다음 식사 ~'+fmtHM(next)+' (마지막 '+fmtHM(lm)+')'+per;
   }
 }
 /* F2: 급여량 (RER) */
@@ -4430,13 +4446,22 @@ function hcDaily(cat, days, inclToday){
 }
 function hcAvg(cat){
   /* 오늘은 아직 진행 중이라 평균에서 제외(왜곡 방지) — 수면은 오늘 아침 기상 기록이 완결이므로 포함 */
-  const d=hcDaily(cat, 7, cat==='sleep');
-  if(!d.length) return null;
   if(cat==='sleep'){
-    const rec=d.filter(function(x){ return x.v>0; });
-    if(!rec.length) return null;
-    return {avg:rec.reduce(function(a,x){ return a+x.v; },0)/rec.length, days:rec.length};
+    /* V5.1: 낮잠이 섞여도 판정이 흔들리지 않게, 하루 중 4시간 이상 이어 잔 기록(밤잠)만 집계 */
+    const t0=new Date(); t0.setHours(0,0,0,0);
+    const vals=[];
+    for(let i=0;i<7;i++){
+      const k=d2s(addD(t0,-i));
+      let mx2=0;
+      (((S.sleepLog||{})[k])||[]).forEach(function(s){ mx2=Math.max(mx2, s.i-s.o); });
+      const nm=Math.round(mx2/60000);
+      if(nm>=240) vals.push(nm);
+    }
+    if(!vals.length) return null;
+    return {avg:vals.reduce(function(a,b){ return a+b; },0)/vals.length, days:vals.length};
   }
+  const d=hcDaily(cat, 7, false);
+  if(!d.length) return null;
   return {avg:d.reduce(function(a,x){ return a+x.v; },0)/d.length, days:d.length};
 }
 function hcTrend(cat){
@@ -4497,14 +4522,14 @@ function renderHealth(){
     if(avg<band.lo) note+=' · 부족';
     row('🐕','산책',lv,'하루 '+avg+'분',note);
   })();
-  // 수면 — 야간 수면, 기록된 밤만 평균
+  // 수면 — 밤잠(4시간 이상 연속 수면)만 집계, 낮잠 제외
   (function(){
     const band=statBand('sleep'), a=hcAvg('sleep');
-    if(!a){ row('😴','수면','na','—','😴 버튼으로 취침·기상을 기록하면 판정됩니다'); return; }
-    if(a.days<3){ row('😴','수면','na','밤 '+fmtDur(Math.round(a.avg)*60000),'기록이 3일 이상 쌓이면 판정됩니다 (현재 '+a.days+'일)'); return; }
+    if(!a){ row('😴','수면','na','—','😴 버튼으로 취침·기상을 기록하면 판정됩니다 (밤잠 기준)'); return; }
+    if(a.days<3){ row('😴','수면','na','밤잠 '+fmtDur(Math.round(a.avg)*60000),'밤잠 기록이 3일 이상 쌓이면 판정됩니다 (현재 '+a.days+'일 · 낮잠은 제외)'); return; }
     const avg=Math.round(a.avg);
     const lv=(avg>=band.lo && avg<=band.hi)? 'ok' : ((avg>=band.lo-60 && avg<=band.hi+60)? 'watch' : 'warn');
-    row('😴','수면',lv,'밤 평균 '+fmtDur(avg*60000),'적정 '+Math.round(band.lo/60)+'~'+Math.round(band.hi/60)+'시간/밤 · '+band.why+' · 기록 '+a.days+'일');
+    row('😴','수면',lv,'밤잠 평균 '+fmtDur(avg*60000),'적정 '+Math.round(band.lo/60)+'~'+Math.round(band.hi/60)+'시간/밤 · 4시간 이상 이어 잔 기록만 밤잠으로 집계(낮잠 제외) · 기록 '+a.days+'일');
   })();
   // 혼자 시간 — 월령+1시간 룰, 최근 7일 최장 1회
   (function(){
@@ -4663,8 +4688,8 @@ function renderStats(){
     const keysS=Object.keys(S.sleepLog||{}).sort().filter(function(k){ return ((S.sleepLog[k]||[]).length)>0; });
     if(keysS.length){
       const lastK=keysS[keysS.length-1];
-      let lm=0; (S.sleepLog[lastK]||[]).forEach(function(s){ lm+=Math.max(0,s.i-s.o); });
-      extra='<div class="st-card"><div class="l">최근 밤</div><div class="v">'+statFmt(cat, Math.round(lm/60000))+'</div><div class="s">'+lastK.slice(5).replace('-','/')+' 기상</div></div>';
+      let lmx=0; (S.sleepLog[lastK]||[]).forEach(function(s){ lmx=Math.max(lmx, s.i-s.o); });
+      extra='<div class="st-card"><div class="l">최장 1회</div><div class="v">'+statFmt(cat, Math.round(lmx/60000))+'</div><div class="s">'+lastK.slice(5).replace('-','/')+' · 그래프는 낮잠 포함 합계</div></div>';
     }
   }
   const avgV = c.kind==='dur'? statFmt(cat, Math.round(avg)) : (avg+'회');
