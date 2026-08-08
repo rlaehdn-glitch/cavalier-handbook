@@ -688,8 +688,8 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
       <button class="ql" id="qlWt" type="button"><span class="qi">⚖️</span><span>체중</span><b id="qlWtV">—</b></button>
       <button class="ql" id="qlPhoto" type="button"><span class="qi">📷</span><span>사진</span><b>＋</b></button>
       <button class="ql ql-stat" id="qlStats" type="button"><span class="qi">📊</span><span>통계</span><b>›</b></button>
-      <!-- V5.4: 홈캠 바로가기 (헤이홈 앱) -->
-      <button class="ql" id="qlCam" type="button"><span class="qi">📹</span><span>홈캠</span><b>›</b></button>
+      <!-- V5.4: 홈캠 바로가기 (헤이홈 앱) — href는 로드 시 OS별로 세팅 -->
+      <a class="ql" id="qlCam" href="#" style="text-decoration:none; color:inherit;"><span class="qi">📹</span><span>홈캠</span><b>›</b></a>
     </div>
     <div class="ql-amt" id="pooAmt"></div>
     <div class="ql-stamps" id="qlStamps"></div>
@@ -3468,17 +3468,19 @@ function bindQlog(){
   const slBtn=document.getElementById('qlSleep'); if(slBtn) slBtn.addEventListener('click', sleepToggle);
   document.getElementById('qlStamps').addEventListener('click', qlChipTap);
   const sb=document.getElementById('qlStats'); if(sb) sb.addEventListener('click', function(){ goTab('stats'); });
-  /* V5.4: 홈캠 — 헤이홈 앱 실행. Android는 intent(미설치 시 Play스토어 폴백), iOS는 App Store 페이지(설치돼 있으면 '열기'로 진입) */
-  const cb=document.getElementById('qlCam'); if(cb) cb.addEventListener('click', function(){
+  /* V5.4: 홈캠 — a태그에 OS별 링크를 미리 세팅해 브라우저가 네이티브로 앱 전환 처리(확인창·깜빡임 최소화).
+     Android: intent 링크(미설치 시 Play스토어 폴백) / iOS: App Store 페이지(설치돼 있으면 '열기') */
+  const cb=document.getElementById('qlCam'); if(cb){
     const ua=navigator.userAgent||'';
     if(/android/i.test(ua)){
-      location.href='intent://#Intent;package=com.goqual;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.goqual;end';
+      cb.href='intent://#Intent;package=com.goqual;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.goqual;end';
     }else if(/iphone|ipad|ipod/i.test(ua)){
-      location.href='https://apps.apple.com/kr/app/id1435783535';
+      cb.href='https://apps.apple.com/kr/app/id1435783535';
     }else{
-      window.open('https://play.google.com/store/apps/details?id=com.goqual','_blank');
+      cb.href='https://play.google.com/store/apps/details?id=com.goqual';
+      cb.target='_blank';
     }
-  });
+  }
   document.getElementById('qlWt').addEventListener('click', function(){
     const ov=document.getElementById('wtOvl');
     const inp=document.getElementById('wtInput');
