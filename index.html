@@ -553,6 +553,8 @@ input[type=text],input[type=date],input[type=number],input[type=search],input[ty
 #qlStamps .qs-row{gap:4px; margin-top:5px;}
 #qlStamps .ql-chip:active{background:var(--red-bg); border-color:var(--red); transform:scale(.93);}
 #qlStamps .ql-chip[data-wk],#qlStamps .ql-chip[data-wcur]{font-size:11.5px; padding:4px 8px;}
+#qlStamps .qs-line{font-weight:700;}
+#qlStamps .qs-tog{cursor:pointer;}
 </style>
 <style>
 /* V4.2 대소변 분리 — 4열 */
@@ -693,9 +695,8 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
     </div>
     <div class="ql-amt" id="pooAmt"></div>
     <div class="ql-stamps" id="qlStamps"></div>
-    <div class="ql-undo"><span class="muted small" id="qlSum" style="flex:1;"></span></div>
     <p class="mg-line" id="mealGap"></p>
-    <p class="muted small" style="margin:7px 0 0;">😴 수면은 잘 때 한 번, 일어나면 한 번 — 산책처럼 시작·종료로 기록됩니다. 기록된 시각을 누르면 삭제됩니다.</p>
+    <p class="muted small" style="margin:7px 0 0;">😴 수면은 잘 때 한 번, 일어나면 한 번씩 탭. 요약줄을 누르면 시각별 기록이 펼쳐지고, 시각을 누르면 삭제됩니다.</p>
   </div>
 
   <h3 class="sec" style="display:flex; justify-content:space-between; align-items:center;">최근 사진 <button class="btn sm ghost" onclick="goTab('album')">앨범 →</button></h3>
@@ -3389,9 +3390,16 @@ function renderQlog(){
     if(S.sleepCur){ slb.classList.add('walking'); slt.textContent='수면 중'; sln.textContent='⏱'+fmtHrs(Date.now()-S.sleepCur); }
     else{ slb.classList.remove('walking'); slt.textContent='수면'; sln.textContent= smin? fmtHrs(smin) : '—'; }
   }
+  let wmin=0; wl.forEach(function(s){ wmin+=Math.max(0,s.i-s.o); });
   const st=document.getElementById('qlStamps');
   if(st){
-    const row=function(ic, html){ return html? '<div class="qs-row"><span class="qs-i">'+ic+'</span>'+html+'</div>' : ''; };
+    /* V5.5: 기본은 타입당 요약 1줄(횟수·마지막 시각), 요약 탭 → 칩 전체 펼침(칩 탭=개별 삭제), 아이콘 탭 → 다시 접힘 */
+    const lastT=function(arr){ return arr.length? esc(String(arr[arr.length-1]||'').split('|')[0].slice(0,5)) : ''; };
+    const row=function(ic, k, html, sum){
+      if(!html) return '';
+      if(QL_OPEN[k]) return '<div class="qs-row"><span class="qs-i qs-tog" role="button" data-qtog="'+k+'">'+ic+'</span>'+html+'</div>';
+      return '<div class="qs-row"><span class="qs-i">'+ic+'</span><span class="ql-chip qs-line" role="button" data-qtog="'+k+'">'+sum+' <b style="opacity:.55;">▾</b></span></div>';
+    };
     const chips=function(arr, k){
       return arr.map(function(t,i){
         const parts=String(t||'').split('|');
@@ -3399,15 +3407,15 @@ function renderQlog(){
         return '<span class="ql-chip" role="button" data-qk="'+k+'" data-qi="'+i+'">'+lbl+'</span>';
       }).join('');
     };
+    const cnt=function(arr){ return arr.length? arr.length+'회 · 마지막 '+lastT(arr) : ''; };
     let wk=wl.map(function(s,i){ return '<span class="ql-chip" role="button" data-wk="'+i+'">'+fmtHM(s.o)+'→'+fmtHM(s.i)+' · '+fmtDur(s.i-s.o)+'</span>'; }).join('');
     if(S.walkCur) wk+='<span class="ql-chip" role="button" data-wcur="1">'+fmtHM(S.walkCur)+'→ 진행 중 ✕</span>';
     let sk=sl.map(function(s,i){ return '<span class="ql-chip" role="button" data-sk="'+i+'">'+fmtHM(s.o)+'→'+fmtHM(s.i)+' · '+fmtDur(s.i-s.o)+'</span>'; }).join('');
     if(S.sleepCur) sk+='<span class="ql-chip" role="button" data-scur="1">'+fmtHM(S.sleepCur)+'→ 수면 중 ✕</span>';
-    st.innerHTML=row('💩',chips(q.poo,'poo'))+row('💧',chips(q.pee,'pee'))+row('💦',chips(q.diar,'diar'))+row('🍚',chips(q.meal,'meal'))+row('🐕',wk)+row('😴',sk);
+    let wsum=[]; if(wl.length) wsum.push(wl.length+'회'+(wmin? ' '+fmtDur(wmin):'')); if(S.walkCur) wsum.push('산책 중 ⏱'+fmtDur(Date.now()-S.walkCur));
+    let ssum=[]; if(sl.length) ssum.push(fmtDur(smin)+' · '+sl.length+'회'); if(S.sleepCur) ssum.push('수면 중');
+    st.innerHTML=row('💩','poo',chips(q.poo,'poo'),cnt(q.poo))+row('💧','pee',chips(q.pee,'pee'),cnt(q.pee))+row('💦','diar',chips(q.diar,'diar'),cnt(q.diar))+row('🍚','meal',chips(q.meal,'meal'),cnt(q.meal))+row('🐕','walk',wk,wsum.join(' · '))+row('😴','sleep',sk,ssum.join(' · '));
   }
-  let wmin=0; wl.forEach(function(s){ wmin+=Math.max(0,s.i-s.o); });
-  const su=document.getElementById('qlSum');
-  if(su) su.textContent='오늘 대변 '+q.poo.length+' · 소변 '+q.pee.length+' · 설사 '+q.diar.length+' · 식사 '+q.meal.length+' · 산책 '+wl.length+'회'+(wmin? ' '+fmtDur(wmin):'')+(smin? ' · 수면 '+fmtDur(smin):'');
   renderMealGap();
   try{ renderStats(); }catch(e){}
 }
@@ -3812,7 +3820,11 @@ function sleepToggle(){
 }
 
 /* =============== V4.1: 스탬프 탭 → 확인 후 삭제 =============== */
+/* V5.5: 스탬프 펼침 상태 (세션 한정 — 새로고침 시 접힘) */
+const QL_OPEN={};
 function qlChipTap(e){
+  const tg=e.target.closest('[data-qtog]');
+  if(tg){ QL_OPEN[tg.dataset.qtog]=!QL_OPEN[tg.dataset.qtog]; renderQlog(); return; }
   const chip=e.target.closest('.ql-chip'); if(!chip) return;
   const key=todayKey();
   const label=chip.textContent.replace('✕','').trim();
