@@ -676,7 +676,7 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
     <p class="aw-stat" id="awStat" style="margin:10px 0 0;"></p>
   </div>
 
-  <h3 class="sec">빠른 기록 <span class="muted small" style="font-weight:400;">— 탭하면 현재 시각으로 저장</span></h3>
+  <h3 class="sec">퀵 액션 <span class="muted small" style="font-weight:400;">— 기록 버튼은 탭 즉시 현재 시각으로 저장</span></h3>
   <div class="card">
     <div class="ql-grid ql-6 ql-9">
       <button class="ql" id="qlPoo" type="button"><span class="qi">💩</span><span>대변</span><b id="qlPooN">0</b></button>
@@ -688,6 +688,8 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
       <button class="ql" id="qlWt" type="button"><span class="qi">⚖️</span><span>체중</span><b id="qlWtV">—</b></button>
       <button class="ql" id="qlPhoto" type="button"><span class="qi">📷</span><span>사진</span><b>＋</b></button>
       <button class="ql ql-stat" id="qlStats" type="button"><span class="qi">📊</span><span>통계</span><b>›</b></button>
+      <!-- V5.4: 홈캠 바로가기 (헤이홈 앱) -->
+      <button class="ql" id="qlCam" type="button"><span class="qi">📹</span><span>홈캠</span><b>›</b></button>
     </div>
     <div class="ql-amt" id="pooAmt"></div>
     <div class="ql-stamps" id="qlStamps"></div>
@@ -2143,7 +2145,7 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
   <div class="ch-head">
     <div class="ch-no">STATS</div>
     <h2 class="serif">기록 통계</h2>
-    <p class="lede">빠른 기록·수면·혼자 시간이 그래프와 표로 쌓이고, 월령 기준 적정 범위와 비교해 진단합니다. 90일 보관.</p>
+    <p class="lede">퀵 액션 기록·수면·혼자 시간이 그래프와 표로 쌓이고, 월령 기준 적정 범위와 비교해 진단합니다. 90일 보관.</p>
   </div>
 
   <div class="card" style="margin-bottom:14px;">
@@ -3466,6 +3468,17 @@ function bindQlog(){
   const slBtn=document.getElementById('qlSleep'); if(slBtn) slBtn.addEventListener('click', sleepToggle);
   document.getElementById('qlStamps').addEventListener('click', qlChipTap);
   const sb=document.getElementById('qlStats'); if(sb) sb.addEventListener('click', function(){ goTab('stats'); });
+  /* V5.4: 홈캠 — 헤이홈 앱 실행. Android는 intent(미설치 시 Play스토어 폴백), iOS는 App Store 페이지(설치돼 있으면 '열기'로 진입) */
+  const cb=document.getElementById('qlCam'); if(cb) cb.addEventListener('click', function(){
+    const ua=navigator.userAgent||'';
+    if(/android/i.test(ua)){
+      location.href='intent://#Intent;package=com.goqual;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.goqual;end';
+    }else if(/iphone|ipad|ipod/i.test(ua)){
+      location.href='https://apps.apple.com/kr/app/id1435783535';
+    }else{
+      window.open('https://play.google.com/store/apps/details?id=com.goqual','_blank');
+    }
+  });
   document.getElementById('qlWt').addEventListener('click', function(){
     const ov=document.getElementById('wtOvl');
     const inp=document.getElementById('wtInput');
@@ -3515,7 +3528,7 @@ function renderStrip(){
     .filter(function(id){ return ALB.meta[id].t!=='v'; })
     .sort(function(a,b){ return (ALB.meta[b].at||0)-(ALB.meta[a].at||0); })
     .slice(0,4);
-  if(!ids.length){ el.innerHTML='<p class="muted small" style="margin:0;">아직 사진이 없습니다. 빠른 기록의 📷 버튼으로 첫 장을 올려보세요.</p>'; return; }
+  if(!ids.length){ el.innerHTML='<p class="muted small" style="margin:0;">아직 사진이 없습니다. 퀵 액션의 📷 버튼으로 첫 장을 올려보세요.</p>'; return; }
   el.innerHTML=ids.map(function(id){ return '<div class="sc" data-id="'+id+'"><img alt=""></div>'; }).join('');
   el.querySelectorAll('.sc').forEach(function(c){
     stripThumb(c.dataset.id, c.querySelector('img'));
@@ -4532,7 +4545,7 @@ function renderStats(){
     cards.innerHTML='';
     chartT.textContent=c.ic+' '+c.nm+' — 기록 없음';
     svg.innerHTML='';
-    tbl.innerHTML='<p class="muted small" style="margin:0;">아직 기록이 없습니다. 홈의 빠른 기록으로 쌓아보세요.</p>';
+    tbl.innerHTML='<p class="muted small" style="margin:0;">아직 기록이 없습니다. 홈의 퀵 액션으로 쌓아보세요.</p>';
     renderStatLog();
     return;
   }
