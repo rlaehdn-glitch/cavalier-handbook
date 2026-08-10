@@ -3794,7 +3794,7 @@ function renderAway(){
   if(S.awayCur){
     out.disabled=true; inn.disabled=false;
     const over = a.ongoing > 12*3600000;
-    st.innerHTML='🔴 <strong>'+fmtDur(a.ongoing)+'째 혼자</strong> ('+fmtHM(S.awayCur)+' 외출)'+(a.total? ' · 오늘 누적 '+fmtDur(a.total+a.ongoing):'')
+    st.innerHTML='🔴 <strong>'+fmtDur(a.ongoing)+'째 혼자</strong> <span class="ql-chip" role="button" id="awCurChip" style="cursor:pointer;">'+fmtHM(S.awayCur)+' 외출 ✎</span>'+(a.total? ' · 오늘 누적 '+fmtDur(a.total+a.ongoing):'')
       +(over? '<br><span class="mg-warn">귀가 버튼을 잊으셨나요? 아래에서 정리하세요.</span><div class="aw-fix"><button class="btn sm" id="awFixIn" type="button">지금 귀가로 기록</button><button class="btn sm ghost" id="awFixX" type="button">이 외출 취소</button></div>' : '');
     const f1=document.getElementById('awFixIn');
     if(f1) f1.addEventListener('click', function(){ document.getElementById('awIn').click(); });
@@ -3805,7 +3805,11 @@ function renderAway(){
     });
   }else{
     out.disabled=false; inn.disabled=true;
-    st.innerHTML= a.cnt? '🟢 지금 함께 · 오늘 혼자 합계 <strong>'+fmtDur(a.total)+'</strong> ('+a.cnt+'회)' : '🟢 지금 함께 · 오늘 혼자 둔 기록 없음';
+    /* V5.6b: 오늘 외출 구간 칩 — 탭하면 수정 시트 */
+    const segs=(((S.awayLog||{})[todayKey()])||[]).map(function(s,i){
+      return '<span class="ql-chip" role="button" data-ak="'+i+'" style="cursor:pointer;">'+fmtHM(s.o)+'→'+fmtHM(s.i)+' · '+fmtDur(s.i-s.o)+'</span>';
+    }).join('');
+    st.innerHTML= a.cnt? '🟢 지금 함께 · 오늘 혼자 합계 <strong>'+fmtDur(a.total)+'</strong> ('+a.cnt+'회)<div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:6px;">'+segs+'</div>' : '🟢 지금 함께 · 오늘 혼자 둔 기록 없음';
   }
   try{ renderStats(); }catch(e){}
 }
@@ -3820,6 +3824,13 @@ function bindAway(){
     S.awayCur=0;
     const ks=Object.keys(S.awayLog).sort(); while(ks.length>100){ delete S.awayLog[ks.shift()]; }
     saveState(); renderAway();
+  });
+  /* V5.6b: 외출 칩 탭 → 수정 시트 (aw-fix 버튼은 자체 리스너라 간섭 없음) */
+  const stEl=document.getElementById('awStat');
+  if(stEl) stEl.addEventListener('click', function(e){
+    if(e.target.closest('#awCurChip')){ qeOpen('acur'); return; }
+    const seg=e.target.closest('[data-ak]');
+    if(seg){ qeOpen('away','',parseInt(seg.dataset.ak,10)); }
   });
   setInterval(function(){ if(S.awayCur) renderAway(); }, 30000);
 }
@@ -3897,17 +3908,17 @@ function qeOpen(mode, k, i){
     t1.value=raw.split('|')[0].slice(0,5);
     if(k==='poo'){ am.style.display='flex'; QE.amt=raw.split('|')[1]||'m'; qeAmtPaint(); }
     if(k==='meal') hint.textContent='시각을 고치면 다음 끼니 안내·공복 경고가 새 시각 기준으로 다시 계산됩니다.';
-  }else if(mode==='walk' || mode==='sleep'){
-    const log=(mode==='walk'? S.walkLog : S.sleepLog)||{};
+  }else if(mode==='walk' || mode==='sleep' || mode==='away'){
+    const log=(mode==='walk'? S.walkLog : (mode==='sleep'? S.sleepLog : S.awayLog))||{};
     const s=(log[key]||[])[QE.i]; if(!s) return;
-    T.textContent=(mode==='walk'? '🐕 산책' : '😴 수면')+' 기록 수정';
+    T.textContent=(mode==='walk'? '🐕 산책' : (mode==='sleep'? '😴 수면' : '🚪 외출'))+' 기록 수정';
     l1.textContent='시작'; l2.textContent='종료';
     t1.value=fmtHM(s.o); t2.value=fmtHM(s.i);
     t2.style.display=''; l2.style.display='';
     if(d2s(new Date(s.o))!==d2s(new Date(s.i))) hint.textContent='자정을 넘긴 기록 — 시작은 전날, 종료는 오늘 날짜로 저장됩니다.';
-  }else if(mode==='wcur' || mode==='scur'){
-    const cur=(mode==='wcur'? S.walkCur : S.sleepCur); if(!cur) return;
-    T.textContent=(mode==='wcur'? '🐕 산책 진행 중' : '😴 수면 진행 중');
+  }else if(mode==='wcur' || mode==='scur' || mode==='acur'){
+    const cur=(mode==='wcur'? S.walkCur : (mode==='scur'? S.sleepCur : S.awayCur)); if(!cur) return;
+    T.textContent=(mode==='wcur'? '🐕 산책 진행 중' : (mode==='scur'? '😴 수면 진행 중' : '🚪 외출 진행 중'));
     l1.textContent='시작 시각';
     t1.value=fmtHM(cur);
     del.textContent='진행 취소';
@@ -3925,23 +3936,23 @@ function qeSave(){
     if(QE.i<0 || QE.i>=arr.length){ qeHide(); return; }
     arr[QE.i]=hm + (QE.k==='poo'? '|'+(QE.amt||'m') : '');
     qeSortCount(arr);
-  }else if(QE.mode==='walk' || QE.mode==='sleep'){
+  }else if(QE.mode==='walk' || QE.mode==='sleep' || QE.mode==='away'){
     if(!/^\d\d:\d\d$/.test(v1) || !/^\d\d:\d\d$/.test(v2)){ alert('시작·종료 시각을 모두 입력해주세요.'); return; }
-    const log=(QE.mode==='walk'? S.walkLog : S.sleepLog)||{};
+    const log=(QE.mode==='walk'? S.walkLog : (QE.mode==='sleep'? S.sleepLog : S.awayLog))||{};
     const list=log[key]||[]; const s=list[QE.i]; if(!s){ qeHide(); return; }
     const no=qeApplyHM(s.o, v1), ni=qeApplyHM(s.i, v2);
     if(no>=ni){ alert('시작이 종료보다 늦을 수 없습니다.'); return; }
     if(ni>now || no>now){ alert('미래 시각으로는 저장할 수 없습니다.'); return; }
     s.o=no; s.i=ni;
     list.sort(function(a,b){ return a.o-b.o; });
-  }else if(QE.mode==='wcur' || QE.mode==='scur'){
+  }else if(QE.mode==='wcur' || QE.mode==='scur' || QE.mode==='acur'){
     if(!/^\d\d:\d\d$/.test(v1)){ alert('시각을 입력해주세요.'); return; }
-    const cur=(QE.mode==='wcur'? S.walkCur : S.sleepCur); if(!cur){ qeHide(); return; }
+    const cur=(QE.mode==='wcur'? S.walkCur : (QE.mode==='scur'? S.sleepCur : S.awayCur)); if(!cur){ qeHide(); return; }
     const nc=qeApplyHM(cur, v1);
     if(nc>now){ alert('미래 시각으로는 저장할 수 없습니다.'); return; }
-    if(QE.mode==='wcur') S.walkCur=nc; else S.sleepCur=nc;
+    if(QE.mode==='wcur') S.walkCur=nc; else if(QE.mode==='scur') S.sleepCur=nc; else S.awayCur=nc;
   }
-  saveState(); renderQlog(); qeHide();
+  saveState(); renderQlog(); if(typeof renderAway==='function') renderAway(); qeHide();
 }
 function qeDelete(){
   const key=todayKey();
@@ -3955,14 +3966,20 @@ function qeDelete(){
   }else if(QE.mode==='sleep'){
     if(!confirm('수면 기록을 삭제할까요?')) return;
     ((S.sleepLog||{})[key]||[]).splice(QE.i,1);
+  }else if(QE.mode==='away'){
+    if(!confirm('외출 기록을 삭제할까요?')) return;
+    ((S.awayLog||{})[key]||[]).splice(QE.i,1);
   }else if(QE.mode==='wcur'){
     if(!confirm('진행 중인 산책을 취소할까요? 이번 산책은 기록되지 않습니다.')) return;
     S.walkCur=0;
   }else if(QE.mode==='scur'){
     if(!confirm('진행 중인 수면 기록을 취소할까요? 이번 수면은 저장되지 않습니다.')) return;
     S.sleepCur=0;
+  }else if(QE.mode==='acur'){
+    if(!confirm('이 외출 기록을 취소할까요? 시간이 저장되지 않습니다.')) return;
+    S.awayCur=0;
   }
-  saveState(); renderQlog(); qeHide();
+  saveState(); renderQlog(); if(typeof renderAway==='function') renderAway(); qeHide();
 }
 function bindQe(){
   const ov=document.getElementById('qeOvl'); if(!ov) return;
