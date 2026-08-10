@@ -780,7 +780,7 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
     <div class="cal-grid" id="calGrid"></div>
     <div class="cal-legend">
       <span><span class="dot a"></span>관리 알림(자동)</span>
-      <span><span class="dot l"></span>지연</span>
+      
       <span><span class="dot d"></span>완료</span>
       <span><span class="dot u"></span>내 일정</span>
     </div>
@@ -796,13 +796,13 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
       <select id="cvRep"><option value="">반복 없음</option><option value="w">매주</option><option value="m">매월</option></select>
       <button class="btn sm" id="cvAdd">추가</button>
     </div>
-    <p class="muted small" style="margin-top:8px;">접종·구충 알림은 자동 생성. 접종은 위 목록에서 바로 "완료" 체크 가능 — 02장 표에도 같이 반영됩니다.</p>
+    <p class="muted small" style="margin-top:8px;">접종 예정은 자동 생성하지 않습니다 — 병원 예약은 위 "내 일정"으로 등록하세요. 접종 후 02장 표에서 완료 체크하면 이 달력에 초록 "완료"로 기록됩니다. 심장사상충·구충 알림은 매월 자동.</p>
   </div>
 
   <div class="box box-key" style="margin-top:14px;">
     <div class="bt">★ 달력이 자동으로 챙겨주는 것</div>
     <ul class="ls">
-      <li><strong>접종 2~6차 + 항체검사</strong> — 계약서상 2차 예정일(2026.08.02) 기준 2주 간격으로 자동 계산, 지나면 "지연" 표시. 1차는 마리켄넬에서 완료 처리됨</li>
+      <li><strong>접종</strong> — 예정일 자동 계산·"지연" 표시는 하지 않습니다(V5.7). 실제 병원 예약을 "내 일정"으로 등록하고, 접종 후 02장 표에서 완료 체크하면 그 날짜에 완료 기록이 남습니다</li>
       <li><strong>분양 보상기간 만료</strong> — 입양일 +15일(2026.08.09)</li>
       <li><strong>심장사상충·구충</strong> — 매월 반복 (생후 8주 이후부터)</li>
       <li><strong>성장 이정표</strong> — 사회화 골든타임 마감(14주) · 중성화 상담(6개월) · 성견 사료 전환 검토(10개월)</li>
@@ -2791,9 +2791,7 @@ function autoEventsRange(from,to){
   VAX_PLAN.forEach(v=>{
     const st=S.vax[v.id]||{};
     if(st.done){ if(st.date){ const dd=new Date(st.date+'T00:00:00'); if(dd>=from&&dd<=to) out.push({d:d2s(dd), t:v.t+' — 완료', cls:'d'}); } }
-    else{ const dd=vaxDue(v,b); const s=d2s(dd);
-      if(dd>=from&&dd<=to) out.push({d:s, t:v.t+(s<tk?' — 지연':' 예정'), cls: s<tk?'l':'a', vid:v.id});
-    }
+    /* V5.7: 미완료 접종의 자동 '예정/지연' 이벤트 생성 중단 — 실제 병원 예약은 '내 일정'으로 관리, 완료 체크 시에만 달력에 기록 */
   });
   const hw=S.vax.v8||{};
   const anchor = hw.date? parseInt(hw.date.slice(8,10),10) : (S.profile.home? parseInt(S.profile.home.slice(8,10),10) : b.getDate());
@@ -2898,9 +2896,8 @@ function renderUpcoming(){
   const now=new Date(); now.setHours(0,0,0,0);
   const to=addD(now,60); const tk=todayKey(); const toS=d2s(to);
   let evs=autoEventsRange(now,to).filter(function(e){ return e.cls!=='d' && e.cls!=='l'; });
-  const b=new Date(S.profile.birth+'T00:00:00');
+  /* V5.7: 접종 지연 자동 주입 제거 — 내 일정 기반 운영 */
   const overdue=[];
-  VAX_PLAN.forEach(function(v){ const st=S.vax[v.id]||{}; if(!st.done){ const s=d2s(vaxDue(v,b)); if(s<tk) overdue.push({d:s, t:v.t+' — 지연, 병원 예약', cls:'l'}); } });
   (S.events||[]).forEach(function(e){
     if(!e.d) return;
     const base=new Date(e.d+'T00:00:00');
@@ -3358,13 +3355,7 @@ function nearestEvent(){
   if(!S.profile.birth) return null;
   const now=new Date(); now.setHours(0,0,0,0);
   const tk=todayKey(); const to=addD(now,90);
-  const b=new Date(S.profile.birth+'T00:00:00');
-  let late=null;
-  VAX_PLAN.forEach(function(v){
-    const st=S.vax[v.id]||{};
-    if(!st.done){ const s=d2s(vaxDue(v,b)); if(s<tk && (!late || s<late.d)) late={d:s, t:v.t, late:true}; }
-  });
-  if(late) return late;
+  /* V5.7: 접종 지연 우선 표시 제거 — 배너는 구충·마일스톤·내 일정 기준으로만 */
   let evs=autoEventsRange(now,to).filter(function(e){ return e.cls==='a' && e.t.indexOf('보상')===-1; });
   (S.events||[]).forEach(function(e){ if(e.d>=tk) evs.push({d:e.d, t:e.t, cls:'u'}); });
   evs.sort(function(a,b2){ return a.d.localeCompare(b2.d); });
