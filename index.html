@@ -804,7 +804,7 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
     <ul class="ls">
       <li><strong>접종</strong> — 예정일 자동 계산·"지연" 표시는 하지 않습니다(V5.7). 실제 병원 예약을 "내 일정"으로 등록하고, 접종 후 02장 표에서 완료 체크하면 그 날짜에 완료 기록이 남습니다</li>
       <li><strong>분양 보상기간 만료</strong> — 입양일 +15일(2026.08.09)</li>
-      <li><strong>심장사상충·구충</strong> — 매월 반복 (생후 8주 이후부터)</li>
+      <li><strong>심장사상충·구충</strong> — 매월 반복 (생후 8주 이후부터). 02장 표 8번 행에 첫 투여일(넥스가드 스펙트라 2026.08.21)을 넣으면 그 날짜 기준 = 매월 21일로 반복</li>
       <li><strong>성장 이정표</strong> — 사회화 골든타임 마감(14주) · 중성화 상담(6개월) · 성견 사료 전환 검토(10개월)</li>
       <li><strong>매년 생일</strong> — 연간검진 + 심장 청진 + 보강접종 알림 (카발리에 관리의 핵심)</li>
     </ul>
@@ -904,8 +904,8 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
       <tr><td><strong>켄넬</strong></td><td>마리켄넬 · 생산업허가번호 357000003720190007</td></tr>
       <tr><td><strong>분양업체</strong></td><td>바크바크 · <strong>010-2999-4743</strong><br><span class="muted small">경기 부천시 원미구 중동 1073-12 1층 · 동물판매업번호 3860000-045-2025-0005</span></td></tr>
       <tr><td><strong>인계 상태</strong></td><td>건강상태 양호 · 수의사 치료기록 없음 · 약물투여기록 없음</td></tr>
-      <tr><td><strong>접종·구충</strong></td><td>1차 접종 완료(종합백신만) · 원충·구충 3회 완료<br><strong>2차 접종 예정 2026.08.02</strong> — 달력 탭에 반영됨</td></tr>
-      <tr><td><strong>급여 사료</strong></td><td>로얄캐닌 미니스타터 (급여법은 04장)</td></tr>
+      <tr><td><strong>접종·구충</strong></td><td>1차 접종 완료(종합백신만) · 원충·구충 3회 완료<br><strong>2차 2026.08.07 · 3차 2026.08.21 완료</strong> — 라인동물의료센터, 종합(뱅가드 DAPP) + 코로나(뱅가드 CV) · <strong>4차 예약 2026.09.04</strong> — 02장 표 참조</td></tr>
+      <tr><td><strong>급여 사료</strong></td><td>로얄캐닌 미니스타터 → <strong>미니 인도어 퍼피</strong>로 전환 (2026.08, 급여법·체중별 급여량표는 04장)</td></tr>
     </tbody>
   </table></div>
 
@@ -1047,14 +1047,14 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
     <thead><tr><th style="width:52px;">완료</th><th>회차 / 시기</th><th>접종 내용</th><th style="width:150px;">접종일</th></tr></thead>
     <tbody>
       <tr data-vx="v1"><td><input type="checkbox" class="vx-done"></td><td><strong>1차</strong> · 6~8주</td><td>종합백신(DHPPL) 1차 <span class="muted small">— 마리켄넬에서 완료(코로나 장염은 미접종). 원충·구충 3회도 완료</span></td><td><input type="date" class="vx-date"></td></tr>
-      <tr data-vx="v2"><td><input type="checkbox" class="vx-done"></td><td><strong>2차</strong> · 8~10주</td><td>종합백신 2차 + 코로나 장염 2차</td><td><input type="date" class="vx-date"></td></tr>
-      <tr data-vx="v3"><td><input type="checkbox" class="vx-done"></td><td><strong>3차</strong> · 10~12주</td><td>종합백신 3차 + 켄넬코프 1차</td><td><input type="date" class="vx-date"></td></tr>
-      <tr data-vx="v4"><td><input type="checkbox" class="vx-done"></td><td><strong>4차</strong> · 12~14주</td><td>종합백신 4차 + 켄넬코프 2차</td><td><input type="date" class="vx-date"></td></tr>
+      <tr data-vx="v2"><td><input type="checkbox" class="vx-done"></td><td><strong>2차</strong> · 8~10주</td><td>종합백신 2차 + 코로나 장염 1차 <span class="muted small">— 라인동물의료센터 2026.08.07 완료 (뱅가드 DAPP + CV · 체중 0.8kg)</span></td><td><input type="date" class="vx-date"></td></tr>
+      <tr data-vx="v3"><td><input type="checkbox" class="vx-done"></td><td><strong>3차</strong> · 10~12주</td><td>종합백신 3차 + 코로나 장염 2차 <span class="muted small">— 2026.08.21 완료 (뱅가드 DAPP + CV · 체중 1.2kg). 코로나 기초 2회 종료</span></td><td><input type="date" class="vx-date"></td></tr>
+      <tr data-vx="v4"><td><input type="checkbox" class="vx-done"></td><td><strong>4차</strong> · 12~14주</td><td>종합백신 4차 <span class="muted small">— 2026.09.04 예약. 켄넬코프 병행 여부는 당일 병원 확인</span></td><td><input type="date" class="vx-date"></td></tr>
       <tr data-vx="v5"><td><input type="checkbox" class="vx-done"></td><td><strong>5차</strong> · 14~16주</td><td>종합백신 5차 + 인플루엔자 1차(선택)</td><td><input type="date" class="vx-date"></td></tr>
       <tr data-vx="v6"><td><input type="checkbox" class="vx-done"></td><td><strong>6차</strong> · 16~18주</td><td>인플루엔자 2차(선택) + <strong>광견병</strong></td><td><input type="date" class="vx-date"></td></tr>
       <tr data-vx="v7"><td><input type="checkbox" class="vx-done"></td><td>마무리 · 마지막 접종 2주 후</td><td><strong>항체가 검사</strong> — 항체 미형성 시 추가 접종</td><td><input type="date" class="vx-date"></td></tr>
-      <tr data-vx="v8"><td><input type="checkbox" class="vx-done"></td><td>매월 · 평생</td><td><strong>심장사상충 + 내외부 구충</strong> (매월 같은 날짜로 고정 권장)</td><td><input type="date" class="vx-date"></td></tr>
-      <tr data-vx="v9"><td><input type="checkbox" class="vx-done"></td><td>매년</td><td>종합·켄넬코프·광견병 보강접종 + <strong>심장 청진 포함 건강검진</strong></td><td><input type="date" class="vx-date"></td></tr>
+      <tr data-vx="v8"><td><input type="checkbox" class="vx-done"></td><td>매월 · 평생</td><td><strong>심장사상충 + 내외부 구충</strong> (매월 같은 날짜로 고정 권장) <span class="muted small">— 넥스가드 스펙트라, 첫 투여 2026.08.21 → 매월 21일. 국내 허가 기준 8주령·2kg 이상이라 2kg 도달 전까진 투여 당일 체중 확인</span></td><td><input type="date" class="vx-date"></td></tr>
+      <tr data-vx="v9"><td><input type="checkbox" class="vx-done"></td><td>매년</td><td>종합·켄넬코프·광견병 보강접종 + <strong>심장 청진 포함 건강검진</strong> <span class="muted small">— 코로나 보강 2027.08.21 예정(접종수첩 기재)</span></td><td><input type="date" class="vx-date"></td></tr>
     </tbody>
   </table></div>
   <div class="box box-key">
@@ -1063,6 +1063,7 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
       <li>접종 당일은 목욕·산책·격한 놀이 금지, 2~3일 컨디션 관찰.</li>
       <li>접종 전 컨디션 저하(설사·식욕부진)면 연기 — 무리 접종 금지.</li>
       <li>본격 바닥 산책은 통상 접종 완료(항체 확인) 후. 단, 사회화는 그 전부터 <strong>안고 나가서</strong> 진행(05장). 이 두 개는 별개 과제.</li>
+      <li>접종 후 24~48시간 처짐·졸림·식욕 저하는 정상 반응 범위. <strong>얼굴·눈 주변 부종, 두드러기, 반복 구토·설사, 호흡 이상</strong>은 즉시 병원(11장). 1kg대 퍼피는 <strong>두 끼 연속 거부 시 저혈당 주의</strong> — 꿀 소량을 잇몸에 바르고 병원.</li>
     </ul>
   </div>
 
@@ -1219,12 +1220,36 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
   <div class="box box-key">
     <div class="bt">★ 계약서에 적힌 급여법</div>
     <ul class="ls">
-      <li>사료: <strong>로얄캐닌 미니스타터.</strong> 다른 사료로 바꾸려면 위의 7일 교체법으로 천천히.</li>
+      <li>사료: <strong>로얄캐닌 미니스타터.</strong> 다른 사료로 바꾸려면 위의 7일 교체법으로 천천히. <span class="muted small">(2026.08 미니 인도어 퍼피로 전환 완료 — 현재 급여는 아래 표)</span></li>
       <li>하루 총량: <strong>종이컵 1/2이 2개월령 권장량.</strong></li>
       <li>1회 급여: 불린 사료 기준 <strong>성인 숟가락 1~2스푼, 하루 3번.</strong></li>
       <li>불리는 법: 찬물에 뜨거운 물을 섞어 <strong>40~50분</strong> 불린 뒤 급여. 건사료로 넘어갈수록 물그릇 물을 더 신경 쓸 것.</li>
       <li>증량은 <strong>한 번에 늘리지 말고 10%씩.</strong></li>
       <li>목욕은 <strong>접종 후 4일 이후</strong>부터. 귀 청소는 <strong>7~10일에 1회</strong>(늘어진 귀 견종이라 빠뜨리지 말 것).</li>
+    </ul>
+  </div>
+  <!-- V5.8: 현재 급여 — 미니 인도어 퍼피 100% 전환 후 체중별 참고표 (08장 급여 계산기와 동일 공식·동일 ME) -->
+  <h3 class="sec">현재 급여 — 로얄캐닌 미니 인도어 퍼피 100% <span class="muted small" style="font-weight:400;">— 2026.08.21 기준 (체중 1.2kg)</span></h3>
+  <div class="box box-key">
+    <div class="bt">★ 체중별 하루 급여량 참고표 (ME 3,735kcal/kg · 4회 분할)</div>
+    <p class="small">공식: 하루 g = 70 × 체중<sup>0.75</sup> × 배수 ÷ 3.735. 배수는 <strong>생후 122일 미만(~09.18) ×3</strong>, <strong>09.19부터 ×2</strong>, 12개월부터 ×1.6. 08장 "권장 급여량" 계산기와 같은 공식이므로, 계산기의 사료 칼로리를 <strong>3735</strong>로 맞추면 최신 체중 기준 값이 자동으로 나옵니다.</p>
+    <div class="tw"><table>
+      <thead><tr><th>체중</th><th>~09.18 (×3) 하루 · 1회</th><th>09.19~ (×2) 하루</th></tr></thead>
+      <tbody>
+        <tr><td>1.2kg</td><td>64g · 16g</td><td>43g</td></tr>
+        <tr><td>1.4kg</td><td>72g · 18g</td><td>48g</td></tr>
+        <tr><td>1.6kg</td><td>80g · 20g</td><td>53g</td></tr>
+        <tr><td>1.8kg</td><td>87g · 22g</td><td>58g</td></tr>
+        <tr><td>2.0kg</td><td>95g · 24g</td><td>63g</td></tr>
+        <tr><td>2.2kg</td><td>102g · 25g</td><td>68g</td></tr>
+        <tr><td>2.5kg</td><td>112g · 28g</td><td>75g</td></tr>
+        <tr><td>3.0kg</td><td>128g · 32g</td><td>85g</td></tr>
+      </tbody>
+    </table></div>
+    <ul class="ls small" style="margin-top:8px;">
+      <li><strong>2주마다 체중 측정</strong>(08장 기록) → 해당 행 적용. 증량은 한 번에 10%씩.</li>
+      <li>09.19 전후 ×3→×2 전환은 한 번에 줄이지 말고 <strong>2~3주에 걸쳐 단계 감량</strong>(예: 2.0kg 기준 95g → 80g → 63g). 최종 판단은 BCS — 갈비뼈가 만져지되 보이지 않는 상태.</li>
+      <li>성장 검증: 08.07 0.8kg → 08.21 1.2kg (+50% / 2주). 증가폭이 꺾이면 그때 양 조정.</li>
     </ul>
   </div>
   <div class="box box-warn">
@@ -2284,8 +2309,10 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
 <script>
+/* V5.8 (2026-08-21): 접종 실기록 반영(2차 08.07 종합+코로나1차, 3차 08.21 종합+코로나2차, 4차 09.04 예약, 넥스가드 스펙트라 매월 21일, 코로나 보강 2027.08.21),
+   04장 미니 인도어 퍼피 체중별 급여표 추가, 급여 계산기 기본 ME 3735 + kcal 누락 NaN 가드. 저장 구조·동기화·달력 로직 변경 없음. */
 /* =============== State =============== */
-const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, sleepCur:0, sleepLog:{}, feed:{kcal:4000, meals:4}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}};
+const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, sleepCur:0, sleepLog:{}, feed:{kcal:3735, meals:4}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}};
 let S = JSON.parse(JSON.stringify(DEFAULT_S));
 let storageOK = false, artOK = false, saveTimer = null, lastEditAt = 0;
 
@@ -2758,8 +2785,8 @@ const VAX_ANCHOR='2026-08-02';
 const VAX_PLAN=[
  {id:'v1', seq:1, wk:7,  t:'접종 1차 (종합) — 켄넬 완료'},
  {id:'v2', seq:2, wk:9,  t:'접종 2차 (종합+코로나)'},
- {id:'v3', seq:3, wk:11, t:'접종 3차 (종합+켄넬코프)'},
- {id:'v4', seq:4, wk:13, t:'접종 4차 (종합+켄넬코프)'},
+ {id:'v3', seq:3, wk:11, t:'접종 3차 (종합+코로나)'},  /* V5.8: 실제 기록(08.21) 반영 — 코로나 2차였음, 켄넬코프 아님 */
+ {id:'v4', seq:4, wk:13, t:'접종 4차 (종합)'},         /* V5.8: 켄넬코프 병행 여부 미확정 → 종합만 표기 */
  {id:'v5', seq:5, wk:15, t:'접종 5차 (종합+인플루)'},
  {id:'v6', seq:6, wk:17, t:'접종 6차 (인플루+광견병)'},
  {id:'v7', seq:7, wk:19, t:'항체가 검사'}
@@ -4340,15 +4367,17 @@ function feedCalc(){
   const mult = days<122? 3.0 : (days<365? 2.0 : 1.6);
   const rer=70*Math.pow(kg,0.75);
   const kcal=rer*mult;
-  const f=S.feed||{kcal:4000, meals:4};
-  const grams=Math.round(kcal/(f.kcal/1000));
+  const f=S.feed||{kcal:3735, meals:4};
+  /* V5.8: 기본 ME 3735(로얄캐닌 미니 인도어 퍼피) + kcal 누락·0 시 NaN 방지 */
+  const fk=(f.kcal>0)? f.kcal : 3735;
+  const grams=Math.round(kcal/(fk/1000));
   const per=Math.round(grams/(f.meals||4));
   return {kcal:Math.round(kcal), grams:grams, per:per, meals:f.meals||4, mult:mult};
 }
 function renderFeed(){
   const out=document.getElementById('fdOut'); if(!out) return;
   const kc=document.getElementById('fdKcal'), ms=document.getElementById('fdMeals');
-  if(kc && document.activeElement!==kc) kc.value=(S.feed&&S.feed.kcal)||4000;
+  if(kc && document.activeElement!==kc) kc.value=(S.feed&&S.feed.kcal)||3735;
   if(ms) ms.value=String((S.feed&&S.feed.meals)||4);
   const fd=feedCalc();
   if(!fd){ out.textContent='체중과 생년월일을 입력하면 계산됩니다.'; return; }
