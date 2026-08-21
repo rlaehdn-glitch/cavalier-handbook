@@ -2376,6 +2376,9 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
 <script>
+/* V5.9.4 (2026-08-22): 사진·영상 크게 보기 중 폰 뒤로가기 → 홈으로 빠지지 않고 보기만 닫힘(history 항목 1개 추가/정리). 탭 이동 로직 변경 없음. */
+/* V5.9.3 (2026-08-22): 영상 썸네일 보강 — 올린 폰에서 추출 실패(th:0)한 영상은 앨범을 여는 기기에서 저장본으로 썸네일·길이를 채워 넣음(albRepairThumbs, CORS anonymous).
+   추출기에 아이폰 사파리 재생 폴백 추가. 데이터 구조 변경 없음(th 0→1, dur 보정만). */
 /* V5.9.2 (2026-08-22): 15장 앨범 UI 정리 — 상단을 사진·영상·유튜브 3타일로 통일, 상태줄(건수)+저장 용량 줄, 새로고침·설정(⚙) 아이콘화,
    영상 저장소 설정은 ⚙ 패널로 이동, 유튜브 링크는 썸네일 타일로, 영상 셀은 길이 배지, 보기 필터(전체·사진·영상), 사용 안내는 접기.
    데이터 구조·업로드·재생·동기화 로직 변경 없음. */
@@ -3106,7 +3109,7 @@ function animCal(){
 }
 
 /* =============== 15 성장 앨범 =============== */
-const ALB={meta:null, thumbs:new Map(), fulls:new Map(), shown:24, lastRev:null, busy:false, cur:null, filter:'all', store:null};
+const ALB={meta:null, thumbs:new Map(), fulls:new Map(), shown:24, lastRev:null, busy:false, cur:null, filter:'all', store:null, repairing:false, repairTried:{}};
 function albPath(p){ return SYNC.url.replace(/\/+$/,'')+'/handbook/'+SYNC.code+'-album/'+p+'.json'; }
 async function albFetch(p, method, body){
   const ctl=new AbortController(); const to=setTimeout(function(){ ctl.abort(); }, 20000);
@@ -3142,6 +3145,7 @@ async function albumPull(force){
       const meta=await albFetch('meta');
       ALB.meta=meta||{}; ALB.lastRev=rev;
       renderAlbum();
+      setTimeout(function(){ albRepairThumbs(); }, 300);   /* V5.9.3 */
     }
   }catch(e){ albStat('불러오기 실패 — 인터넷 확인 후 "새로고침"을 눌러주세요.'); }
   finally{ ALB.busy=false; }
@@ -3410,35 +3414,60 @@ async function mediaUpload(file, key, ct, onProg){
     throw e;
   }
 }
-/* 첫 프레임(0.5초 지점) 썸네일 — 실패해도 업로드는 진행(th:0) */
-function videoThumb(file, maxSide, q){
+/* V5.9.3: 썸네일 추출 공통 — 파일(blob) 또는 저장소 URL(cross-origin). 아이폰 사파리는 탐색만으로 프레임이 안 나올 수 있어 재생 폴백 포함.
+   실패해도 업로드는 진행(th:0)하고, 다른 기기에서 앨범을 열 때 albRepairThumbs()가 채워 넣음 */
+function videoThumbFrom(src, maxSide, q, remote){
   return new Promise(function(res, rej){
-    const url=URL.createObjectURL(file);
     const v=document.createElement('video');
-    v.muted=true; v.playsInline=true; v.preload='auto';
-    let done=false;
+    v.muted=true; v.playsInline=true; v.preload='auto'; if(remote) v.crossOrigin='anonymous';
+    let done=false, sought=false; const timers=[];
+    function cleanup(){ timers.forEach(clearTimeout); try{ v.pause(); }catch(e){} v.removeAttribute('src'); try{ v.load(); }catch(e){} }
     function finish(){
       if(done) return; done=true;
       try{
-        const sc=Math.min(1, maxSide/Math.max(v.videoWidth||1,v.videoHeight||1));
-        const w=Math.max(1,Math.round((v.videoWidth||1)*sc)), h=Math.max(1,Math.round((v.videoHeight||1)*sc));
-        const c=document.createElement('canvas'); c.width=w; c.height=h;
-        c.getContext('2d').drawImage(v,0,0,w,h);
-        const out={data:c.toDataURL('image/jpeg', q), dur:isFinite(v.duration)?v.duration:0};
-        URL.revokeObjectURL(url); v.removeAttribute('src'); try{ v.load(); }catch(e){}
-        res(out);
-      }catch(e){ URL.revokeObjectURL(url); rej(e); }
+        const W=v.videoWidth||0, H=v.videoHeight||0; if(!W||!H) throw new Error('nosize');
+        const sc=Math.min(1, maxSide/Math.max(W,H));
+        const c=document.createElement('canvas'); c.width=Math.max(1,Math.round(W*sc)); c.height=Math.max(1,Math.round(H*sc));
+        c.getContext('2d').drawImage(v,0,0,c.width,c.height);
+        const out={data:c.toDataURL('image/jpeg', q), dur:(isFinite(v.duration)&&v.duration>0)?v.duration:0};
+        cleanup(); res(out);
+      }catch(e){ cleanup(); rej(e); }
     }
-    /* V5.9.1: 아이폰 사파리는 loadeddata가 늦거나 안 올 수 있어 loadedmetadata에서도 탐색 시작 (먼저 온 쪽 1회만) */
-    let sought=false;
-    function seek(){ if(sought) return; sought=true; try{ v.currentTime=Math.min(0.5, (isFinite(v.duration)?v.duration:1)/2); }catch(e){ finish(); } }
+    function seek(){ if(sought) return; sought=true; try{ v.currentTime=Math.min(0.5, ((isFinite(v.duration)&&v.duration>0)?v.duration:1)/2); }catch(e){ finish(); } }
     v.addEventListener('loadedmetadata', seek);
     v.addEventListener('loadeddata', seek);
     v.addEventListener('seeked', finish);
-    v.addEventListener('error', function(){ URL.revokeObjectURL(url); rej(new Error('decode')); });
-    setTimeout(function(){ if(!done){ if(v.readyState>=2) finish(); else { URL.revokeObjectURL(url); rej(new Error('timeout')); } } }, 10000);
-    v.src=url;
+    v.addEventListener('timeupdate', function(){ if(!done && !v.seeking && v.currentTime>0.05 && v.readyState>=2) finish(); });
+    v.addEventListener('error', function(){ cleanup(); rej(new Error('decode')); });
+    timers.push(setTimeout(function(){ if(done) return; try{ const p=v.play(); if(p&&p.catch) p.catch(function(){}); }catch(e){} }, 2500));   /* 아이폰 폴백 */
+    timers.push(setTimeout(function(){ if(!done){ if(v.readyState>=2) finish(); else { cleanup(); rej(new Error('timeout')); } } }, 15000));
+    v.src=src;
   });
+}
+function videoThumb(file, maxSide, q){
+  const url=URL.createObjectURL(file);
+  return videoThumbFrom(url, maxSide, q, false).then(function(r){ URL.revokeObjectURL(url); return r; }, function(e){ URL.revokeObjectURL(url); throw e; });
+}
+/* 썸네일 없는 영상(th:0)을 보는 쪽 기기에서 채워 넣기 — 올린 폰에서 추출에 실패한 경우(아이폰 등) 대비. 한 번에 3개, 같은 세션에서 실패한 건 재시도 안 함 */
+async function albRepairThumbs(){
+  if(!mediaConfigured() || !ALB.meta || ALB.repairing) return;
+  ALB.repairTried=ALB.repairTried||{};
+  const ids=Object.keys(ALB.meta).filter(function(id){ const m=ALB.meta[id]; return m && m.t==='r' && !m.th && m.k && !ALB.repairTried[id]; }).slice(0,3);
+  if(!ids.length) return;
+  ALB.repairing=true; let changed=false;
+  try{
+    for(let i=0;i<ids.length;i++){
+      const id=ids[i], m=ALB.meta[id]; ALB.repairTried[id]=1;
+      try{
+        const t=await videoThumbFrom(mediaApi('/file/'+m.k), 360, 0.7, true);
+        await albFetch('th/'+id,'PUT',JSON.stringify(t.data));
+        m.th=1; m.s=t.data.length; if(!m.dur && t.dur) m.dur=Math.round(t.dur);
+        await albFetch('meta/'+id,'PUT',JSON.stringify(m));
+        ALB.thumbs.set(id,t.data); changed=true;
+      }catch(e){}
+    }
+    if(changed){ await albBumpIdx(); renderAlbum(); }
+  }finally{ ALB.repairing=false; }
 }
 function albProg(p){
   const box=document.getElementById('albProg'), bar=document.getElementById('albProgBar'); if(!box||!bar) return;
@@ -3508,6 +3537,7 @@ async function albVideoUpload(file){
     await albBumpIdx();
     ALB.meta=ALB.meta||{}; ALB.meta[id]=meta; if(th) ALB.thumbs.set(id,th);
     albProg(null); renderAlbum();
+    if(!th) setTimeout(function(){ albRepairThumbs(); }, 500);   /* V5.9.3: 올린 폰에서 실패하면 저장본으로 재시도 */
   }catch(e){
     albProg(null);
     try{ await mediaFetch(mediaApi('/file/'+key), {method:'DELETE'}, 15000); }catch(e2){}
@@ -3539,7 +3569,9 @@ function albPrefetch(id){
 async function albOpen(id){
   ALB.cur=id;
   const m=ALB.meta[id]; if(!m) return;
+  const lbWasOpen=document.getElementById('albLb').classList.contains('on');
   document.getElementById('albLb').classList.add('on');
+  if(!lbWasOpen){ try{ history.pushState({tab:'album', lb:1}, '', '#album'); }catch(e){} }   /* V5.9.4: 뒤로가기로 닫히도록 */
   const ids=albPhotoIds(), pos=ids.indexOf(id);
   document.getElementById('albLbCnt').textContent = pos>=0 ? (pos+1)+' / '+ids.length : '';
   document.getElementById('albLbPrev').disabled = pos<=0;
@@ -3569,11 +3601,14 @@ async function albOpen(id){
     albPrefetch(ids[pos-1]); albPrefetch(ids[pos+1]); /* 앞뒤 한 장씩 미리 받아 넘김을 끊김 없이 */
   }catch(e){ if(ALB.cur===id) document.getElementById('albLbCap').textContent='불러오기 실패 — 닫고 다시 열어보세요.'; }
 }
-function albClose(){
-  const lbEl=document.getElementById('albLb'); lbEl.classList.remove('on'); lbEl.classList.remove('vid');
+function albClose(fromBack){
+  const lbEl=document.getElementById('albLb'); const wasOpen=lbEl.classList.contains('on');
+  lbEl.classList.remove('on'); lbEl.classList.remove('vid');
   document.getElementById('albLbImg').src='';
   const vd=document.getElementById('albLbVid'); if(vd){ try{ vd.pause(); }catch(e){} vd.removeAttribute('src'); try{ vd.load(); }catch(e){} }
   ALB.cur=null;
+  /* V5.9.4: 닫기 버튼·Esc·삭제로 닫은 경우 라이트박스용 history 항목을 되돌려 다음 뒤로가기가 정상 동작하게 */
+  if(wasOpen && fromBack!==true && history.state && history.state.lb){ LB_CLOSING=true; try{ history.back(); }catch(e){ LB_CLOSING=false; } }   /* 닫기 버튼은 click 이벤트가 인자로 들어오므로 === true 로 구분 */
 }
 
 /* =============== V2: 서재 메타 + 내비게이션 =============== */
@@ -3639,7 +3674,15 @@ function navBack(){
     goTab(LIB_TABS.indexOf(id)>-1 ? 'lib' : 'home');
   }
 }
+let LB_CLOSING=false;   /* V5.9.4: 닫기 버튼으로 라이트박스를 닫으며 되돌린 history 항목 표시 */
 window.addEventListener('popstate', function(e){
+  if(LB_CLOSING){ LB_CLOSING=false; return; }
+  const lbEl=document.getElementById('albLb');
+  if(lbEl && lbEl.classList.contains('on')){   /* V5.9.4: 뒤로가기 = 사진·영상 닫기(앨범 탭이면 탭 이동 없음) */
+    albClose(true);
+    const ap=document.getElementById('tab-album'); if(ap && ap.classList.contains('on')) return;
+  }
+  if(e.state && e.state.lb) return;
   const t=(e.state && e.state.tab) || (location.hash||'').slice(1);
   if(!t || !document.getElementById('tab-'+t)) return; /* 장내 앵커 등 탭이 아닌 해시는 무시 */
   if(NAV_HIST.length>1) NAV_HIST.pop();
