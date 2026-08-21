@@ -292,6 +292,16 @@ section.tab-panel.on{animation:panelIn .34s cubic-bezier(.22,.8,.36,1);}
 .alb-nav:focus-visible{outline:2px solid #F6EAD6; outline-offset:2px;}
 .alb-cnt{font-size:12px; font-weight:800; color:#F6EAD6; opacity:.75; white-space:nowrap;}
 label.btn{display:inline-flex; align-items:center; cursor:pointer;}
+/* V5.9: 영상 파일(R2) 셀 · 라이트박스 재생 · 업로드 진행바 */
+.alb-rv{background:#3A3128;}
+.alb-playo{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:26px; color:#fff; text-shadow:0 1px 8px rgba(0,0,0,.75); pointer-events:none;}
+#albLbVid{flex:1; width:100%; min-height:0; background:#000; display:none; object-fit:contain;}
+#albLb.vid #albLbImg{display:none;}
+#albLb.vid #albLbVid{display:block;}
+#albLb.vid .alb-nav{display:none;}
+.alb-prog{height:8px; border-radius:6px; background:#EFE7D8; overflow:hidden; margin-top:8px; display:none;}
+.alb-prog.on{display:block;}
+.alb-prog i{display:block; height:100%; width:0; background:var(--chest-d); transition:width .25s ease;}
 
 /* ---------- 오늘의 공지 팝업 ---------- */
 #ntcOvl{position:fixed; inset:0; background:rgba(20,16,12,.55); z-index:90; display:none; align-items:center; justify-content:center; padding:20px;}
@@ -2132,7 +2142,7 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
   <div class="ch-head">
     <div class="ch-no">CHAPTER 15</div>
     <h2 class="serif">성장 앨범 — 함께 쓰는 사진첩</h2>
-    <p class="lede">사진은 두 폰에 똑같이 보입니다. 영상은 유튜브 일부공개 링크로.</p>
+    <p class="lede">사진·영상 모두 두 폰에 똑같이 보입니다. 영상은 올리면 여기서 바로 재생됩니다.</p>
   </div>
 
   <div class="box box-warn" id="albGate" style="display:none;">
@@ -2146,9 +2156,20 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
       <div class="row" style="gap:8px; flex-wrap:wrap;">
         <label class="btn" for="albFile">&#128247; 사진 올리기</label>
         <input type="file" id="albFile" accept="image/*" multiple style="display:none;">
-        <button class="btn sm ghost" id="albVidBtn">&#9654; 영상 링크 추가</button>
+        <button class="btn" id="albVidUp">&#127909; 영상 올리기</button>
+        <input type="file" id="albVidFile" accept="video/*" style="display:none;">
+        <button class="btn sm ghost" id="albVidBtn">&#9654; 유튜브 링크</button>
         <button class="btn sm ghost" id="albRefresh">새로고침</button>
       </div>
+      <div class="alb-prog" id="albProg"><i id="albProgBar"></i></div>
+      <details id="mediaCfg" style="margin-top:10px;">
+        <summary class="small" style="cursor:pointer; font-weight:800; color:var(--chest-d);" id="mediaSum">&#127909; 영상 저장소 연결 — 설정 안 됨</summary>
+        <div class="row" style="margin-top:8px;">
+          <input type="text" id="mediaUrl" placeholder="https://cavalier-media.xxxx.workers.dev" style="flex:1; min-width:0;">
+          <button class="btn sm" id="mediaSave">연결</button>
+        </div>
+        <p id="mediaStat" class="muted small" style="margin:6px 0 0;">Cloudflare Worker 주소를 붙여넣고 "연결"을 누르면 확인합니다. 한 사람만 하면 상대 폰에도 자동 반영됩니다.</p>
+      </details>
       <div id="albVidForm" style="display:none; margin-top:10px;">
         <div class="row"><input type="text" id="albVidUrl" placeholder="유튜브 일부공개 링크 (https://…)" style="width:100%;"></div>
         <div class="row" style="margin-top:8px;">
@@ -2167,15 +2188,17 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
       <div class="bt">✓ 사용 메모</div>
       <ul class="ls">
         <li>사진은 긴 변 1280px로 자동 압축됩니다 — <strong>원본은 폰 갤러리에 보관</strong>하세요.</li>
-        <li>무료 용량 1GB ≈ 2,000~3,000장. 위 상태줄에 사용량이 표시됩니다.</li>
-        <li>영상은: 유튜브 앱 → 업로드 → 공개 범위 <strong>'일부공개'</strong> → 링크 복사 → 위 칸에 붙여넣기.</li>
+        <li>사진 무료 용량 1GB ≈ 2,000~3,000장. 위 상태줄에 사용량이 표시됩니다.</li>
+        <li><strong>영상은 "영상 올리기"로 원본 그대로 저장</strong>되고, 썸네일을 누르면 여기서 바로 재생됩니다. 무료 10GB ≈ 1분짜리 100~160개. 올리는 동안 화면을 끄지 마세요(와이파이 권장).</li>
+        <li>폰 카메라의 "고효율 동영상(HEVC)" 옵션은 끄는 게 안전합니다 — 켜져 있으면 상대 폰에서 재생이 안 될 수 있습니다.</li>
+        <li>유튜브에 올린 영상은 "유튜브 링크"로도 남길 수 있습니다(일부공개 링크 붙여넣기).</li>
         <li>사진을 누르면 크게 보이고, <strong>좌우로 밀거나(스와이프) 양옆 화살표를 누르면</strong> 닫지 않고 다음·이전 사진으로 넘어갑니다. PC에서는 좌우 방향키, 닫기는 Esc.</li>
         <li>확대 화면에서 메모 수정·삭제가 가능합니다. 삭제하면 두 폰 모두에서 사라집니다.</li>
       </ul>
     </div>
   </div>
 
-  <div id="albLb"><img id="albLbImg" alt=""><button class="alb-nav" id="albLbPrev" aria-label="이전 사진">&#8249;</button><button class="alb-nav" id="albLbNext" aria-label="다음 사진">&#8250;</button><div class="alb-lb-bar"><span class="alb-cnt" id="albLbCnt"></span><div class="alb-cap" id="albLbCap"></div><button class="btn sm ghost" id="albLbRep">대표</button><button class="btn sm ghost" id="albLbMemo">메모</button><button class="btn sm ghost" id="albLbDel">삭제</button><button class="btn sm" id="albLbClose">닫기</button></div></div>
+  <div id="albLb"><img id="albLbImg" alt=""><video id="albLbVid" controls playsinline preload="metadata"></video><button class="alb-nav" id="albLbPrev" aria-label="이전 사진">&#8249;</button><button class="alb-nav" id="albLbNext" aria-label="다음 사진">&#8250;</button><div class="alb-lb-bar"><span class="alb-cnt" id="albLbCnt"></span><div class="alb-cap" id="albLbCap"></div><button class="btn sm ghost" id="albLbRep">대표</button><button class="btn sm ghost" id="albLbMemo">메모</button><button class="btn sm ghost" id="albLbDel">삭제</button><button class="btn sm" id="albLbClose">닫기</button></div></div>
 </section>
 <!-- ===================== STATS 기록 통계 ===================== -->
 <section class="tab-panel" id="tab-stats">
@@ -2309,10 +2332,13 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
 <script>
+/* V5.9 (2026-08-22): 15장 앨범 — 영상 파일 업로드·앱 내 재생 추가(Cloudflare Worker + R2, 10MB 조각 업로드, 첫 프레임 썸네일은 기존 Firebase th/ 경로 재사용).
+   메타 타입 'r' 신설(기존 'p' 사진·'v' 유튜브 링크 유지). 사진 전용 경로(스트립·비교·라이트박스 넘김)는 'r' 제외 처리. S.media.url 1필드 추가(동기화로 상대 폰 자동 반영).
+   저장 구조(사진)·동기화·기록장·달력·접종·급여 로직 변경 없음. */
 /* V5.8 (2026-08-21): 접종 실기록 반영(2차 08.07 종합+코로나1차, 3차 08.21 종합+코로나2차, 4차 09.04 예약, 넥스가드 스펙트라 매월 21일, 코로나 보강 2027.08.21),
    04장 미니 인도어 퍼피 체중별 급여표 추가, 급여 계산기 기본 ME 3735 + kcal 누락 NaN 가드. 저장 구조·동기화·달력 로직 변경 없음. */
 /* =============== State =============== */
-const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, sleepCur:0, sleepLog:{}, feed:{kcal:3735, meals:4}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}};
+const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, sleepCur:0, sleepLog:{}, feed:{kcal:3735, meals:4}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}, media:{url:''}};
 let S = JSON.parse(JSON.stringify(DEFAULT_S));
 let storageOK = false, artOK = false, saveTimer = null, lastEditAt = 0;
 
@@ -3045,13 +3071,15 @@ async function albFetch(p, method, body){
 function albStat(msg){ const el=document.getElementById('albStat'); if(el) el.textContent=msg; }
 function renderAlbumHead(){
   if(!ALB.meta) return;
-  let p=0,v=0,bytes=0;
-  Object.values(ALB.meta).forEach(function(m){ if(m.t==='v') v++; else p++; bytes+=(m.s||0); });
-  albStat('사진 '+p+'장 · 영상 '+v+'개 · 약 '+(bytes/1048576).toFixed(1)+'MB / 1,000MB');
+  let p=0,v=0,bytes=0,vb=0;
+  Object.values(ALB.meta).forEach(function(m){ if(m.t==='v'||m.t==='r') v++; else p++; bytes+=(m.s||0); vb+=(m.vs||0); });
+  albStat('사진 '+p+'장 · 영상 '+v+'개 · 사진 저장 '+(bytes/1048576).toFixed(1)+'MB / 1,000MB'+(vb?' · 영상 저장 '+(vb/1048576).toFixed(0)+'MB / 10,000MB':''));
+  renderMediaCfg();
 }
 function albumOnOpen(){
   const gate=document.getElementById('albGate'), main=document.getElementById('albMain');
   if(!gate) return;
+  try{ renderMediaCfg(); }catch(e){}
   if(syncConfigured()){ gate.style.display='none'; main.style.display='block'; albumPull(true); }
   else{ gate.style.display='block'; main.style.display='none'; }
 }
@@ -3093,6 +3121,9 @@ function renderAlbum(){
     const dd=esc(d.slice(5).replace('-','.'));
     if(m.t==='v'){
       out+='<a class="alb-cell alb-vid" href="'+esc(m.u||'#')+'" target="_blank" rel="noopener"><span class="alb-play">&#9654;</span><span class="alb-vm">'+esc(m.m||'영상')+'</span><span class="alb-d">'+dd+'</span></a>';
+    }else if(m.t==='r'){
+      /* V5.9: R2 영상 — 썸네일은 사진과 같은 th/ 경로, 탭하면 라이트박스에서 재생 */
+      out+='<div class="alb-cell alb-rv" data-open="'+id+'">'+(m.th?'<img class="alb-th" data-aid="'+id+'" alt="">':'')+'<span class="alb-playo">&#9654;</span><span class="alb-d">'+dd+(m.dur?' · '+mediaDur(m.dur):'')+'</span></div>';
     }else{
       out+='<div class="alb-cell" data-open="'+id+'"><img class="alb-th" data-aid="'+id+'" alt=""><span class="alb-d">'+dd+'</span></div>';
     }
@@ -3173,6 +3204,17 @@ function bindAlbum(){
     }catch(e){ alert('저장 실패 — 인터넷 확인 후 다시 시도해주세요.'); }
   });
   document.getElementById('albRefresh').addEventListener('click', function(){ albumPull(true); });
+  /* V5.9: 영상 파일 업로드 · 저장소 연결 */
+  const vb=document.getElementById('albVidUp'), vf=document.getElementById('albVidFile');
+  if(vb && vf){
+    vb.addEventListener('click', function(){
+      if(!syncConfigured()){ alert('08 기록장 탭에서 동기화를 먼저 켜주세요.'); return; }
+      if(!mediaConfigured()){ document.getElementById('mediaCfg').open=true; alert('영상 저장소가 아직 연결되지 않았습니다. 아래 "영상 저장소 연결"에 Worker 주소를 넣어주세요.'); return; }
+      vf.click();
+    });
+    vf.addEventListener('change', function(){ const f=this.files&&this.files[0]; this.value=''; if(f) albVideoUpload(f); });
+  }
+  const ms=document.getElementById('mediaSave'); if(ms) ms.addEventListener('click', mediaConnect);
   document.getElementById('albMore').addEventListener('click', function(){ ALB.shown+=24; renderAlbum(); });
   document.getElementById('albGrid').addEventListener('click', function(ev){
     const cell=ev.target.closest('[data-open]');
@@ -3193,6 +3235,13 @@ function bindAlbum(){
     if(!ALB.cur) return;
     if(!confirm('이 항목을 앨범에서 삭제할까요? 두 폰 모두에서 사라지며 되돌릴 수 없습니다.')) return;
     const id=ALB.cur;
+    const mm=ALB.meta[id]||{};
+    if(mm.t==='r'){
+      /* V5.9: 영상 파일(R2) 먼저 삭제 — 실패하면 메타를 남겨 고아 파일 방지 */
+      if(!mediaConfigured()){ alert('영상 저장소가 연결되지 않아 삭제할 수 없습니다.'); return; }
+      try{ await mediaFetch(mediaApi('/file/'+mm.k), {method:'DELETE'}, 20000); }
+      catch(e){ alert('영상 파일 삭제 실패 — 인터넷 확인 후 다시 시도해주세요. ('+String(e&&e.message||e)+')'); return; }
+    }
     try{
       await albFetch('meta/'+id,'DELETE');
       await albFetch('th/'+id,'DELETE');
@@ -3227,10 +3276,160 @@ function bindAlbum(){
     if(p && p.classList.contains('on') && document.visibilityState==='visible') albumPull(false);
   }, 25000);
 }
+/* =============== V5.9: 영상 파일 저장소 (Cloudflare Worker + R2) =============== */
+const MEDIA={PART:10*1024*1024, SINGLE_MAX:20*1024*1024, WARN:500*1024*1024, up:false};
+function albIsPhoto(m){ return !!m && m.t!=='v' && m.t!=='r'; }
+function mediaUrl(){ return String((S.media&&S.media.url)||'').trim().replace(/\/+$/,''); }
+function mediaConfigured(){ return !!mediaUrl() && !!syncConfigured(); }
+function mediaApi(path, params){
+  let q='fam='+encodeURIComponent(SYNC.code);
+  Object.keys(params||{}).forEach(function(k){ q+='&'+k+'='+encodeURIComponent(params[k]); });
+  return mediaUrl()+path+'?'+q;
+}
+function mediaDur(sec){ sec=Math.max(0,Math.round(sec||0)); const m=Math.floor(sec/60), s=sec%60; return m+':'+String(s).padStart(2,'0'); }
+function mediaExt(file){
+  const n=String((file&&file.name)||'').toLowerCase(); const m=n.match(/\.(mp4|mov|m4v|webm|3gp)$/);
+  if(m) return m[1];
+  const t=String((file&&file.type)||'').toLowerCase();
+  if(t.indexOf('webm')>-1) return 'webm'; if(t.indexOf('quicktime')>-1) return 'mov'; if(t.indexOf('3gpp')>-1) return '3gp';
+  return 'mp4';
+}
+/* 조각 계획: 20MB 이하 한 번에, 초과 시 10MB 조각(마지막만 작을 수 있음) */
+function mediaPlan(size, part){
+  part=part||MEDIA.PART;
+  if(size<=MEDIA.SINGLE_MAX) return {mode:'single', parts:1, part:size};
+  return {mode:'multi', parts:Math.ceil(size/part), part:part};
+}
+async function mediaFetch(url, opts, ms){
+  const ctl=new AbortController(); const to=setTimeout(function(){ ctl.abort(); }, ms||30000);
+  try{
+    const r=await fetch(url, Object.assign({}, opts||{}, {signal:ctl.signal}));
+    let j=null; try{ j=await r.json(); }catch(e){}
+    if(!r.ok || !j || j.ok===false) throw new Error((j&&j.error)||('HTTP '+r.status));
+    return j;
+  }finally{ clearTimeout(to); }
+}
+async function mediaUpload(file, key, ct, onProg){
+  const plan=mediaPlan(file.size);
+  if(plan.mode==='single'){
+    await mediaFetch(mediaApi('/put',{key:key, ct:ct}), {method:'PUT', body:file}, 240000);
+    if(onProg) onProg(1); return;
+  }
+  const cr=await mediaFetch(mediaApi('/create',{key:key, ct:ct}), {method:'POST'}, 30000);
+  const parts=[];
+  try{
+    for(let i=0;i<plan.parts;i++){
+      const chunk=file.slice(i*plan.part, Math.min(file.size,(i+1)*plan.part));
+      let res=null;
+      for(let tr=0;;tr++){
+        try{ res=await mediaFetch(mediaApi('/part',{key:key, uploadId:cr.uploadId, n:i+1}), {method:'PUT', body:chunk}, 180000); break; }
+        catch(e){ if(tr>=2) throw e; }
+      }
+      parts.push({partNumber:i+1, etag:res.etag});
+      if(onProg) onProg((i+1)/plan.parts);
+    }
+    await mediaFetch(mediaApi('/complete',{key:key, uploadId:cr.uploadId}), {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({parts:parts})}, 60000);
+  }catch(e){
+    try{ await mediaFetch(mediaApi('/abort',{key:key, uploadId:cr.uploadId}), {method:'POST'}, 15000); }catch(e2){}
+    throw e;
+  }
+}
+/* 첫 프레임(0.5초 지점) 썸네일 — 실패해도 업로드는 진행(th:0) */
+function videoThumb(file, maxSide, q){
+  return new Promise(function(res, rej){
+    const url=URL.createObjectURL(file);
+    const v=document.createElement('video');
+    v.muted=true; v.playsInline=true; v.preload='auto';
+    let done=false;
+    function finish(){
+      if(done) return; done=true;
+      try{
+        const sc=Math.min(1, maxSide/Math.max(v.videoWidth||1,v.videoHeight||1));
+        const w=Math.max(1,Math.round((v.videoWidth||1)*sc)), h=Math.max(1,Math.round((v.videoHeight||1)*sc));
+        const c=document.createElement('canvas'); c.width=w; c.height=h;
+        c.getContext('2d').drawImage(v,0,0,w,h);
+        const out={data:c.toDataURL('image/jpeg', q), dur:isFinite(v.duration)?v.duration:0};
+        URL.revokeObjectURL(url); v.removeAttribute('src'); try{ v.load(); }catch(e){}
+        res(out);
+      }catch(e){ URL.revokeObjectURL(url); rej(e); }
+    }
+    v.addEventListener('loadeddata', function(){ try{ v.currentTime=Math.min(0.5, (isFinite(v.duration)?v.duration:1)/2); }catch(e){ finish(); } });
+    v.addEventListener('seeked', finish);
+    v.addEventListener('error', function(){ URL.revokeObjectURL(url); rej(new Error('decode')); });
+    setTimeout(function(){ if(!done){ if(v.readyState>=2) finish(); else { URL.revokeObjectURL(url); rej(new Error('timeout')); } } }, 10000);
+    v.src=url;
+  });
+}
+function albProg(p){
+  const box=document.getElementById('albProg'), bar=document.getElementById('albProgBar'); if(!box||!bar) return;
+  if(p===null){ box.classList.remove('on'); bar.style.width='0'; return; }
+  box.classList.add('on'); bar.style.width=Math.round(p*100)+'%';
+}
+function renderMediaCfg(){
+  const sum=document.getElementById('mediaSum'), inp=document.getElementById('mediaUrl'); if(!sum) return;
+  const u=mediaUrl();
+  sum.innerHTML = u ? '&#127909; 영상 저장소 연결됨' : '&#127909; 영상 저장소 연결 — 설정 안 됨';
+  if(inp && document.activeElement!==inp && !inp.value) inp.value=u;
+  const b=document.getElementById('albVidUp'); if(b) b.classList.toggle('ghost', !u);
+}
+async function mediaConnect(){
+  const inp=document.getElementById('mediaUrl'), st=document.getElementById('mediaStat');
+  const u=String(inp.value||'').trim().replace(/\/+$/,'');
+  if(!syncConfigured()){ alert('08 기록장 탭에서 동기화를 먼저 켜주세요. 영상 저장소는 같은 가족 코드로 잠깁니다.'); return; }
+  if(!/^https:\/\/.+/.test(u)){ alert('주소는 https:// 로 시작해야 합니다. Cloudflare Worker 화면의 주소를 그대로 붙여넣어 주세요.'); return; }
+  st.textContent='확인 중…';
+  const prev=(S.media&&S.media.url)||'';
+  S.media=S.media||{}; S.media.url=u;
+  try{
+    await mediaFetch(mediaApi('/ping'), {method:'GET'}, 15000);
+    saveState(); renderMediaCfg();
+    st.textContent='연결됨 — 이제 "영상 올리기"를 쓸 수 있습니다. (상대 폰은 동기화 후 자동 반영)';
+    if(!prev) document.getElementById('mediaCfg').open=false;
+  }catch(e){
+    S.media.url=prev;
+    const msg=String(e&&e.message||e);
+    st.textContent = /가족 코드/.test(msg) ? '가족 코드가 다릅니다 — Worker의 FAM 값을 핸드북 가족 코드와 똑같이 넣어주세요.'
+                   : /MEDIA|FAM/.test(msg) ? 'Worker 설정 누락: '+msg
+                   : '연결 실패 — 주소를 확인해주세요. ('+msg+')';
+    renderMediaCfg();
+  }
+}
+async function albVideoUpload(file){
+  if(!file) return;
+  if(!syncConfigured()){ alert('08 기록장 탭에서 동기화를 먼저 켜주세요.'); return; }
+  if(!mediaConfigured()){ document.getElementById('mediaCfg').open=true; alert('영상 저장소가 아직 연결되지 않았습니다. 아래 "영상 저장소 연결"에 Worker 주소를 넣어주세요.'); return; }
+  if(MEDIA.up){ alert('이미 올리는 중입니다. 끝난 뒤 다시 시도해주세요.'); return; }
+  if(file.size>MEDIA.WARN && !confirm('영상이 '+Math.round(file.size/1048576)+'MB로 큽니다. 와이파이에서 올리는 걸 권장합니다. 계속할까요?')) return;
+  MEDIA.up=true; let wl=null;
+  try{ if(navigator.wakeLock) wl=await navigator.wakeLock.request('screen'); }catch(e){}
+  const ext=mediaExt(file), ct=(file.type&&/^video\//.test(file.type))?file.type:'video/mp4';
+  const id='a'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  const key='v/'+id+'.'+ext;
+  let th=null, dur=0;
+  try{
+    albStat('썸네일 만드는 중…');
+    try{ const t=await videoThumb(file,360,0.7); th=t.data; dur=t.dur; }catch(e){ th=null; }
+    albStat('영상 올리는 중 0% — 화면을 끄지 마세요'); albProg(0);
+    await mediaUpload(file, key, ct, function(p){ albStat('영상 올리는 중 '+Math.round(p*100)+'% — 화면을 끄지 마세요'); albProg(p); });
+    albStat('마무리 중…');
+    if(th) await albFetch('th/'+id,'PUT',JSON.stringify(th));
+    const meta={t:'r', d:todayKey(), m:'', at:Date.now(), s:th?th.length:0, vs:file.size, k:key, ct:ct, dur:Math.round(dur||0), th:th?1:0};
+    await albFetch('meta/'+id,'PUT',JSON.stringify(meta));
+    await albBumpIdx();
+    ALB.meta=ALB.meta||{}; ALB.meta[id]=meta; if(th) ALB.thumbs.set(id,th);
+    albProg(null); renderAlbum();
+  }catch(e){
+    albProg(null);
+    try{ await mediaFetch(mediaApi('/file/'+key), {method:'DELETE'}, 15000); }catch(e2){}
+    albStat('영상 업로드 실패 — '+String(e&&e.message||e));
+    alert('영상 업로드에 실패했습니다. 인터넷 확인 후 다시 시도해주세요.\n('+String(e&&e.message||e)+')');
+    renderAlbumHead();
+  }finally{ MEDIA.up=false; try{ if(wl) wl.release(); }catch(e){} }
+}
 function albPhotoIds(){
   if(!ALB.meta) return [];
   return Object.keys(ALB.meta)
-    .filter(function(id){ return ALB.meta[id].t!=='v'; })
+    .filter(function(id){ return albIsPhoto(ALB.meta[id]); })
     .sort(function(a,b){ return (ALB.meta[b].at||0)-(ALB.meta[a].at||0); });
 }
 function albNav(dir){
@@ -3256,6 +3455,20 @@ async function albOpen(id){
   document.getElementById('albLbPrev').disabled = pos<=0;
   document.getElementById('albLbNext').disabled = pos<0 || pos>=ids.length-1;
   const im=document.getElementById('albLbImg'); im.src='';
+  const lbEl=document.getElementById('albLb'), vd=document.getElementById('albLbVid');
+  if(m.t==='r'){
+    /* V5.9: 영상 — Worker 경유 스트리밍 재생(구간 탐색 가능) */
+    lbEl.classList.add('vid');
+    document.getElementById('albLbCap').textContent=(m.d||'')+(m.dur?' · '+mediaDur(m.dur):'')+(m.m?' · '+m.m:'');
+    if(vd){
+      if(!mediaConfigured()){ document.getElementById('albLbCap').textContent=(m.d||'')+' — 영상 저장소가 연결되지 않아 재생할 수 없습니다.'; return; }
+      vd.src=mediaApi('/file/'+m.k);
+      try{ vd.load(); }catch(e){}
+    }
+    return;
+  }
+  lbEl.classList.remove('vid');
+  if(vd){ try{ vd.pause(); }catch(e){} vd.removeAttribute('src'); try{ vd.load(); }catch(e){} }
   document.getElementById('albLbCap').textContent=(m.d||'')+' — 불러오는 중…';
   try{
     let f=ALB.fulls.get(id);
@@ -3266,7 +3479,12 @@ async function albOpen(id){
     albPrefetch(ids[pos-1]); albPrefetch(ids[pos+1]); /* 앞뒤 한 장씩 미리 받아 넘김을 끊김 없이 */
   }catch(e){ if(ALB.cur===id) document.getElementById('albLbCap').textContent='불러오기 실패 — 닫고 다시 열어보세요.'; }
 }
-function albClose(){ document.getElementById('albLb').classList.remove('on'); document.getElementById('albLbImg').src=''; ALB.cur=null; }
+function albClose(){
+  const lbEl=document.getElementById('albLb'); lbEl.classList.remove('on'); lbEl.classList.remove('vid');
+  document.getElementById('albLbImg').src='';
+  const vd=document.getElementById('albLbVid'); if(vd){ try{ vd.pause(); }catch(e){} vd.removeAttribute('src'); try{ vd.load(); }catch(e){} }
+  ALB.cur=null;
+}
 
 /* =============== V2: 서재 메타 + 내비게이션 =============== */
 const LIB_META=[
@@ -3589,7 +3807,7 @@ function renderStrip(){
   const el=document.getElementById('photoStrip'); if(!el) return;
   if(!syncConfigured() || !ALB.meta) return;
   const ids=Object.keys(ALB.meta)
-    .filter(function(id){ return ALB.meta[id].t!=='v'; })
+    .filter(function(id){ return albIsPhoto(ALB.meta[id]); })
     .sort(function(a,b){ return (ALB.meta[b].at||0)-(ALB.meta[a].at||0); })
     .slice(0,4);
   if(!ids.length){ el.innerHTML='<p class="muted small" style="margin:0;">아직 사진이 없습니다. 퀵 액션의 📷 버튼으로 첫 장을 올려보세요.</p>'; return; }
@@ -3631,7 +3849,7 @@ function albAgeHead(idx){
 function renderCompare(){
   const el=document.getElementById('albCompare'); if(!el || !ALB.meta) return;
   const ids=Object.keys(ALB.meta)
-    .filter(function(id){ return ALB.meta[id].t!=='v'; })
+    .filter(function(id){ return albIsPhoto(ALB.meta[id]); })
     .sort(function(a,b){ return (ALB.meta[a].at||0)-(ALB.meta[b].at||0); });
   if(ids.length<2){ el.className=''; el.innerHTML=''; return; }
   const f=ids[0], l=ids[ids.length-1];
@@ -4888,7 +5106,7 @@ function bindStats(){
 }
 
 /* =============== Init =============== */
-function renderAll(){ seedProfile(); renderHome(); renderDaily(); renderWeight(); renderVisits(); renderExpenses(); renderStorage(); renderCal(); renderNotice(); renderDash(); renderEChart(); renderLib(); renderAway(); renderFeed(); renderHomeChat();
+function renderAll(){ seedProfile(); renderHome(); renderDaily(); renderWeight(); renderVisits(); renderExpenses(); renderStorage(); renderCal(); renderNotice(); renderDash(); renderEChart(); renderLib(); renderAway(); renderFeed(); renderHomeChat(); try{ renderMediaCfg(); }catch(e){}
   // re-sync inputs & checklists after import
   const map={pfName:'name', pfBirth:'birth', pfHome:'home', pfReg:'reg'};
   Object.keys(map).forEach(id=>{ document.getElementById(id).value=S.profile[map[id]]||''; });
