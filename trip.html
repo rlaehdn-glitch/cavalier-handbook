@@ -349,6 +349,174 @@ ol.steps{margin:8px 0 0;padding-left:18px;font-size:13.5px;line-height:1.6}
  .hero .route .ln{stroke-dashoffset:0!important}.mtl .ln{transform:scaleY(1)!important}
  .mday{break-inside:avoid}
 }
+
+/* ================================================================
+   v5.1 — 타이포·정렬 규칙 (아래 규칙만 사용. 예외 없음)
+   1) 글자 크기는 6단만: 30 / 19 / 14.5 / 14 / 12 / 11.5
+   2) 모든 숫자는 tabular-nums — 시각·금액이 세로로 맞음
+   3) 본문 한 줄은 34em 이하 (한글 32~36자)
+   4) 값이 2개 이상이면 문장이 아니라 kv 행으로
+   5) 색은 잉크 3단 + 강조 1색. 배지는 기본 무채색, 예외 2개만 유채색
+   ================================================================ */
+:root{
+ --bg:#eef2f6; --card:#fff;
+ --ink:#14181f; --ink2:#586170; --ink3:#8b94a1;
+ --line:#e3e8ee; --line2:#ccd4dd;
+ --blue:#0b62c4; --blue-s:#e8f0fa;
+ --ok:#11794a; --ok-s:#e4f4ec; --warn:#96620a; --warn-s:#fbf0dc; --bad:#c23b32; --bad-s:#fbe6e4;
+ --r:16px; --r2:11px;
+ --measure:34em;
+}
+body{font-size:14.5px;line-height:1.58;letter-spacing:-.011em;font-variant-numeric:tabular-nums;-webkit-text-size-adjust:100%}
+.top{background:rgba(238,242,246,.86)}
+.sub{background:rgba(238,242,246,.88)}
+.tabbar{background:rgba(255,255,255,.94)}
+
+/* --- 제목 --- */
+h1,h2,h3,h4{letter-spacing:-.026em}
+.ph{margin:2px 0 16px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.ph h1{font-size:30px;line-height:1.16;font-weight:700}
+.ph h1 span{display:block;margin-top:5px;font-size:15px;font-weight:500;color:var(--ink3);letter-spacing:-.014em}
+.ph p{margin:9px 0 0;font-size:14px;line-height:1.55;color:var(--ink2);max-width:var(--measure)}
+.sech{margin:26px 0 10px}
+.sech h2{font-size:18px;font-weight:700}
+.card h3{font-size:19px;font-weight:700;line-height:1.28}
+.card h4{font-size:13.5px;font-weight:700;letter-spacing:-.02em;color:var(--ink2)}
+.card .fn{font-size:11.5px;font-weight:700;letter-spacing:.02em;color:var(--ink3);margin-bottom:5px}
+.card p{margin:6px 0 0;font-size:14px;line-height:1.58;color:var(--ink2);max-width:var(--measure)}
+.card p.k{font-size:14.5px;color:var(--ink);font-weight:500}
+.card p.note,p.note{margin-top:10px;font-size:12.5px;line-height:1.5;color:var(--ink3);max-width:var(--measure)}
+
+/* --- 카드 --- */
+.card{padding:18px 16px;border-radius:var(--r);border-color:var(--line)}
+.grid{gap:12px}
+
+/* --- 키-값 행: 정렬의 기준 --- */
+ul.kv{margin:12px 0 0;font-size:14px}
+ul.kv li{grid-template-columns:96px 1fr;gap:8px 12px;padding:9px 0;line-height:1.5;align-items:start;border-top:1px solid var(--line)}
+ul.kv li span:first-child{font-size:12px;font-weight:600;color:var(--ink3);letter-spacing:0;padding-top:2px}
+ul.kv li span:last-child{font-size:14px;color:var(--ink);font-weight:500}
+ul.kv li span:last-child b{font-weight:700}
+.mline{display:block;margin-top:2px;font-size:12px;font-weight:400;color:var(--ink3)}
+@media(max-width:430px){
+  ul.kv li{grid-template-columns:1fr;gap:2px;padding:10px 0}
+  ul.kv li span:first-child{padding-top:0}
+}
+
+/* --- 배지: 기본 무채색, 예외 2개만 --- */
+.b{font-size:11px;font-weight:700;letter-spacing:0;padding:1px 6px;border-radius:5px;background:#e9edf2;color:#6a737f}
+.b.fix{background:var(--blue-s);color:var(--blue)}
+.b.chk{background:var(--warn-s);color:var(--warn)}
+.b.src,.b.calc,.b.judge,.b.input{background:#e9edf2;color:#6a737f}
+
+/* --- 버튼·칩 --- */
+.btn{font-size:14px;font-weight:600;letter-spacing:-.014em}
+.btn.sm{font-size:13px}
+.chip{font-size:13px;font-weight:600}
+.seg button{font-size:13px;font-weight:600;letter-spacing:-.012em}
+
+/* --- 표 --- */
+table{font-size:13.5px}
+th{font-size:12px;font-weight:600;color:var(--ink3);letter-spacing:0}
+td{font-variant-numeric:tabular-nums}
+
+/* --- 타임라인 --- */
+.tl-item .tm,.mi .tm{font-variant-numeric:tabular-nums;font-weight:600}
+.tl-item .nm,.mi .nm{font-size:14.5px;letter-spacing:-.016em}
+.tl-item .meta,.mi .w{font-size:12.5px;line-height:1.45;color:var(--ink3)}
+.mday .hd h3{font-size:19px}
+
+/* --- 접기 --- */
+details.more{margin-top:10px;border-top:1px solid var(--line);padding-top:10px}
+details.more>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--blue);list-style:none}
+details.more>summary::-webkit-details-marker{display:none}
+details.more>summary::after{content:" ⌄"}
+details.more[open]>summary::after{content:" ⌃"}
+details.more p,details.more ul.kv{margin-top:8px}
+
+/* --- 오류 카드 --- */
+.errcard{border-color:var(--warn);background:var(--warn-s)}
+.errcard h3{color:var(--warn)}
+
+/* --- 문단 하나에 사실 하나: 줄바꿈 여유 --- */
+p{text-wrap:pretty}
+.muted{color:var(--ink3)}
+
+
+/* ================================================================
+   v5.2 — 편집 잠금 + 동작(모션) 규칙
+   모션 규칙: 진입 340ms / 스태거 50ms / 누름 160ms
+   곡선은 iOS 계열 cubic-bezier(.32,.72,0,1) 하나로 통일
+   ================================================================ */
+
+/* --- 편집 바: 타임라인 위에 고정 --- */
+.tlpanel .editbar{position:sticky;z-index:24;top:calc(var(--top) + var(--sat) + var(--sub) + 4px);
+  margin:8px -14px 0;padding:8px 14px;background:rgba(255,255,255,.94);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+@media(min-width:960px){ .tlpanel .editbar{top:calc(var(--top) + 8px)} }
+.tlpanel .editbar .small{flex-basis:100%;margin-top:2px}
+
+/* 잠금 상태: 손잡이 숨김 + 스크롤 자유 */
+.tl{touch-action:pan-y}
+body:not(.editing) .tl-item.block .grip{display:none!important}
+body.editing .tl-item.block .grip{display:inline-flex!important;align-items:center;justify-content:center;
+  width:34px;height:34px;border-radius:10px;background:var(--blue-s);color:var(--blue);font-size:14px;touch-action:none}
+body.editing .tl-item.block{box-shadow:inset 0 0 0 1px var(--line2);background:#fff}
+body.editing .tlpanel .editbar{background:rgba(232,240,250,.94)}
+
+/* --- 페이지 진입 --- */
+.page.on{animation:pgIn .34s cubic-bezier(.32,.72,0,1) both}
+@keyframes pgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.page.on.enter .body>*{animation:secIn .46s cubic-bezier(.32,.72,0,1) both}
+.page.on.enter .body>*:nth-child(1){animation-delay:.02s}
+.page.on.enter .body>*:nth-child(2){animation-delay:.07s}
+.page.on.enter .body>*:nth-child(3){animation-delay:.12s}
+.page.on.enter .body>*:nth-child(4){animation-delay:.17s}
+.page.on.enter .body>*:nth-child(5){animation-delay:.22s}
+.page.on.enter .body>*:nth-child(6){animation-delay:.27s}
+.page.on.enter .body>*:nth-child(n+7){animation-delay:.3s}
+@keyframes secIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* --- 누름 반응 --- */
+.btn,.chip,.ib,.seg button,.tabbar button,.side .lf{transition:transform .16s cubic-bezier(.32,.72,0,1),background .2s ease,color .2s ease,box-shadow .2s ease}
+.btn:active,.chip:active,.ib:active{transform:scale(.955)}
+.tabbar button:active{transform:scale(.9)}
+.card.pick{transition:transform .2s cubic-bezier(.32,.72,0,1),box-shadow .2s,border-color .2s}
+.card.pick:active{transform:scale(.985)}
+.ck{transition:background .18s}
+.disc{transition:background .18s}
+.disc .ar{transition:transform .26s cubic-bezier(.32,.72,0,1)}
+.disc.open .ar{transform:rotate(180deg)}
+
+/* --- 드래그 --- */
+.drag-ghost{width:min(64vw,300px);border-radius:14px;background:rgba(18,22,29,.95);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  box-shadow:0 20px 48px rgba(10,20,40,.36);transform:rotate(-1.5deg) scale(1.02);
+  animation:ghostIn .16s cubic-bezier(.2,.9,.3,1.3) both}
+@keyframes ghostIn{from{opacity:0;transform:rotate(-1.5deg) scale(.88)}to{opacity:1;transform:rotate(-1.5deg) scale(1.02)}}
+.tl-drop{animation:dropIn .2s cubic-bezier(.32,.72,0,1) both}
+@keyframes dropIn{from{opacity:0;height:0;margin-top:0;margin-bottom:0}to{opacity:1;height:48px;margin-top:6px;margin-bottom:6px}}
+.tl.over{transition:outline-color .2s ease}
+
+/* --- 완성본 히어로 --- */
+.hero.play .an{animation:rise2 .82s cubic-bezier(.22,.68,0,1) both}
+@keyframes rise2{from{opacity:0;transform:translateY(18px) scale(.986)}to{opacity:1;transform:none}}
+.hero.play .route .ln{animation-duration:1.7s;animation-timing-function:cubic-bezier(.55,0,.15,1)}
+.hero.play .route .nd{animation:pop2 .6s cubic-bezier(.2,.9,.3,1.5) both}
+@keyframes pop2{0%{opacity:0;transform:scale(.25)}62%{opacity:1;transform:scale(1.16)}100%{opacity:1;transform:scale(1)}}
+.hero.play .stamp{animation-duration:.68s}
+.master.play .mday{animation:rise2 .72s cubic-bezier(.22,.68,0,1) both;animation-delay:calc(.07s * var(--i) + .1s)}
+
+/* --- 토스트 --- */
+.toast{transition:opacity .2s ease,transform .34s cubic-bezier(.2,.9,.3,1.25)}
+
+/* --- 모션 줄이기 설정 존중 --- */
+@media(prefers-reduced-motion:reduce){
+ .page.on,.page.on.enter .body>*,.drag-ghost,.tl-drop{animation:none!important}
+ .btn:active,.chip:active,.ib:active,.tabbar button:active,.card.pick:active{transform:none}
+}
+
 </style>
 <!-- ===== v4.1 · 시작 페이지(커버) — 기존 대시보드는 손대지 않고 앞에 덧붙임 ===== -->
 <link rel="preconnect" href="https://images.unsplash.com">
@@ -424,28 +592,28 @@ html.introlock,html.introlock body{overflow:hidden}
   <div class="ic-credit" id="introCredit">Photo: Cuvii / Unsplash</div>
 </div>
 <nav class="side" id="side" aria-label="메뉴"></nav>
-<header class="top"><div class="in"><span class="ttl">삿포로 · 토마무<small>12.17–21 · v5</small></span><span class="crumb" id="crumb"></span><span class="stat"><span id="navstat"></span><span class="dot" id="syncdot" title="동기화 상태"></span></span></div></header>
+<header class="top"><div class="in"><span class="ttl">삿포로 · 토마무<small>12.17–21 · <span id="buildTag">v5</span></small></span><span class="crumb" id="crumb"></span><span class="stat"><span id="navstat"></span><span class="dot" id="syncdot" title="동기화 상태"></span></span></div></header>
 <div class="sub" id="sub"></div>
 <main id="main">
 <noscript><div class="nojs">JS가 꺼져 있어 화면을 구성할 수 없습니다. 확정: 이스타 ZE621(BDQKKE) 12/17 07:40→10:20 · 파라타 WE532(U4234F) 12/21 14:05→17:30 · 리조트 라이너 703(26X12170014) 국내선 12:20→더 타워 14:20 · Tomamu The Tower2 12/17~19 · 솔라리아 니시테츠(26091116013EA2ES1) 12/19~21.</div></noscript>
 
 <section class="page" id="pg-glance"><div class="pagein"><div class="body"></div></div></section>
 
-<section class="page" id="pg-status"><div class="pagein"><div class="ph"><h1>확정 현황. <span id="statusCount"></span></h1><p>예약·결제가 끝난 항목입니다. 금액·메모는 공유 코드가 같은 기기끼리 동기화되고, 여권번호는 이 기기에만 저장됩니다.</p></div><div class="body"></div></div></section>
-<section class="page" id="pg-open"><div class="pagein"><div class="ph"><h1>남은 항목. <span id="openCount"></span></h1><p>아직 예약·결정이 안 된 항목입니다. 삭제하지 않고 “확정 처리”로 옮깁니다. 당일 현장 항목은 예약이 불가한 것들입니다.</p></div><div class="body"></div></div></section>
-<section class="page" id="pg-check"><div class="pagein"><div class="ph"><h1>체크리스트. <span id="ckHead"></span></h1><p>마감 순서대로 정리했습니다. 체크 상태는 공유됩니다.</p></div><div class="body"></div></div></section>
+<section class="page" id="pg-status"><div class="pagein"><div class="ph"><h1>확정 현황. <span id="statusCount"></span></h1><p>결제·예약이 끝난 항목. 금액·메모는 공유되고, 여권번호는 이 기기에만 남습니다.</p></div><div class="body"></div></div></section>
+<section class="page" id="pg-open"><div class="pagein"><div class="ph"><h1>남은 항목. <span id="openCount"></span></h1><p>예약·결정 전 항목. 끝나면 “확정 처리”로 옮깁니다.</p></div><div class="body"></div></div></section>
+<section class="page" id="pg-check"><div class="pagein"><div class="ph"><h1>체크리스트. <span id="ckHead"></span></h1><p>마감일 순. 체크 상태는 공유됩니다.</p></div><div class="body"></div></div></section>
 
-<section class="page" id="pg-flight"><div class="pagein"><div class="ph"><h1>항공. <span>ZE621 · WE532 — 발권 확정.</span></h1><p>출국 이스타 ZE621 07:40→10:20(BDQKKE), 귀국 파라타 WE532 14:05→17:30(U4234F) 모두 09/11 결제완료. 대안편을 고르면 타임라인만 시뮬레이션되고 결제액·예약번호는 확정값을 유지합니다.</p></div><div class="body"></div></div></section>
-<section class="page" id="pg-hotel"><div class="pagein"><div class="ph"><h1>숙소. <span>토마무 · 삿포로 모두 확정.</span></h1><p>토마무 더 타워2 12/17~19, 솔라리아 니시테츠 12/19~21. 삿포로 후보 8곳은 참고용으로만 남겨 두었습니다.</p></div><div class="body"></div></div></section>
-<section class="page" id="pg-move"><div class="pagein"><div class="ph"><h1>이동. <span>버스 703 + JR 특급 — 렌터카 없음.</span></h1><p>공항→토마무는 리조트 라이너 703편(예약 완료 · 집합 12:10), 토마무→삿포로는 JR 특급(11/19 발매), 오타루·공항은 JR 쾌속 에어포트. 눈길 운전 0, 통행료·주차 0. <span class="b judge">판단</span></p></div><div class="body"></div></div></section>
-<section class="page" id="pg-otaru"><div class="pagein"><div class="ph"><h1>오타루. <span>12/20(일) JR 당일치기.</span></h1><p>JR 쾌속 에어포트 32~36분 · ¥800/인. 青の運河 블루아워와 삿포로 크리스마스마켓을 같은 날 봅니다. 자유석·예약 불필요라 미확정으로 둡니다. <span class="b judge">판단</span></p></div><div class="body"></div></div></section>
+<section class="page" id="pg-flight"><div class="pagein"><div class="ph"><h1>항공. <span>ZE621 · WE532 — 발권 확정.</span></h1><p>두 편 모두 09/11 결제완료. 대안편은 타임라인만 시뮬레이션합니다.</p></div><div class="body"></div></div></section>
+<section class="page" id="pg-hotel"><div class="pagein"><div class="ph"><h1>숙소. <span>토마무 · 삿포로 모두 확정.</span></h1><p>더 타워2 2박 + 솔라리아 2박. 삿포로 후보 8곳은 참고용입니다.</p></div><div class="body"></div></div></section>
+<section class="page" id="pg-move"><div class="pagein"><div class="ph"><h1>이동. <span>버스 703 + JR 특급 — 렌터카 없음.</span></h1><p>렌터카 없음. 눈길 운전 0 · 통행료·주차 0.</p></div><div class="body"></div></div></section>
+<section class="page" id="pg-otaru"><div class="pagein"><div class="ph"><h1>오타루. <span>12/20(일) JR 당일치기.</span></h1><p>JR 32~36분 · ¥800/인. 자유석이라 예약은 필요 없습니다.</p></div><div class="body"></div></div></section>
 
-<section class="page" id="pg-compose"><div class="pagein"><div class="ph"><h1>하루 조합. <span>넣으면 시간이 계산됩니다.</span></h1><p>영업시간·일몰·체크아웃·버스/JR·탑승 마감을 대조해 OK/주의/불가로 판정합니다. 배치는 이 기기에만 저장됩니다.</p></div><div class="body"></div></div></section>
+<section class="page" id="pg-compose"><div class="pagein"><div class="ph"><h1>하루 조합. <span>넣으면 시간이 계산됩니다.</span></h1><p>영업시간·일몰·탑승 마감을 대조해 OK/주의/불가로 판정합니다.</p></div><div class="body"></div></div></section>
 <section class="page" id="pg-master"><div class="pagein"><div class="body"></div></div></section>
 
-<section class="page" id="pg-budget"><div class="pagein"><div class="ph"><h1>예산. <span>확정분과 미확정 예상분.</span></h1><p>예비비 10%는 미확정분에만 적용합니다. 숙박세(2026-04-01 시행)는 현장 결제라 별도 행입니다.</p></div><div class="body"></div></div></section>
+<section class="page" id="pg-budget"><div class="pagein"><div class="ph"><h1>예산. <span>확정분과 미확정 예상분.</span></h1><p>예비비 10%는 미확정분에만 적용. 숙박세는 현장 결제로 별도 행입니다.</p></div><div class="body"></div></div></section>
 
-<section class="page" id="pg-weather"><div class="pagein"><div class="ph"><h1>예상 날씨. <span>매일 눈, 삿포로 −4~2℃, 토마무 −14~−2℃.</span></h1><p>실제 예보는 12/7경(2주)·12/10경(주간)부터. 아래는 기상청 평년값(1991–2020, 占冠은 1981–2010) 기반이며 산간 보정은 계산값입니다. <span class="b src">출처</span> 기상청 <span class="b calc">계산</span> 고도 보정 <span class="b judge">판단</span> 대응</p></div>
+<section class="page" id="pg-weather"><div class="pagein"><div class="ph"><h1>예상 날씨. <span>매일 눈, 삿포로 −4~2℃, 토마무 −14~−2℃.</span></h1><p>실제 예보는 12/7부터. 아래는 기상청 평년값과 고도 보정값입니다. <span class="b src">출처</span> <span class="b calc">계산</span></p></div>
 <div class="body">
 <div class="card">
  <div class="wxrow"><div class="d">12/17<small>목</small></div><div class="tp">−2<small>/ −14℃</small></div><div><div class="loc">인천 → 신치토세 → 토마무 (버스 703)</div><div class="nt">占冠 평년 최고 −1.1 / 최저 −12.8 <span class="b src">출처</span> · 리조트 540m 보정 −1.3℃ <span class="b calc">계산</span><br>버스 703 12:20 → 더 타워 14:20, 일몰(16:00) 전 도착. 항공 1시간 이상 지연 시 705편(14:20 → 16:35) — 703 예약분 당일 취소수수료 50% <span class="b judge">판단</span></div></div></div>
@@ -463,11 +631,16 @@ html.introlock,html.introlock body{overflow:hidden}
   <div class="row"><div class="h">12/21</div><div>항공 지연 · JR 운휴<div class="s">공항버스(오도리·삿포로역 발)로 전환, 공항 기념품은 도착 후 국내선 터미널</div></div></div>
  </div></div>
  <div class="card"><h3>실제 예보·운행 확인</h3><div class="links"><a class="blue" target="_blank" rel="noopener" href="https://www.jma.go.jp/bosai/forecast/#area_type=offices&amp;area_code=016000">기상청 주간예보 (석카리·삿포로)</a><a class="blue" target="_blank" rel="noopener" href="https://weather.yahoo.co.jp/weather/jp/1a/1200/1463.html">Yahoo 占冠村 (토마무)</a><a target="_blank" rel="noopener" href="https://www.toshin.com/weather/detail?id=55280">토마무 2주 예보</a><a target="_blank" rel="noopener" href="https://tenki.jp/past/2025/12/weather/1/2/47411/">작년 12월 오타루 실황</a><a target="_blank" rel="noopener" href="https://www.jrhokkaido.co.jp/">JR북해도 운행정보</a><a target="_blank" rel="noopener" href="https://www.snowtomamu.jp/winter/access/">토마무 접속·버스 공식</a></div></div>
- <div class="card"><h3>짐 체크 <span class="b judge">판단</span></h3><p>방수 부츠 + 탈착식 스파이크, 귀 덮는 모자, 방수 장갑, 핫팩 10개, 렌즈 김서림용 천, 승마용 긴 바지. 토마무 야간·무빙테라스는 스키복 수준이 맞습니다. 캐리어는 버스·JR·셔틀 이동이라 2인 합계 2개 이하 권장.</p></div>
+ <div class="card"><h3>짐 체크 <span class="b judge">판단</span></h3><ul class="kv">
+<li><span>필수</span><span>방수 부츠 + 탈착식 스파이크 · 귀 덮는 모자 · 방수 장갑</span></li>
+<li><span>추가</span><span>핫팩 10개 · 렌즈 김서림용 천 · 승마용 긴 바지</span></li>
+<li><span>방한 수준</span><span>토마무 야간·무빙테라스는 스키복 기준</span></li>
+<li><span>캐리어</span><span>2인 합계 2개 이하 — 버스·JR·셔틀 환승</span></li>
+</ul></div>
 </div>
 </div></div></section>
 
-<section class="page" id="pg-share"><div class="pagein"><div class="ph"><h1>실시간 공유. <span>같은 주소·같은 코드면 함께 편집합니다.</span></h1><p>확정/미확정 플래그·체크리스트·예약번호·금액·메모·마지막 수정자만 동기화됩니다. 블록 배치와 여권번호는 이 기기에만 저장됩니다. 저장 후 1.2초 뒤 전송, 20초마다 확인, 앱을 다시 열 때 즉시 확인합니다.</p></div>
+<section class="page" id="pg-share"><div class="pagein"><div class="ph"><h1>실시간 공유. <span>같은 주소·같은 코드면 함께 편집합니다.</span></h1><p>플래그·체크·금액·메모만 동기화됩니다. 블록 배치와 여권번호는 이 기기에만 남습니다.</p></div>
 <div class="body">
 <div class="card"><h3>동기화 설정</h3>
  <div class="edit stack show" style="margin-top:12px">
@@ -500,11 +673,17 @@ html.introlock,html.introlock body{overflow:hidden}
 </div>
 </div></div></section>
 
-<section class="page" id="pg-data"><div class="pagein"><div class="ph"><h1>데이터. <span>저장 · 불러오기 · 초기화.</span></h1><p>블록 배치·항공 선택·취향은 이 기기(localStorage)에, 공유 데이터는 기기 + 동기화 서버에 저장됩니다. v4 저장분은 그대로 이어집니다.</p></div>
+<section class="page" id="pg-data"><div class="pagein"><div class="ph"><h1>데이터. <span>저장 · 불러오기 · 초기화.</span></h1><p>블록 배치·선택은 이 기기에, 공유 데이터는 서버에도 저장됩니다.</p></div>
 <div class="body">
 <div class="card"><h3>내 기기 데이터</h3><p>JSON에는 선택값(S)과 공유 데이터(SH)가 함께 들어가며 여권번호는 제외됩니다.</p><div class="tools"><button class="btn sm" onclick="exportJSON()">JSON 저장</button><button class="btn sm sec" onclick="importJSON()">불러오기</button><button class="btn sm danger" onclick="resetAll()">일정 초기화</button></div></div>
 <div class="card"><h3>라벨 규칙</h3><p><span class="b fix">확정</span> 예약·결제 확인 · <span class="b src">출처</span> 공식/기사 · <span class="b calc">계산</span> 수식 · <span class="b judge">판단</span> 추정 · <span class="b input">입력</span> 직접 입력 · <span class="b chk">확인 필요</span> 미검증. 검증 안 된 값은 숫자를 만들지 않고 ‘확인 필요’로 남깁니다.</p></div>
-<div class="card"><h3>기준 정보</h3><p>확정: 이스타 ZE621(BDQKKE) 12/17 07:40→10:20 · 파라타 WE532(U4234F) 12/21 14:05→17:30 · 리조트 라이너 703(26X12170014) 국내선 12:20→더 타워 14:20 · Tomamu The Tower2 12/17~19 · 솔라리아 니시테츠(26091116013EA2ES1) 12/19~21.</p><p>이동시간: 인천공항 55분(자차/택시), JR 특급 토마무→삿포로는 JR북해도 시각표(2026.8~11 유효분 · 12월 재확인 · 11/19 발매), 삿포로↔오타루 35분 · 삿포로→신치토세 50분(쾌속 에어포트 + 이동). 요금: 버스 ¥6,000/인, 특급 ¥5,880/인(駅探 2026.9), 오타루 ¥800/인, 공항 ¥1,230/인. 숙박세: 삿포로 道+市 ¥300/400/1,000 · 占冠村 道+村 ¥200/400/1,000(1인1박 素泊まり 기준, 2026.4.1 시행). 영업시간·휴무는 2026.9 기준 판단 — 출발 전 각 링크에서 재확인. 아이스빌리지 2026-27 시즌 12/20~3/10은 이 일정(12/17~19)에 미포함(확정된 트레이드오프).</p></div>
+<div class="card"><h3>기준 정보</h3><p>확정: 이스타 ZE621(BDQKKE) 12/17 07:40→10:20 · 파라타 WE532(U4234F) 12/21 14:05→17:30 · 리조트 라이너 703(26X12170014) 국내선 12:20→더 타워 14:20 · Tomamu The Tower2 12/17~19 · 솔라리아 니시테츠(26091116013EA2ES1) 12/19~21.</p><ul class="kv">
+<li><span>이동시간</span><span>인천공항 55분 · 삿포로↔오타루 35분 · 삿포로→신치토세 50분</span></li>
+<li><span>요금/인</span><span>버스 ¥6,000 · JR특급 ¥5,880 · 오타루 ¥800 · 공항 ¥1,230</span></li>
+<li><span>숙박세</span><span>삿포로 ¥300/400/1,000 · 占冠村 ¥200/400/1,000 <span class="mline">1인1박 素泊まり · 2026.4.1 시행</span></span></li>
+<li><span>재확인</span><span>JR 시각표 12월 · 영업시간·휴무 2026.9 기준</span></li>
+<li><span>미포함</span><span>아이스빌리지 12/20 개장 — 이 일정과 어긋남</span></li>
+</ul></div>
 <div class="foot">v5 · 2026.9.11 · 메뉴 트리 구조로 재편 · v4 데이터 키 호환 · 동기화 경로 /trip/{코드} (핸드북 /handbook과 분리)</div>
 </div></div></section>
 </main>
@@ -1027,14 +1206,16 @@ const ICONS={
  info:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5h.01"/></svg>'
 };
 const LEAF={}; NAV.forEach(g=>g.leaves.forEach(l=>{ LEAF[l.id]=Object.assign({},l,{g:g.id,gn:g.n}); }));
+const BUILD='v5.2 · 2026-09-12';
 let PAGE='glance'; const LAST={};
 function groupOf(id){ const l=LEAF[id]||LEAF.glance; return NAV.find(g=>g.id===l.g); }
 function go(id,opt){
   opt=opt||{}; if(!LEAF[id]) id='glance'; PAGE=id; LAST[LEAF[id].g]=id; lsSet('_page_trip',id);
   if(location.hash!=='#'+id){ try{ if(opt.replace) history.replaceState(null,'','#'+id); else history.pushState(null,'','#'+id); }catch(e){} }
   document.querySelectorAll('.page').forEach(s=>s.classList.toggle('on',s.id==='pg-'+id));
-  closeSheet(); paintChrome(); paint(id,{enter:true});
+  closeSheet(); try{ paintChrome(); }catch(e){ console.error('[chrome]',e); } paint(id,{enter:true});
   if(!opt.keepScroll) window.scrollTo(0,0);
+  if(!RM){ const pel=document.getElementById('pg-'+id); if(pel){ pel.classList.remove('enter'); void pel.offsetWidth; pel.classList.add('enter'); clearTimeout(go._t); go._t=setTimeout(()=>pel.classList.remove('enter'),760); } }
   if(id==='master') playMaster(); else stopSnow();
 }
 window.addEventListener('popstate',()=>{ const id=location.hash.replace(/^#\/?/,''); if(LEAF[id]&&id!==PAGE) go(id,{replace:true}); });
@@ -1050,7 +1231,22 @@ function paintChrome(){
 }
 const R={glance:renderGlance,status:renderStatus,open:renderOpen,check:renderCheck,flight:renderFlight,hotel:renderHotel,move:renderMove,otaru:renderOtaru,compose:renderCompose,master:renderMaster,budget:renderBudget};
 let DIRTY=new Set(Object.keys(R));
-function paint(id,opt){ if(R[id]&&DIRTY.has(id)){ R[id](opt||{}); DIRTY.delete(id); } }
+function paint(id,opt){
+  if(!(R[id]&&DIRTY.has(id))) return;
+  try{ R[id](opt||{}); DIRTY.delete(id); }
+  catch(err){
+    DIRTY.delete(id);
+    const b=document.querySelector('#pg-'+id+' .body');
+    if(b) b.innerHTML='<div class="card errcard"><h3>이 페이지를 그리지 못했습니다</h3>'
+      +'<p>저장된 데이터가 현재 버전과 맞지 않을 때 생깁니다. 아래 순서로 해결됩니다.</p>'
+      +'<ul class="kv"><li><span>1단계</span><span>새로고침 (캐시 무시)</span></li>'
+      +'<li><span>2단계</span><span>정보 → 데이터 → 이 기기 데이터 초기화</span></li>'
+      +'<li><span>오류</span><span>'+esc(String(err&&err.message||err))+'</span></li></ul>'
+      +'<div class="tools"><button class="btn" onclick="location.reload(true)">새로고침</button>'
+      +'<button class="btn sec" onclick="go(\'data\')">데이터 페이지</button></div></div>';
+    try{ console.error('[paint:'+id+']',err); }catch(e){}
+  }
+}
 function invalidate(){ recompute(); DIRTY=new Set(Object.keys(R)); paintChrome(); paint(PAGE,{}); }
 function renderAll(){ invalidate(); }
 function renderLight(){ invalidate(); }
@@ -1072,7 +1268,7 @@ function renderGlance(){
   const home=ALL[4].ev.find(o=>o.n==='집 도착');
   const days=[0,1,2,3,4].map(i=>`<li onclick="S.day=${i};saveAll();dirty('compose');go('compose')"><span class="dn">DAY ${i+1}</span><span><div class="tt">${esc(DAYMETA[i].t)}</div><div class="tm">${dlabel(i)} · ${fmtT(ALL[i].start)}–${fmtT(ALL[i].end)} · ${(S.days[i]||[]).length}블록</div></span><span><span class="lvdot ${ALL[i].level}"></span> <span class="ar">›</span></span></li>`).join('');
   $('#pg-glance .body').innerHTML=`
-  <div class="ph"><h1>삿포로 · 토마무<span style="display:block;font-size:.72em;margin-top:4px">12.17 목 → 12.21 월 · 5일</span></h1><p>2인 · 5일 · 토마무 먼저 · 버스 + JR · 항공·숙소·버스 확정 · 집 ${fmtT(ALL[0].start)} 출발 → 집 ${home?fmtT(home.start):'—'} 도착</p></div>
+  <div class="ph"><h1>삿포로 · 토마무<span style="display:block;font-size:.72em;margin-top:4px">12.17 목 → 12.21 월 · 5일</span></h1><p>2인 · 5일 · 토마무 먼저 · 렌터카 없음<br><span class="muted">집 ${fmtT(ALL[0].start)} 출발 → 집 ${home?fmtT(home.start):'—'} 도착</span></p></div>
   <div class="card"><div class="stat3"><div class="st"><div class="l">전체 판정</div><div class="v">${lvPill(lv)}</div></div><div class="st"><div class="l">확정 / 남은</div><div class="v">${fixed} / ${open}</div></div><div class="st"><div class="l">체크리스트</div><div class="v">${done} / ${CHECKS.length}</div></div></div><div class="prog"><i style="width:${Math.round(done/CHECKS.length*100)}%"></i></div></div>
   <div class="card"><h3>다음 할 일</h3>${next.length?`<div class="rows">${next.map(c=>`<div class="row" style="grid-template-columns:1fr"><div>${esc(c.n)}<div class="s">${esc(c.when)}</div></div></div>`).join('')}</div>`:'<p>모든 체크 항목이 끝났습니다.</p>'}<div class="tools"><button class="btn sm sec" onclick="go('check')">체크리스트 전체</button></div></div>
   <div class="card"><h3>5일 개요</h3><ul class="daylist">${days}</ul></div>
@@ -1115,7 +1311,15 @@ function renderCheck(){
   const cks=CHECKS.map(c=>`<label class="ck ${SH.ck[c.id]?'done':''}"><input type="checkbox" ${SH.ck[c.id]?'checked':''} onchange="setCk('${c.id}',this.checked)"><span><span class="t">${esc(c.n)}</span><span class="w">${esc(c.when)}</span></span></label>`).join('');
   $('#pg-check .body').innerHTML=`<div class="card"><div class="prog" style="margin:0 0 10px"><i style="width:${Math.round(done/CHECKS.length*100)}%"></i></div>${cks}</div>
   <div class="card"><h3>날짜별 마감</h3><ul class="kv"><li><span>11/19 (목) 10:00</span><span>JR 특급 12/19편 에키넷 발매 개시 (승차일 1개월 전 규칙)${jf?' — 구매 완료':''}</span></li><li><span>12/9 (수)까지</span><span>버스 703 무료 취소 마감 (12/10~15 30% · 12/16 40% · 12/17 50%)</span></li><li><span>12/16 (수) 저녁</span><span>빼꼼이 위탁 입소 (미확정 · 위탁처 예약 필요)</span></li><li><span>12/17 (목) 12:10</span><span>버스 703 집합 — 국내선 터미널 1F 승차장 · 예약 ${BUS_INFO.res}</span></li><li><span>12/17 (목) 21:58</span><span>솔라리아 무료취소 마감</span></li><li><span>12/18 (금) 08:30</span><span>승마 당일권 — GAO 아웃도어센터 선착순 (예약 불가)</span></li></ul></div>
-  <div class="card"><h3>남은 예약 순서</h3><p>완료 ✓ 항공 발권(ZE621·WE532) → ✓ 버스 703 → ✓ 토마무 → ✓ 솔라리아. 남은 것: ① 빼꼼이 위탁 예약(12/16 저녁 입소) → ② hal/니니누푸리 디너, 이세즈시 점심 예약 → ③ 인천공항 이동 결정 → ④ 11/19 10:00 에키넷에서 JR 특급 12/19편 지정석 → ⑤ 승마는 12/18 08:30 현장 당일권(예약 불가). 11월 2~16일 제주 일정과 겹치지 않게 ①~③은 11월 초까지.</p></div>`;
+  <div class="card"><h3>남은 예약 순서</h3><ul class="kv">
+<li><span>완료</span><span>항공 ZE621·WE532 · 버스 703 · 토마무 · 솔라리아</span></li>
+<li><span>① 11월 초</span><span>빼꼼이 위탁 예약 (12/16 저녁 입소)</span></li>
+<li><span>② 11월 초</span><span>hal · 니니누푸리 디너, 이세즈시 점심</span></li>
+<li><span>③ 11월 초</span><span>인천공항 이동 수단 결정</span></li>
+<li><span>④ 11/19 10:00</span><span>에키넷 JR 특급 12/19편 지정석</span></li>
+<li><span>⑤ 12/18 08:30</span><span>승마 현장 당일권 — 예약 불가</span></li>
+</ul>
+<p class="note">11월 2~16일 제주 일정과 겹치지 않게 ①~③은 11월 초까지.</p></div>`;
 }
 
 /* ---------- 항공 ---------- */
@@ -1163,7 +1367,11 @@ function renderMove(){
   $('#pg-move .body').innerHTML=`<div class="tools" style="margin-top:0">${viewSeg()}</div><div class="grid g2" style="margin-top:12px">
   <div class="card fixd"><span class="tag pill ok">✓ 확정 · 예약 완료</span><h3>12/17 공항 → 토마무 · 리조트 라이너 ${b703.no}편</h3><div class="t">${b703.dep} → ${b703.arr}<small>신치토세 ${b703.term} 발 · 토마무 더 타워 착 · 2h</small></div><ul class="kv"><li><span>예약번호</span><span><b>${BUS_INFO.res}</b></span></li><li><span>요금</span><span>¥6,000 × 2 = <b>${fmtJ(num(I.busJPY))}</b> · 약 ${fmtW(num(I.busJPY)*num(I.rate)/100)} <span class="b calc">계산</span></span></li><li><span>연결편</span><span>${BUS_INFO.link}</span></li><li><span>집합</span><span><b>${BUS_INFO.meet}</b></span></li><li><span>취소 규정</span><span>${BUS_INFO.cancel}</span></li><li><span>운행</span><span>${BUS_INFO.period} · ${BUS_INFO.minPax}</span></li><li><span>도착 시각</span><span>더 타워 ${b703.arr} (14:25는 종점 리조나레 기준)</span></li><li><span>승차 위치</span><span>701·703은 국제선 터미널 정차 없음 → 연결통로 도보 10분</span></li><li><span>문의</span><span>${BUS_INFO.tel}</span></li></ul><p>ZE621 10:20 착 + 입국 45분 = 11:05 → 국내선 3F 점심(라멘도장 45분) → 12:10 집합 → 12:20 출발. 현재 선택 편 기준 계획: <b>${esc(p.label)}</b>. 항공 1시간 이상 지연 시 ${b705.no}편(${b705.term} ${b705.dep} → ${b705.arr}) — 당일 변경은 703 예약분 취소수수료 50% 적용 예상 <span class="b judge">판단</span>.</p><div class="edit show">요금 (¥) <input type="number" value="${num(I.busJPY)}" step="100" onchange="setInp('busJPY',this.value,'bus')"> <span class="b input">공유 입력</span></div><div class="links"><a class="blue" target="_blank" rel="noopener" href="${BUS_INFO.url}">토마무 접속·버스 공식</a><a target="_blank" rel="noopener" href="${gm('新千歳空港 国内線ターミナル バス乗り場')}">국내선 버스 승차장 지도</a></div></div>
   <div class="card ${jf?'fixd':'tent'}"><span class="tag pill ${jf?'ok':'warn'}">${jf?'✓ 확정 · 구매 완료':'미확정 · 11/19 발매'}</span><h3>12/19 토마무 → 삿포로 · JR 특급</h3><div class="t">${tr.dep} → ${tr.arr}<small>${esc(tr.n)} · ${fmtDur(toMin(tr.arr)-toMin(tr.dep))} · ¥5,880/인 (2인 ¥11,760)</small></div><div class="chips" style="margin-top:10px">${trainChips}</div><ul class="kv"><li><span>요금</span><span>운임 ¥3,520 + 지정석 특급 ¥2,360 (駅探 2026.9)</span></li><li><span>발매</span><span>${JR_SALE}</span></li><li><span>주의</span><span>토마무역 매표소 없음 · 더 타워 발매기 현금 불가</span></li><li><span>백업</span><span>${JR_BACKUP}</span></li><li><span>역 이동</span><span>더 타워 → 토마무역 무료 셔틀 약 15분 · 역에 매점 없음</span></li><li><span>시각표</span><span>${JR_SRC}</span></li></ul><p>${esc(tr.note)}. 기본 조합: 09:00 무빙테라스 예비 → 10:15 체크아웃(짐 프런트 보관) → 11:45 셔틀 → 12:15 특급 → 14:10 삿포로 → 늦은 점심 → 일루미네이션.</p><div class="edit show"><span class="small muted">예약번호</span><input type="text" value="${esc(I.jrRes||'')}" placeholder="구매 후 입력 (공유됨)" onchange="setInp('jrRes',this.value,'jr')"><button class="btn sm ${jf?'sec':''}" onclick="toggleFix('jr')">${jf?'미확정으로':'확정 처리'}</button></div><div class="links"><a class="blue" target="_blank" rel="noopener" href="https://www.eki-net.com/">에키넷</a><a class="blue" target="_blank" rel="noopener" href="https://jrhokkaidonorikae.com/vtime/vtime.php?s=131">JR북해도 특급 시각표(상행)</a><a target="_blank" rel="noopener" href="https://www.jrhokkaido.co.jp/">운행정보</a></div><p><span class="b chk">확인 필요</span> 12월 시각표(현재 표는 11/30까지 유효분) · 에키넷 회원가입·발권 절차 사전 확인</p></div>
-  <div class="card tent"><h3>귀로 버스 대안 (JR 운휴·지연 시)</h3><ul class="kv">${BUS_FROM_TOM.map(b=>`<li><span>${b.no}편 더 타워 ${b.dep}</span><span>${esc(b.to)} ${b.arr} · ¥${b.fare.toLocaleString()}/인 <span class="b chk">확인 필요</span></span></li>`).join('')}</ul><p>7702는 08:40 출발이라 무빙테라스 예비 슬롯과 양립 불가, 7710은 토마무 풀데이 후 삿포로 저녁만 가능. 시각은 작년 표와 캡처 도착시각(12:25·19:55)이 같아 동일 추정 — 2026-27 시각표 재확인.</p></div>
+  <div class="card tent"><h3>귀로 버스 대안 (JR 운휴·지연 시)</h3><ul class="kv">${BUS_FROM_TOM.map(b=>`<li><span>${b.no}편 더 타워 ${b.dep}</span><span>${esc(b.to)} ${b.arr} · ¥${b.fare.toLocaleString()}/인 <span class="b chk">확인 필요</span></span></li>`).join('')}</ul><ul class="kv">
+<li><span>7702</span><span>08:40 출발 — 무빙테라스 예비 슬롯과 양립 불가</span></li>
+<li><span>7710</span><span>토마무 풀데이 후 삿포로 저녁만 가능</span></li>
+<li><span>시각 근거</span><span>작년 표와 도착시각 동일 추정 — 2026-27 시각표 재확인</span></li>
+</ul></div>
   <div class="card tent"><h3>삿포로 시내 · 오타루 · 공항 — JR 쾌속 에어포트</h3><ul class="kv"><li><span>삿포로 ↔ 오타루</span><span>¥800/인 · 32~36분 · 시간당 3편 (2025.4 개정)</span></li><li><span>삿포로 → 신치토세</span><span>¥1,230/인 · 37분 · 12분 간격 · u시트 지정석 +¥840 (2025.4 개정)</span></li><li><span>시내</span><span>지하철·시덴 — 예산에 예비 ¥3,000 (판단)</span></li></ul><p>12/21 귀국: 삿포로역 <b>10:45</b> JR → 공항 11:35(출발 2h30 전) → 체크인 후 국내선 터미널 기념품 → 13:05 보안검색.</p><div class="links"><a target="_blank" rel="noopener" href="https://www.jrhokkaido.co.jp/global/korean/">JR북해도 한국어</a></div></div>
   </div>`;
 }
@@ -1215,7 +1423,7 @@ function renderCompose(){
   <div class="prefs"><span class="lbl">자동 조합 취향</span>${prefs}</div>
   <div class="tools"><button class="btn sm" onclick="autoThis()">DAY ${d+1} 자동 조합</button><button class="btn sm sec" onclick="autoAllUI()">5일 전체</button><button class="btn sm sec" onclick="clearDay()">비우기</button><span class="sp"></span>${wake}</div>
   <div class="board">
-   <div class="panel tlpanel"><h3>DAY ${d+1} · ${esc(DAYMETA[d].t)} ${lvPill(sc.level)}<span class="m" style="flex-basis:100%">${dlabel(d)} · 숙박 ${esc(DAYMETA[d].sleep)}</span></h3><div class="tools" style="margin-top:8px"><button class="btn sm addpal" onclick="openSheet()">＋ 블록 추가</button><span class="small muted">블록은 ⋮⋮로 순서 변경 · 휴대폰은 카드 길게 누르기</span></div><ul class="tl" id="tl">${items}</ul><div class="daysum"><span>종료 ${fmtT(sc.end)}</span>${sc.drive?`<span>· 이동 ${fmtDur(sc.drive)}</span>`:''}${sc.fare?`<span>· 교통비 ¥${sc.fare.toLocaleString()} (2인)</span>`:''}<span>· 식사·입장 ¥${sc.cost.toLocaleString()}/인</span></div>${flags?`<ul class="flags">${flags}</ul>`:''}<div class="tools"><button class="btn sm ghost" onclick="go('master')">완성본 보기</button></div></div>
+   <div class="panel tlpanel"><h3>DAY ${d+1} · ${esc(DAYMETA[d].t)} ${lvPill(sc.level)}<span class="m" style="flex-basis:100%">${dlabel(d)} · 숙박 ${esc(DAYMETA[d].sleep)}</span></h3><div class="tools editbar"><button class="btn sm addpal" onclick="openSheet()">＋ 블록 추가</button><button class="btn sm ${EDITM?'':'sec'}" onclick="setEdit(${EDITM?'false':'true'})">${EDITM?'편집 중 · 잠그기':'순서 편집'}</button><span class="small muted">${EDITM?'⋮⋮ 를 끌거나 카드를 길게 눌러 이동':'잠금 — 스크롤만 됩니다'}</span></div><ul class="tl" id="tl">${items}</ul><div class="daysum"><span>종료 ${fmtT(sc.end)}</span>${sc.drive?`<span>· 이동 ${fmtDur(sc.drive)}</span>`:''}${sc.fare?`<span>· 교통비 ¥${sc.fare.toLocaleString()} (2인)</span>`:''}<span>· 식사·입장 ¥${sc.cost.toLocaleString()}/인</span></div>${flags?`<ul class="flags">${flags}</ul>`:''}<div class="tools"><button class="btn sm ghost" onclick="go('master')">완성본 보기</button></div></div>
    <div class="panel palpanel" id="palHost"><div class="handle"></div><h3>팔레트 <span class="m">${avail.length}개 · ＋ 또는 끌어오기</span><button class="ib close sp" onclick="closeSheet()" title="닫기">×</button></h3><div class="palhead"><input type="search" placeholder="이름·메모 검색" value="${esc(palQ)}" oninput="palSearch(this.value)"><div class="chips">${catChips}</div><div class="chips">${zoneChips}</div></div><div class="pal" id="pal">${pal||'<div class="meta" style="color:var(--ink3)">해당 조건의 블록 없음</div>'}</div></div>
   </div>`;
   const np=document.getElementById('pal'); if(np) np.scrollTop=palScroll; palSearch(palQ,true);
@@ -1231,6 +1439,14 @@ function removeBlock(i){ S.days[S.day].splice(i,1); S.manual[S.day]=true; saveAl
 function setWake(d,v){ if(/^\d\d:\d\d$/.test(v)){ S.wake[d]=v; saveAll(); renderLight(); } }
 /* ---------- drag & drop (pointer events) ---------- */
 let drag=null, lp=null;
+/* 편집 모드: 꺼져 있으면 손가락 드래그가 아예 걸리지 않는다 → 스크롤이 절대 안 잡힘 */
+let EDITM=(lsGet('_edit_trip')==='1');
+function setEdit(v){
+  EDITM=!!v; lsSet('_edit_trip',EDITM?'1':'0');
+  document.body.classList.toggle('editing',EDITM);
+  dirty('compose'); paint('compose');
+  toast(EDITM?'편집 모드 — ⋮⋮ 를 끌어 순서를 바꿉니다':'잠금 — 스크롤만 됩니다');
+}
 function beginDrag(item,x,y,pointerId,touch){
   drag={src:item.classList.contains('pal-item')?'pal':'tl',id:item.dataset.id,idx:+item.dataset.bi,x,y,started:false,el:item,drop:null,name:item.querySelector('.nm').textContent,touch:!!touch};
   try{ item.setPointerCapture(pointerId); }catch(x){}
@@ -1246,9 +1462,10 @@ function dragDown(e){
   const grip=e.target.closest('.grip');
   if(!grip&&e.target.closest('a,button,input')) return;
   if(e.pointerType==='mouse'){ if(e.button!==0) return; e.preventDefault(); beginDrag(item,e.clientX,e.clientY,e.pointerId,false); return; }
+  if(!EDITM) return; /* 잠금 상태: 터치 드래그 차단 */
   if(grip){ e.preventDefault(); beginDrag(item,e.clientX,e.clientY,e.pointerId,true); return; }
   cancelLP(); const x=e.clientX, y=e.clientY, pid=e.pointerId;
-  lp={item,x,y,t:setTimeout(()=>{ lp=null; beginDrag(item,x,y,pid,true); startDragVisual(x,y); toast('드래그 중 — 놓을 위치로 옮기고 손을 떼세요'); },280)};
+  lp={item,x,y,t:setTimeout(()=>{ lp=null; beginDrag(item,x,y,pid,true); startDragVisual(x,y); toast('드래그 중 — 놓을 위치로 옮기고 손을 떼세요'); },340)};
 }
 document.addEventListener('touchmove',e=>{ if(drag&&drag.touch) e.preventDefault(); },{passive:false});
 function dragMove(e){
@@ -1415,14 +1632,18 @@ function monthsLeft(exp){ if(!/^\d{4}-\d{2}-\d{2}$/.test(exp||'')) return null; 
 /* ---------- 기기 간 동기화 (Firebase Realtime DB REST · 핸드북 로직 이식 · 경로 /trip/{code}) ---------- */
 const DEV_ID=(function(){ let d=lsGet('_dev_trip'); if(!d){ d='d'+Math.random().toString(36).slice(2,10); lsSet('_dev_trip',d); } return d; })();
 const SYNC={url:'',code:'',on:false,timer:null,pushT:null,lastRemoteAt:0,busy:false,msg:'',lv:''};
+function syncWhy(e){ const st=e&&e.status;
+  if(st===401||st===403) return '거부됨 — Firebase 규칙에 "trip" 경로가 없습니다. 규칙 B로 바꿔 게시하세요.';
+  if(st===404) return '주소를 찾을 수 없습니다 — 데이터베이스 주소를 다시 확인하세요.';
+  return '오프라인 — 로컬에만 저장됨 (연결되면 자동 재시도)'; }
 function syncPath(){ return SYNC.url.replace(/\/+$/,'')+'/trip/'+SYNC.code+'.json'; }
 function syncConfigured(){ return SYNC.on&&SYNC.url&&SYNC.code; }
 function navSyncPaint(){ const n=$('#syncdot'); if(!n) return; n.className='dot '+(SYNC.on?(SYNC.lv==='warn'?'warn':'ok'):''); n.title=SYNC.on?(SYNC.msg||'동기화'):'동기화 꺼짐'; }
 function syncStat(msg,lv){ SYNC.msg=msg; SYNC.lv=lv||'info'; const el=$('#syncStat'); if(el) el.textContent=msg; navSyncPaint(); }
 function loadSyncCfg(){ SYNC.url=lsGet('_sync_url_trip')||''; SYNC.code=lsGet('_sync_code_trip')||''; SYNC.on=(lsGet('_sync_on_trip')==='1'); const u=$('#syncUrl'),c=$('#syncCode'),n=$('#myName'); if(u) u.value=SYNC.url; if(c) c.value=SYNC.code; if(n) n.value=myName(); if(!SYNC.on) syncStat(SYNC.url?'동기화 꺼짐 — 이 기기에만 저장됩니다.':'설정 안 됨 — 데이터베이스 주소와 공유 코드를 입력하세요.'); }
-async function syncFetch(method,body){ const ctl=new AbortController(); const to=setTimeout(()=>ctl.abort(),8000); try{ const r=await fetch(syncPath(),{method:method,body:body||undefined,signal:ctl.signal}); if(!r.ok) throw new Error('HTTP '+r.status); return await r.json(); } finally{ clearTimeout(to); } }
+async function syncFetch(method,body){ const ctl=new AbortController(); const to=setTimeout(()=>ctl.abort(),8000); try{ const r=await fetch(syncPath(),{method:method,body:body||undefined,signal:ctl.signal}); if(!r.ok){ const e=new Error('HTTP '+r.status); e.status=r.status; throw e; } return await r.json(); } finally{ clearTimeout(to); } }
 function syncPushSoon(){ if(!syncConfigured()) return; clearTimeout(SYNC.pushT); SYNC.pushT=setTimeout(syncPushNow,1200); }
-async function syncPushNow(){ if(!syncConfigured()||SYNC.busy) return; SYNC.busy=true; try{ await syncFetch('PUT',JSON.stringify(SH)); SYNC.lastRemoteAt=SH._at||Date.now(); syncStat('동기화됨 · '+hhmm(),'ok'); }catch(e){ syncStat('오프라인 — 로컬에만 저장됨 (연결되면 자동 재시도)','warn'); } finally{ SYNC.busy=false; } }
+async function syncPushNow(){ if(!syncConfigured()||SYNC.busy) return; SYNC.busy=true; try{ await syncFetch('PUT',JSON.stringify(SH)); SYNC.lastRemoteAt=SH._at||Date.now(); syncStat('동기화됨 · '+hhmm(),'ok'); }catch(e){ syncStat(syncWhy(e),'warn'); } finally{ SYNC.busy=false; } }
 async function syncPull(force){
   if(!syncConfigured()||SYNC.busy){ if(force&&!syncConfigured()) syncStat('설정 안 됨 — 데이터베이스 주소와 공유 코드를 입력하세요.'); return; }
   if(!force){ const ae=document.activeElement; if(ae&&(ae.tagName==='INPUT'||ae.tagName==='TEXTAREA')) return; if(Date.now()-lastEditAt<6000) return; }
@@ -1432,7 +1653,7 @@ async function syncPull(force){
     else if(remote===null&&(SH._at||0)>0){ syncPushSoon(); syncStat('서버가 비어 있음 — 이 기기 데이터를 올립니다','info'); }
     else if(force){ syncStat('최신 상태 · '+hhmm(),'ok'); }
     if(remote&&remote._at) SYNC.lastRemoteAt=remote._at;
-  }catch(e){ if(force) syncStat('연결 실패 — 주소·규칙·네트워크 확인','warn'); }
+  }catch(e){ if(force) syncStat(syncWhy(e),'warn'); }
   finally{ SYNC.busy=false; }
 }
 function startSync(){ clearInterval(SYNC.timer); if(!syncConfigured()){ syncStat('설정 안 됨 — 데이터베이스 주소와 공유 코드를 입력하세요.'); return; } syncStat('동기화 켜짐 — 20초마다 확인합니다.'); syncPull(true).then(()=>{ if(!SYNC.lastRemoteAt) syncPushSoon(); }); SYNC.timer=setInterval(()=>syncPull(false),20000); }
@@ -1451,8 +1672,10 @@ function resetShared(){ if(!confirm('공유 데이터(플래그·체크·금액�
 /* ---------- boot ---------- */
 function boot(){
   loadSH(); const had=load(); if(!had){ autoAll(); } recompute(); applyView();
+  document.body.classList.toggle('editing',EDITM);
   const h=location.hash.replace(/^#\/?/,''); const saved=lsGet('_page_trip'); const start=LEAF[h]?h:(LEAF[saved]?saved:'glance');
   go(start,{replace:true});
+  const bt=$('#buildTag'); if(bt) bt.textContent=BUILD;
   loadSyncCfg(); if(SYNC.on) startSync();
   document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') syncPull(false); });
   document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeSheet(); });
