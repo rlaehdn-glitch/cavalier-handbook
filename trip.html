@@ -27,7 +27,13 @@ b{font-weight:700}
 /* ── chrome: top bar ── */
 .top{position:fixed;top:0;left:0;right:0;z-index:70;padding-top:var(--sat);background:rgba(245,245,247,.86);-webkit-backdrop-filter:saturate(180%) blur(18px);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid rgba(0,0,0,.06)}
 .top .in{height:var(--top);display:flex;align-items:center;gap:10px;padding:0 16px}
-.top .ttl{font-weight:700;font-size:16px;letter-spacing:-.02em;white-space:nowrap;display:flex;align-items:baseline;gap:6px;min-width:0}
+.top .homebtn{flex:none;display:flex;align-items:center;gap:5px;height:32px;padding:0 11px 0 9px;margin-left:-5px;border-radius:999px;background:rgba(0,0,0,.05);color:var(--ink2);font-size:12.5px;font-weight:600;letter-spacing:-.01em}
+.top .homebtn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.top .homebtn:hover{background:rgba(0,0,0,.08);color:var(--ink)}
+.top .homebtn:active{transform:scale(.93)}
+.top .homebtn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+@media(max-width:379px){.top .homebtn span{display:none}.top .homebtn{padding:0 8px}}
+.top .ttl{font-weight:700;font-size:16px;letter-spacing:-.02em;white-space:nowrap;display:flex;align-items:baseline;gap:6px;min-width:0;overflow:hidden;text-overflow:ellipsis}
 .top .ttl small{font-weight:500;color:var(--ink3);font-size:12px}
 .top .crumb{display:none;font-size:13px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .top .crumb b{color:var(--ink);font-weight:600}
@@ -592,7 +598,7 @@ html.introlock,html.introlock body{overflow:hidden}
   <div class="ic-credit" id="introCredit">Photo: Cuvii / Unsplash</div>
 </div>
 <nav class="side" id="side" aria-label="메뉴"></nav>
-<header class="top"><div class="in"><span class="ttl">삿포로 · 토마무<small>12.17–21 · <span id="buildTag">v5</span></small></span><span class="crumb" id="crumb"></span><span class="stat"><span id="navstat"></span><span class="dot" id="syncdot" title="동기화 상태"></span></span></div></header>
+<header class="top"><div class="in"><button type="button" class="homebtn" id="coverBtn" onclick="window.introShow&&window.introShow()" title="커버 화면으로" aria-label="커버 화면으로"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>커버</span></button><span class="ttl">삿포로 · 토마무<small>12.17–21 · <span id="buildTag">v5</span></small></span><span class="crumb" id="crumb"></span><span class="stat"><span id="navstat"></span><span class="dot" id="syncdot" title="동기화 상태"></span></span></div></header>
 <div class="sub" id="sub"></div>
 <main id="main">
 <noscript><div class="nojs">JS가 꺼져 있어 화면을 구성할 수 없습니다. 확정: 이스타 ZE621(BDQKKE) 12/17 07:40→10:20 · 파라타 WE532(U4234F) 12/21 14:05→17:30 · 리조트 라이너 703(26X12170014) 국내선 12:20→더 타워 14:20 · Tomamu The Tower2 12/17~19 · 솔라리아 니시테츠(26091116013EA2ES1) 12/19~21.</div></noscript>
@@ -878,6 +884,9 @@ const BLOCKS=[
  {id:'sap_daruma', n:'징기스칸 다루마 본점 (1954)', z:'sap', c:'food', dur:90, open:'17:00', close:'24:00', cost:4000, tags:['미식'], q:'成吉思汗だるま 本店', rate:'食べログ 3.69', note:'17:00~익일 05:00 · 예약 불가 · 개점 직후 줄 or 22시 이후 한산. 냄새 강함 — 겉옷 로커', src:'食べログ·Retty 2026'},
  {id:'sap_yamagoya', n:'생램 징기스칸 야마고야 (카운터 10석)', z:'sap', c:'food', dur:75, open:'16:00', close:'22:30', closed:['2026-12-20'], cost:3800, tags:['미식'], q:'生ラムジンギスカン山小屋 札幌', rate:'食べログ 3.58', note:'평일 16:00~22:30 · 토 11:30~14:30+16:00~22:30 · 일요일은 점심만(밤 휴무) → 12/20 저녁 ✕ · 12/19(토) 저녁 가능', src:'食べログ 2026.9'},
  {id:'sap_ishida', n:'숯불 징기스칸 이시다', z:'sap', c:'food', dur:90, open:'11:00', close:'23:00', cost:5000, tags:['미식'], q:'炭火焼ジンギスカン いし田 札幌店', note:'서포크 한 마리 통째 매입. 냄새 부담 적고 와인 페어링', src:'Funliday 2026.6'},
+ {id:'sap_matsuo', n:'마츠오 징기스칸 삿포로역앞점 (숙소 도보 4분)', z:'sap', c:'food', dur:80, open:'11:00', close:'22:30', cost:4200, tags:['미식'], q:'松尾ジンギスカン 札幌駅前店', rate:'구글 4.1 (1,300+)', note:'北3西4 日本生命札幌빌 B1F — 솔라리아에서 약 300m, 도보 4분 · 11:00~15:00 / 16:30~22:30 무휴 · 1956년 창업 양념(타레) 징기스칸 체인, 홋카이도 전역 지점 · 온라인 예약 가능 · 4종 먹어보기 세트, 무한리필 코스 있음 · 빠니보틀 방문점 추정(미확인)', src:'食べログ·구글 2026.9'},
+ {id:'sap_matsuo_sq', n:'마츠오 징기스칸 삿포로역 스퀘어점 (2026.3 오픈)', z:'sap', c:'food', dur:80, open:'11:00', close:'22:30', cost:4200, tags:['미식'], q:'松尾ジンギスカン 札幌ステーションスクエア店', rate:'구글 4.2 (신규)', note:'北3西3 휴릭스퀘어삿포로 2F — 숙소 도보 6분 · 같은 마츠오 체인의 신점, 좌석 넓고 깨끗 · 역앞점이 꽉 찼을 때 대안 · 후기 수 적음(개점 6개월)', src:'구글 2026.9'},
+ {id:'sap_daruma44', n:'징기스칸 다루마 4.4점 (스스키노)', z:'sap', c:'food', dur:80, open:'11:30', close:'23:00', cost:4000, tags:['미식'], q:'成吉思汗だるま 4.4店', rate:'구글 4.0 (2,600+)', note:'南4西4 · 다루마 체인 5개 점포 중 낮부터 여는 곳(11:30~23:00, 목~토 ~02:00) · 본점보다 회전 빠르지만 25~40분 대기 · 카운터 위주, 코트 로커 있음 · 숙소에서 지하철 남북선 2정거장', src:'구글·Tabelog 2026.9'},
  {id:'sap_shingen', n:'라멘 신겐 미나미6조점', z:'sap', c:'food', dur:40, open:'11:30', close:'24:00', cost:1200, tags:['미식'], q:'らーめん信玄 南6条店', note:'코쿠 미소. 행렬 있으나 회전 빠름', src:'johnny88 2026.8'},
  {id:'mis_saimi', n:'멘야 사이미 (彩未)', z:'mis', c:'food', dur:50, open:'10:30', close:'15:15', closed:['2026-12-21'], cost:1200, tags:['미식'], q:'麺屋 彩未 札幌', note:'월 휴무 + 월 2회 부정기 → 12/21(월) ✕ · 화~목 10:45~15:15 · 금토 야간 17:00~19:30 추가 · 일 10:30~15:15. 지하철 토호선 미소노역', src:'食べログ 2026.9'},
  {id:'sap_ichigen', n:'에비소바 이치겐 총본점', z:'sap', c:'food', dur:40, open:'11:00', close:'27:00', cost:1200, tags:['미식'], q:'えびそば一幻 総本店', rate:'食べログ 3.59', note:'11:00~익일 03:00 · 토 22:30에도 1시간 대기 후기 · 정휴일 현지 확인', src:'食べログ 2026'},
@@ -1020,7 +1029,7 @@ function schedule(d){
     for(const b of blocks){ if(b.z==='tom'&&!ridden) goTom(); place(b); }
     if(!ridden) goTom(); else if(z!=='tom') travelTo('tom','토마무 복귀');
     if(!blocks.some(b=>b.c==='food'&&b.z==='tom')) flags.push(['info','토마무 저녁 블록 없음 — hal/니니누푸리는 예약 필수']);
-    flags.push(['info','빼꼼이는 12/16(수) 저녁 위탁 입소 — 04:15 출발이라 전날 입소 필수 (미확정 · 위탁처 예약 필요)']);
+    flags.push(['info','빼꼼이 12/16(수) 도그스테이 입실 — 04:15 출발이라 전날 입실 · 예약 확정(12/22 퇴실) · 입실 마감 19:30 · 도착 예상 시각 사전 공유 필수']);
     if(z==='tom'&&t<15*60) flags.push(['info','체크인 시 프런트 확인: 리프트권으로 무빙테라스 곤돌라 탑승 가능 여부 (가능하면 2인 ¥4,400 절감)']);
   }
   else if(d===1||d===3){
@@ -1070,7 +1079,7 @@ function schedule(d){
     goAir();
     anchor('보안검색 · 출국심사 · 탑승',Math.max(0,dep-t));
     push({type:'flight',n:'✈ 신치토세 → 인천 ('+fnLabel(flightRet())+')',start:dep,end:arr,warn:[],k:1}); t=arr; z='icn';
-    anchor('입국 · 수하물',IMMIG_KR); travelTo('home','인천공항 → 집 (자차/택시 · 미확정)'); const h=anchor('집 도착',0,{k:1}); if(h.start>=1440){h.warn.push('귀가 익일 '+fmtT(h.start));flags.push(['warn','집 도착 '+fmtT(h.start)+' — 다음날 컨디션 고려']);} anchor('빼꼼이 픽업 — 위탁처 (12/21 저녁 · 픽업 마감 시각 확인 필요)',0,{note:'미확정 — 위탁처 예약 시 저녁 픽업 가능 시각 확인'}); if(h.start>20*60) flags.push(['warn','집 도착 '+fmtT(h.start)+' — 빼꼼이 저녁 픽업 마감 시각과 대조']);
+    anchor('입국 · 수하물',IMMIG_KR); travelTo('home','인천공항 → 집 (자차/택시 · 미확정)'); const h=anchor('집 도착',0,{k:1}); if(h.start>=1440){h.warn.push('귀가 익일 '+fmtT(h.start));flags.push(['warn','집 도착 '+fmtT(h.start)+' — 다음날 컨디션 고려']);} flags.push(['info','빼꼼이 픽업은 다음날 12/22(화) — 도그스테이 운영 09:30~19:30 · 귀국 당일 픽업 아님(예약 확정)']);
   }
   /* 공통 판정 */
   const last=ev[ev.length-1]; const endT=last?last.end:0;
@@ -1149,7 +1158,7 @@ function budget(all){
     {id:'city', n:'시내 교통 예비 (지하철·버스)', cur:'JPY', v:num(I.cityJPY), b:'judge', tent:true, note:'판단값 — 수정 가능'},
     {id:'tax', n:'숙박세 (2인 4박 · 현장 결제)', cur:'JPY', v:num(I.taxJPY), b:'calc', tent:true, note:'삿포로 道+市 ¥300/400/1,000 · 占冠村 道+村 ¥200/400/1,000 (1인1박 素泊まり 기준) → 예상 ¥2,000~3,200 · 상한값 계상 · 체크인 시 확정'},
     {id:'icn', n:'인천공항 왕복 (자차 장기주차 5일 or 택시)', cur:'KRW', v:num(I.icnKRW), b:'judge', tent:true, note:'04:15 출발이라 공항버스 불가 — 판단값, 수정 가능'},
-    {id:'pet', n:'빼꼼이 위탁 (12/16 저녁 ~ 12/21 저녁)', cur:'KRW', v:num(I.petKRW), b:'judge', tent:true, note:'판단값 — 위탁처 예약 후 실제가 입력'},
+    {id:'pet', n:'빼꼼이 위탁 — 도그스테이 (12/16 입실 ~ 12/22 퇴실 · 6박)', cur:'KRW', v:num(I.petKRW), b:'calc', note:'예약 확정 · 1~5kg 30,000원/일 × 6일 = 180,000원 (업체 요금표 기준 계산) · 예약금 10,000원 입금 완료(금액에서 차감) · 7일 이상 5% 할인 적용 시 171,000원 — 정산 시 확인'},
     {id:'food', n:'식사 · 입장 · 액티비티 (2인)', cur:'JPY', v:food, b:'judge', tent:true, note:'타임라인 블록 1인 판단가 × 2 (승마 ¥3,600 · 무빙테라스 ¥2,200 포함 — 리프트권 포함 확인 시 −¥4,400)'},
     {id:'souv', n:'기념품 (체크 항목)', cur:'JPY', v:souv, b:'input', tent:true, note:'기념품 섹션'},
   ];
@@ -1206,7 +1215,7 @@ const ICONS={
  info:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5h.01"/></svg>'
 };
 const LEAF={}; NAV.forEach(g=>g.leaves.forEach(l=>{ LEAF[l.id]=Object.assign({},l,{g:g.id,gn:g.n}); }));
-const BUILD='v5.2 · 2026-09-12';
+const BUILD='v5.4 · 2026-09-13';
 let PAGE='glance'; const LAST={};
 function groupOf(id){ const l=LEAF[id]||LEAF.glance; return NAV.find(g=>g.id===l.g); }
 function go(id,opt){
@@ -1225,7 +1234,7 @@ function paintChrome(){
   $('#tabbar').innerHTML=NAV.map(x=>`<button class="${x.id===g.id?'on':''}" onclick="go(LAST['${x.id}']||'${x.leaves[0].id}')" aria-label="${x.n}">${ICONS[x.ic]}<span>${x.n}</span></button>`).join('');
   const multi=g.leaves.length>1; document.body.classList.toggle('hassub',multi);
   $('#sub').innerHTML=multi?`<div class="seg">${g.leaves.map(l=>`<button class="${l.id===PAGE?'on':''}" onclick="go('${l.id}')">${l.n}${cnt(l.id)!==''?` <span class="small muted" style="font-weight:500">${cnt(l.id)}</span>`:''}</button>`).join('')}</div>`:'';
-  $('#side').innerHTML=`<div class="brand">삿포로 · 토마무<small>12.17 목 → 12.21 월 · 2인 · v5</small></div>`+NAV.map(x=>`<div class="grp"><div class="gh">${ICONS[x.ic]}${x.n}</div>${x.leaves.map(l=>`<button class="lf ${l.id===PAGE?'on':''}" onclick="go('${l.id}')">${l.n}${cnt(l.id)!==''?`<span class="cnt">${cnt(l.id)}</span>`:''}</button>`).join('')}</div>`).join('')+`<div class="sfoot">확정 6건 · 항공 ZE621/WE532 · 버스 703 · 토마무 더 타워2 · 솔라리아 니시테츠<br>v4 데이터 호환 · 동기화 /trip/{코드}</div>`;
+  $('#side').innerHTML=`<div class="brand" role="button" tabindex="0" title="커버 화면으로" style="cursor:pointer" onclick="window.introShow&&window.introShow()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.introShow&&window.introShow()}">삿포로 · 토마무<small>12.17 목 → 12.21 월 · 2인 · v5</small></div>`+NAV.map(x=>`<div class="grp"><div class="gh">${ICONS[x.ic]}${x.n}</div>${x.leaves.map(l=>`<button class="lf ${l.id===PAGE?'on':''}" onclick="go('${l.id}')">${l.n}${cnt(l.id)!==''?`<span class="cnt">${cnt(l.id)}</span>`:''}</button>`).join('')}</div>`).join('')+`<div class="sfoot">확정 6건 · 항공 ZE621/WE532 · 버스 703 · 토마무 더 타워2 · 솔라리아 니시테츠<br>v4 데이터 호환 · 동기화 /trip/{코드}</div>`;
   $('#crumb').innerHTML=`${esc(g.n)} <span style="color:var(--line2)">›</span> <b>${esc(LEAF[PAGE].n)}</b>`;
   $('#navstat').innerHTML=lvPill(overallLevel(ALL)); navSyncPaint();
 }
@@ -1273,7 +1282,7 @@ function renderGlance(){
   <div class="card"><h3>다음 할 일</h3>${next.length?`<div class="rows">${next.map(c=>`<div class="row" style="grid-template-columns:1fr"><div>${esc(c.n)}<div class="s">${esc(c.when)}</div></div></div>`).join('')}</div>`:'<p>모든 체크 항목이 끝났습니다.</p>'}<div class="tools"><button class="btn sm sec" onclick="go('check')">체크리스트 전체</button></div></div>
   <div class="card"><h3>5일 개요</h3><ul class="daylist">${days}</ul></div>
   <div class="card"><h3>돈</h3><ul class="kv"><li><span>확정 총액</span><span><b>${fmtW(B.fixTotal)}</b> · 김도우 ${fmtW(B.byDowoo)} / 한아름 ${fmtW(B.byAreum)}</span></li><li><span>미확정 예상</span><span>${fmtW(B.tentSum+B.res)} (예비비 10% 포함)</span></li><li><span>합계</span><span><b>${fmtW(B.total)}</b> <span class="b calc">계산</span> 환율 100엔=${B.rate}원</span></li></ul><div class="tools"><button class="btn sm sec" onclick="go('budget')">예산 상세</button></div></div>
-  <div class="card"><h3>확정 요약</h3><ul class="kv"><li><span>항공</span><span>ZE621 12/17 07:40→10:20 · WE532 12/21 14:05→17:30 <span class="b fix">확정</span></span></li><li><span>숙소</span><span>토마무 더 타워2 12/17~19 · 솔라리아 니시테츠 12/19~21 <span class="b fix">확정</span></span></li><li><span>이동</span><span>버스 703 12:20→14:20 (집합 12:10) <span class="b fix">확정</span> · JR ${esc(jrTrain().n)} ${jrTrain().dep}→${jrTrain().arr} (${isFix('jr')?'구매 완료':'11/19 발매'}) · 오타루 JR 왕복</span></li><li><span>현장</span><span>승마 12/18 08:30 당일권 · 무빙테라스 12/18 09:00 (예비 12/19)</span></li><li><span>미포함</span><span>아이스빌리지 12/20 개장 → 이번 일정 ✕</span></li></ul></div>
+  <div class="card"><h3>확정 요약</h3><ul class="kv"><li><span>항공</span><span>ZE621 12/17 07:40→10:20 · WE532 12/21 14:05→17:30 <span class="b fix">확정</span></span></li><li><span>숙소</span><span>토마무 더 타워2 12/17~19 · 솔라리아 니시테츠 12/19~21 <span class="b fix">확정</span></span></li><li><span>이동</span><span>버스 703 12:20→14:20 (집합 12:10) <span class="b fix">확정</span> · JR ${esc(jrTrain().n)} ${jrTrain().dep}→${jrTrain().arr} (${isFix('jr')?'구매 완료':'11/19 발매'}) · 오타루 JR 왕복</span></li><li><span>현장</span><span>승마 12/18 08:30 당일권 · 무빙테라스 12/18 09:00 (예비 12/19)</span></li><li><span>빼꼼이</span><span>도그스테이 12/16 입실 → 12/22 퇴실 · 6박 <span class="b fix">확정</span></span></li><li><span>미포함</span><span>아이스빌리지 12/20 개장 → 이번 일정 ✕</span></li></ul></div>
   <div class="tools"><button class="btn wide" onclick="go('master')">완성본 보기</button></div>`;
 }
 
@@ -1286,7 +1295,7 @@ function itemCard(it){
   if(it.passport){ const pp=ppGet(); const ml=monthsLeft(I.ppAreumExp), md=monthsLeft(I.ppDowooExp);
     kv=`<li><span>한아름</span><span>${esc(I.ppAreumExp||'—')} 만료${ml!==null?' · 출발일 기준 잔여 '+ml+'개월 <span class="b calc">계산</span>':''}</span></li><li><span>김도우</span><span>${I.ppDowooExp?esc(I.ppDowooExp)+' 만료'+(md!==null?' · 잔여 '+md+'개월 <span class="b calc">계산</span>':''):'만료일 미입력 <span class="b chk">확인 필요</span>'}</span></li>`+kv;
     extra=`<div class="edit stack show"><div class="row"><span class="small muted">만료일 (공유)</span><input type="text" placeholder="김도우 YYYY-MM-DD" value="${esc(I.ppDowooExp||'')}" onchange="setInp('ppDowooExp',this.value,'passport')"><input type="text" placeholder="한아름 YYYY-MM-DD" value="${esc(I.ppAreumExp||'')}" onchange="setInp('ppAreumExp',this.value,'passport')"></div><div class="row"><span class="small muted">여권번호 (이 기기만)</span><input type="text" placeholder="김도우" value="${esc(pp.dowoo||'')}" autocomplete="off" onchange="setPP('dowoo',this.value)"><input type="text" placeholder="한아름" value="${esc(pp.areum||'')}" autocomplete="off" onchange="setPP('areum',this.value)"></div></div>`; }
-  const amt=it.inp?`<div class="est">금액 <b class="${it.paid?'paid':''}">${it.cur==='KRW'?fmtW(num(I[it.inp])):fmtJ(num(I[it.inp]))}</b>${it.cur==='JPY'?' · 약 '+fmtW(num(I[it.inp])*(num(I.rate)||870)/100)+' <span class="b calc">계산</span>':''}${it.paid?' · '+esc(it.paid):''}${it.who?' · '+esc(it.who):''} <span class="b ${fx?(it.judge?'judge':'fix'):(it.judge?'judge':'input')}">${fx?(it.judge?'판단':'확정'):(it.judge?'판단':'입력')}</span></div>`:'';
+  const amt=it.inp?`<div class="est">금액 <b class="${it.paid?'paid':''}">${it.cur==='KRW'?fmtW(num(I[it.inp])):fmtJ(num(I[it.inp]))}</b>${it.cur==='JPY'?' · 약 '+fmtW(num(I[it.inp])*(num(I.rate)||870)/100)+' <span class="b calc">계산</span>':''}${it.paid?' · '+esc(it.paid):''}${it.who?' · '+esc(it.who):''} <span class="b ${fx?(it.judge?'judge':(it.calc?'calc':'fix')):(it.judge?'judge':'input')}">${fx?(it.judge?'판단':(it.calc?'계산':'확정')):(it.judge?'판단':'입력')}</span></div>`:'';
   const field=it.field?`<div class="edit show"><span class="small muted" style="white-space:nowrap">${esc(it.field)}</span><input type="text" value="${esc(it.finp?(I[it.finp]||''):(SH.inp['f:'+it.id]||''))}" placeholder="공유됨" onchange="setInp('${it.finp||('f:'+it.id)}',this.value,'${it.id}')"></div>`:'';
   const amtIn=(it.inp&&!fx)?`<div class="edit show">금액 <input type="number" value="${num(I[it.inp])}" step="${it.cur==='KRW'?1000:100}" onchange="setInp('${it.inp}',this.value,'${it.id}')"> ${it.cur==='KRW'?'원':'¥'} <span class="b input">공유 입력</span></div>`:'';
   const tog=it.decided?'':`<button class="btn sm ${fx?'sec':''}" onclick="toggleFix('${it.id}')">${fx?'미확정으로':'확정 처리'}</button>`;
@@ -1297,7 +1306,7 @@ function renderStatus(){
   $('#statusCount').textContent='결제·예약 완료 '+fixed.length+'건.';
   const last=SH._at?('마지막 공유 수정 '+esc(SH.by||'')+' · '+stamp(SH._at)):'공유 수정 기록 없음';
   $('#pg-status .body').innerHTML=`<div class="tools" style="margin:0 0 12px"><span class="small muted">내 이름</span><input type="text" id="myName2" value="${esc(myName())}" placeholder="김도우 / 한아름" onchange="setMyName(this.value)" style="width:150px"><span class="small muted">${last}</span></div>
-  <div class="card fixd"><span class="tag pill ok">✓ 확정</span><h3>확정 총액</h3><ul class="kv"><li><span>김도우</span><span>항공 ${fmtW(num(I.fOutKRW)+num(I.fRetKRW))} + 솔라리아 ${fmtW(num(I.solariaKRW))} + 버스 약 ${fmtW(B.busKRW)} = <b class="paid">${fmtW(B.byDowoo)}</b></span></li><li><span>한아름</span><span>토마무 <b>${fmtW(B.byAreum)}</b></span></li><li><span>합계</span><span><b>${fmtW(B.fixTotal)}</b> <span class="b calc">계산</span> 환율 100엔=${B.rate}원</span></li></ul><p>결제 완료(항공 2건·솔라리아)는 강조색. 버스 ¥12,000의 원화는 환산값.</p></div>
+  <div class="card fixd"><span class="tag pill ok">✓ 확정</span><h3>확정 총액</h3><ul class="kv"><li><span>김도우</span><span>항공 ${fmtW(num(I.fOutKRW)+num(I.fRetKRW))} + 솔라리아 ${fmtW(num(I.solariaKRW))} + 버스 약 ${fmtW(B.busKRW)} = <b class="paid">${fmtW(B.byDowoo)}</b></span></li><li><span>한아름</span><span>토마무 <b>${fmtW(B.byAreum)}</b></span></li><li><span>합계</span><span><b>${fmtW(B.fixTotal)}</b> <span class="b calc">계산</span> 환율 100엔=${B.rate}원</span></li><li><span>현장 결제</span><span>빼꼼이 위탁 ${fmtW(num(I.petKRW))} — 예약 확정 · 아래 표의 확정 합계에만 포함</span></li></ul><p>결제 완료(항공 2건·솔라리아)는 강조색. 버스 ¥12,000의 원화는 환산값.</p></div>
   <div class="grid g2" style="margin-top:12px">${fixed.map(itemCard).join('')}</div>`;
 }
 function renderOpen(){
@@ -1310,16 +1319,15 @@ function renderCheck(){
   $('#ckHead').textContent=done+' / '+CHECKS.length+' 완료.';
   const cks=CHECKS.map(c=>`<label class="ck ${SH.ck[c.id]?'done':''}"><input type="checkbox" ${SH.ck[c.id]?'checked':''} onchange="setCk('${c.id}',this.checked)"><span><span class="t">${esc(c.n)}</span><span class="w">${esc(c.when)}</span></span></label>`).join('');
   $('#pg-check .body').innerHTML=`<div class="card"><div class="prog" style="margin:0 0 10px"><i style="width:${Math.round(done/CHECKS.length*100)}%"></i></div>${cks}</div>
-  <div class="card"><h3>날짜별 마감</h3><ul class="kv"><li><span>11/19 (목) 10:00</span><span>JR 특급 12/19편 에키넷 발매 개시 (승차일 1개월 전 규칙)${jf?' — 구매 완료':''}</span></li><li><span>12/9 (수)까지</span><span>버스 703 무료 취소 마감 (12/10~15 30% · 12/16 40% · 12/17 50%)</span></li><li><span>12/16 (수) 저녁</span><span>빼꼼이 위탁 입소 (미확정 · 위탁처 예약 필요)</span></li><li><span>12/17 (목) 12:10</span><span>버스 703 집합 — 국내선 터미널 1F 승차장 · 예약 ${BUS_INFO.res}</span></li><li><span>12/17 (목) 21:58</span><span>솔라리아 무료취소 마감</span></li><li><span>12/18 (금) 08:30</span><span>승마 당일권 — GAO 아웃도어센터 선착순 (예약 불가)</span></li></ul></div>
+  <div class="card"><h3>날짜별 마감</h3><ul class="kv"><li><span>11/19 (목) 10:00</span><span>JR 특급 12/19편 에키넷 발매 개시 (승차일 1개월 전 규칙)${jf?' — 구매 완료':''}</span></li><li><span>12/9 (수)까지</span><span>버스 703 무료 취소 마감 (12/10~15 30% · 12/16 40% · 12/17 50%)</span></li><li><span>12/14 (월)까지</span><span>도그스테이 취소·변경 고지 마감 — 이후 예약금 10,000원 환불 불가</span></li><li><span>12/16 (수)</span><span>빼꼼이 도그스테이 입실 (예약 확정) — 19:30 마감 · 도착 시각 사전 공유</span></li><li><span>12/17 (목) 12:10</span><span>버스 703 집합 — 국내선 터미널 1F 승차장 · 예약 ${BUS_INFO.res}</span></li><li><span>12/17 (목) 21:58</span><span>솔라리아 무료취소 마감</span></li><li><span>12/18 (금) 08:30</span><span>승마 당일권 — GAO 아웃도어센터 선착순 (예약 불가)</span></li><li><span>12/22 (화)</span><span>빼꼼이 퇴실 픽업 — 09:30~19:30 · 잔금 결제</span></li></ul></div>
   <div class="card"><h3>남은 예약 순서</h3><ul class="kv">
-<li><span>완료</span><span>항공 ZE621·WE532 · 버스 703 · 토마무 · 솔라리아</span></li>
-<li><span>① 11월 초</span><span>빼꼼이 위탁 예약 (12/16 저녁 입소)</span></li>
-<li><span>② 11월 초</span><span>hal · 니니누푸리 디너, 이세즈시 점심</span></li>
-<li><span>③ 11월 초</span><span>인천공항 이동 수단 결정</span></li>
-<li><span>④ 11/19 10:00</span><span>에키넷 JR 특급 12/19편 지정석</span></li>
-<li><span>⑤ 12/18 08:30</span><span>승마 현장 당일권 — 예약 불가</span></li>
+<li><span>완료</span><span>항공 ZE621·WE532 · 버스 703 · 토마무 · 솔라리아 · 빼꼼이 위탁(도그스테이)</span></li>
+<li><span>① 11월 초</span><span>hal · 니니누푸리 디너, 이세즈시 점심</span></li>
+<li><span>② 11월 초</span><span>인천공항 이동 수단 결정</span></li>
+<li><span>③ 11/19 10:00</span><span>에키넷 JR 특급 12/19편 지정석</span></li>
+<li><span>④ 12/18 08:30</span><span>승마 현장 당일권 — 예약 불가</span></li>
 </ul>
-<p class="note">11월 2~16일 제주 일정과 겹치지 않게 ①~③은 11월 초까지.</p></div>`;
+<p class="note">11월 2~16일 제주 일정과 겹치지 않게 ①~②는 11월 초까지.</p></div>`;
 }
 
 /* ---------- 항공 ---------- */
@@ -1544,8 +1552,8 @@ function renderBudget(){
   const B=budget(ALL); const I=SH.inp;
   const rows=B.L.map(x=>`<tr class="${x.tent?'tent':''}"><td><div class="n">${esc(x.n)} <span class="b ${x.b}">${LB[x.b]}</span></div><div class="note">${esc(x.note)}</div></td><td class="r"><b class="${x.paid?'paid':''}">${fmtW(B.krw(x))}</b>${x.cur==='JPY'?`<div class="note">${fmtJ(x.v)}</div>`:''}</td></tr>`).join('');
   const souv=SOUV.map((s,i)=>`<label class="ck ${SH.ck['souv:'+i]?'done':''}"><input type="checkbox" ${SH.ck['souv:'+i]?'checked':''} onchange="setCk('souv:${i}',this.checked)"><span><span class="t">${esc(s.n)}</span><span class="w">${esc(s.note)} [${esc(s.src)}]</span></span><span class="p">¥${s.p.toLocaleString()}</span></label>`).join('');
-  $('#pg-budget .body').innerHTML=`<div class="tools" style="margin-top:0">${viewSeg()}</div><div class="grid g2" style="margin-top:12px"><div class="card fixd"><span class="tag pill ok">✓ 확정</span><h3>확정 총액</h3><ul class="kv"><li><span>김도우</span><span>항공 ${fmtW(num(I.fOutKRW)+num(I.fRetKRW))} + 솔라리아 ${fmtW(num(I.solariaKRW))} + 버스 약 ${fmtW(B.busKRW)} = <b class="paid">${fmtW(B.byDowoo)}</b></span></li><li><span>한아름</span><span>토마무 <b>${fmtW(B.byAreum)}</b></span></li><li><span>합계</span><span><b>${fmtW(B.fixTotal)}</b> <span class="b calc">계산</span> 환율 100엔=${B.rate}원</span></li></ul></div><div class="card tent"><span class="tag pill warn">미확정</span><h3>미확정 예상</h3><ul class="kv"><li><span>미확정 항목 합계</span><span>${fmtW(B.tentSum)}</span></li><li><span>예비비 10%</span><span>${fmtW(B.res)} <span class="b calc">계산</span> (미확정분만)</span></li><li><span>확정 + 미확정 + 예비비</span><span><b>${fmtW(B.total)}</b></span></li></ul><p>JR·오타루·시내·숙박세·공항 이동·빼꼼이·식사·기념품. 확정 처리하거나 실제가를 입력하면 확정 총액으로 옮겨집니다.</p></div></div>
-  <div class="settings"><div class="set"><b>환율 (100엔 = 원)</b><input type="number" value="${B.rate}" onchange="setInp('rate',this.value,'budget')"><span>KB 9/7 매매기준 869.77 → 870 · 공유 입력</span></div><div class="set tent"><b>인천공항 왕복 (원)</b><input type="number" value="${num(I.icnKRW)}" step="10000" onchange="setInp('icnKRW',this.value,'icn')"><span>장기주차 5일+유류 or 택시 왕복 · 판단</span></div><div class="set tent"><b>빼꼼이 위탁 (원)</b><input type="number" value="${num(I.petKRW)}" step="10000" onchange="setInp('petKRW',this.value,'pet')"><span>12/16 저녁 ~ 12/21 저녁 · 판단</span></div><div class="set tent"><b>시내 교통 예비 (¥)</b><input type="number" value="${num(I.cityJPY)}" step="500" onchange="setInp('cityJPY',this.value,'budget')"><span>지하철·시덴 2인 합산 · 판단</span></div><div class="set tent"><b>숙박세 2인 4박 (¥)</b><input type="number" value="${num(I.taxJPY)}" step="100" onchange="setInp('taxJPY',this.value,'tax')"><span>예상 ¥2,000~3,200 · 현장 결제 후 실제가 입력</span></div></div>
+  $('#pg-budget .body').innerHTML=`<div class="tools" style="margin-top:0">${viewSeg()}</div><div class="grid g2" style="margin-top:12px"><div class="card fixd"><span class="tag pill ok">✓ 확정</span><h3>확정 총액</h3><ul class="kv"><li><span>김도우</span><span>항공 ${fmtW(num(I.fOutKRW)+num(I.fRetKRW))} + 솔라리아 ${fmtW(num(I.solariaKRW))} + 버스 약 ${fmtW(B.busKRW)} = <b class="paid">${fmtW(B.byDowoo)}</b></span></li><li><span>한아름</span><span>토마무 <b>${fmtW(B.byAreum)}</b></span></li><li><span>합계</span><span><b>${fmtW(B.fixTotal)}</b> <span class="b calc">계산</span> 환율 100엔=${B.rate}원</span></li><li><span>현장 결제</span><span>빼꼼이 위탁 ${fmtW(num(I.petKRW))} — 예약 확정 · 아래 표의 확정 합계에만 포함</span></li></ul></div><div class="card tent"><span class="tag pill warn">미확정</span><h3>미확정 예상</h3><ul class="kv"><li><span>미확정 항목 합계</span><span>${fmtW(B.tentSum)}</span></li><li><span>예비비 10%</span><span>${fmtW(B.res)} <span class="b calc">계산</span> (미확정분만)</span></li><li><span>확정 + 미확정 + 예비비</span><span><b>${fmtW(B.total)}</b></span></li></ul><p>JR·오타루·시내·숙박세·공항 이동·식사·기념품. 확정 처리하거나 실제가를 입력하면 확정 총액으로 옮겨집니다.</p></div></div>
+  <div class="settings"><div class="set"><b>환율 (100엔 = 원)</b><input type="number" value="${B.rate}" onchange="setInp('rate',this.value,'budget')"><span>KB 9/7 매매기준 869.77 → 870 · 공유 입력</span></div><div class="set tent"><b>인천공항 왕복 (원)</b><input type="number" value="${num(I.icnKRW)}" step="10000" onchange="setInp('icnKRW',this.value,'icn')"><span>장기주차 5일+유류 or 택시 왕복 · 판단</span></div><div class="set"><b>빼꼼이 위탁 (원)</b><input type="number" value="${num(I.petKRW)}" step="10000" onchange="setInp('petKRW',this.value,'pet')"><span>도그스테이 12/16 입실~12/22 퇴실 · 30,000원/일 × 6일 · 계산</span></div><div class="set tent"><b>시내 교통 예비 (¥)</b><input type="number" value="${num(I.cityJPY)}" step="500" onchange="setInp('cityJPY',this.value,'budget')"><span>지하철·시덴 2인 합산 · 판단</span></div><div class="set tent"><b>숙박세 2인 4박 (¥)</b><input type="number" value="${num(I.taxJPY)}" step="100" onchange="setInp('taxJPY',this.value,'tax')"><span>예상 ¥2,000~3,200 · 현장 결제 후 실제가 입력</span></div></div>
   <div class="card" style="margin-top:12px;padding:6px 8px 4px"><table><thead><tr><th>항목</th><th class="r">원화 (2인)</th></tr></thead><tbody>${rows}<tr class="tent"><td><div class="n">예비비 10% <span class="b calc">계산</span></div><div class="note">미확정 항목 합계 ${fmtW(B.tentSum)}의 10%</div></td><td class="r"><b>${fmtW(B.res)}</b></td></tr></tbody></table><div class="total"><span>합계 (2인)</span><span class="v" id="budgetTotal" data-v="${B.total}">${fmtW(B.total)}</span></div><p class="small muted" style="padding:0 6px 10px;margin:0">확정 <b>${fmtW(B.fixSum)}</b> + 미확정 ${fmtW(B.tentSum)} + 예비비 ${fmtW(B.res)}. 교통비 합계 <b id="transportJPY" data-v="${B.transportJPY}">${fmtJ(B.transportJPY)}</b> (2인, 시내 예비 포함 · ${fmtW(B.transportJPY*B.rate/100)}) — v2 렌터카안(¥76,767) 대비 <b>${fmtJ(76767-B.transportJPY)}</b> 절감 <span class="b calc">계산</span>.</p></div>
   <div class="card tent" style="margin-top:12px"><h3>기념품 체크 → 예산 반영 <span class="b input">공유</span></h3><div style="margin-top:8px">${souv}</div></div>`;
 }
@@ -1560,7 +1568,7 @@ function resetAll(){ if(!confirm('일정 조합·선택값을 초기화할까요
 /* ===================== v4 · 공유 상태(SH) · 항목 레지스트리 · 동기화 · 현황 ===================== */
 const num=v=>{ const n=parseFloat(String(v==null?'':v).replace(/[^\d.\-]/g,'')); return isNaN(n)?0:Math.max(0,n); };
 const NUMKEYS=['fOutKRW','fRetKRW','tomamuKRW','solariaKRW','busJPY','rate','icnKRW','petKRW','cityJPY','taxJPY'];
-const DEFAULT_SH={v:4, fix:{}, ck:{}, inp:{fOutKRW:701800,fRetKRW:765800,tomamuKRW:1100000,solariaKRW:710909,busJPY:12000,rate:870,icnKRW:80000,petKRW:250000,cityJPY:3000,taxJPY:3200,jrRes:'',ppDowooExp:'',ppAreumExp:'2027-08-17'}, memo:{}, meta:{}, by:'', _at:0, _dev:''};
+const DEFAULT_SH={v:5, fix:{}, ck:{}, inp:{fOutKRW:701800,fRetKRW:765800,tomamuKRW:1100000,solariaKRW:710909,busJPY:12000,rate:870,icnKRW:80000,petKRW:180000,cityJPY:3000,taxJPY:3200,jrRes:'',ppDowooExp:'',ppAreumExp:'2027-08-17'}, memo:{}, meta:{}, by:'', _at:0, _dev:''};
 /* 항목 레지스트리 — fix:true 는 데이터상 확정(예약·결제 완료). SH.fix[id] 가 있으면 그 값이 우선(둘이 토글 가능). 미확정 항목은 음영 처리만 하고 절대 삭제하지 않는다. */
 const ITEMS=[
  {id:'f_out', g:'항공 · 가는편', n:'이스타항공 ZE621', when:'12/17 (목) ICN 07:40 → CTS 10:20', fix:true, who:'김도우', paid:'09/11 결제완료', inp:'fOutKRW', cur:'KRW',
@@ -1575,14 +1583,14 @@ const ITEMS=[
   kv:[['플랜','기본 플랜 — 조식 + 리프트권 포함'],['체크인 / 아웃','15:00 / 11:00'],['부담','한아름']]},
  {id:'h_sap', g:'숙소 · 삿포로', n:'솔라리아 니시테츠 호텔 삿포로', when:'12/19 (토) 15:00 → 12/21 (월) 11:00 · 2박', fix:true, who:'김도우', paid:'09/11 결제완료', inp:'solariaKRW', cur:'KRW',
   kv:[['예약번호','26091116013EA2ES1'],['객실','STANDARD QUEEN BED · 21.1㎡ · 성인 2 · 조식포함'],['무료취소','12/17 (목) 21:58까지'],['주소','中央区北4条西5-1-2 · JR삿포로역 도보 5분 · 지하철 남북선 8번출구 도보 3분'],['대욕장','지하1층 15:00~25:00 · 익일 5:30~9:00'],['특별요청 기입값','침대 2개(오입력 — 실제는 퀸 1개) / 금연 / 고층'],['고지','인접 건물 공사 소음']]},
+ {id:'pet', g:'준비 · 빼꼼이', n:'애견 호텔 — 도그스테이 (고양 삼송)', when:'12/16 (수) 입실 ~ 12/22 (화) 퇴실 · 6박 7일', fix:true, who:'김도우', calc:true, inp:'petKRW', cur:'KRW',
+  kv:[['확정','계약서 제출 + 예약금 10,000원 입금 완료 — 업체 확인 회신 수신 (9/13)'],['요금','1~5kg 30,000원/일 × 6일 = 180,000원 (계산) · 예약금은 호텔링 금액에서 차감'],['운영시간','매일 09:30~19:30 — 입실·퇴실 모두 이 시간대'],['일정 근거','12/17 04:15 집 출발 · 12/21 귀가 19:05 → 전날 입실 · 다음날 퇴실'],['주소 · 주차','경기도 고양시 덕양구 삼송로253-3 · 부동산 앞 공터 또는 흀스 옆'],['취소 규정','일정 2일 전(12/14 월)까지 고지해야 예약금 환불'],['사전 고지','접종내역·질병·알레르기 체크인 전 고지 필수(미고지 시 업체 면책) · 입실 시점 5차 접종 완료 상태'],['입실 당일','도착 예상 시각 사전 공유 · 변동 시 사전 고지 · 안고 입장·출입문 폐쇄'],['확인','7일 이상 5% 할인 적용 여부(적용 시 171,000원) · 24시간 초과분 시간당 4,000원(6~10시간 25,000원)']]},
  /* ── 미확정 (음영 · 삭제 금지) ── */
  {id:'jr', g:'이동 · 12/19', n:'JR 특급 とかち6号 · 토마무 → 삿포로', when:'12:15 → 14:10 · 1h55', fix:false, field:'예약번호', finp:'jrRes',
   kv:[['요금','¥5,880/인 × 2 = ¥11,760 (駅探 2026.9)'],['발매','에키넷 11/19 (목) 10:00 (승차일 1개월 전)'],['주의','토마무역 매표소 없음 · 더 타워 발매기 현금 불가'],['백업','12/17 도착일 신치토세공항역 미도리노마도구치에서 구매']]},
  {id:'din_hal', g:'식사 · 토마무', n:'hal 뷔페 디너 예약', when:'12/17 (목) 또는 12/18 (금) 17:30~', fix:false, field:'예약 일시 · 번호', kv:[['방법','체크인 전 앱/전화 · 예약 필수 · ¥6,500/인 (판단)']]},
  {id:'din_nini', g:'식사 · 토마무', n:'니니누푸리 숲의 레스토랑 디너 예약', when:'12/17 (목) 또는 12/18 (금) 17:30~', fix:false, field:'예약 일시 · 번호', kv:[['방법','예약 필요 · ¥6,000/인 (판단) · hal과 하루씩']]},
  {id:'din_ise', g:'식사 · 오타루', n:'이세즈시 점심 예약', when:'12/20 (일) 11:30~ (LO 14:30)', fix:false, field:'예약 일시 · 번호', kv:[['방법','공식사이트 외국인 예약(JPNEAZY 수수료 10~15%) · 재료 소진 시 조기 마감 · 오마카세 16관 ¥7,700(2024)']]},
- {id:'pet', g:'준비', n:'빼꼼이 위탁', when:'12/16 (수) 저녁 입소 ~ 12/21 (월) 저녁 픽업', fix:false, field:'위탁처 · 예약번호', inp:'petKRW', cur:'KRW', judge:true,
-  kv:[['이유','04:15 출발이라 전날 입소 필수'],['확인','12/21 저녁 픽업 마감 시각 (집 도착 19:05 기준)']]},
  {id:'horse', g:'액티비티 · 12/18', n:'승마 체험 — 현장 당일권', when:'08:30 GAO 아웃도어센터 선착순 (11:00 슬롯 요청)', fix:false, dayof:true, kv:[['예약','불가 — 당일권만 · ¥3,600/인 · 2인 탑승 불가 · 날씨·말 컨디션으로 중지 가능']]},
  {id:'terrace', g:'액티비티 · 12/18', n:'무빙테라스 곤돌라', when:'12/18 (금) 09:00 · 예비 12/19 (토) 09:00', fix:false, dayof:true, kv:[['조건','아침 공식 “오늘의 영업 정보”로 무빙 발생·운행 확인 · 미발생·운휴면 12/19 09:00 예비']]},
  {id:'lift', g:'확인 · 12/17 체크인', n:'리프트권으로 무빙테라스 곤돌라 탑승 가능 여부', when:'체크인 시 프런트 확인', fix:false, field:'프런트 답변', kv:[['효과','가능하면 2인 약 ¥4,400 절감 (¥2,200/인 × 2 · 예산은 유료로 계상 중)']]},
@@ -1596,7 +1604,9 @@ const ITEMS=[
 const ITEM=Object.fromEntries(ITEMS.map(i=>[i.id,i]));
 const CHECKS=[
  {id:'jr_buy', n:'JR 특급 12/19 とかち6号 지정석 에키넷 구매', when:'11/19 (목) 10:00 발매'},
- {id:'pet_book', n:'빼꼼이 위탁 예약 — 12/16 저녁 입소 · 12/21 저녁 픽업', when:'11월 초'},
+ {id:'pet_vac', n:'빼꼼이 5차 접종 완료 · 접종내역·알레르기 도그스테이 사전 고지', when:'12/16 입실 전'},
+ {id:'pet_in', n:'빼꼼이 입실 — 도착 예상 시각 사전 공유 (09:30~19:30)', when:'12/16 (수)'},
+ {id:'pet_out', n:'빼꼼이 퇴실 픽업 · 잔금 결제 (예약금 10,000원 차감)', when:'12/22 (화) 09:30~19:30'},
  {id:'din_book', n:'hal / 니니누푸리 디너 · 이세즈시 점심 예약', when:'11월 초'},
  {id:'vjw', n:'Visit Japan Web 2인 등록 (입국·세관)', when:'출발 전'},
  {id:'pp_check', n:'여권 2인 유효기간 확인 · 김도우 만료일 입력', when:'출발 전'},
@@ -1612,7 +1622,7 @@ let SH=JSON.parse(JSON.stringify(DEFAULT_SH)); let artOK=false; let lastEditAt=0
 function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
 function lsSet(k,v){ try{ localStorage.setItem(k,v); return true; }catch(e){ return false; } }
 function isFix(id){ const it=ITEM[id]; if(!it) return false; return (typeof SH.fix[id]==='boolean')?SH.fix[id]:!!it.fix; }
-function mergeSH(o){ const b=JSON.parse(JSON.stringify(DEFAULT_SH)); if(!o||typeof o!=='object') return b; b.fix=Object.assign({},o.fix||{}); b.ck=Object.assign({},o.ck||{}); b.inp=Object.assign(b.inp,o.inp||{}); b.memo=Object.assign({},o.memo||{}); b.meta=Object.assign({},o.meta||{}); b.by=String(o.by||'').slice(0,20); b._at=+o._at||0; b._dev=String(o._dev||''); delete b.pp; delete b.inp.ppDowoo; delete b.inp.ppAreum; return b; }
+function mergeSH(o){ const b=JSON.parse(JSON.stringify(DEFAULT_SH)); if(!o||typeof o!=='object') return b; b.fix=Object.assign({},o.fix||{}); b.ck=Object.assign({},o.ck||{}); b.inp=Object.assign(b.inp,o.inp||{}); b.memo=Object.assign({},o.memo||{}); b.meta=Object.assign({},o.meta||{}); b.by=String(o.by||'').slice(0,20); b._at=+o._at||0; b._dev=String(o._dev||''); delete b.pp; delete b.inp.ppDowoo; delete b.inp.ppAreum; if((+o.v||0)<5){ b.inp.petKRW=180000; delete b.fix.pet; delete b.ck.pet_book; } return b; }
 function loadSH(){ const raw=lsGet(SHKEY); if(raw){ try{ SH=mergeSH(JSON.parse(raw)); }catch(e){} } }
 async function loadSHArtifact(){ artOK=(typeof window.storage!=='undefined'&&window.storage&&typeof window.storage.get==='function'); if(!artOK) return; try{ const r=await window.storage.get(SHKEY); if(r&&r.value){ const o=mergeSH(JSON.parse(r.value)); if(o._at>(SH._at||0)){ SH=o; persistSH(false); renderAll(); } } }catch(e){ /* 첫 실행 */ } }
 function persistSH(push){ const raw=JSON.stringify(SH); lsSet(SHKEY,raw); if(artOK){ try{ window.storage.set(SHKEY,raw); }catch(e){} } if(push!==false) syncPushSoon(); }
@@ -1675,7 +1685,7 @@ function boot(){
   document.body.classList.toggle('editing',EDITM);
   const h=location.hash.replace(/^#\/?/,''); const saved=lsGet('_page_trip'); const start=LEAF[h]?h:(LEAF[saved]?saved:'glance');
   go(start,{replace:true});
-  const bt=$('#buildTag'); if(bt) bt.textContent=BUILD;
+  const bt=$('#buildTag'); if(bt){ bt.textContent=BUILD.split(' · ')[0]; bt.title=BUILD; }
   loadSyncCfg(); if(SYNC.on) startSync();
   document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') syncPull(false); });
   document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeSheet(); });
@@ -1837,6 +1847,13 @@ else { hideNow(); hReplace(Object.assign(navSnap(),{v:'app'})); }
 var goBtn=document.getElementById('introGo');
 if(goBtn) goBtn.addEventListener('click',function(){ if(!introOn()) return; var after=Object.assign(navSnap(),{v:'app'}); hReplace(Object.assign(navSnap(),{v:'intro'})); enterApp(true); hPush(after); });
 window.introEnter=function(){ enterApp(true); };
+/* v5.4 · 앱 어디서나 커버로 복귀 (상단 좌측 “커버” 버튼 · 데스크톱 사이드바 제목) */
+window.introShow=function(){
+  if(introOn()) return;
+  hReplace(Object.assign(navSnap(),{v:'app'}));   /* 현재 항목 = 앱 상태로 고정 */
+  showIntro();
+  hPush(Object.assign(navSnap(),{v:'intro'}));    /* 커버는 새 항목 → 뒤로가기로 보던 화면 복귀 */
+};
 })();
 </script>
 
