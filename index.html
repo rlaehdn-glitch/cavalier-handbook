@@ -2332,6 +2332,7 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
           <p id="p2Gate" class="muted small" style="margin:0 0 8px;">기기 확인 중&hellip;</p>
           <div class="alb-prog" id="p2Prog"><i id="p2ProgBar"></i></div>
           <div class="row" style="gap:6px; flex-wrap:wrap; margin-top:6px;">
+            <button class="btn sm ghost" id="p2Test" type="button">1장 시험</button>
             <button class="btn sm" id="p2Run" type="button" disabled>R2로 옮기기</button>
             <button class="btn sm ghost" id="p2Clean" type="button" disabled>파이어베이스 정리</button>
             <button class="btn sm ghost" id="p2Stop" type="button" style="display:none;">중단</button>
@@ -4079,8 +4080,8 @@ function bindAlbum(){
         if(albP2On()){
           /* V5.12: 두 폰 모두 신버전 → R2에 바이너리로. base64 33% 군살이 빠진다 */
           const fb=albDataBlob(fu), tb=albDataBlob(th);
-          await mediaUpload(fb, albP2Key('full',id), 'image/jpeg');
-          await mediaUpload(tb, albP2Key('th',id), 'image/jpeg');
+          await mediaUpload(fb, albP2Key('full',id), albP2Ct());
+          await mediaUpload(tb, albP2Key('th',id), albP2Ct());
           meta={t:'p', d:todayKey(), m:'', at:Date.now(), s:fb.size+tb.size, p2:1};
           await albFetch('meta/'+id,'PUT',JSON.stringify(meta));
           ALB.meta=ALB.meta||{}; ALB.meta[id]=meta; ALB.thumbs.set(id,th);
@@ -4226,9 +4227,58 @@ function bindAlbum(){
    meta[id].p2=1 이면 그 사진의 원본·썸네일이 R2에 있음. 없으면 기존 파이어베이스.
    화면 코드는 albImgSrc() 한 곳만 거치므로 표시·정렬·메모·좋아요는 전부 그대로다.
    상대 폰이 구버전이면 p2 를 모르기 때문에, 두 폰 모두 이 빌드일 때만 전환한다. */
-const PVER=512;
+const PVER=512;   /* v5.12.1 */
 const PMIG={run:false, stop:false, gate:null};
-function albP2Key(kind,id){ return (kind==='th'?'pt/':'pf/')+id+'.jpg'; }
+const P2SCHEMES=[
+  {id:'a', name:'사진 전용 폴더 (pf/ · image/jpeg)', ct:'image/jpeg', f:function(k,id){ return (k==='th'?'pt/':'pf/')+id+'.jpg'; }},
+  {id:'b', name:'영상 폴더 재사용 (v/ · image/jpeg)', ct:'image/jpeg', f:function(k,id){ return 'v/'+(k==='th'?'pt_':'pf_')+id+'.jpg'; }},
+  {id:'c', name:'영상 폴더+영상 타입 (v/ · .mp4)',   ct:'video/mp4',  f:function(k,id){ return 'v/'+(k==='th'?'pt_':'pf_')+id+'.mp4'; }}
+];
+let P2S='a';
+function albP2Scheme(){ for(let i=0;i<P2SCHEMES.length;i++){ if(P2SCHEMES[i].id===P2S) return P2SCHEMES[i]; } return P2SCHEMES[0]; }
+function albP2Key(kind,id){ return albP2Scheme().f(kind,id); }
+function albP2Ct(){ return albP2Scheme().ct; }
+async function albP2Load(){ try{ const v=await albFetch('p2s'); if(v && typeof v==='string'){ P2S=v; } }catch(e){} }
+/* 1장 시험 — 아주 작은 더미 파일로 어떤 키 방식이 통하는지 실측하고, 통하는 방식을 두 폰 공용으로 저장 */
+async function albMigTest(){
+  if(!mediaConfigured()){ alert('영상 저장소가 연결되어 있지 않습니다.'); return; }
+  const log=[];
+  function out(){ const e=document.getElementById('p2Stat'); if(e) e.innerHTML=log.join('<br>'); }
+  log.push('① 저장소 연결 확인…'); out();
+  try{ await mediaFetch(mediaApi('/ping'),{method:'GET'},15000); log.push('　→ 정상'); }
+  catch(e){ log.push('　→ <b>실패: '+esc(String(e&&e.message||e))+'</b>'); out(); return; }
+  out();
+  const ids=albMigTodo();
+  if(ids.length){
+    log.push('② 기존 사진 읽기…'); out();
+    try{
+      const fu=await albFetch('full/'+ids[0]);
+      if(!fu) throw new Error('내용 없음(null)');
+      const b=albDataBlob(fu);
+      log.push('　→ 정상 · 원본 '+Math.round(String(fu).length/1024)+'KB → 변환 '+Math.round(b.size/1024)+'KB');
+    }catch(e){ log.push('　→ <b>실패: '+esc(String(e&&e.message||e))+'</b>'); out(); return; }
+    out();
+  }
+  const probe=new Blob([new Uint8Array([255,216,255,224,0,16,74,70,73,70,0,1,255,217])],{type:'image/jpeg'});
+  let win=null;
+  for(let i=0;i<P2SCHEMES.length;i++){
+    const s=P2SCHEMES[i], key=s.f('full','__probe');
+    log.push('③-'+(i+1)+' '+esc(s.name)+' …'); out();
+    try{
+      await mediaFetch(mediaApi('/put',{key:key, ct:s.ct}), {method:'PUT', body:probe}, 60000);
+      const r=await fetch(mediaApi('/file/'+key));
+      if(!r.ok) throw new Error('올린 뒤 다시 못 읽음 HTTP '+r.status);
+      log.push('　→ <b>성공</b>'); out();
+      try{ await mediaFetch(mediaApi('/file/'+key),{method:'DELETE'},15000); }catch(e){}
+      win=s; break;
+    }catch(e){ log.push('　→ 실패: '+esc(String(e&&e.message||e))); out(); }
+  }
+  if(!win){ log.push('<b>세 방식 모두 거부됨 — Worker 코드 수정이 필요합니다. 위 실패 메시지를 그대로 전달해주세요.</b>'); out(); return; }
+  P2S=win.id;
+  try{ await albFetch('p2s','PUT',JSON.stringify(P2S)); }catch(e){}
+  log.push('<b>→ 이 방식으로 설정 완료. 이제 "R2로 옮기기"를 누르세요.</b>');
+  out(); renderMigPanel();
+}
 function albIsP2(id){ const m=ALB.meta&&ALB.meta[id]; return !!(m&&m.p2); }
 function albImgSrc(kind,id){
   if(albIsP2(id)){
@@ -4308,7 +4358,7 @@ async function albMigRun(){
   if(!confirm('사진 '+todo.length+'장을 R2로 옮깁니다.\n앨범 화면은 그대로이고, 원본은 아직 지우지 않습니다.\n도중에 끊겨도 다시 누르면 이어서 진행됩니다.\n\n시작할까요?')) return;
   PMIG.run=true; PMIG.stop=false; renderMigPanel();
   let wl=null; try{ if(navigator.wakeLock) wl=await navigator.wakeLock.request('screen'); }catch(e){}
-  let ok=0, fail=0;
+  let ok=0, fail=0, err='';
   try{
     for(let i=0;i<todo.length;i++){
       if(PMIG.stop) break;
@@ -4319,21 +4369,21 @@ async function albMigRun(){
         if(!fu){ fail++; continue; }
         let th=null; try{ th=await albFetch('th/'+id); }catch(e){}
         const fb=albDataBlob(fu);
-        await mediaUpload(fb, albP2Key('full',id), 'image/jpeg');
+        await mediaUpload(fb, albP2Key('full',id), albP2Ct());
         let tb=null;
-        if(th){ tb=albDataBlob(th); await mediaUpload(tb, albP2Key('th',id), 'image/jpeg'); }
+        if(th){ tb=albDataBlob(th); await mediaUpload(tb, albP2Key('th',id), albP2Ct()); }
         const m=Object.assign({}, ALB.meta[id]||{});
         m.p2=1; m.s=fb.size+(tb?tb.size:0);
         await albFetch('meta/'+id,'PUT',JSON.stringify(m));
         ALB.meta[id]=m; ALB.thumbs.delete(id); ALB.fulls.delete(id);
         ok++;
-      }catch(e){ fail++; }
+      }catch(e){ fail++; if(!err) err=String(e&&e.message||e); }
     }
     try{ await albBumpIdx(); }catch(e){}
   }finally{
     PMIG.run=false; p2Prog(null); try{ if(wl) wl.release(); }catch(e){}
     renderAlbum();
-    p2Stat('옮김 '+ok+'장'+(fail?(' · 실패 '+fail+'장 — 다시 누르면 재시도합니다'):'')+(albMigTodo().length?'':' · 앨범이 정상인지 확인한 뒤 "파이어베이스 정리"를 눌러주세요'));
+    p2Stat('옮김 '+ok+'장'+(fail?(' · 실패 '+fail+'장 — 원인: '+err):'')+(albMigTodo().length?'':' · 앨범이 정상인지 확인한 뒤 "파이어베이스 정리"를 눌러주세요'));
     renderMigPanel();
   }
 }
@@ -4367,6 +4417,7 @@ async function albMigClean(){
 function bindMig(){
   const r=document.getElementById('p2Run'); if(!r) return;
   r.addEventListener('click', albMigRun);
+  const tb=document.getElementById('p2Test'); if(tb) tb.addEventListener('click', albMigTest);
   document.getElementById('p2Clean').addEventListener('click', albMigClean);
   document.getElementById('p2Stop').addEventListener('click', function(){ PMIG.stop=true; p2Stat('중단 요청 — 현재 장이 끝나면 멈춥니다.'); });
   document.getElementById('p2Force').addEventListener('change', renderMigPanel);
@@ -6396,7 +6447,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   if(SYNC.on) startSync();
   if(syncConfigured()) albumPull(true);
   if(syncConfigured()) chatStart();
-  if(syncConfigured()){ albVerBeat(); setTimeout(function(){ albMigRefresh(); }, 1500); }   /* V5.12 */
+  if(syncConfigured()){ albVerBeat(); albP2Load(); setTimeout(function(){ albMigRefresh(); }, 1500); }   /* V5.12 */
 });
 </script>
 
