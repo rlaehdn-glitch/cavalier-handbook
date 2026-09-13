@@ -2327,6 +2327,13 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
           </div>
           <p id="mediaStat" class="muted small" style="margin:6px 0 0;">주소를 붙여넣고 "연결"을 누르면 확인합니다. 한 사람만 하면 상대 폰에도 자동 반영됩니다.</p>
         </div>
+        <div class="alb-form" style="margin-top:10px;">
+          <div class="alb-form-t">전체 백업 &mdash; 월별 ZIP</div>
+          <p class="muted small" style="margin:0 0 6px;">사진·영상을 원래 파일로 묶어 폰에 저장합니다. 날짜·메모·좋아요는 ZIP 안 <b>목록.csv</b> 에 함께 들어갑니다.</p>
+          <button class="btn sm" id="bkMake" type="button">백업 목록 만들기</button>
+          <div id="bkList"></div>
+          <p id="bkStat" class="muted small" style="margin:6px 0 0;"></p>
+        </div>
         <div class="alb-form" id="p2Box" style="margin-top:10px; display:none;">
           <div class="alb-form-t">사진 저장소 이관 &mdash; 한 폰에서만 실행</div>
           <p id="p2Gate" class="muted small" style="margin:0 0 8px;">기기 확인 중&hellip;</p>
@@ -4227,7 +4234,7 @@ function bindAlbum(){
    meta[id].p2=1 이면 그 사진의 원본·썸네일이 R2에 있음. 없으면 기존 파이어베이스.
    화면 코드는 albImgSrc() 한 곳만 거치므로 표시·정렬·메모·좋아요는 전부 그대로다.
    상대 폰이 구버전이면 p2 를 모르기 때문에, 두 폰 모두 이 빌드일 때만 전환한다. */
-const PVER=512;   /* v5.12.2 */
+const PVER=512;   /* v5.13 */
 const PMIG={run:false, stop:false, gate:null};
 const P2SCHEMES=[
   {id:'d', name:'영상과 같은 형식 (v/… .mp4)',  ct:'video/mp4',  f:function(k,id){ return 'v/'+id+(k==='th'?'t':'')+'.mp4'; }},
@@ -4301,13 +4308,17 @@ function albImgSrc(kind,id){
   }
   return albFetch(kind+'/'+id);
 }
-function albDataBlob(du){
+function albDataU8(du){
   const i=String(du||'').indexOf(',');
   if(i<0) throw new Error('형식 오류');
-  const ct=(String(du).slice(0,i).match(/data:([^;]+)/)||[])[1]||'image/jpeg';
   const bin=atob(String(du).slice(i+1)), n=bin.length, u8=new Uint8Array(n);
   for(let j=0;j<n;j++) u8[j]=bin.charCodeAt(j);
-  return new Blob([u8],{type:ct});
+  return u8;
+}
+function albDataBlob(du){
+  const i=String(du||'').indexOf(',');
+  const ct=(String(du).slice(0,Math.max(i,0)).match(/data:([^;]+)/)||[])[1]||'image/jpeg';
+  return new Blob([albDataU8(du)],{type:ct});
 }
 /* --- 기기 빌드 번호 보고 / 상대 폰 구버전 감지 --- */
 async function albVerBeat(){
@@ -4432,9 +4443,179 @@ function bindMig(){
   const r=document.getElementById('p2Run'); if(!r) return;
   r.addEventListener('click', albMigRun);
   const tb=document.getElementById('p2Test'); if(tb) tb.addEventListener('click', albMigTest);
+  try{ bindBackup(); }catch(e){}
   document.getElementById('p2Clean').addEventListener('click', albMigClean);
   document.getElementById('p2Stop').addEventListener('click', function(){ PMIG.stop=true; p2Stat('중단 요청 — 현재 장이 끝나면 멈춥니다.'); });
   document.getElementById('p2Force').addEventListener('change', renderMigPanel);
+}
+/* =============== V5.13: 전체 백업 (월별 ZIP) ===============
+   사진·영상을 원래 파일 그대로 묶는다. JPEG/MP4 는 이미 압축된 형식이라 재압축(deflate) 없이
+   STORE 방식으로 담는다 — 폰에서 압축 연산이 없어 훨씬 빠르고 메모리도 덜 쓴다. */
+const BK={cap:120*1024*1024, plan:null, busy:false};
+const BKCRC=(function(){ const t=new Uint32Array(256); for(let n=0;n<256;n++){ let c=n; for(let k=0;k<8;k++){ c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1); } t[n]=c>>>0; } return t; })();
+function bkCrc32(u8){ let c=0xFFFFFFFF; for(let i=0;i<u8.length;i++){ c=BKCRC[(c^u8[i])&0xFF]^(c>>>8); } return (c^0xFFFFFFFF)>>>0; }
+function bkDos(ts){
+  const d=new Date(ts||Date.now());
+  const dt=(((d.getFullYear()-1980)&0x7F)<<9)|((d.getMonth()+1)<<5)|d.getDate();
+  const tm=(d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1);
+  return {d:dt, t:tm};
+}
+function bkUtf8(str){
+  if(typeof TextEncoder!=='undefined') return new TextEncoder().encode(str);
+  const b=unescape(encodeURIComponent(String(str))), u=new Uint8Array(b.length);
+  for(let i=0;i<b.length;i++) u[i]=b.charCodeAt(i);
+  return u;
+}
+function bkZip(files){                       /* files: [{name, data:Uint8Array, at}] */
+  const enc={encode:bkUtf8}, body=[], cen=[]; let off=0;
+  files.forEach(function(f){
+    const nb=enc.encode(f.name), crc=bkCrc32(f.data), sz=f.data.length, dt=bkDos(f.at);
+    const lh=new Uint8Array(30+nb.length), lv=new DataView(lh.buffer);
+    lv.setUint32(0,0x04034b50,true); lv.setUint16(4,20,true); lv.setUint16(6,0x0800,true); lv.setUint16(8,0,true);
+    lv.setUint16(10,dt.t,true); lv.setUint16(12,dt.d,true);
+    lv.setUint32(14,crc,true); lv.setUint32(18,sz,true); lv.setUint32(22,sz,true);
+    lv.setUint16(26,nb.length,true); lv.setUint16(28,0,true); lh.set(nb,30);
+    body.push(lh, f.data);
+    const ch=new Uint8Array(46+nb.length), cv=new DataView(ch.buffer);
+    cv.setUint32(0,0x02014b50,true); cv.setUint16(4,20,true); cv.setUint16(6,20,true);
+    cv.setUint16(8,0x0800,true); cv.setUint16(10,0,true);
+    cv.setUint16(12,dt.t,true); cv.setUint16(14,dt.d,true);
+    cv.setUint32(16,crc,true); cv.setUint32(20,sz,true); cv.setUint32(24,sz,true);
+    cv.setUint16(28,nb.length,true); cv.setUint32(42,off,true); ch.set(nb,46);
+    cen.push(ch); off+=lh.length+sz;
+  });
+  let cs=0; cen.forEach(function(c){ cs+=c.length; });
+  const eo=new Uint8Array(22), ev=new DataView(eo.buffer);
+  ev.setUint32(0,0x06054b50,true); ev.setUint16(8,files.length,true); ev.setUint16(10,files.length,true);
+  ev.setUint32(12,cs,true); ev.setUint32(16,off,true);
+  return new Blob(body.concat(cen).concat([eo]),{type:'application/zip'});
+}
+function bkSize(m){ return albIsPhoto(m) ? (m.s||0) : ((m.vs||0)+(m.s||0)); }
+function bkExt(m){
+  if(albIsPhoto(m)) return 'jpg';
+  const k=String(m.k||''), i=k.lastIndexOf('.');
+  return (i>-1? k.slice(i+1) : 'mp4').toLowerCase();
+}
+function bkName(m,id,n){
+  const seq=('000'+n).slice(-3);
+  return String(m.d||'0000-00-00')+'_'+seq+'_'+id+'.'+bkExt(m);
+}
+/* 월별로 묶고, 한 덩어리가 너무 커지면 (1/2)(2/2) 로 쪼갠다 — 폰 메모리 보호 */
+function bkPlan(){
+  const ids=Object.keys(ALB.meta||{});
+  ids.sort(function(a,b){ const A=ALB.meta[a], B=ALB.meta[b]; return String(A.d||'').localeCompare(String(B.d||'')) || ((A.at||0)-(B.at||0)); });
+  const mon={};
+  ids.forEach(function(id){
+    const m=ALB.meta[id], k=String(m.d||'0000-00').slice(0,7);
+    (mon[k]=mon[k]||[]).push(id);
+  });
+  const out=[];
+  Object.keys(mon).sort().forEach(function(k){
+    let cur=[], sz=0, n=0;
+    mon[k].forEach(function(id){
+      const m=ALB.meta[id], s=bkSize(m);
+      if(cur.length && sz+s>BK.cap){ out.push({mon:k, ids:cur, bytes:sz}); cur=[]; sz=0; }
+      n++; cur.push(id); sz+=s;
+    });
+    if(cur.length) out.push({mon:k, ids:cur, bytes:sz});
+  });
+  const cnt={};
+  out.forEach(function(p){ cnt[p.mon]=(cnt[p.mon]||0)+1; });
+  const seen={};
+  out.forEach(function(p){
+    seen[p.mon]=(seen[p.mon]||0)+1;
+    p.label=p.mon+(cnt[p.mon]>1? ' ('+seen[p.mon]+'/'+cnt[p.mon]+')' : '');
+    p.file='빼꼼_'+p.mon.replace('-','')+(cnt[p.mon]>1? '_'+seen[p.mon] : '')+'.zip';
+    p.photos=p.ids.filter(function(i){ return albIsPhoto(ALB.meta[i]); }).length;
+    p.vids=p.ids.length-p.photos;
+  });
+  BK.plan=out; return out;
+}
+async function bkBytes(id){
+  const m=ALB.meta[id];
+  if(albIsPhoto(m)){
+    if(m.p2){
+      const r=await fetch(mediaApi('/file/'+albP2Key('full',id)));
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      return new Uint8Array(await r.arrayBuffer());
+    }
+    const du=await albFetch('full/'+id);
+    if(!du) throw new Error('내용 없음');
+    return albDataU8(du);
+  }
+  if(m.t==='r' && m.k){
+    const r=await fetch(mediaApi('/file/'+m.k));
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    return new Uint8Array(await r.arrayBuffer());
+  }
+  return null;                                 /* 유튜브 링크형 — 파일 없음, 목록에만 기록 */
+}
+function bkCsv(part){
+  const rows=[['파일명','날짜','종류','메모','좋아요','유튜브주소']];
+  let n=0;
+  part.ids.forEach(function(id){
+    const m=ALB.meta[id]; n++;
+    const kind = albIsPhoto(m)?'사진' : (m.t==='r'?'영상':'유튜브');
+    rows.push([ (m.t==='v'? '(파일없음)' : bkName(m,id,n)), String(m.d||''), kind, String(m.m||''), albLikeNames(m), String(m.u||'') ]);
+  });
+  const csv=rows.map(function(r){ return r.map(function(c){ return '"'+String(c).replace(/"/g,'""')+'"'; }).join(','); }).join('\r\n');
+  return bkUtf8('\uFEFF'+csv);
+}
+function bkStat(t){ const e=document.getElementById('bkStat'); if(e) e.innerHTML=t; }
+async function bkRun(i){
+  if(BK.busy) return;
+  const part=BK.plan && BK.plan[i]; if(!part) return;
+  BK.busy=true; renderBackup();
+  let wl=null; try{ if(navigator.wakeLock) wl=await navigator.wakeLock.request('screen'); }catch(e){}
+  const files=[]; let okn=0, skip=0, n=0, err='';
+  try{
+    for(let j=0;j<part.ids.length;j++){
+      const id=part.ids[j], m=ALB.meta[id]; n++;
+      bkStat('모으는 중 '+n+'/'+part.ids.length+' &mdash; 화면을 끄지 마세요');
+      try{
+        const u8=await bkBytes(id);
+        if(u8){ files.push({name:bkName(m,id,n), data:u8, at:m.at}); okn++; }
+        else { skip++; }
+      }catch(e){ skip++; if(!err) err=String(e&&e.message||e); }
+    }
+    files.push({name:'목록.csv', data:bkCsv(part), at:Date.now()});
+    bkStat('압축하는 중&hellip;');
+    const blob=bkZip(files);
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a'); a.href=url; a.download=part.file;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 60000);
+    part.done=true;
+    bkStat('<b>'+esc(part.file)+'</b> 내려받기 시작 · 파일 '+okn+'개'+(skip?(' · 건너뜀 '+skip+'개(유튜브 링크 또는 오류'+(err?': '+esc(err):'')+')'):'')+' · '+fmtBytes(blob.size));
+  }catch(e){
+    bkStat('<b>실패: '+esc(String(e&&e.message||e))+'</b> &mdash; 다시 시도하거나, 이 달에 큰 영상이 많으면 나눠서 받아주세요.');
+  }finally{
+    BK.busy=false; try{ if(wl) wl.release(); }catch(e){}
+    renderBackup();
+  }
+}
+function fmtBytes(b){ b=b||0; return b>=1048576 ? (b/1048576).toFixed(0)+'MB' : (b/1024).toFixed(0)+'KB'; }
+function renderBackup(){
+  const box=document.getElementById('bkList'); if(!box) return;
+  const p=BK.plan;
+  if(!p){ box.innerHTML=''; return; }
+  if(!p.length){ box.innerHTML='<p class="muted small" style="margin:6px 0 0;">백업할 것이 없습니다.</p>'; return; }
+  let tot=0; p.forEach(function(x){ tot+=x.bytes; });
+  box.innerHTML='<p class="muted small" style="margin:8px 0 6px;">전체 '+p.length+'개 파일 · 약 '+fmtBytes(tot)+' · 위에서부터 하나씩 눌러 받으세요</p>'
+    + p.map(function(x,i){
+        return '<div class="row" style="justify-content:space-between; align-items:center; gap:8px; padding:5px 0; border-bottom:1px solid rgba(0,0,0,.06);">'
+          +'<span class="small">'+(x.done?'✅ ':'')+'<b>'+esc(x.label)+'</b> · 사진 '+x.photos+' · 영상 '+x.vids+' <span class="muted">'+fmtBytes(x.bytes)+'</span></span>'
+          +'<button class="btn sm '+(x.done?'ghost':'')+'" data-bk="'+i+'" type="button"'+(BK.busy?' disabled':'')+'>'+(x.done?'다시':'받기')+'</button></div>';
+      }).join('');
+}
+function bindBackup(){
+  const b=document.getElementById('bkMake'); if(!b) return;
+  b.addEventListener('click', function(){ bkPlan(); bkStat(''); renderBackup(); });
+  const l=document.getElementById('bkList');
+  l.addEventListener('click', function(e){
+    const t=e.target.closest('[data-bk]'); if(!t) return;
+    bkRun(parseInt(t.getAttribute('data-bk'),10));
+  });
 }
 /* =============== V5.9: 영상 파일 저장소 (Cloudflare Worker + R2) =============== */
 const MEDIA={PART:10*1024*1024, SINGLE_MAX:20*1024*1024, WARN:500*1024*1024, up:false};
