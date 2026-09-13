@@ -4234,7 +4234,7 @@ function bindAlbum(){
    meta[id].p2=1 이면 그 사진의 원본·썸네일이 R2에 있음. 없으면 기존 파이어베이스.
    화면 코드는 albImgSrc() 한 곳만 거치므로 표시·정렬·메모·좋아요는 전부 그대로다.
    상대 폰이 구버전이면 p2 를 모르기 때문에, 두 폰 모두 이 빌드일 때만 전환한다. */
-const PVER=512;   /* v5.13 */
+const PVER=520;   /* v5.14 — 배포마다 이 번호를 올린다 */
 const PMIG={run:false, stop:false, gate:null};
 const P2SCHEMES=[
   {id:'d', name:'영상과 같은 형식 (v/… .mp4)',  ct:'video/mp4',  f:function(k,id){ return 'v/'+id+(k==='th'?'t':'')+'.mp4'; }},
@@ -4301,10 +4301,29 @@ async function albMigTest(){
   out(); renderMigPanel();
 }
 function albIsP2(id){ const m=ALB.meta&&ALB.meta[id]; return !!(m&&m.p2); }
+/* V5.14: 사진이 영상 형식(v/… .mp4)으로 저장돼 있으면 서버가 video/mp4 로 내려준다.
+   크롬은 내용을 보고 사진으로 표시하지만 사파리(아이폰)는 형식만 보고 거부한다.
+   → 파일을 받아 사진 형식으로 바꿔서 화면에 넣는다. 저장된 데이터는 그대로, 화면에서만 교정. */
+const P2BLOB=new Map(), P2BLOBMAX=320;
+function albP2NeedsFix(key){ return /\.(mp4|mov|m4v|webm|3gp)$/i.test(String(key)); }
+async function albP2Blob(key){
+  const hit=P2BLOB.get(key); if(hit) return hit;
+  const r=await fetch(mediaApi('/file/'+key));
+  if(!r.ok) throw new Error('HTTP '+r.status);
+  const url=URL.createObjectURL(new Blob([await r.blob()],{type:'image/jpeg'}));
+  if(P2BLOB.size>=P2BLOBMAX){
+    const old=P2BLOB.keys().next().value;
+    try{ URL.revokeObjectURL(P2BLOB.get(old)); }catch(e){}
+    P2BLOB.delete(old);
+  }
+  P2BLOB.set(key,url); return url;
+}
 function albImgSrc(kind,id){
   if(albIsP2(id)){
     if(!mediaConfigured()) return Promise.reject(new Error('저장소 미연결'));
-    return Promise.resolve(mediaApi('/file/'+albP2Key(kind,id)));
+    const key=albP2Key(kind,id);
+    if(albP2NeedsFix(key)) return albP2Blob(key);
+    return Promise.resolve(mediaApi('/file/'+key));
   }
   return albFetch(kind+'/'+id);
 }
@@ -5095,6 +5114,19 @@ function latestWeight(){
 }
 function applyRep(){
   const th=(S.rep && S.rep.th) || '';
+  if(th.indexOf('blob:')===0 && S.rep && S.rep.id){
+    /* V5.14: 세션 한정 주소는 저장해도 다음 접속에 깨진다 — 사진 id 로 매번 다시 만든다 */
+    albImgSrc('th', S.rep.id).then(function(u){ if(u && S.rep){ S.rep.th=u; applyRepDraw(u); } }).catch(function(){ applyRepDraw(''); });
+    return;
+  }
+  applyRepDraw(th);
+}
+function applyRepDraw(th){
+  if(!th && S.rep && S.rep.id && !applyRepDraw._busy){
+    applyRepDraw._busy=true;
+    albImgSrc('th', S.rep.id).then(function(u){ applyRepDraw._busy=false; if(u) applyRepDraw(u); })
+      .catch(function(){ applyRepDraw._busy=false; });
+  }
   [['abImg','abPaw'],['hpImg','hpPaw']].forEach(function(pair){
     const img=document.getElementById(pair[0]), paw=document.getElementById(pair[1]);
     if(!img) return;
@@ -5377,8 +5409,8 @@ function bindRep(){
       try{ th=await albImgSrc('th',ALB.cur); if(th) ALB.thumbs.set(ALB.cur, th); }catch(e){}
     }
     if(!th){ alert('사진을 아직 불러오지 못했습니다. 잠시 후 다시 눌러주세요.'); return; }
-    S.rep={id:ALB.cur, th:th};
-    saveState(); applyRep();
+    S.rep={id:ALB.cur, th:(String(th).indexOf('blob:')===0 ? '' : th)};
+    saveState(); applyRepDraw(th);
     alert('대표사진으로 설정했습니다. 상단과 홈 프로필에 반영됩니다.');
   });
 }
