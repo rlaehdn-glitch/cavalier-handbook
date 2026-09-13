@@ -2327,6 +2327,18 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
           </div>
           <p id="mediaStat" class="muted small" style="margin:6px 0 0;">주소를 붙여넣고 "연결"을 누르면 확인합니다. 한 사람만 하면 상대 폰에도 자동 반영됩니다.</p>
         </div>
+        <div class="alb-form" id="p2Box" style="margin-top:10px; display:none;">
+          <div class="alb-form-t">사진 저장소 이관 &mdash; 한 폰에서만 실행</div>
+          <p id="p2Gate" class="muted small" style="margin:0 0 8px;">기기 확인 중&hellip;</p>
+          <div class="alb-prog" id="p2Prog"><i id="p2ProgBar"></i></div>
+          <div class="row" style="gap:6px; flex-wrap:wrap; margin-top:6px;">
+            <button class="btn sm" id="p2Run" type="button" disabled>R2로 옮기기</button>
+            <button class="btn sm ghost" id="p2Clean" type="button" disabled>파이어베이스 정리</button>
+            <button class="btn sm ghost" id="p2Stop" type="button" style="display:none;">중단</button>
+          </div>
+          <label class="muted small" style="display:block; margin-top:8px;"><input type="checkbox" id="p2Force"> 상대 폰에서 앨범이 정상으로 보이는 걸 직접 확인했습니다</label>
+          <p id="p2Stat" class="muted small" style="margin:6px 0 0;"></p>
+        </div>
       </details>
     </div>
 
@@ -3941,10 +3953,13 @@ async function albFetch(p, method, body){
 function albStat(msg){ const el=document.getElementById('albStat'); if(el) el.textContent=msg; }
 function renderAlbumHead(){
   if(!ALB.meta) return;
-  let p=0,v=0,bytes=0,vb=0;
-  Object.values(ALB.meta).forEach(function(m){ if(m.t==='v'||m.t==='r') v++; else p++; bytes+=(m.s||0); vb+=(m.vs||0); });
+  let p=0,v=0,fbb=0,p2b=0,vb=0;
+  Object.values(ALB.meta).forEach(function(m){
+    if(m.t==='v'||m.t==='r'){ v++; vb+=(m.vs||0); }        /* 영상 썸네일(m.s)은 수십 KB 고정 — 사진 용량 집계에서 제외 */
+    else { p++; if(m.p2) p2b+=(m.s||0); else fbb+=(m.s||0); }
+  });
   albStat('사진 '+p+' · 영상 '+v);
-  ALB.store={bytes:bytes, vb:vb};
+  ALB.store={bytes:fbb+p2b, fbb:fbb, p2b:p2b, vb:vb};
   renderMediaCfg();
 }
 function albumOnOpen(){
@@ -3974,7 +3989,7 @@ const albThIO=('IntersectionObserver' in window)? new IntersectionObserver(funct
     if(!en.isIntersecting) return;
     const img=en.target, id=img.dataset.aid;
     albThIO.unobserve(img);
-    albFetch('th/'+id).then(function(v){ if(v){ ALB.thumbs.set(id,v); img.src=v; img.classList.add('ld'); } }).catch(function(){});
+    albImgSrc('th',id).then(function(v){ if(v){ ALB.thumbs.set(id,v); img.src=v; img.classList.add('ld'); } }).catch(function(){});
   });
 },{rootMargin:'250px'}) : null;
 function renderAlbum(){
@@ -4021,7 +4036,7 @@ function renderAlbum(){
     const id=img.dataset.aid;
     if(ALB.thumbs.has(id)){ img.src=ALB.thumbs.get(id); img.classList.add('ld'); }
     else if(albThIO){ albThIO.observe(img); }
-    else{ albFetch('th/'+id).then(function(v){ if(v){ img.src=v; img.classList.add('ld'); ALB.thumbs.set(id,v); } }).catch(function(){}); }
+    else{ albImgSrc('th',id).then(function(v){ if(v){ img.src=v; img.classList.add('ld'); ALB.thumbs.set(id,v); } }).catch(function(){}); }
   });
 }
 function albCompress(file, maxSide, q){
@@ -4060,11 +4075,22 @@ function bindAlbum(){
         if(fu.length>1200000) fu=await albCompress(files[i],1280,0.55);
         const th=await albCompress(files[i],360,0.7);
         const id='a'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-        await albFetch('full/'+id,'PUT',JSON.stringify(fu));
-        await albFetch('th/'+id,'PUT',JSON.stringify(th));
-        const meta={t:'p', d:todayKey(), m:'', at:Date.now(), s:fu.length+th.length};
-        await albFetch('meta/'+id,'PUT',JSON.stringify(meta));
-        ALB.meta=ALB.meta||{}; ALB.meta[id]=meta; ALB.thumbs.set(id,th);
+        let meta;
+        if(albP2On()){
+          /* V5.12: 두 폰 모두 신버전 → R2에 바이너리로. base64 33% 군살이 빠진다 */
+          const fb=albDataBlob(fu), tb=albDataBlob(th);
+          await mediaUpload(fb, albP2Key('full',id), 'image/jpeg');
+          await mediaUpload(tb, albP2Key('th',id), 'image/jpeg');
+          meta={t:'p', d:todayKey(), m:'', at:Date.now(), s:fb.size+tb.size, p2:1};
+          await albFetch('meta/'+id,'PUT',JSON.stringify(meta));
+          ALB.meta=ALB.meta||{}; ALB.meta[id]=meta; ALB.thumbs.set(id,th);
+        }else{
+          await albFetch('full/'+id,'PUT',JSON.stringify(fu));
+          await albFetch('th/'+id,'PUT',JSON.stringify(th));
+          meta={t:'p', d:todayKey(), m:'', at:Date.now(), s:fu.length+th.length};
+          await albFetch('meta/'+id,'PUT',JSON.stringify(meta));
+          ALB.meta=ALB.meta||{}; ALB.meta[id]=meta; ALB.thumbs.set(id,th);
+        }
       }catch(e){ alert((i+1)+'번째 사진 업로드에 실패했습니다. 인터넷 확인 후 다시 시도해주세요.'); break; }
     }
     await albBumpIdx();
@@ -4154,6 +4180,14 @@ function bindAlbum(){
       try{ await mediaFetch(mediaApi('/file/'+mm.k), {method:'DELETE'}, 20000); }
       catch(e){ alert('영상 파일 삭제 실패 — 인터넷 확인 후 다시 시도해주세요. ('+String(e&&e.message||e)+')'); return; }
     }
+    if(mm.p2){
+      /* V5.12: R2 보관 사진 — 파일 먼저 삭제, 실패하면 메타를 남겨 고아 파일 방지 */
+      if(!mediaConfigured()){ alert('사진 저장소가 연결되지 않아 삭제할 수 없습니다.'); return; }
+      try{
+        await mediaFetch(mediaApi('/file/'+albP2Key('full',id)), {method:'DELETE'}, 20000);
+        try{ await mediaFetch(mediaApi('/file/'+albP2Key('th',id)), {method:'DELETE'}, 20000); }catch(e){}
+      }catch(e){ alert('사진 파일 삭제 실패 — 인터넷 확인 후 다시 시도해주세요. ('+String(e&&e.message||e)+')'); return; }
+    }
     try{
       await albFetch('meta/'+id,'DELETE');
       await albFetch('th/'+id,'DELETE');
@@ -4187,6 +4221,155 @@ function bindAlbum(){
     const p=document.getElementById('tab-album');
     if(p && p.classList.contains('on') && document.visibilityState==='visible') albumPull(false);
   }, 25000);
+}
+/* =============== V5.12: 사진 저장소 이관 (파이어베이스 base64 → R2 바이너리) ===============
+   meta[id].p2=1 이면 그 사진의 원본·썸네일이 R2에 있음. 없으면 기존 파이어베이스.
+   화면 코드는 albImgSrc() 한 곳만 거치므로 표시·정렬·메모·좋아요는 전부 그대로다.
+   상대 폰이 구버전이면 p2 를 모르기 때문에, 두 폰 모두 이 빌드일 때만 전환한다. */
+const PVER=512;
+const PMIG={run:false, stop:false, gate:null};
+function albP2Key(kind,id){ return (kind==='th'?'pt/':'pf/')+id+'.jpg'; }
+function albIsP2(id){ const m=ALB.meta&&ALB.meta[id]; return !!(m&&m.p2); }
+function albImgSrc(kind,id){
+  if(albIsP2(id)){
+    if(!mediaConfigured()) return Promise.reject(new Error('저장소 미연결'));
+    return Promise.resolve(mediaApi('/file/'+albP2Key(kind,id)));
+  }
+  return albFetch(kind+'/'+id);
+}
+function albDataBlob(du){
+  const i=String(du||'').indexOf(',');
+  if(i<0) throw new Error('형식 오류');
+  const ct=(String(du).slice(0,i).match(/data:([^;]+)/)||[])[1]||'image/jpeg';
+  const bin=atob(String(du).slice(i+1)), n=bin.length, u8=new Uint8Array(n);
+  for(let j=0;j<n;j++) u8[j]=bin.charCodeAt(j);
+  return new Blob([u8],{type:ct});
+}
+/* --- 기기 빌드 번호 보고 / 상대 폰 구버전 감지 --- */
+async function albVerBeat(){
+  if(!syncConfigured()) return;
+  try{ await albFetch('ver/'+DEV_ID,'PUT',JSON.stringify({v:PVER, at:Date.now(), n:(myName()||'')})); }catch(e){}
+}
+async function albMigGate(){
+  const CUT=Date.now()-14*86400000;
+  let vers={}, cmeta={};
+  try{ vers=(await albFetch('ver'))||{}; }catch(e){}
+  try{ const r=await fetch(chatPath('/meta')); cmeta=(await r.json())||{}; }catch(e){}
+  const newNames={}; let meOk=false;
+  Object.keys(vers).forEach(function(k){
+    const r=vers[k]||{};
+    if(!r.at || r.at<CUT || (r.v||0)<PVER) return;
+    if(k===DEV_ID) meOk=true;
+    if(r.n) newNames[r.n]=1;
+  });
+  const stale=[];
+  Object.keys(cmeta).forEach(function(nm){
+    const r=cmeta[nm]||{};
+    if(!r.seen || r.seen<CUT) return;
+    if(nm===myName()) return;
+    if(!newNames[nm]) stale.push(nm);
+  });
+  return {meOk:meOk, stale:stale, ready:(meOk && stale.length===0)};
+}
+function albMigTodo(){ return ALB.meta? Object.keys(ALB.meta).filter(function(id){ return albIsPhoto(ALB.meta[id]) && !ALB.meta[id].p2; }) : []; }
+function albMigDone(){ return ALB.meta? Object.keys(ALB.meta).filter(function(id){ return albIsPhoto(ALB.meta[id]) && ALB.meta[id].p2; }) : []; }
+function albP2On(){ return mediaConfigured() && PMIG.gate && PMIG.gate.ready; }
+function p2Stat(t){ const e=document.getElementById('p2Stat'); if(e) e.textContent=t; }
+function p2Prog(v){
+  const b=document.getElementById('p2Prog'), i=document.getElementById('p2ProgBar'); if(!b||!i) return;
+  if(v===null){ b.classList.remove('on'); i.style.width='0'; return; }
+  b.classList.add('on'); i.style.width=Math.round(v*100)+'%';
+}
+function renderMigPanel(){
+  const box=document.getElementById('p2Box'); if(!box) return;
+  const todo=albMigTodo().length, done=albMigDone().length;
+  box.style.display = (mediaConfigured() && (todo||done)) ? 'block' : 'none';
+  const g=document.getElementById('p2Gate');
+  if(g){
+    const gt=PMIG.gate;
+    g.innerHTML = !gt ? '기기 확인 중…'
+      : gt.ready ? '✅ 두 폰 모두 최신 버전 — 옮겨도 상대 화면이 그대로입니다. (남은 사진 '+todo+'장)'
+      : !gt.meOk ? '이 폰 정보를 아직 못 올렸습니다. 잠시 후 새로고침해주세요.'
+      : '⏳ '+esc(gt.stale.join(', '))+' 폰이 아직 이전 버전입니다. 그 폰에서 핸드북을 한 번 열어 새로고침하면 자동으로 풀립니다. (남은 사진 '+todo+'장)';
+  }
+  const fc=document.getElementById('p2Force');
+  const run=document.getElementById('p2Run'), cl=document.getElementById('p2Clean'), st=document.getElementById('p2Stop');
+  const allow=(PMIG.gate&&PMIG.gate.ready)||(fc&&fc.checked);
+  if(run){ run.disabled=!allow||PMIG.run||!todo; run.textContent='R2로 옮기기'+(todo?(' ('+todo+')'):''); }
+  if(cl){ cl.disabled=!allow||PMIG.run||!!todo||!done; }
+  if(st) st.style.display=PMIG.run?'inline-flex':'none';
+}
+async function albMigRefresh(){ try{ PMIG.gate=await albMigGate(); }catch(e){ PMIG.gate=null; } renderMigPanel(); }
+async function albMigRun(){
+  if(PMIG.run) return;
+  if(!mediaConfigured()){ alert('영상 저장소(R2)가 연결되어 있지 않습니다. 위 칸에서 먼저 연결해주세요.'); return; }
+  const todo=albMigTodo();
+  if(!todo.length){ p2Stat('옮길 사진이 없습니다.'); return; }
+  if(!confirm('사진 '+todo.length+'장을 R2로 옮깁니다.\n앨범 화면은 그대로이고, 원본은 아직 지우지 않습니다.\n도중에 끊겨도 다시 누르면 이어서 진행됩니다.\n\n시작할까요?')) return;
+  PMIG.run=true; PMIG.stop=false; renderMigPanel();
+  let wl=null; try{ if(navigator.wakeLock) wl=await navigator.wakeLock.request('screen'); }catch(e){}
+  let ok=0, fail=0;
+  try{
+    for(let i=0;i<todo.length;i++){
+      if(PMIG.stop) break;
+      const id=todo[i];
+      p2Stat('옮기는 중 '+(i+1)+'/'+todo.length+' — 화면을 끄지 마세요'); p2Prog(i/todo.length);
+      try{
+        const fu=await albFetch('full/'+id);
+        if(!fu){ fail++; continue; }
+        let th=null; try{ th=await albFetch('th/'+id); }catch(e){}
+        const fb=albDataBlob(fu);
+        await mediaUpload(fb, albP2Key('full',id), 'image/jpeg');
+        let tb=null;
+        if(th){ tb=albDataBlob(th); await mediaUpload(tb, albP2Key('th',id), 'image/jpeg'); }
+        const m=Object.assign({}, ALB.meta[id]||{});
+        m.p2=1; m.s=fb.size+(tb?tb.size:0);
+        await albFetch('meta/'+id,'PUT',JSON.stringify(m));
+        ALB.meta[id]=m; ALB.thumbs.delete(id); ALB.fulls.delete(id);
+        ok++;
+      }catch(e){ fail++; }
+    }
+    try{ await albBumpIdx(); }catch(e){}
+  }finally{
+    PMIG.run=false; p2Prog(null); try{ if(wl) wl.release(); }catch(e){}
+    renderAlbum();
+    p2Stat('옮김 '+ok+'장'+(fail?(' · 실패 '+fail+'장 — 다시 누르면 재시도합니다'):'')+(albMigTodo().length?'':' · 앨범이 정상인지 확인한 뒤 "파이어베이스 정리"를 눌러주세요'));
+    renderMigPanel();
+  }
+}
+async function albMigClean(){
+  if(PMIG.run) return;
+  if(albMigTodo().length){ alert('아직 옮기지 않은 사진이 있습니다. "R2로 옮기기"를 먼저 끝내주세요.'); return; }
+  const ids=albMigDone();
+  if(!ids.length){ p2Stat('정리할 것이 없습니다.'); return; }
+  p2Stat('R2 보관 상태 확인 중…');
+  const pick=[ids[0], ids[Math.floor(ids.length/2)], ids[ids.length-1]];
+  for(let i=0;i<pick.length;i++){
+    try{ const r=await fetch(mediaApi('/file/'+albP2Key('full',pick[i]))); if(!r.ok) throw new Error('HTTP '+r.status); }
+    catch(e){ p2Stat('확인 실패 — 정리를 중단했습니다. ('+String(e&&e.message||e)+')'); return; }
+  }
+  if(!confirm('R2 보관 확인됐습니다.\n파이어베이스에 남은 사본 '+ids.length+'장을 지웁니다. 앨범 화면은 그대로입니다.\n\n계속할까요?')) { p2Stat(''); return; }
+  PMIG.run=true; PMIG.stop=false; renderMigPanel();
+  let ok=0, fail=0;
+  try{
+    for(let i=0;i<ids.length;i++){
+      if(PMIG.stop) break;
+      p2Stat('정리 중 '+(i+1)+'/'+ids.length); p2Prog(i/ids.length);
+      try{ await albFetch('full/'+ids[i],'DELETE'); await albFetch('th/'+ids[i],'DELETE'); ok++; }catch(e){ fail++; }
+    }
+    try{ await albBumpIdx(); }catch(e){}
+  }finally{
+    PMIG.run=false; p2Prog(null); renderAlbum();
+    p2Stat('정리 완료 '+ok+'장'+(fail?(' · 실패 '+fail+'장'):'')+' — 파이어베이스 사진 용량이 비워졌습니다.');
+    renderMigPanel();
+  }
+}
+function bindMig(){
+  const r=document.getElementById('p2Run'); if(!r) return;
+  r.addEventListener('click', albMigRun);
+  document.getElementById('p2Clean').addEventListener('click', albMigClean);
+  document.getElementById('p2Stop').addEventListener('click', function(){ PMIG.stop=true; p2Stat('중단 요청 — 현재 장이 끝나면 멈춥니다.'); });
+  document.getElementById('p2Force').addEventListener('change', renderMigPanel);
 }
 /* =============== V5.9: 영상 파일 저장소 (Cloudflare Worker + R2) =============== */
 const MEDIA={PART:10*1024*1024, SINGLE_MAX:20*1024*1024, WARN:500*1024*1024, up:false};
@@ -4318,9 +4501,12 @@ function renderMediaCfg(){
   const b=document.getElementById('albVidUp'); if(b) b.classList.toggle('off', !u);
   const st=document.getElementById('albStore');
   if(st){
-    const s=ALB.store||{bytes:0,vb:0};
-    st.innerHTML='사진 저장 '+(s.bytes/1048576).toFixed(1)+'MB / 1,000MB'
-      +(u ? ' · 영상 저장 '+(s.vb/1048576).toFixed(0)+'MB / 10,000MB' : ' · <b>영상 저장소 미연결</b> — 오른쪽 ⚙ 에서 연결');
+    const s=ALB.store||{bytes:0,fbb:0,p2b:0,vb:0};
+    st.innerHTML = (s.fbb>0 || !u)
+      ? ('사진 저장 '+(s.fbb/1048576).toFixed(1)+'MB / 1,000MB'
+         +(u ? ' · 영상 저장 '+((s.vb+s.p2b)/1048576).toFixed(0)+'MB / 10,000MB' : ' · <b>영상 저장소 미연결</b> — 오른쪽 ⚙ 에서 연결'))
+      : ('사진·영상 저장 '+((s.vb+s.p2b)/1048576).toFixed(0)+'MB / 10,000MB');
+    try{ renderMigPanel(); }catch(e){}
   }
 }
 async function mediaConnect(){
@@ -4501,7 +4687,7 @@ function albNav(dir){
 }
 function albPrefetch(id){
   if(!id || ALB.fulls.has(id)) return;
-  albFetch('full/'+id).then(function(v){
+  albImgSrc('full',id).then(function(v){
     if(v){ if(ALB.fulls.size>10) ALB.fulls.clear(); ALB.fulls.set(id,v); }
   }).catch(function(){});
 }
@@ -4534,7 +4720,7 @@ async function albOpen(id){
   document.getElementById('albLbCap').textContent=(m.d||'')+' — 불러오는 중…';
   try{
     let f=ALB.fulls.get(id);
-    if(!f){ f=await albFetch('full/'+id); if(ALB.fulls.size>10) ALB.fulls.clear(); ALB.fulls.set(id,f); }
+    if(!f){ f=await albImgSrc('full',id); if(ALB.fulls.size>10) ALB.fulls.clear(); ALB.fulls.set(id,f); }
     if(ALB.cur!==id) return; /* 빠르게 넘긴 경우 지난 요청 결과는 버림 */
     im.src=f;
     document.getElementById('albLbCap').textContent=(m.d||'')+(m.m?' · '+m.m:'');
@@ -4875,7 +5061,7 @@ function renderDash(){ renderAppbar(); renderHomeWt(); renderDday(); renderHomeN
 /* =============== V2: 사진 스트립 / 앨범 강화 =============== */
 function stripThumb(id, img){
   if(ALB.thumbs.has(id)){ img.src=ALB.thumbs.get(id); return; }
-  albFetch('th/'+id).then(function(v){ if(v){ ALB.thumbs.set(id,v); img.src=v; } }).catch(function(){});
+  albImgSrc('th',id).then(function(v){ if(v){ ALB.thumbs.set(id,v); img.src=v; } }).catch(function(){});
 }
 function renderStrip(){
   const el=document.getElementById('photoStrip'); if(!el) return;
@@ -4942,7 +5128,7 @@ function bindRep(){
     if(!ALB.cur) return;
     let th=ALB.thumbs.get(ALB.cur);
     if(!th){
-      try{ th=await albFetch('th/'+ALB.cur); if(th) ALB.thumbs.set(ALB.cur, th); }catch(e){}
+      try{ th=await albImgSrc('th',ALB.cur); if(th) ALB.thumbs.set(ALB.cur, th); }catch(e){}
     }
     if(!th){ alert('사진을 아직 불러오지 못했습니다. 잠시 후 다시 눌러주세요.'); return; }
     S.rep={id:ALB.cur, th:th};
@@ -6200,7 +6386,7 @@ function renderAll(){ seedProfile(); renderHome(); renderDaily(); renderWeight()
 }
 document.addEventListener('DOMContentLoaded', async ()=>{
   await loadState();
-  bindChecklists(); bindVax(); bindProfile(); bindWeight(); bindVisits(); bindExpenses(); bindIO(); bindCal(); buildPagers(); buildLinks(); mobileTables(); initReveal(); initTopBtn(); loadSyncCfg(); bindSync(); bindAlbum(); try{ bindCam(); }catch(e){} bindNotice(); bindNav(); bindSOS(); bindQlog(); bindLib(); bindRep(); bindAway(); bindStats(); bindWt(); bindFeed(); bindBackup(); bindMidnight(); bindChat(); bindAnchors(); bindPooAmt(); bindQe();
+  bindChecklists(); bindVax(); bindProfile(); bindWeight(); bindVisits(); bindExpenses(); bindIO(); bindCal(); buildPagers(); buildLinks(); mobileTables(); initReveal(); initTopBtn(); loadSyncCfg(); bindSync(); bindAlbum(); try{ bindCam(); }catch(e){} bindNotice(); bindNav(); bindSOS(); bindQlog(); bindLib(); bindRep(); bindAway(); bindStats(); bindWt(); bindFeed(); bindBackup(); bindMidnight(); bindChat(); bindAnchors(); bindPooAmt(); bindQe(); try{ bindMig(); }catch(e){}
   ntcMigrate();
   ['vDate','eDate'].forEach(function(i){ const el=document.getElementById(i); if(el && !el.value) el.value=todayKey(); });
   renderAll();
@@ -6210,6 +6396,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   if(SYNC.on) startSync();
   if(syncConfigured()) albumPull(true);
   if(syncConfigured()) chatStart();
+  if(syncConfigured()){ albVerBeat(); setTimeout(function(){ albMigRefresh(); }, 1500); }   /* V5.12 */
 });
 </script>
 
