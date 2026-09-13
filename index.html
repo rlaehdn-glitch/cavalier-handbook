@@ -4227,14 +4227,17 @@ function bindAlbum(){
    meta[id].p2=1 이면 그 사진의 원본·썸네일이 R2에 있음. 없으면 기존 파이어베이스.
    화면 코드는 albImgSrc() 한 곳만 거치므로 표시·정렬·메모·좋아요는 전부 그대로다.
    상대 폰이 구버전이면 p2 를 모르기 때문에, 두 폰 모두 이 빌드일 때만 전환한다. */
-const PVER=512;   /* v5.12.1 */
+const PVER=512;   /* v5.12.2 */
 const PMIG={run:false, stop:false, gate:null};
 const P2SCHEMES=[
-  {id:'a', name:'사진 전용 폴더 (pf/ · image/jpeg)', ct:'image/jpeg', f:function(k,id){ return (k==='th'?'pt/':'pf/')+id+'.jpg'; }},
-  {id:'b', name:'영상 폴더 재사용 (v/ · image/jpeg)', ct:'image/jpeg', f:function(k,id){ return 'v/'+(k==='th'?'pt_':'pf_')+id+'.jpg'; }},
-  {id:'c', name:'영상 폴더+영상 타입 (v/ · .mp4)',   ct:'video/mp4',  f:function(k,id){ return 'v/'+(k==='th'?'pt_':'pf_')+id+'.mp4'; }}
+  {id:'d', name:'영상과 같은 형식 (v/… .mp4)',  ct:'video/mp4',  f:function(k,id){ return 'v/'+id+(k==='th'?'t':'')+'.mp4'; }},
+  {id:'c', name:'영상 폴더 · jpg (v/… .jpg)',   ct:'image/jpeg', f:function(k,id){ return 'v/'+id+(k==='th'?'t':'')+'.jpg'; }},
+  {id:'a', name:'사진 폴더 (pf/… .jpg)',        ct:'image/jpeg', f:function(k,id){ return (k==='th'?'pt/':'pf/')+id+'.jpg'; }},
+  {id:'b', name:'사진 폴더 · mp4 (p/… .mp4)',   ct:'video/mp4',  f:function(k,id){ return 'p/'+id+(k==='th'?'t':'')+'.mp4'; }},
+  {id:'e', name:'폴더 없이 (… .jpg)',           ct:'image/jpeg', f:function(k,id){ return id+(k==='th'?'t':'')+'.jpg'; }}
 ];
-let P2S='a';
+const P2PROBE='/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCAACAAIDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDoqKKK5Tc//9k=';
+let P2S=P2SCHEMES[0].id;
 function albP2Scheme(){ for(let i=0;i<P2SCHEMES.length;i++){ if(P2SCHEMES[i].id===P2S) return P2SCHEMES[i]; } return P2SCHEMES[0]; }
 function albP2Key(kind,id){ return albP2Scheme().f(kind,id); }
 function albP2Ct(){ return albP2Scheme().ct; }
@@ -4259,21 +4262,32 @@ async function albMigTest(){
     }catch(e){ log.push('　→ <b>실패: '+esc(String(e&&e.message||e))+'</b>'); out(); return; }
     out();
   }
-  const probe=new Blob([new Uint8Array([255,216,255,224,0,16,74,70,73,70,0,1,255,217])],{type:'image/jpeg'});
+  const probe=albDataBlob('data:image/jpeg;base64,'+P2PROBE);
+  const pid='a'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);   /* 실제 사진 ID와 같은 형식 — 밑줄 금지 */
   let win=null;
   for(let i=0;i<P2SCHEMES.length;i++){
-    const s=P2SCHEMES[i], key=s.f('full','__probe');
+    const s=P2SCHEMES[i], key=s.f('full',pid);
     log.push('③-'+(i+1)+' '+esc(s.name)+' …'); out();
     try{
       await mediaFetch(mediaApi('/put',{key:key, ct:s.ct}), {method:'PUT', body:probe}, 60000);
-      const r=await fetch(mediaApi('/file/'+key));
+      const url=mediaApi('/file/'+key);
+      const r=await fetch(url);
       if(!r.ok) throw new Error('올린 뒤 다시 못 읽음 HTTP '+r.status);
-      log.push('　→ <b>성공</b>'); out();
+      await new Promise(function(res,rej){                                        /* 브라우저가 사진으로 실제 표시하는지까지 확인 */
+        const im=new Image(); const t=setTimeout(function(){ rej(new Error('사진으로 표시 안 됨(시간초과)')); }, 15000);
+        im.onload=function(){ clearTimeout(t); (im.naturalWidth>0)?res():rej(new Error('사진으로 표시 안 됨')); };
+        im.onerror=function(){ clearTimeout(t); rej(new Error('사진으로 표시 안 됨(이 방식은 화면에서 깨집니다)')); };
+        im.src=url;
+      });
+      log.push('　→ <b>성공 · 업로드·재생 모두 정상</b>'); out();
       try{ await mediaFetch(mediaApi('/file/'+key),{method:'DELETE'},15000); }catch(e){}
       win=s; break;
-    }catch(e){ log.push('　→ 실패: '+esc(String(e&&e.message||e))); out(); }
+    }catch(e){
+      log.push('　→ 실패: '+esc(String(e&&e.message||e))); out();
+      try{ await mediaFetch(mediaApi('/file/'+key),{method:'DELETE'},10000); }catch(e2){}
+    }
   }
-  if(!win){ log.push('<b>세 방식 모두 거부됨 — Worker 코드 수정이 필요합니다. 위 실패 메시지를 그대로 전달해주세요.</b>'); out(); return; }
+  if(!win){ log.push('<b>다섯 방식 모두 실패 — Worker 코드 수정이 필요합니다. 이 화면을 그대로 전달해주세요.</b>'); out(); return; }
   P2S=win.id;
   try{ await albFetch('p2s','PUT',JSON.stringify(P2S)); }catch(e){}
   log.push('<b>→ 이 방식으로 설정 완료. 이제 "R2로 옮기기"를 누르세요.</b>');
