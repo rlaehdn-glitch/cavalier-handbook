@@ -781,6 +781,7 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
     </div>
     <div class="ql-amt" id="pooAmt"></div>
     <div class="ql-stamps" id="qlStamps"></div>
+    <p id="syncWarn" class="small" style="display:none; margin:8px 0 0; padding:8px 10px; border-radius:8px; background:#fff7ed; color:#9a3412; font-weight:600; line-height:1.45;"></p>
     <p class="mg-line" id="mealGap"></p>
     <p class="muted small" style="margin:7px 0 0;">😴 수면은 잘 때 한 번, 일어나면 한 번씩 탭. 요약줄을 누르면 시각별 기록이 펼쳐지고, 시각을 누르면 삭제됩니다.</p>
   </div>
@@ -3209,6 +3210,9 @@ class VideoRTC extends HTMLElement {
 if(window.customElements && !customElements.get('video-stream')){ customElements.define('video-stream', VideoRTC); }
 </script>
 <script>
+/* V5.15 (2026-09-15): 기록 유실 수정 — ① 올리기 실패·충돌 시 재시도(예전엔 조용히 버림) ② 서버본 통째 덮어쓰기 → 3-way 병합
+   ③ 첫 내려받기 실패 시 옛 상태를 서버에 덮어쓰던 경로 차단 ④ 화면 끄기·앱 종료 시 대기 중 기록 즉시 확정.
+   증상: 한쪽 폰에서 누른 퀵액션 카운트가 잠시 뒤 사라짐. HTML 1줄(경고문)·JS 동기화부만 변경. */
 /* V5.12 (2026-09-07): 03장 보험 — 빼꼼이 실제 계약(삼성화재 위풍댕댕 2601.9, 계약일 09.07, 월 41,503원) 반영. 계약 요약·담보표·보장개시 캘린더·환급 계산식·유전성 면책 확인·보장 조건 추가, 월 고정비 펫보험 행 실제값으로 교체. HTML 콘텐츠만 변경, CSS/JS 변경 없음. */
 /* V5.11 (2026-08-23): 앨범 좋아요 — 확대 화면 ♡ 버튼·사진 두 번 탭·PC 더블클릭, 셀 오른쪽 위 ❤ 배지, "❤ 좋아요" 보기 칩.
    저장은 meta/{id}/lk/{기기ID}=이름 (기기별 키 → 두 폰 동시 입력 충돌 없음). 홈캠 카드는 Worker가 홈캠을 모르면(구버전·미설정) 숨김 처리 보강. */
@@ -3252,22 +3256,30 @@ function persistLocal(){
   lsSet('ckcs-data', raw);
   if(artOK){ try{ window.storage.set('ckcs-data', raw); }catch(e){ console.error('save fail', e); } }
 }
+function saveCommit(){
+  clearTimeout(saveTimer); saveTimer=null;
+  // 오래된 일일 체크 정리(최근 90일만 유지)
+  const keys=Object.keys(S.daily).sort();
+  while(keys.length>90){ delete S.daily[keys.shift()]; }
+  S._at=Date.now(); S._dev=DEV_ID;
+  persistLocal();
+  syncPushSoon();
+}
 function saveState(){
   clearTimeout(saveTimer);
   lastEditAt=Date.now();
-  saveTimer=setTimeout(()=>{
-    // 오래된 일일 체크 정리(최근 90일만 유지)
-    const keys=Object.keys(S.daily).sort();
-    while(keys.length>90){ delete S.daily[keys.shift()]; }
-    S._at=Date.now(); S._dev=DEV_ID;
-    persistLocal();
-    syncPushSoon();
-  }, 500);
+  saveTimer=setTimeout(saveCommit, 500);
+}
+/* V5.15: 화면을 끄거나 앱을 닫을 때 — 대기 중인 저장·업로드를 즉시 확정한다.
+   (예전에는 탭 직후 폰을 잠그면 500ms 저장 타이머가 얼어 기록 자체가 남지 않았다) */
+function saveFlush(){
+  if(saveTimer) saveCommit();
+  if(SYNC.dirty || SYNC.pushT){ clearTimeout(SYNC.pushT); SYNC.pushT=null; try{ syncPushNow(); }catch(e){} }
 }
 
 /* =============== 기기 간 동기화 (Firebase Realtime DB REST) =============== */
 const DEV_ID=(function(){ let d=lsGet('_dev'); if(!d){ d='d'+Math.random().toString(36).slice(2,10); lsSet('_dev',d); } return d; })();
-const SYNC={url:'',code:'',on:false,timer:null,pushT:null,lastRemoteAt:0,busy:false};
+const SYNC={url:'',code:'',on:false,timer:null,pushT:null,lastRemoteAt:0,busy:false,pushing:false,pulling:false,dirty:false,retry:0,pulledOK:false};
 function syncPath(){ return SYNC.url.replace(/\/+$/,'')+'/handbook/'+SYNC.code+'.json'; }
 function syncConfigured(){ return SYNC.on && SYNC.url && SYNC.code; }
 function syncStat(msg){ const el=document.getElementById('syncStat'); if(el) el.textContent=msg; }
@@ -3280,45 +3292,168 @@ function loadSyncCfg(){
 async function syncFetch(method, body){
   const ctl=new AbortController(); const to=setTimeout(()=>ctl.abort(), 8000);
   try{
-    const r=await fetch(syncPath(), {method:method, body:body||undefined, signal:ctl.signal});
+    const opt={method:method, body:body||undefined, signal:ctl.signal};
+    if(method==='PUT' && body && body.length<60000) opt.keepalive=true;   /* V5.15: 앱을 닫아도 마지막 업로드는 살아남는다 */
+    const r=await fetch(syncPath(), opt);
     if(!r.ok) throw new Error('HTTP '+r.status);
     return await r.json();
   }finally{ clearTimeout(to); }
 }
-function syncPushSoon(){ if(!syncConfigured()) return; clearTimeout(SYNC.pushT); SYNC.pushT=setTimeout(syncPushNow, 1200); }
-async function syncPushNow(){
-  if(!syncConfigured()||SYNC.busy) return;
-  SYNC.busy=true;
-  try{
-    await syncFetch('PUT', JSON.stringify(S));
-    SYNC.lastRemoteAt=S._at||Date.now();
-    syncStat('동기화됨 · '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}));
-  }catch(e){ syncStat('오프라인 — 로컬에만 저장됨 (연결되면 자동 재시도)'); }
-  finally{ SYNC.busy=false; }
+function syncHM(){ return new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}); }
+function syncWarnPaint(){
+  const el=document.getElementById('syncWarn'); if(!el) return;
+  const bad=SYNC.dirty && SYNC.retry>=1;
+  el.style.display = bad? 'block' : 'none';
+  if(bad) el.textContent='⚠ 기록이 아직 상대 폰에 전달되지 않았습니다 — 인터넷 연결을 확인해주세요. 이 기기에는 저장돼 있고, 연결되면 자동으로 올라갑니다.';
 }
+function syncPushSoon(){ if(!syncConfigured()) return; SYNC.dirty=true; clearTimeout(SYNC.pushT); SYNC.pushT=setTimeout(syncPushNow, 600); }
+/* V5.15: 올리기 실패·충돌은 '버리지 않고' 재시도한다.
+   (예전에는 내려받기가 진행 중이면 올리기를 조용히 취소했고, 실패해도 재시도가 없어
+    그 기록은 누른 폰에만 남았다가 상대 폰이 올린 상태로 덮여 사라졌다) */
+async function syncPushNow(){
+  if(!syncConfigured()) return;
+  if(SYNC.pushing||SYNC.pulling){ SYNC.dirty=true; clearTimeout(SYNC.pushT); SYNC.pushT=setTimeout(syncPushNow, 1500); return; }
+  SYNC.pushing=true;
+  try{
+    /* V5.15: 올리기 전에 서버본을 먼저 읽어 병합한다(읽기-병합-쓰기).
+       그냥 덮어쓰면, 내가 마지막으로 읽은 뒤 상대가 올린 기록이 이 PUT 한 번에 사라진다. */
+    const remote=await syncFetch('GET');
+    if(remote && typeof remote==='object'){
+      if(remote._at) SYNC.lastRemoteAt=remote._at;
+      const merged=mergeStates(syncBaseGet(), S, remote);
+      syncBaseSet(remote);
+      if(!sEq(syncStrip(merged), syncStrip(S))){
+        S=Object.assign(JSON.parse(JSON.stringify(DEFAULT_S)), merged);
+        S._at=Date.now(); S._dev=DEV_ID;
+        persistLocal();
+        const ae=document.activeElement;
+        if(!(ae && (ae.tagName==='INPUT'||ae.tagName==='TEXTAREA'))){ try{ renderAll(); }catch(e){} }
+      }
+    }
+    const snap=JSON.parse(JSON.stringify(S));
+    await syncFetch('PUT', JSON.stringify(snap));
+    SYNC.lastRemoteAt=snap._at||Date.now();
+    syncBaseSet(snap);
+    if((S._at||0)<=(snap._at||0)){ SYNC.dirty=false; SYNC.retry=0; }
+    syncStat('동기화됨 · '+syncHM());
+  }catch(e){
+    SYNC.dirty=true;
+    SYNC.retry=Math.min((SYNC.retry||0)+1, 6);
+    clearTimeout(SYNC.pushT);
+    SYNC.pushT=setTimeout(syncPushNow, Math.min(60000, 2000*Math.pow(2, SYNC.retry-1)));
+    syncStat('저장 대기 중 — 연결되면 자동 재시도합니다 ('+SYNC.retry+'회차)');
+  }
+  finally{ SYNC.pushing=false; syncWarnPaint(); }
+}
+/* V5.15: 통째 교체 → 3-way 병합.
+   서버본을 그대로 덮어쓰면, 그 사이 상대 폰이 누른 기록이 조용히 사라졌다.
+   이제 '마지막으로 서버에서 확인한 상태(base)'를 기준으로 양쪽 변경을 합치고,
+   한쪽에서 지운 기록만 지운다. */
 async function syncPull(){
-  if(!syncConfigured()||SYNC.busy) return;
+  if(!syncConfigured()||SYNC.pulling||SYNC.pushing) return;
   const ae=document.activeElement;
   if(ae && (ae.tagName==='INPUT'||ae.tagName==='TEXTAREA')) return;
-  if(Date.now()-lastEditAt<6000) return;
-  SYNC.busy=true;
+  if(Date.now()-lastEditAt<2000) return;
+  SYNC.pulling=true;
   try{
     const remote=await syncFetch('GET');
-    if(remote && remote._at && remote._at>(S._at||0) && remote._dev!==DEV_ID){
-      S=Object.assign(JSON.parse(JSON.stringify(DEFAULT_S)), remote);
-      persistLocal(); renderAll();
-      syncStat('상대 기기 변경 반영됨 · '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}));
+    SYNC.pulledOK=true;
+    if(remote && typeof remote==='object'){
+      if(remote._at) SYNC.lastRemoteAt=remote._at;
+      const merged=mergeStates(syncBaseGet(), S, remote);
+      syncBaseSet(remote);                                   /* base = 서버에서 실제로 본 상태만 */
+      const chLocal =!sEq(syncStrip(merged), syncStrip(S));
+      const chRemote=!sEq(syncStrip(merged), syncStrip(remote));
+      if(chLocal){
+        S=Object.assign(JSON.parse(JSON.stringify(DEFAULT_S)), merged);
+        persistLocal(); renderAll();
+        syncStat('상대 기기 변경 반영됨 · '+syncHM());
+      }
+      if(chRemote){ S._at=Date.now(); S._dev=DEV_ID; persistLocal(); syncPushSoon(); }
     } else if(remote===null && (S._at||0)>0){
       syncPushSoon();
     }
-    if(remote && remote._at) SYNC.lastRemoteAt=remote._at;
   }catch(e){ /* 다음 주기에 재시도 */ }
-  finally{ SYNC.busy=false; }
+  finally{ SYNC.pulling=false; syncWarnPaint(); }
 }
+/* =============== V5.15: 3-way 병합 엔진 =============== */
+function sClone(o){ return JSON.parse(JSON.stringify(o)); }
+function sCanon(v){                                     /* 키 순서가 달라도 같은 내용이면 같게 본다 — 헛된 재업로드 방지 */
+  if(Array.isArray(v)) return v.map(sCanon);
+  if(v && typeof v==='object'){ const o={}; Object.keys(v).sort().forEach(function(k){ o[k]=sCanon(v[k]); }); return o; }
+  return v===undefined? null : v;
+}
+function sEq(a,b){ return JSON.stringify(sCanon(a))===JSON.stringify(sCanon(b)); }
+function sObj(v){ return !!v && typeof v==='object' && !Array.isArray(v); }
+function syncStrip(o){ const c=sClone(o||{}); delete c._at; delete c._dev; return c; }
+function syncBaseGet(){ try{ const r=lsGet('_sync_base'); return r? JSON.parse(r) : null; }catch(e){ return null; } }
+function syncBaseSet(o){ try{ lsSet('_sync_base', JSON.stringify(syncStrip(o))); }catch(e){} }
+function mKey(it){
+  if(sObj(it)){
+    if(it.id!=null) return 'id:'+it.id;
+    if(it.o!=null && it.i!=null) return 'oi:'+it.o+'-'+it.i;
+    if(it.at!=null) return 'at:'+it.at;
+    return 'j:'+JSON.stringify(sCanon(it));
+  }
+  return 'v:'+String(it);
+}
+function mIndex(arr){                                  /* 같은 값이 두 건이어도 잃지 않도록 중복까지 센다 */
+  const m=new Map();
+  (arr||[]).forEach(function(it){ let k=mKey(it), n=1; while(m.has(k+'#'+n)) n++; m.set(k+'#'+n, it); });
+  return m;
+}
+function mergeArr(base, loc, rem){
+  const B=mIndex(Array.isArray(base)?base:null), L=mIndex(loc), R=mIndex(rem);
+  const out=new Map();
+  L.forEach(function(v,k){ out.set(k,v); });            /* 양쪽에서 추가된 기록은 둘 다 살린다 */
+  R.forEach(function(v,k){ if(!out.has(k)) out.set(k,v); });
+  if(Array.isArray(base)){                             /* 기준본에 있었는데 한쪽에서 사라졌다 = 삭제 */
+    B.forEach(function(v,k){ if(!L.has(k) || !R.has(k)) out.delete(k); });
+  }
+  const arr=Array.from(out.values());
+  const all=function(f){ return arr.length>0 && arr.every(f); };
+  if(all(function(x){ return sObj(x) && x.at!=null; }))      arr.sort(function(a,b){ return (b.at||0)-(a.at||0); });
+  else if(all(function(x){ return sObj(x) && x.o!=null; }))  arr.sort(function(a,b){ return (a.o||0)-(b.o||0); });
+  else if(all(function(x){ return sObj(x) && x.d!=null; }))  arr.sort(function(a,b){ return String(a.d).localeCompare(String(b.d)); });
+  else if(all(function(x){ return typeof x==='string'; }))   arr.sort();
+  return arr;
+}
+function merge3(base, loc, rem, remNewer){
+  if(sEq(loc, rem)) return sClone(loc);
+  if(Array.isArray(loc) && Array.isArray(rem)) return mergeArr(base, loc, rem);
+  if(sObj(loc) && sObj(rem)){
+    const b=sObj(base)? base : null, out={}, keys={};
+    Object.keys(loc).forEach(function(k){ keys[k]=1; });
+    Object.keys(rem).forEach(function(k){ keys[k]=1; });
+    Object.keys(keys).forEach(function(k){
+      const hasL=Object.prototype.hasOwnProperty.call(loc,k), hasR=Object.prototype.hasOwnProperty.call(rem,k);
+      const hasB=!!b && Object.prototype.hasOwnProperty.call(b,k);
+      if(hasL && hasR){ out[k]=merge3(hasB? b[k] : undefined, loc[k], rem[k], remNewer); return; }
+      if(hasL){ if(hasB && sEq(b[k], loc[k])) return;   /* 상대가 지운 항목 */ out[k]=sClone(loc[k]); return; }
+      if(hasB && sEq(b[k], rem[k])) return;             /* 내가 지운 항목 */
+      out[k]=sClone(rem[k]);
+    });
+    return out;
+  }
+  if(base!==undefined && sEq(loc, base)) return sClone(rem);   /* 나는 그대로 = 상대 변경 채택 */
+  if(base!==undefined && sEq(rem, base)) return sClone(loc);   /* 상대는 그대로 = 내 변경 유지 */
+  return sClone(remNewer? rem : loc);                          /* 양쪽 동시 변경 = 나중 것 */
+}
+function mergeStates(base, loc, rem){
+  const remNewer=((rem&&rem._at)||0) > ((loc&&loc._at)||0);
+  const out=merge3(base||undefined, loc||{}, rem||{}, remNewer);
+  out._at=Math.max((loc&&loc._at)||0, (rem&&rem._at)||0);
+  out._dev=(loc&&loc._dev)||DEV_ID;
+  return out;
+}
+
 function startSync(){
   clearInterval(SYNC.timer);
   if(!syncConfigured()){ syncStat('설정 안 됨 — 데이터베이스 주소와 가족 코드를 입력하세요.'); return; }
-  syncPull().then(function(){ if(!SYNC.lastRemoteAt) syncPushSoon(); });
+  SYNC.pulledOK=false;
+  /* V5.15: 첫 내려받기가 '성공'했고 서버가 비어 있을 때만 올린다.
+     (예전에는 첫 GET이 실패해도 이 폰의 옛 상태를 서버에 덮어써서 상대 기록이 통째로 날아갔다) */
+  syncPull().then(function(){ if(SYNC.pulledOK && !SYNC.lastRemoteAt) syncPushSoon(); });
   SYNC.timer=setInterval(syncPull, 20000);
   syncStat('동기화 켜짐 — 20초마다 확인합니다.');
 }
@@ -3340,7 +3475,12 @@ function bindSync(){
     SYNC.on=false; lsSet('_sync_on','0'); clearInterval(SYNC.timer);
     syncStat('동기화 꺼짐 — 이 기기에만 저장됩니다.');
   });
-  document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='visible') syncPull(); });
+  document.addEventListener('visibilitychange', function(){
+    if(document.visibilityState==='visible'){ if(SYNC.dirty) syncPushNow(); syncPull(); }
+    else { saveFlush(); }                                  /* V5.15: 화면 끄기 직전 대기 중인 기록 확정 */
+  });
+  window.addEventListener('pagehide', function(){ saveFlush(); });
+  window.addEventListener('online', function(){ if(SYNC.dirty) syncPushNow(); syncPull(); });
 }
 
 /* =============== 오늘의 공지 (교대 인수인계 팝업) =============== */
@@ -4234,7 +4374,7 @@ function bindAlbum(){
    meta[id].p2=1 이면 그 사진의 원본·썸네일이 R2에 있음. 없으면 기존 파이어베이스.
    화면 코드는 albImgSrc() 한 곳만 거치므로 표시·정렬·메모·좋아요는 전부 그대로다.
    상대 폰이 구버전이면 p2 를 모르기 때문에, 두 폰 모두 이 빌드일 때만 전환한다. */
-const PVER=520;   /* v5.14 — 배포마다 이 번호를 올린다 */
+const PVER=521;   /* v5.15 — 배포마다 이 번호를 올린다 */
 const PMIG={run:false, stop:false, gate:null};
 const P2SCHEMES=[
   {id:'d', name:'영상과 같은 형식 (v/… .mp4)',  ct:'video/mp4',  f:function(k,id){ return 'v/'+id+(k==='th'?'t':'')+'.mp4'; }},
@@ -5227,6 +5367,7 @@ function renderQlog(){
     st.innerHTML=row('💩','poo',chips(q.poo,'poo'),cnt(q.poo))+row('💧','pee',chips(q.pee,'pee'),cnt(q.pee))+row('💦','diar',chips(q.diar,'diar'),cnt(q.diar))+row('🍚','meal',chips(q.meal,'meal'),cnt(q.meal))+row('🐕','walk',wk,wsum.join(' · '))+row('😴','sleep',sk,ssum.join(' · '));
   }
   renderMealGap();
+  try{ syncWarnPaint(); }catch(e){}
   try{ renderStats(); }catch(e){}
 }
 function qlBump(k, delta){
