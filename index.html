@@ -3210,6 +3210,8 @@ class VideoRTC extends HTMLElement {
 if(window.customElements && !customElements.get('video-stream')){ customElements.define('video-stream', VideoRTC); }
 </script>
 <script>
+/* V5.15.1 (2026-09-16): 병합 보정 — 같은 항목이 양쪽에 있을 때 안쪽 내용까지 합친다.
+   증상: 상대가 누른 공지 '✓ 확인'이 계속 '아직 확인 전'으로 남고, 항목 안 메모 수정이 되돌아감. */
 /* V5.15 (2026-09-15): 기록 유실 수정 — ① 올리기 실패·충돌 시 재시도(예전엔 조용히 버림) ② 서버본 통째 덮어쓰기 → 3-way 병합
    ③ 첫 내려받기 실패 시 옛 상태를 서버에 덮어쓰던 경로 차단 ④ 화면 끄기·앱 종료 시 대기 중 기록 즉시 확정.
    증상: 한쪽 폰에서 누른 퀵액션 카운트가 잠시 뒤 사라짐. HTML 1줄(경고문)·JS 동기화부만 변경. */
@@ -3402,10 +3404,14 @@ function mIndex(arr){                                  /* 같은 값이 두 건�
   (arr||[]).forEach(function(it){ let k=mKey(it), n=1; while(m.has(k+'#'+n)) n++; m.set(k+'#'+n, it); });
   return m;
 }
-function mergeArr(base, loc, rem){
+function mergeArr(base, loc, rem, remNewer){
   const B=mIndex(Array.isArray(base)?base:null), L=mIndex(loc), R=mIndex(rem);
   const out=new Map();
-  L.forEach(function(v,k){ out.set(k,v); });            /* 양쪽에서 추가된 기록은 둘 다 살린다 */
+  L.forEach(function(v,k){                             /* 양쪽에서 추가된 기록은 둘 다 살린다 */
+    /* V5.15.1: 같은 기록이 양쪽에 있으면 '내 것으로 덮기'가 아니라 안쪽 내용까지 합친다.
+       (공지 확인 도장·메모 수정처럼 항목 안에서만 바뀌는 값이 사라지던 문제) */
+    out.set(k, R.has(k)? merge3(B.has(k)? B.get(k) : undefined, v, R.get(k), remNewer) : v);
+  });
   R.forEach(function(v,k){ if(!out.has(k)) out.set(k,v); });
   if(Array.isArray(base)){                             /* 기준본에 있었는데 한쪽에서 사라졌다 = 삭제 */
     B.forEach(function(v,k){ if(!L.has(k) || !R.has(k)) out.delete(k); });
@@ -3420,7 +3426,7 @@ function mergeArr(base, loc, rem){
 }
 function merge3(base, loc, rem, remNewer){
   if(sEq(loc, rem)) return sClone(loc);
-  if(Array.isArray(loc) && Array.isArray(rem)) return mergeArr(base, loc, rem);
+  if(Array.isArray(loc) && Array.isArray(rem)) return mergeArr(base, loc, rem, remNewer);
   if(sObj(loc) && sObj(rem)){
     const b=sObj(base)? base : null, out={}, keys={};
     Object.keys(loc).forEach(function(k){ keys[k]=1; });
@@ -4374,7 +4380,7 @@ function bindAlbum(){
    meta[id].p2=1 이면 그 사진의 원본·썸네일이 R2에 있음. 없으면 기존 파이어베이스.
    화면 코드는 albImgSrc() 한 곳만 거치므로 표시·정렬·메모·좋아요는 전부 그대로다.
    상대 폰이 구버전이면 p2 를 모르기 때문에, 두 폰 모두 이 빌드일 때만 전환한다. */
-const PVER=521;   /* v5.15 — 배포마다 이 번호를 올린다 */
+const PVER=522;   /* v5.15.1 — 배포마다 이 번호를 올린다 */
 const PMIG={run:false, stop:false, gate:null};
 const P2SCHEMES=[
   {id:'d', name:'영상과 같은 형식 (v/… .mp4)',  ct:'video/mp4',  f:function(k,id){ return 'v/'+id+(k==='th'?'t':'')+'.mp4'; }},
