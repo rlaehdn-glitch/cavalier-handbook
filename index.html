@@ -1159,7 +1159,7 @@ button.hx-cam{border:none; padding:0; font-family:inherit; cursor:pointer;}
 .hx-hero #hpPaw{position:absolute; right:22px; top:42%; transform:translateY(-50%); font-size:76px; line-height:1; opacity:.30;}
 .hx-ph-hint{display:none;}
 .hx-hero.noph{background:linear-gradient(135deg, #6F331C 0%, #B5643A 100%);}
-.hx-hero.noph .hx-ph-hint{display:block; position:absolute; top:18px; left:16px; right:110px; color:rgba(255,255,255,.88); font-size:13px; font-weight:600; text-align:left; line-height:1.4;}
+.hx-hero.unset .hx-ph-hint, .hx-hero.repfail .hx-ph-hint{display:block; position:absolute; top:18px; left:16px; right:110px; color:rgba(255,255,255,.88); font-size:13px; font-weight:600; text-align:left; line-height:1.4;}
 
 /* V6.0.5: 못 불러온 사진은 깨진 그림 대신 빈 칸 + 앨범 위 안내 */
 img.alb-th.err, .strip .sc img.err{visibility:hidden;}
@@ -2368,7 +2368,7 @@ img.alb-th.err, .strip .sc img.err{visibility:hidden;}
       <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
       <li>의료 정보는 일반 정보입니다. 개별 판단은 수의사 진료가 우선입니다.</li>
     </ul>
-    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.0.5 · 2026-10-15</p>
+    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.0.6 · 2026-10-15</p>
   </div>
 </section>
 
@@ -4680,6 +4680,7 @@ async function albumPull(force){
       const meta=await albFetch('meta');
       ALB.meta=meta||{}; ALB.lastRev=rev;
       renderAlbum();
+      try{ repOnMeta(); }catch(e){}   /* V6.0.6: 앨범 정보가 오면 대표사진 다시 */
       setTimeout(function(){ albRepairThumbs(); }, 300);   /* V5.9.3 */
     }
   }catch(e){ albStat('불러오기 실패 — 인터넷 확인 후 "새로고침"을 눌러주세요.'); }
@@ -5804,20 +5805,16 @@ function latestWeight(){
   return [...S.weight].sort(function(a,b){ return a.d.localeCompare(b.d); }).pop();
 }
 function applyRep(){
-  const th=(S.rep && S.rep.th) || '';
-  if(th.indexOf('blob:')===0 && S.rep && S.rep.id){
-    /* V5.14: 세션 한정 주소는 저장해도 다음 접속에 깨진다 — 사진 id 로 매번 다시 만든다 */
-    albImgSrc('th', S.rep.id).then(function(u){ if(u && S.rep){ S.rep.th=u; applyRepDraw(u); } }).catch(function(){ applyRepDraw(''); });
-    return;
-  }
+  const id=(S.rep && S.rep.id)||'';
+  let th=(S.rep && S.rep.th)||'';
+  if(th.indexOf('blob:')===0) th='';                                   /* 세션 한정 주소는 다음 접속에 깨진다 */
+  const mu=(typeof mediaUrl==='function')? mediaUrl() : '';
+  if(th && mu && th.indexOf(mu)===0) th='';                            /* 저장소 직접 주소(옛 방식)는 이름이 틀릴 수 있어 다시 찾는다 */
+  if(!th && id){ const c=heroCacheGet(id); if(c) th=c; }               /* V6.0.6: 이 폰에 저장해 둔 대표사진 → 바로 표시 */
   applyRepDraw(th);
 }
 function applyRepDraw(th){
-  if(!th && S.rep && S.rep.id && !applyRepDraw._busy){
-    applyRepDraw._busy=true;
-    albImgSrc('th', S.rep.id).then(function(u){ applyRepDraw._busy=false; if(u) applyRepDraw(u); })
-      .catch(function(){ applyRepDraw._busy=false; });
-  }
+  if(!th && S.rep && S.rep.id) repFetch();   /* V6.0.6: 앨범 정보 도착 전엔 기다렸다가 맞는 저장소에서 */
   [['abImg','abPaw'],['hpImg','hpPaw']].forEach(function(pair){
     const img=document.getElementById(pair[0]), paw=document.getElementById(pair[1]);
     if(!img) return;
@@ -7933,21 +7930,70 @@ function bindTheme(){
 }
 
 /* =============== V6.0.4: 대표사진 히어로 — 썸네일 먼저, 원본 화질로 교체 =============== */
-const HERO={id:'', url:''};
+const HERO={id:'', url:'', busy:''};
+const REPF={busy:'', wait:false, fail:''};
+const HERO_CK='_hero_v1';
+/* V6.0.6: 대표사진 — 앨범 정보가 오기 전엔 찾지 않고 기다린다(옛 저장소로 가서 포기하던 문제) */
+function repFetch(){
+  const id=(S.rep && S.rep.id)||''; if(!id || REPF.busy===id) return;
+  if(typeof syncConfigured==='function' && syncConfigured() && !ALB.meta){ REPF.wait=true; return; }
+  REPF.busy=id;
+  albImgSrc('th', id).then(function(u){
+    REPF.busy='';
+    if(!S.rep || S.rep.id!==id) return;
+    if(u){ REPF.fail=''; applyRepDraw(u); heroCachePut(id, u, false); }
+    else{ REPF.fail=id; heroSync(''); }
+  }).catch(function(){ REPF.busy=''; if(S.rep && S.rep.id===id){ REPF.fail=id; heroSync(''); } });
+}
+function repOnMeta(){
+  REPF.wait=false;
+  if(S.rep && S.rep.id){ if(REPF.fail===S.rep.id) REPF.fail=''; applyRep(); }
+}
+/* V6.0.6: 이 폰에 대표사진을 작게 저장 → 다음에 앱을 열면 기다림 없이 바로 표시 */
+function heroCacheGet(id){ try{ const o=JSON.parse(lsGet(HERO_CK)||'null'); return (o && o.id===id && o.du)? o.du : ''; }catch(e){ return ''; } }
+function heroCacheClear(){ try{ if(lsGet(HERO_CK)) localStorage.removeItem(HERO_CK); }catch(e){} }
+function heroCachePut(id, src, hi){
+  if(!id || !src) return;
+  try{ const o=JSON.parse(lsGet(HERO_CK)||'null'); if(o && o.id===id && (o.hi || !hi)) return; }catch(e){}
+  const im=new Image();
+  im.onload=function(){
+    try{
+      const nw=im.naturalWidth||0, nh=im.naturalHeight||0; if(!nw || !nh) return;
+      const W=Math.min(1080, nw), H=Math.round(nh*W/nw);
+      const cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+      const cx=cv.getContext('2d'); if(!cx) return;
+      cx.drawImage(im, 0, 0, W, H);
+      let du=cv.toDataURL('image/jpeg', 0.82); if(du.length>700000) du=cv.toDataURL('image/jpeg', 0.66);
+      if(du.length>900000) return;
+      if(S.rep && S.rep.id===id) lsSet(HERO_CK, JSON.stringify({id:id, hi:!!hi, du:du, at:Date.now()}));
+    }catch(e){}
+  };
+  im.src=src;
+}
+/* 히어로: 사진 없음(미지정) · 불러오는 중 · 불러오기 실패를 구분, 원본 화질로 교체 */
 function heroSync(th){
   const hero=document.getElementById('hxHero'), img=document.getElementById('hpImg'); if(!hero || !img) return;
   const id=(S.rep && S.rep.id)||'';
+  const failed=!!(id && !th && REPF.fail===id);
   hero.classList.toggle('noph', !th);
-  if(!th || !id) return;
-  if(HERO.id===id){ if(HERO.url && img.getAttribute('src')!==HERO.url) img.src=HERO.url; return; }
-  HERO.id=id; HERO.url='';
+  hero.classList.toggle('unset', !id);
+  hero.classList.toggle('repfail', failed);
+  const hint=hero.querySelector('.hx-ph-hint');
+  if(hint) hint.textContent = failed? '대표 사진을 불러오지 못했어요 — 앨범에서 다시 지정해 주세요' : '앨범 사진의 ⋯ 메뉴에서 대표 사진을 정해 주세요';
+  if(!id){ heroCacheClear(); return; }
+  if(!th) return;
+  if(HERO.id===id && HERO.url){ if(img.getAttribute('src')!==HERO.url) img.src=HERO.url; return; }
+  if(HERO.busy===id) return;
   if(typeof syncConfigured==='function' && !syncConfigured()) return;
+  if(!ALB.meta) return;                                   /* 앨범 정보 도착 후(repOnMeta) 원본으로 교체 */
+  HERO.busy=id;
   albImgSrc('full', id).then(function(u){
-    if(!u || !S.rep || S.rep.id!==id) return;
+    if(!u || !S.rep || S.rep.id!==id){ HERO.busy=''; return; }
     const pre=new Image();
-    pre.onload=function(){ if(S.rep && S.rep.id===id){ HERO.url=u; img.src=u; } };
+    pre.onload=function(){ HERO.busy=''; if(S.rep && S.rep.id===id){ HERO.id=id; HERO.url=u; img.src=u; heroCachePut(id, u, true); } };
+    pre.onerror=function(){ HERO.busy=''; };
     pre.src=u;
-  }).catch(function(){ if(HERO.id===id) HERO.id=''; });
+  }).catch(function(){ HERO.busy=''; });
 }
 
 /* =============== V6.0.5: R2 사진 이름 자동 확인 ===============
