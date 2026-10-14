@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>빼꼼 · 카발리에 킹 찰스 스파니엘 핸드북</title>
 <meta name="color-scheme" content="light dark">
+<script>try{var t=localStorage.getItem("_theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
@@ -726,7 +727,7 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
   color-scheme:light dark;
 }
 @media (prefers-color-scheme: dark){
-  :root{
+  :root:not([data-theme="light"]){
     --bg:#000; --card:#1C1C1E; --sheet:#1C1C1E; --sheet-card:#2C2C2E;
     --fill:rgba(120,120,128,.36); --fill2:rgba(118,118,128,.24); --fill3:rgba(118,118,128,.16);
     --sep:rgba(84,84,88,.65); --label:#FFF; --label2:rgba(235,235,245,.62); --label3:rgba(235,235,245,.30);
@@ -738,6 +739,19 @@ mark.lib-hl{background:#FFE79E; color:inherit; border-radius:4px; padding:0 3px;
     --red:#FF453A; --red-bg:rgba(255,69,58,.16);
   }
 }
+:root[data-theme="dark"]{
+    --bg:#000; --card:#1C1C1E; --sheet:#1C1C1E; --sheet-card:#2C2C2E;
+    --fill:rgba(120,120,128,.36); --fill2:rgba(118,118,128,.24); --fill3:rgba(118,118,128,.16);
+    --sep:rgba(84,84,88,.65); --label:#FFF; --label2:rgba(235,235,245,.62); --label3:rgba(235,235,245,.30);
+    --tint:#E8875A; --tint-ink:#F0A27D; --tint-fill:rgba(232,135,90,.18); --tint-btn:#B85A33;
+    --glass:rgba(36,36,38,.74); --glass-bd:rgba(255,255,255,.10); --glass-sel:rgba(232,135,90,.24); --glass-bar:rgba(0,0,0,.74);
+    --c-poo:#AC8E68; --c-pee:#FFD60A; --c-diar:#FF453A; --c-meal:#30D158; --c-walk:#FF9F0A; --c-sleep:#5E5CE6; --c-kg:#0A84FF; --c-away:#98989D;
+    --green:#30D158; --red-sys:#FF453A; --bar:#3A3A3C; --warn-ink:#FF9F0A;
+    --amber-bg:rgba(255,214,10,.14); --amber-bd:rgba(255,214,10,.4); --sage:#30D158; --sage-bg:rgba(48,209,88,.14);
+    --red:#FF453A; --red-bg:rgba(255,69,58,.16);
+}
+:root[data-theme="light"]{color-scheme:light;}
+:root[data-theme="dark"]{color-scheme:dark;}
 
 /* ---------- 바탕 · 서체 ---------- */
 html{background:var(--bg); -webkit-text-size-adjust:100%;}
@@ -844,7 +858,8 @@ td .tag.r{background:var(--red-bg); color:var(--red);}
 .mg-warn{color:var(--warn-ink);}
 .hc-row{border-bottom:.5px solid var(--sep);}
 .hc-watch{background:rgba(255,204,0,.18); color:#946200;}
-@media (prefers-color-scheme: dark){ .box-key .bt, .hc-watch{color:#FFD60A;} }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .box-key .bt, :root:not([data-theme="light"]) .hc-watch{color:#FFD60A;} }
+:root[data-theme="dark"] .box-key .bt, :root[data-theme="dark"] .hc-watch{color:#FFD60A;}
 
 /* 그래프 색 (SVG 속성 색을 CSS가 덮음 → 다크 모드 대응) */
 svg rect[fill="#D8C9AE"]{fill:var(--bar);}
@@ -1093,7 +1108,8 @@ svg.rep-arr{width:22px; height:22px; color:var(--label3); stroke-width:2.4;}
 #uiToast.on{opacity:1; transform:translate(-50%, 0); pointer-events:auto;}
 #uiToastT{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 #uiToastU{background:none; border:none; color:#FFB089; font-family:inherit; font-size:14px; font-weight:700; padding:4px 10px; cursor:pointer; flex:0 0 auto;}
-@media (prefers-color-scheme: dark){ #uiToast{background:rgba(58,58,60,.95);} }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) #uiToast{background:rgba(58,58,60,.95);} }
+:root[data-theme="dark"] #uiToast{background:rgba(58,58,60,.95);}
 @media (prefers-reduced-motion: reduce){ .sheet, #wtOvl .wt-card, #qeOvl .wt-card{animation:none;} #bnav{transition:none;} }
 
 /* V6 보강: 옛 탭 표시줄 제거 · 시트 안 요소는 시트보다 한 단계 밝게(다크) */
@@ -1115,6 +1131,11 @@ button.btn, button.btn:hover, .sh-b1, #wtSave, #qeSave, .qe-amt button.on, .cal-
 /* V6.0.1 보강: 통계 카드 2열(폰) · 달력 '오늘로' 크기 */
 @media (max-width:480px){ .st-cards{grid-template-columns:repeat(2,1fr);} }
 .cal-head #calToday{height:30px; min-width:0; padding:0 12px; font-size:13px; margin-top:4px;}
+
+/* V6.0.2: 화면 모드 (자동·라이트·다크) — 기기별 */
+.seg3{display:flex; gap:2px; background:var(--fill2); border-radius:11px; padding:2px;}
+.seg3 button{flex:1; border:none; background:none; border-radius:9px; padding:8px 0; font-family:inherit; font-size:15px; font-weight:600; color:var(--label); cursor:pointer;}
+.seg3 button.on{background:var(--sheet-card); box-shadow:0 2px 6px rgba(0,0,0,.12);}
 
 </style>
 </head>
@@ -2245,6 +2266,12 @@ button.btn, button.btn:hover, .sh-b1, #wtSave, #qeSave, .qe-amt button.on, .cal-
     <p class="muted small">분양계약서 내용(빼꼼 · 2026.05.20생 · 입양 2026.07.25 · 등록번호 410160013217268)이 자동으로 채워져 있습니다. 고치면 그대로 저장되고 상대 기기에도 반영됩니다.</p>
   </div>
 
+  <h3 class="sec">화면 <span class="muted small">이 기기에만 적용</span></h3>
+  <div class="card">
+    <div class="seg3" id="themeSeg" role="radiogroup" aria-label="화면 모드"><button type="button" data-th="auto" role="radio">자동</button><button type="button" data-th="light" role="radio">라이트</button><button type="button" data-th="dark" role="radio">다크</button></div>
+    <p class="muted small" id="themeInfo" style="margin:8px 0 0;"></p>
+  </div>
+
   <h3 class="sec">병원 연락처</h3>
   <div class="card">
     <div class="field"><label>단골 동물병원 (이름·전화)</label><input type="text" id="vetMain" placeholder="예: 삼송동물병원 02-6015-3624"></div>
@@ -2310,7 +2337,7 @@ button.btn, button.btn:hover, .sh-b1, #wtSave, #qeSave, .qe-amt button.on, .cal-
       <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
       <li>의료 정보는 일반 정보입니다. 개별 판단은 수의사 진료가 우선입니다.</li>
     </ul>
-    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.0.1 · 2026-10-15</p>
+    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.0.2 · 2026-10-15</p>
   </div>
 </section>
 
@@ -7826,6 +7853,7 @@ function bindV6(){
   const nc=document.getElementById('nowCard'); if(nc) nc.addEventListener('click', nowTap);
   const mo=document.getElementById('albLbMore'); if(mo) mo.addEventListener('click', lbMore);
   bindKgCfg();
+  try{ bindTheme(); }catch(e){ console.error('theme', e); }
   let lastY=window.scrollY||0, ticking=false;
   window.addEventListener('scroll', function(){
     if(ticking) return; ticking=true;
@@ -7842,6 +7870,34 @@ function bindV6(){
     if(us && us.classList.contains('on')){ uiSheetClose({ok:false}); return; }
     repHide(); kgHide();
   });
+}
+
+/* =============== V6.0.2: 화면 모드 — 자동(기기·앱 설정 따름) / 라이트 / 다크, 기기별 저장 =============== */
+function themeGet(){ const t=lsGet('_theme'); return (t==='light' || t==='dark')? t : 'auto'; }
+function themeSysDark(){ try{ return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches); }catch(e){ return false; } }
+function themeApply(){
+  const t=themeGet(), r=document.documentElement;
+  if(t==='auto') r.removeAttribute('data-theme'); else r.setAttribute('data-theme', t);
+  document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){
+    if(m.dataset.c0===undefined){ m.dataset.c0=m.getAttribute('content')||''; m.dataset.m0=m.getAttribute('media')||''; }
+    if(t==='auto'){ m.setAttribute('content', m.dataset.c0); if(m.dataset.m0) m.setAttribute('media', m.dataset.m0); }
+    else{ m.removeAttribute('media'); m.setAttribute('content', t==='dark'? '#000000' : '#F2F2F7'); }
+  });
+  document.querySelectorAll('#themeSeg [data-th]').forEach(function(b){ const on=b.dataset.th===t; b.classList.toggle('on', on); b.setAttribute('aria-checked', on? 'true' : 'false'); });
+  const info=document.getElementById('themeInfo');
+  if(info) info.textContent = t==='auto'
+    ? '자동 — 지금 이 기기는 '+(themeSysDark()? '다크' : '라이트')+'로 인식됩니다. 폰은 라이트인데 다크로 보이면, 링크를 연 앱(카톡 등)의 다크 설정을 따르는 것이니 라이트를 고르세요.'
+    : (t==='light'? '라이트로 고정' : '다크로 고정')+' — 이 기기에만 적용됩니다. 다른 폰은 각자 설정합니다.';
+}
+function bindTheme(){
+  const seg=document.getElementById('themeSeg');
+  if(seg) seg.addEventListener('click', function(e){
+    const b=e.target.closest('[data-th]'); if(!b) return;
+    if(b.dataset.th==='auto'){ try{ localStorage.removeItem('_theme'); }catch(x){} } else lsSet('_theme', b.dataset.th);
+    themeApply();
+  });
+  try{ const mq=window.matchMedia('(prefers-color-scheme: dark)'); if(mq.addEventListener) mq.addEventListener('change', themeApply); else if(mq.addListener) mq.addListener(themeApply); }catch(e){}
+  themeApply();
 }
 
 /* =============== Init =============== */
