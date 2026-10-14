@@ -1161,6 +1161,10 @@ button.hx-cam{border:none; padding:0; font-family:inherit; cursor:pointer;}
 .hx-hero.noph{background:linear-gradient(135deg, #6F331C 0%, #B5643A 100%);}
 .hx-hero.noph .hx-ph-hint{display:block; position:absolute; top:18px; left:16px; right:110px; color:rgba(255,255,255,.88); font-size:13px; font-weight:600; text-align:left; line-height:1.4;}
 
+/* V6.0.5: 못 불러온 사진은 깨진 그림 대신 빈 칸 + 앨범 위 안내 */
+img.alb-th.err, .strip .sc img.err{visibility:hidden;}
+.alb-err{margin:0 0 10px; padding:10px 12px; border-radius:12px; background:var(--red-bg); color:var(--red); font-size:13px; font-weight:600; line-height:1.45;}
+
 </style>
 </head>
 <body>
@@ -2364,7 +2368,7 @@ button.hx-cam{border:none; padding:0; font-family:inherit; cursor:pointer;}
       <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
       <li>의료 정보는 일반 정보입니다. 개별 판단은 수의사 진료가 우선입니다.</li>
     </ul>
-    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.0.4 · 2026-10-15</p>
+    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.0.5 · 2026-10-15</p>
   </div>
 </section>
 
@@ -2874,6 +2878,7 @@ button.hx-cam{border:none; padding:0; font-family:inherit; cursor:pointer;}
       <button class="alb-chip" data-f="v" type="button">영상</button>
       <button class="alb-chip" data-f="l" type="button">&#10084; 좋아요</button>
     </div>
+    <p class="alb-err" id="albErr" style="display:none;"></p>
     <div class="alb-grid" id="albGrid"></div>
     <div style="text-align:center; margin-top:14px;"><button class="btn sm ghost" id="albMore" style="display:none;">더 보기</button></div>
 
@@ -4685,7 +4690,7 @@ const albThIO=('IntersectionObserver' in window)? new IntersectionObserver(funct
     if(!en.isIntersecting) return;
     const img=en.target, id=img.dataset.aid;
     albThIO.unobserve(img);
-    albImgSrc('th',id).then(function(v){ if(v){ ALB.thumbs.set(id,v); img.src=v; img.classList.add('ld'); } }).catch(function(){});
+    albImgSrc('th',id).then(function(v){ if(v){ ALB.thumbs.set(id,v); img.src=v; img.classList.add('ld'); } }).catch(function(e){ img.classList.add('err'); albErrNote(id, e); });
   });
 },{rootMargin:'250px'}) : null;
 function renderAlbum(){
@@ -4732,7 +4737,7 @@ function renderAlbum(){
     const id=img.dataset.aid;
     if(ALB.thumbs.has(id)){ img.src=ALB.thumbs.get(id); img.classList.add('ld'); }
     else if(albThIO){ albThIO.observe(img); }
-    else{ albImgSrc('th',id).then(function(v){ if(v){ img.src=v; img.classList.add('ld'); ALB.thumbs.set(id,v); } }).catch(function(){}); }
+    else{ albImgSrc('th',id).then(function(v){ if(v){ img.src=v; img.classList.add('ld'); ALB.thumbs.set(id,v); } }).catch(function(e){ img.classList.add('err'); albErrNote(id, e); }); }
   });
 }
 function albCompress(file, maxSide, q){
@@ -4777,7 +4782,7 @@ function bindAlbum(){
           const fb=albDataBlob(fu), tb=albDataBlob(th);
           await mediaUpload(fb, albP2Key('full',id), albP2Ct());
           await mediaUpload(tb, albP2Key('th',id), albP2Ct());
-          meta={t:'p', d:todayKey(), m:'', at:Date.now(), s:fb.size+tb.size, p2:1};
+          meta={t:'p', d:todayKey(), m:'', at:Date.now(), s:fb.size+tb.size, p2:1, ps:albP2Scheme().id};
           await albFetch('meta/'+id,'PUT',JSON.stringify(meta));
           ALB.meta=ALB.meta||{}; ALB.meta[id]=meta; ALB.thumbs.set(id,th);
         }else{
@@ -4880,8 +4885,7 @@ function bindAlbum(){
       /* V5.12: R2 보관 사진 — 파일 먼저 삭제, 실패하면 메타를 남겨 고아 파일 방지 */
       if(!mediaConfigured()){ alert('사진 저장소가 연결되지 않아 삭제할 수 없습니다.'); return; }
       try{
-        await mediaFetch(mediaApi('/file/'+albP2Key('full',id)), {method:'DELETE'}, 20000);
-        try{ await mediaFetch(mediaApi('/file/'+albP2Key('th',id)), {method:'DELETE'}, 20000); }catch(e){}
+        await p2DeleteAll(id);   /* V6.0.5: 실제 저장된 이름으로 삭제 */
       }catch(e){ alert('사진 파일 삭제 실패 — 인터넷 확인 후 다시 시도해주세요. ('+String(e&&e.message||e)+')'); return; }
     }
     try{
@@ -5009,9 +5013,7 @@ async function albP2Blob(key){
 function albImgSrc(kind,id){
   if(albIsP2(id)){
     if(!mediaConfigured()) return Promise.reject(new Error('저장소 미연결'));
-    const key=albP2Key(kind,id);
-    if(albP2NeedsFix(key)) return albP2Blob(key);
-    return Promise.resolve(mediaApi('/file/'+key));
+    return p2Src(kind,id);   /* V6.0.5: 사진마다 실제로 열리는 이름을 찾아 씀 */
   }
   return albFetch(kind+'/'+id);
 }
@@ -5105,7 +5107,7 @@ async function albMigRun(){
         let tb=null;
         if(th){ tb=albDataBlob(th); await mediaUpload(tb, albP2Key('th',id), albP2Ct()); }
         const m=Object.assign({}, ALB.meta[id]||{});
-        m.p2=1; m.s=fb.size+(tb?tb.size:0);
+        m.p2=1; m.ps=albP2Scheme().id; m.s=fb.size+(tb?tb.size:0);
         await albFetch('meta/'+id,'PUT',JSON.stringify(m));
         ALB.meta[id]=m; ALB.thumbs.delete(id); ALB.fulls.delete(id);
         ok++;
@@ -5127,7 +5129,7 @@ async function albMigClean(){
   p2Stat('R2 보관 상태 확인 중…');
   const pick=[ids[0], ids[Math.floor(ids.length/2)], ids[ids.length-1]];
   for(let i=0;i<pick.length;i++){
-    try{ const r=await fetch(mediaApi('/file/'+albP2Key('full',pick[i]))); if(!r.ok) throw new Error('HTTP '+r.status); }
+    try{ await p2Blob('full', pick[i]); }
     catch(e){ p2Stat('확인 실패 — 정리를 중단했습니다. ('+String(e&&e.message||e)+')'); return; }
   }
   if(!confirm('R2 보관 확인됐습니다.\n파이어베이스에 남은 사본 '+ids.length+'장을 지웁니다. 앨범 화면은 그대로입니다.\n\n계속할까요?')) { p2Stat(''); return; }
@@ -5242,9 +5244,8 @@ async function bkBytes(id){
   const m=ALB.meta[id];
   if(albIsPhoto(m)){
     if(m.p2){
-      const r=await fetch(mediaApi('/file/'+albP2Key('full',id)));
-      if(!r.ok) throw new Error('HTTP '+r.status);
-      return new Uint8Array(await r.arrayBuffer());
+      const b=await p2Blob('full', id);   /* V6.0.5 */
+      return new Uint8Array(await b.arrayBuffer());
     }
     const du=await albFetch('full/'+id);
     if(!du) throw new Error('내용 없음');
@@ -5918,7 +5919,7 @@ function renderDash(){ renderAppbar(); renderHomeWt(); renderDday(); renderHomeN
 /* =============== V2: 사진 스트립 / 앨범 강화 =============== */
 function stripThumb(id, img){
   if(ALB.thumbs.has(id)){ img.src=ALB.thumbs.get(id); return; }
-  albImgSrc('th',id).then(function(v){ if(v){ ALB.thumbs.set(id,v); img.src=v; } }).catch(function(){});
+  albImgSrc('th',id).then(function(v){ if(v){ ALB.thumbs.set(id,v); img.src=v; } }).catch(function(){ img.classList.add('err'); });
 }
 function renderStrip(){
   const el=document.getElementById('photoStrip'); if(!el) return;
@@ -7947,6 +7948,87 @@ function heroSync(th){
     pre.onload=function(){ if(S.rep && S.rep.id===id){ HERO.url=u; img.src=u; } };
     pre.src=u;
   }).catch(function(){ if(HERO.id===id) HERO.id=''; });
+}
+
+/* =============== V6.0.5: R2 사진 이름 자동 확인 ===============
+   문제: R2 파일 이름이 사진마다 기록되지 않고, 공용 '이름 방식(P2S)' 하나로 매번 다시 계산됐다.
+   앱을 연 직후 방식 정보를 받기 전에 올린 사진, 또는 방식이 바뀌기 전 사진은 다른 이름으로 찾다가 404 → 깨진 그림.
+   해결: 사진마다 실제로 열리는 이름을 찾아(기록된 방식 → 직전에 맞은 방식 → 공용 방식 → 나머지 → 파이어베이스 사본) 쓰고,
+   찾은 방식은 meta/{id}/ps 에 기록해 두 폰이 다음부터 바로 연다. 새로 올리는 사진은 처음부터 ps를 기록한다. */
+const P2ID=new Map(), P2FULL=new Map(), P2WAIT=new Map(), ALBERR=new Map();
+let P2PREF='';
+function p2SchemeById(sid){ for(let i=0;i<P2SCHEMES.length;i++){ if(P2SCHEMES[i].id===sid) return P2SCHEMES[i]; } return null; }
+function p2Order(id){
+  const m=(ALB.meta||{})[id]||{}, out=[];
+  const add=function(sid){ if(sid && out.indexOf(sid)<0 && p2SchemeById(sid)) out.push(sid); };
+  add(m.ps); add(P2PREF); add(P2S); P2SCHEMES.forEach(function(x){ add(x.id); });
+  return out;
+}
+function albP2KeyFor(kind,id){ const m=(ALB.meta||{})[id]||{}; const sc=(m.ps && p2SchemeById(m.ps)) || albP2Scheme(); return sc.f(kind,id); }
+async function p2Get(key, ms){
+  const ctl=new AbortController(); const to=setTimeout(function(){ ctl.abort(); }, ms||15000);
+  try{ return await fetch(mediaApi('/file/'+key), {signal:ctl.signal}); } finally{ clearTimeout(to); }
+}
+function p2Cache(kind, key, url){
+  const map = kind==='full'? P2FULL : P2BLOB, max = kind==='full'? 24 : 600;
+  if(map.size>=max){ const old=map.keys().next().value; try{ URL.revokeObjectURL(map.get(old)); }catch(e){} map.delete(old); }
+  map.set(key, url);
+}
+function p2Remember(id, sid){
+  P2PREF=sid;
+  const m=(ALB.meta||{})[id]; if(!m || m.ps===sid) return;
+  m.ps=sid;
+  if(syncConfigured()) albFetch('meta/'+id+'/ps','PUT',JSON.stringify(sid)).catch(function(){});
+}
+function p2Src(kind,id){
+  const ck=kind+':'+id;
+  const hk=P2ID.get(ck);
+  if(hk){ const u=(kind==='full'? P2FULL : P2BLOB).get(hk); if(u) return Promise.resolve(u); }
+  if(P2WAIT.has(ck)) return P2WAIT.get(ck);
+  const pr=(async function(){
+    const order=p2Order(id), seen=[];
+    for(let i=0;i<order.length;i++){
+      const sc=p2SchemeById(order[i]); const key=sc.f(kind,id);
+      try{
+        const r=await p2Get(key, kind==='full'? 30000 : 15000);
+        if(!r.ok){ seen.push(r.status); continue; }
+        const b=await r.blob();
+        if(!b || !b.size){ seen.push('빈 파일'); continue; }
+        const url=URL.createObjectURL(new Blob([b], {type:'image/jpeg'}));
+        p2Cache(kind, key, url); P2ID.set(ck, key); p2Remember(id, sc.id); ALBERR.delete(id);
+        return url;
+      }catch(e){ seen.push(e && e.name==='AbortError'? '시간 초과' : '연결 실패'); }
+    }
+    try{ const du=await albFetch(kind+'/'+id); if(du){ ALBERR.delete(id); return du; } }catch(e){}
+    const why = seen.indexOf(404)>-1? '404' : String(seen[0]||'오류');
+    ALBERR.set(id, why);
+    throw new Error('R2 '+why);
+  })();
+  P2WAIT.set(ck, pr);
+  pr.then(function(){ P2WAIT.delete(ck); try{ albErrPaint(); }catch(e){} }, function(){ P2WAIT.delete(ck); try{ albErrPaint(); }catch(e){} });
+  return pr;
+}
+async function p2Blob(kind,id){
+  const u=await p2Src(kind,id);
+  const r=await fetch(u); if(!r.ok) throw new Error('HTTP '+r.status);
+  return r.blob();
+}
+async function p2DeleteAll(id){
+  const m=(ALB.meta||{})[id]||{};
+  if(!m.ps){ try{ await p2Src('th', id); }catch(e){ if(!/404/.test(String(e&&e.message))) throw e; } }
+  const sid=((ALB.meta||{})[id]||{}).ps; if(!sid) return;   /* 어디에도 파일이 없으면 지울 것도 없음 */
+  const sc=p2SchemeById(sid);
+  await mediaFetch(mediaApi('/file/'+sc.f('full',id)), {method:'DELETE'}, 20000);
+  try{ await mediaFetch(mediaApi('/file/'+sc.f('th',id)), {method:'DELETE'}, 20000); }catch(e){}
+}
+function albErrNote(id, e){ if(!ALBERR.has(id)) ALBERR.set(id, String(e&&e.message||e||'오류').replace(/^R2 /,'')); albErrPaint(); }
+function albErrPaint(){
+  const el=document.getElementById('albErr'); if(!el) return;
+  const n=ALBERR.size;
+  if(!n){ el.style.display='none'; return; }
+  const c404=Array.from(ALBERR.values()).filter(function(v){ return v==='404'; }).length;
+  el.style.display='';
+  el.textContent='사진 '+n+'장을 불러오지 못했어요'+(c404? ' — 저장소에 파일이 없음(404) '+c404+'장' : ' — '+Array.from(ALBERR.values())[0])+'. 인터넷 연결을 확인하고 앨범을 다시 열어 보세요.';
 }
 
 /* =============== Init =============== */
