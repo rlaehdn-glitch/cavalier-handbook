@@ -1144,6 +1144,23 @@ button.btn, button.btn:hover, .sh-b1, #wtSave, #qeSave, .qe-amt button.on, .cal-
 button.hx-cam{border:none; padding:0; font-family:inherit; cursor:pointer;}
 .hx-head .dp-photo{width:48px; height:48px; font-size:21px;}
 
+/* V6.0.4: 대표사진 히어로 — 사진이 홈의 주인공, 누르면 앨범 */
+.hx-hero{position:relative; width:100%; aspect-ratio:4/3; max-height:340px; margin:2px 0 12px; border-radius:24px; overflow:hidden; background:var(--fill2); isolation:isolate;}
+.hx-hero .hx-ph{position:absolute; inset:0; width:100%; height:100%; margin:0; padding:0; border:none; border-radius:0; background:none; cursor:pointer; display:block; overflow:hidden; font-size:inherit;}
+.hx-hero .hx-ph img{width:100%; height:100%; object-fit:cover; display:block;}
+.hx-hero::after{content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:linear-gradient(to top, rgba(0,0,0,.58) 0%, rgba(0,0,0,.22) 34%, rgba(0,0,0,0) 58%);}
+.hx-hero .hx-tt{position:absolute; left:16px; right:16px; bottom:14px; z-index:2; pointer-events:none;}
+.hx-hero .hx-name{color:#fff; font-size:34px; line-height:1.1; text-shadow:0 1px 14px rgba(0,0,0,.28);}
+.hx-hero .hx-sub{color:rgba(255,255,255,.92); font-size:14px; margin-top:4px;}
+.hx-hero .hx-wt{pointer-events:auto; background:rgba(255,255,255,.22); color:#fff; -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);}
+.hx-hero .hx-tools{position:absolute; top:12px; right:12px; z-index:3; display:flex; gap:8px;}
+.hx-hero .hx-cam{width:38px; height:38px; background:rgba(0,0,0,.30); color:#fff; -webkit-backdrop-filter:saturate(160%) blur(12px); backdrop-filter:saturate(160%) blur(12px);}
+.hx-hero #hpPaw{position:absolute; right:22px; top:42%; transform:translateY(-50%); font-size:76px; line-height:1; opacity:.30;}
+.hx-ph-hint{display:none;}
+.hx-hero.noph{background:linear-gradient(135deg, #6F331C 0%, #B5643A 100%);}
+.hx-hero.noph .hx-ph-hint{display:block; position:absolute; top:18px; left:16px; right:110px; color:rgba(255,255,255,.88); font-size:13px; font-weight:600; text-align:left; line-height:1.4;}
+
 </style>
 </head>
 <body>
@@ -1163,14 +1180,16 @@ button.hx-cam{border:none; padding:0; font-family:inherit; cursor:pointer;}
 <main>
 <!-- ===================== 00 홈 ===================== -->
 <section class="tab-panel on" id="tab-home">
-  <div class="hx-head">
+  <div class="hx-hero noph" id="hxHero">
+    <button class="hx-ph" id="hpBtn" type="button" aria-label="앨범 열기"><img id="hpImg" alt=""><span id="hpPaw">🐾</span><span class="hx-ph-hint">앨범 사진의 ⋯ 메뉴에서 대표 사진을 정해 주세요</span></button>
+    <div class="hx-tools">
+      <a class="hx-cam" id="qlCam" href="#" aria-label="홈캠 앱 열기"><svg class="ico"><use href="#i-cam"/></svg></a>
+      <button class="hx-cam" id="hxSet" type="button" aria-label="설정"><svg class="ico"><use href="#i-gear"/></svg></button>
+    </div>
     <div class="hx-tt">
       <h1 class="hx-name" id="homeName">빼꼼</h1>
       <p class="hx-sub"><span id="homeAge">설정에서 생년월일을 입력하세요</span><button type="button" class="hx-wt" id="homeWt" style="display:none;" aria-label="체중 기록"></button></p>
     </div>
-    <a class="hx-cam" id="qlCam" href="#" aria-label="홈캠 앱 열기"><svg class="ico"><use href="#i-cam"/></svg></a>
-    <button class="hx-cam" id="hxSet" type="button" aria-label="설정"><svg class="ico"><use href="#i-gear"/></svg></button>
-    <button class="dp-photo" id="hpBtn" type="button" aria-label="설정"><img id="hpImg" alt=""><span id="hpPaw">🐾</span></button>
   </div>
 
   <div id="homeNotice"></div>
@@ -2345,7 +2364,7 @@ button.hx-cam{border:none; padding:0; font-family:inherit; cursor:pointer;}
       <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
       <li>의료 정보는 일반 정보입니다. 개별 판단은 수의사 진료가 우선입니다.</li>
     </ul>
-    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.0.3 · 2026-10-15</p>
+    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.0.4 · 2026-10-15</p>
   </div>
 </section>
 
@@ -5630,7 +5649,7 @@ async function albOpen(id){
   const m=ALB.meta[id]; if(!m) return;
   const lbWasOpen=document.getElementById('albLb').classList.contains('on');
   document.getElementById('albLb').classList.add('on');
-  if(!lbWasOpen){ try{ history.pushState({tab:'album', lb:1}, '', '#album'); }catch(e){} }   /* V5.9.4: 뒤로가기로 닫히도록 */
+  if(!lbWasOpen){ try{ history.pushState({tab:'album', lb:1, d:((history.state && history.state.d)||0)+1}, '', '#album'); }catch(e){} }   /* V5.9.4: 뒤로가기로 닫히도록 */
   const ids=albPhotoIds(), pos=ids.indexOf(id);
   document.getElementById('albLbCnt').textContent = pos>=0 ? (pos+1)+' / '+ids.length : '';
   document.getElementById('albLbPrev').disabled = pos<=0;
@@ -5722,20 +5741,20 @@ function goTab(id, silent){
   if(id==='notice'){ try{ chatTabOpen(); }catch(e){} }
   if(!silent){
     if(NAV_HIST[NAV_HIST.length-1]!==id){ NAV_HIST.push(id); if(NAV_HIST.length>30) NAV_HIST.shift(); }
-    try{ history.pushState({tab:id}, '', '#'+id); }catch(e){}
+    try{ history.pushState({tab:id, d:((history.state && history.state.d)||0)+1}, '', '#'+id); }catch(e){}
   }
 }
 function navBack(){
-  if(NAV_HIST.length>1){
-    NAV_HIST.pop();
-    const prev=NAV_HIST[NAV_HIST.length-1];
-    goTab(prev, true);
-    try{ history.pushState({tab:prev}, '', '#'+prev); }catch(e){}
-  }else{
-    const cur=document.querySelector('.tab-panel.on');
-    const id=cur ? cur.id.replace('tab-','') : 'home';
-    goTab(LIB_TABS.indexOf(id)>-1 ? 'lib' : 'home');
-  }
+  /* V6.0.4: 앱이 쌓은 화면이 뒤에 있으면 폰 뒤로가기와 똑같이 되돌아간다(새 항목을 쌓지 않음) */
+  const st=history.state;
+  if(st && st.d>0){ try{ history.back(); return; }catch(e){} }
+  /* 바로가기·새로고침으로 들어와 되돌아갈 화면이 없으면 상위 화면으로 — history는 늘리지 않는다 */
+  const cur=document.querySelector('.tab-panel.on');
+  const id=cur ? cur.id.replace('tab-','') : 'home';
+  const up = id==='stats' ? 'record' : ((LIB_TABS.indexOf(id)>-1) ? 'lib' : 'home');
+  NAV_HIST=['home']; if(up!=='home') NAV_HIST.push(up);
+  goTab(up, true);
+  try{ history.replaceState({tab:up, d:0}, '', '#'+up); }catch(e){}
 }
 let LB_CLOSING=false;   /* V5.9.4: 닫기 버튼으로 라이트박스를 닫으며 되돌린 history 항목 표시 */
 window.addEventListener('popstate', function(e){
@@ -5756,7 +5775,7 @@ function bindNav(){
   const bp=document.getElementById('abPhoto'); if(bp) bp.addEventListener('click', function(){ goTab('home'); });
   const bi=document.getElementById('abInfo'); if(bi) bi.addEventListener('click', function(){ goTab('home'); });
   const lb=document.getElementById('libBackBtn'); if(lb) lb.addEventListener('click', navBack);
-  const hp=document.getElementById('hpBtn'); if(hp) hp.addEventListener('click', function(){ goTab('settings'); });   /* V6: 홈 사진 → 설정 */
+  const hp=document.getElementById('hpBtn'); if(hp) hp.addEventListener('click', function(){ goTab('album'); });   /* V6.0.4: 홈 대표사진 → 앨범 */
   const db=document.getElementById('ddayBanner'); if(db) db.addEventListener('click', function(){ const ev=nearestEvent(); goTab('cal'); if(ev) goCalDate(ev.d); });
 }
 
@@ -5804,6 +5823,7 @@ function applyRepDraw(th){
     if(th){ img.src=th; img.style.display='block'; if(paw) paw.style.display='none'; }
     else{ img.style.display='none'; if(paw) paw.style.display='inline'; }
   });
+  try{ heroSync(th); }catch(e){}
 }
 function nearestEvent(){
   if(!S.profile.birth) return null;
@@ -7868,7 +7888,9 @@ function bindV6(){
     if(ticking) return; ticking=true;
     requestAnimationFrame(function(){
       const y=window.scrollY||0;
-      document.body.classList.toggle('scrolled', y>48);
+      const hero=document.getElementById('hxHero');
+      const thr=(document.body.getAttribute('data-tab')==='home' && hero)? Math.max(48, hero.offsetTop+hero.offsetHeight-64) : 48;
+      document.body.classList.toggle('scrolled', y>thr);
       if(y>lastY+8 && y>140) document.body.classList.add('bn-min');
       else if(y<lastY-8 || y<80) document.body.classList.remove('bn-min');
       lastY=y; ticking=false;
@@ -7909,6 +7931,24 @@ function bindTheme(){
   themeApply();
 }
 
+/* =============== V6.0.4: 대표사진 히어로 — 썸네일 먼저, 원본 화질로 교체 =============== */
+const HERO={id:'', url:''};
+function heroSync(th){
+  const hero=document.getElementById('hxHero'), img=document.getElementById('hpImg'); if(!hero || !img) return;
+  const id=(S.rep && S.rep.id)||'';
+  hero.classList.toggle('noph', !th);
+  if(!th || !id) return;
+  if(HERO.id===id){ if(HERO.url && img.getAttribute('src')!==HERO.url) img.src=HERO.url; return; }
+  HERO.id=id; HERO.url='';
+  if(typeof syncConfigured==='function' && !syncConfigured()) return;
+  albImgSrc('full', id).then(function(u){
+    if(!u || !S.rep || S.rep.id!==id) return;
+    const pre=new Image();
+    pre.onload=function(){ if(S.rep && S.rep.id===id){ HERO.url=u; img.src=u; } };
+    pre.src=u;
+  }).catch(function(){ if(HERO.id===id) HERO.id=''; });
+}
+
 /* =============== Init =============== */
 function renderAll(){ seedProfile(); renderHome(); renderDaily(); renderWeight(); renderVisits(); renderExpenses(); renderStorage(); renderCal(); renderNotice(); renderDash(); renderEChart(); renderLib(); renderAway(); renderFeed(); renderHomeChat(); try{ kgCfgPaint(); }catch(e){} try{ renderMediaCfg(); }catch(e){} try{ camCheck(); }catch(e){}
   // re-sync inputs & checklists after import
@@ -7937,7 +7977,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   renderAll();
   const h0=(location.hash||'').slice(1);
   if(h0 && h0!=='home' && document.getElementById('tab-'+h0)){ goTab(h0, true); NAV_HIST=['home', h0]; }
-  try{ history.replaceState({tab:(h0 && document.getElementById('tab-'+h0)) ? h0 : 'home'}, '', location.hash||'#home'); }catch(e){}
+  try{ history.replaceState({tab:(h0 && document.getElementById('tab-'+h0)) ? h0 : 'home', d:((history.state && history.state.d)||0)}, '', location.hash||'#home'); }catch(e){}
   if(SYNC.on) startSync();
   if(syncConfigured()) albumPull(true);
   if(syncConfigured()) chatStart();
