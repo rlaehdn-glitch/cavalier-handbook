@@ -1166,10 +1166,173 @@ img.alb-th.err, .strip .sc img.err{visibility:hidden;}
 .alb-err{margin:0 0 10px; padding:10px 12px; border-radius:12px; background:var(--red-bg); color:var(--red); font-size:13px; font-weight:600; line-height:1.45;}
 
 </style>
+<style id="v61css">
+/* ================= V6.1 — 기록 통계 재구성 (2026-10-15) =================
+   요약 목록(지난주 대비·기준일 전/후) → 항목 상세(그래프·숫자·기록). 그래프는 실제 폭 기준으로 그려 글자 11px. 색은 모두 V6 토큰. */
+#tab-stats [hidden]{display:none !important;}
+.st-cmp{margin:0 0 10px;}
+.st-mkbar{margin:0 0 4px;}
+.st-mks{display:flex; gap:8px; overflow-x:auto; padding:2px 2px 8px; scrollbar-width:none; -webkit-overflow-scrolling:touch;}
+.st-mks::-webkit-scrollbar{display:none;}
+.st-mk{flex:0 0 auto; border:none; background:var(--card); color:var(--label); border-radius:12px; padding:7px 12px; font-family:inherit; font-size:14px; font-weight:600; cursor:pointer; white-space:nowrap; line-height:1.25; text-align:left;}
+.st-mk small{display:block; font-size:12px; color:var(--label2); font-weight:400; margin-top:1px;}
+.st-mk.on{background:var(--tint-btn); color:#fff;}
+.st-mk.on small{color:rgba(255,255,255,.85);}
+.st-mk.add{background:none; color:var(--tint); box-shadow:inset 0 0 0 1px var(--sep);}
+.st-mkinfo{display:flex; align-items:center; gap:10px; margin:2px 2px 4px;}
+.st-mkt{flex:1; min-width:0; font-size:13px; color:var(--label2); line-height:1.45; margin:0;}
+.st-win{flex:0 0 120px;}
+.st-win button{padding:6px 0; font-size:14px;}
+.st-mkact{display:flex; gap:16px; margin:0 2px 2px;}
+.st-mkact button.lnk{font-size:14px; padding:6px 0;}
+.st-mkform{margin:6px 0 12px;}
+.st-fl{display:block; font-size:13px; color:var(--label2); margin:0 0 10px;}
+.st-fl small{font-size:12px;}
+.st-fl input{display:block; width:100%; box-sizing:border-box; margin-top:5px; font-family:inherit; font-size:16px; color:var(--label); background:var(--fill3); border:none; border-radius:10px; padding:9px 11px; min-height:42px;}
+.st-f2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+.st-fa{display:flex; justify-content:flex-end; gap:8px; margin-top:6px;}
+.st-range{font-size:13px; color:var(--label2); margin:4px 4px 8px; line-height:1.45; font-variant-numeric:tabular-nums;}
+
+/* 요약 목록 */
+.st-sum{margin:0 0 6px;}
+.st-row{display:flex; align-items:center; gap:12px; width:100%; padding:11px 12px 11px 14px; background:none; border:none; font-family:inherit; color:inherit; text-align:left; cursor:pointer; -webkit-tap-highlight-color:transparent;}
+.st-row:active{background:var(--fill3);}
+.st-row.sel{background:var(--fill3);}
+.st-m{flex:1; min-width:0;}
+.st-n{display:block; font-size:16px; font-weight:600; line-height:1.3;}
+.st-s{display:block; font-size:13px; color:var(--label2); line-height:1.4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.st-s em, .st-dh em{font-style:normal;}
+.lv-ok{color:var(--green);}
+.lv-watch{color:var(--warn-ink); font-weight:600;}
+.lv-warn{color:var(--red-sys); font-weight:600;}
+.lv-na{color:var(--label2);}
+.st-mini{flex:0 0 auto; width:24px; height:26px; display:block;}
+.st-mini .mA{fill:var(--label3);}
+.st-mini .mB{fill:var(--c);}
+.st-v{flex:0 0 auto; text-align:right; min-width:58px;}
+.st-v b{display:block; font-size:17px; font-weight:700; line-height:1.25; white-space:nowrap; font-variant-numeric:tabular-nums;}
+.st-v span{display:block; font-size:12.5px; color:var(--label2); white-space:nowrap; font-variant-numeric:tabular-nums; min-height:16px;}
+.st-v span.up, .st-v span.down{color:var(--tint-ink); font-weight:600;}
+.st-v span.new{color:var(--red-sys); font-weight:600;}
+.st-v span.na{color:var(--label3);}
+.st-note{font-size:12.5px; color:var(--label2); margin:2px 4px 20px; line-height:1.5;}
+
+/* 상세 */
+.st-det{scroll-margin-top:calc(64px + env(safe-area-inset-top));}
+.st-pick{display:flex; gap:7px; overflow-x:auto; padding:2px 2px 10px; scrollbar-width:none; -webkit-overflow-scrolling:touch;}
+.st-pick::-webkit-scrollbar{display:none;}
+.st-pk{flex:0 0 auto; display:inline-flex; align-items:center; gap:5px; border:none; background:var(--card); color:var(--label); border-radius:999px; padding:6px 12px 6px 9px; font-family:inherit; font-size:14px; font-weight:500; cursor:pointer;}
+.st-pk svg.ico{width:16px; height:16px; color:var(--c); stroke-width:2;}
+.st-pk.on{background:var(--c); color:#fff;}
+.st-pk.on svg.ico{color:#fff;}
+.st-dh{display:flex; align-items:center; gap:12px; margin:0 0 12px;}
+.st-dh .lr-t b{font-size:18px;}
+.st-dh .lr-t span{line-height:1.45;}
+.st-per{margin:0 0 4px;}
+.st-tip{min-height:21px; font-size:13.5px; color:var(--label); margin:8px 2px 0; line-height:1.5; font-variant-numeric:tabular-nums;}
+.st-tip.hint{color:var(--label3);}
+.st-chart{display:block; width:100%; overflow:visible; -webkit-tap-highlight-color:transparent; touch-action:manipulation; user-select:none; -webkit-user-select:none;}
+.st-leg{font-size:12px; color:var(--label2); margin:2px 2px 10px; line-height:1.9;}
+.st-leg span{display:inline-flex; align-items:center; margin-right:10px; white-space:nowrap;}
+.st-leg i{display:inline-block; width:9px; height:9px; border-radius:2px; margin-right:4px; flex:0 0 auto;}
+.st-leg i.lg-now{background:none; box-shadow:inset 0 0 0 1.5px var(--c);}
+.st-leg i.lg-kg{width:6px; height:6px; border-radius:50%; background:var(--c-kg);}
+.st-leg i.lg-miss{width:4px; height:4px; border-radius:50%; background:var(--label3);}
+.st-leg i.lg-ln{width:14px; height:2px; border-radius:0; background:var(--label);}
+.st-leg i.lg-mk{width:0; height:11px; border-radius:0; border-left:1.5px dashed var(--label2);}
+.st-kv{display:grid; gap:8px; margin:4px 0 2px;}
+.st-kv.c2{grid-template-columns:repeat(2,minmax(0,1fr));}
+.st-kv.c3{grid-template-columns:repeat(3,minmax(0,1fr));}
+.st-cb{margin:8px 0 12px;}
+.st-cbr{display:grid; grid-template-columns:100px minmax(0,1fr) auto; gap:10px; align-items:center; padding:5px 0;}
+.st-cbr.nobar{grid-template-columns:minmax(0,1fr) auto;}
+.st-cbr .l{font-size:13.5px; font-weight:600; color:var(--label); line-height:1.25;}
+.st-cbr .l small{display:block; font-size:11.5px; font-weight:400; color:var(--label2); margin-top:2px; font-variant-numeric:tabular-nums;}
+.st-cbr .bar{display:block; height:12px; background:var(--fill3); border-radius:6px; overflow:hidden;}
+.st-cbr .bar i{display:block; height:100%; border-radius:6px; background:var(--label3);}
+.st-cbr.b .bar i{background:var(--c);}
+.st-cbr b{font-size:15px; font-weight:700; font-variant-numeric:tabular-nums; white-space:nowrap; text-align:right; min-width:46px;}
+.st-cbr b small, .st-k b small, .st-v b small{font-size:.74em; font-weight:600; color:var(--label2); margin-left:1px;}
+.st-cbn{font-size:13px; color:var(--label2); margin:6px 0 0; line-height:1.5;}
+.st-cbn strong{color:var(--label); font-weight:600;}
+.st-cbn strong.up, .st-cbn strong.down{color:var(--tint-ink);}
+.st-cbn strong.new{color:var(--red-sys);}
+/* 다크 모드 — 선택된 구분 버튼 대비 */
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) #tab-stats .seg3 button.on{background:#636366;} }
+:root[data-theme="dark"] #tab-stats .seg3 button.on{background:#636366;}
+.st-k{background:var(--fill3); border-radius:12px; padding:9px 10px; min-width:0;}
+.st-k span{display:block; font-size:12px; color:var(--label2); line-height:1.3;}
+.st-k b{display:block; font-size:15.5px; font-weight:700; margin-top:3px; line-height:1.25; font-variant-numeric:tabular-nums; word-break:keep-all;}
+.st-k > small{display:block; font-size:11.5px; color:var(--label2); margin-top:3px; line-height:1.3;}
+.st-ex{margin:8px 0 0;}
+.st-xr{display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:10px 2px; border-top:.5px solid var(--sep); font-size:14px; line-height:1.4;}
+.st-xr span{color:var(--label2); flex:0 0 auto; max-width:48%;}
+.st-xr b{flex:1 1 auto; min-width:0; font-weight:600; text-align:right; font-variant-numeric:tabular-nums; word-break:keep-all;}
+.st-xa{padding:10px 0 2px; border-top:.5px solid var(--sep);}
+.st-basis{font-size:12.5px; color:var(--label2); margin:12px 2px 0; line-height:1.55;}
+
+/* 기록 보기 */
+.st-logbox{margin-top:12px; padding:0 !important; overflow:hidden;}
+.st-logbox > summary{list-style:none; cursor:pointer; padding:14px 16px; font-size:16px; font-weight:600; display:flex; align-items:center; gap:8px;}
+.st-logbox > summary::-webkit-details-marker{display:none;}
+.st-logbox > summary::marker{content:"";}
+.st-logbox > summary span{flex:1; text-align:right; font-size:14px; font-weight:400; color:var(--label2);}
+.st-logbox > summary svg.chev{transition:transform .2s;}
+.st-logbox[open] > summary svg.chev{transform:rotate(90deg);}
+.sl-row{display:grid; grid-template-columns:48px minmax(0,1fr) auto; gap:10px; align-items:start; padding:9px 16px; border-top:.5px solid var(--sep);}
+.sl-d{font-size:14px; font-weight:600; font-variant-numeric:tabular-nums; line-height:1.3;}
+.sl-d span{display:block; font-size:12px; color:var(--label2); font-weight:400;}
+.sl-row.today .sl-d{color:var(--tint);}
+.sl-c{display:flex; flex-wrap:wrap; gap:5px; min-width:0;}
+.sl-c .ql-chip{background:var(--fill2); border:none; color:var(--label); font-weight:500; font-size:13px; padding:3px 2px 3px 9px; border-radius:8px; max-width:100%; line-height:1.4;}
+.sl-c .ql-chip button{background:none; border:none; color:var(--label3); font-size:13px; padding:2px 7px; margin:-2px 0; cursor:pointer; font-family:inherit; line-height:1;}
+.sl-n{font-size:13px; color:var(--label2); white-space:nowrap; font-variant-numeric:tabular-nums; padding-top:2px;}
+.sl-more{width:100%; background:none; border:none; border-top:.5px solid var(--sep); color:var(--tint); font-family:inherit; font-size:15px; padding:12px 0; cursor:pointer;}
+.sl-empty{padding:4px 16px 14px; font-size:14px; color:var(--label2); margin:0;}
+.st-rule{margin:16px 4px 8px; font-size:13px; color:var(--label2);}
+.st-rule > summary{cursor:pointer; color:var(--tint); font-size:15px; padding:6px 0; list-style:none;}
+.st-rule > summary::-webkit-details-marker{display:none;}
+.st-rule ul{margin:6px 0 0; padding-left:18px; line-height:1.65;}
+.st-rule li{margin:0 0 4px;}
+
+/* 그래프 (SVG) — 색은 모두 토큰 → 다크 모드 자동 */
+.sx-g{stroke:var(--sep); stroke-width:1;}
+.sx-t{fill:var(--label2); font-size:11px; font-family:inherit; font-variant-numeric:tabular-nums;}
+.sx-band{fill:var(--c); opacity:.12;}
+.sx-bt{fill:var(--label2); font-size:11px; font-weight:600; paint-order:stroke; stroke:var(--card); stroke-width:3px; stroke-linejoin:round;}
+.sx-b{fill:var(--c); opacity:.9;}
+.sx-b.ex{opacity:.28;}
+.sx-b.few{opacity:.45;}
+.sx-b.out{fill:var(--warn-ink); opacity:1;}
+.sx-b.now{fill:none; stroke:var(--c); stroke-width:1.5; opacity:1;}
+.sx-b.sel{stroke:var(--label); stroke-width:2; opacity:1;}
+.sx-miss{fill:var(--label3);}
+.sx-kg{fill:var(--c-kg);}
+.sx-mk{stroke:var(--label2); stroke-width:1; stroke-dasharray:2 3;}
+.sx-mk.sel{stroke:var(--tint); stroke-width:1.5; stroke-dasharray:none;}
+.sx-mkr{fill:var(--label); opacity:.05;}
+.sx-mkr.sel{fill:var(--tint); opacity:.09;}
+.sx-mkt{fill:var(--label2); font-size:10.5px; font-family:inherit;}
+.sx-mkt.sel{fill:var(--tint-ink); font-weight:600;}
+.sx-ma{stroke:var(--label2); stroke-width:1.6; stroke-dasharray:4 3;}
+.sx-mb{stroke:var(--label); stroke-width:2;}
+.sx-lim{stroke:var(--red-sys); stroke-width:1.5; stroke-dasharray:5 4;}
+.sx-limt{fill:var(--red-sys); font-size:11px; font-weight:600; paint-order:stroke; stroke:var(--card); stroke-width:3px;}
+.sx-hit{fill:transparent; pointer-events:all; cursor:pointer;}
+.sx-line{fill:none; stroke:var(--c); stroke-width:2.2; stroke-linejoin:round; stroke-linecap:round;}
+.sx-pt{fill:var(--card); stroke:var(--c); stroke-width:2;}
+.sx-pt.last{fill:var(--c);}
+.sx-pt.sel{fill:var(--c); stroke:var(--label);}
+.sx-trend{stroke:var(--c); stroke-width:1.4; stroke-dasharray:5 4; opacity:.75;}
+.sx-ad{stroke:var(--label3); stroke-width:1; stroke-dasharray:3 3;}
+.sx-adt{fill:var(--label2); font-size:10.5px; font-family:inherit;}
+.sx-vt{fill:var(--label); font-size:11.5px; font-weight:600; font-family:inherit; paint-order:stroke; stroke:var(--card); stroke-width:3px;}
+.sx-empty{fill:var(--label2); font-size:13px; font-family:inherit;}
+</style>
 </head>
 <body>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 10.5 12 4l8.5 6.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5.5h4V20"/></symbol><symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></symbol><symbol id="i-rec" viewBox="0 0 24 24"><path d="M12 4H6.5A2.5 2.5 0 0 0 4 6.5v11A2.5 2.5 0 0 0 6.5 20h11a2.5 2.5 0 0 0 2.5-2.5V12"/><path d="M17.6 3.6a1.9 1.9 0 0 1 2.8 2.8L12 14.8l-3.6.8.8-3.6z"/></symbol><symbol id="i-photo" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="m20.5 16-4.5-4.5-7.5 7.5"/></symbol><symbol id="i-lib" viewBox="0 0 24 24"><path d="M5 4.5h3.2V20H5zM10.4 4.5h3.2V20h-3.2z"/><path d="m15.6 5.6 3-.8 3.4 14.6-3 .8z"/></symbol><symbol id="i-poo" viewBox="0 0 24 24"><path d="M6 20h12a2.5 2.5 0 0 0 0-5H6a2.5 2.5 0 0 0 0 5z"/><path d="M8.3 15h7.4a2.25 2.25 0 0 0 0-4.5H8.3a2.25 2.25 0 0 0 0 4.5z"/><path d="M10 10.5h4a2 2 0 0 0 .2-4C13.6 4.9 12.6 4 11 4c.6.9.4 2-.6 2.5A2 2 0 0 0 10 10.5z"/></symbol><symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3.5c3 4 6 7.4 6 10.8a6 6 0 0 1-12 0c0-3.4 3-6.8 6-10.8z"/></symbol><symbol id="i-drops" viewBox="0 0 24 24"><path d="M9 4c2.3 3.1 4.6 5.6 4.6 8.2a4.6 4.6 0 0 1-9.2 0C4.4 9.6 6.7 7.1 9 4z"/><path d="M17 10.5c1.5 2 3 3.6 3 5.4a3 3 0 0 1-6 0c0-1.8 1.5-3.4 3-5.4z"/></symbol><symbol id="i-bowl" viewBox="0 0 24 24"><path d="M3.5 12h17a8.5 6.5 0 0 1-17 0z"/><path d="M9 9c0-1.1.9-1.4.9-2.6M14 9c0-1.1.9-1.4.9-2.6"/></symbol><symbol id="i-paw" viewBox="0 0 24 24"><ellipse cx="6.8" cy="10.2" rx="1.7" ry="2.2"/><ellipse cx="10.2" cy="6.4" rx="1.7" ry="2.3"/><ellipse cx="13.8" cy="6.4" rx="1.7" ry="2.3"/><ellipse cx="17.2" cy="10.2" rx="1.7" ry="2.2"/><path d="M12 12c2.6 0 5 2.8 5 5.2 0 1.6-1.2 2.8-2.8 2.8-1 0-1.4-.5-2.2-.5s-1.2.5-2.2.5C8.2 20 7 18.8 7 17.2 7 14.8 9.4 12 12 12z"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M19.5 14.5A7.5 7.5 0 0 1 9.5 4.5a7.5 7.5 0 1 0 10 10z"/></symbol><symbol id="i-bag" viewBox="0 0 24 24"><path d="M5.5 10.5A4.5 4.5 0 0 1 10 6h4a4.5 4.5 0 0 1 4.5 4.5v8A2 2 0 0 1 16.5 20.5h-9a2 2 0 0 1-2-2z"/><path d="M9.5 6V5a2.5 2.5 0 0 1 5 0v1"/><path d="M8.5 14h7v3.5h-7zM5.5 12.5h13"/></symbol><symbol id="i-door" viewBox="0 0 24 24"><path d="M13 20H6.5A1.5 1.5 0 0 1 5 18.5v-13A1.5 1.5 0 0 1 6.5 4H13"/><path d="M10 12h10M17 9l3 3-3 3"/></symbol><symbol id="i-chart" viewBox="0 0 24 24"><path d="M5 20v-8M10 20V5M15 20v-6M20 20V9"/></symbol><symbol id="i-cam" viewBox="0 0 24 24"><rect x="3" y="6.5" width="12.5" height="11" rx="2.5"/><path d="m15.5 10.5 5-3v9l-5-3z"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M7 3.5h3l1.5 4-2 1.3a10.5 10.5 0 0 0 5.7 5.7l1.3-2 4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 5 5.7a2 2 0 0 1 2-2.2z"/></symbol><symbol id="i-more" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="1.7" fill="currentColor" stroke="none"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="m14.5 5-7 7 7 7"/></symbol><symbol id="i-chev" viewBox="0 0 24 24"><path d="m9.5 5 7 7-7 7"/></symbol><symbol id="i-leaf" viewBox="0 0 24 24"><path d="M12 20v-7"/><path d="M12 13c0-4 3-7 7.5-7 0 4.5-3 7-7.5 7z"/><path d="M12 15.5C12 12.5 9.7 10 6 10c0 3.3 2.3 5.5 6 5.5z"/></symbol><symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6.4"/><circle cx="12" cy="12" r="2.5"/><path stroke-width="2.6" d="M12 2.6v2.4M12 21.4v-2.4M2.6 12h2.4M21.4 12h-2.4M5.35 5.35l1.7 1.7M18.65 18.65l-1.7-1.7M5.35 18.65l1.7-1.7M18.65 5.35l-1.7 1.7"/></symbol></defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 10.5 12 4l8.5 6.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5.5h4V20"/></symbol><symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></symbol><symbol id="i-rec" viewBox="0 0 24 24"><path d="M12 4H6.5A2.5 2.5 0 0 0 4 6.5v11A2.5 2.5 0 0 0 6.5 20h11a2.5 2.5 0 0 0 2.5-2.5V12"/><path d="M17.6 3.6a1.9 1.9 0 0 1 2.8 2.8L12 14.8l-3.6.8.8-3.6z"/></symbol><symbol id="i-photo" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="m20.5 16-4.5-4.5-7.5 7.5"/></symbol><symbol id="i-lib" viewBox="0 0 24 24"><path d="M5 4.5h3.2V20H5zM10.4 4.5h3.2V20h-3.2z"/><path d="m15.6 5.6 3-.8 3.4 14.6-3 .8z"/></symbol><symbol id="i-poo" viewBox="0 0 24 24"><path d="M6 20h12a2.5 2.5 0 0 0 0-5H6a2.5 2.5 0 0 0 0 5z"/><path d="M8.3 15h7.4a2.25 2.25 0 0 0 0-4.5H8.3a2.25 2.25 0 0 0 0 4.5z"/><path d="M10 10.5h4a2 2 0 0 0 .2-4C13.6 4.9 12.6 4 11 4c.6.9.4 2-.6 2.5A2 2 0 0 0 10 10.5z"/></symbol><symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3.5c3 4 6 7.4 6 10.8a6 6 0 0 1-12 0c0-3.4 3-6.8 6-10.8z"/></symbol><symbol id="i-drops" viewBox="0 0 24 24"><path d="M9 4c2.3 3.1 4.6 5.6 4.6 8.2a4.6 4.6 0 0 1-9.2 0C4.4 9.6 6.7 7.1 9 4z"/><path d="M17 10.5c1.5 2 3 3.6 3 5.4a3 3 0 0 1-6 0c0-1.8 1.5-3.4 3-5.4z"/></symbol><symbol id="i-bowl" viewBox="0 0 24 24"><path d="M3.5 12h17a8.5 6.5 0 0 1-17 0z"/><path d="M9 9c0-1.1.9-1.4.9-2.6M14 9c0-1.1.9-1.4.9-2.6"/></symbol><symbol id="i-paw" viewBox="0 0 24 24"><ellipse cx="6.8" cy="10.2" rx="1.7" ry="2.2"/><ellipse cx="10.2" cy="6.4" rx="1.7" ry="2.3"/><ellipse cx="13.8" cy="6.4" rx="1.7" ry="2.3"/><ellipse cx="17.2" cy="10.2" rx="1.7" ry="2.2"/><path d="M12 12c2.6 0 5 2.8 5 5.2 0 1.6-1.2 2.8-2.8 2.8-1 0-1.4-.5-2.2-.5s-1.2.5-2.2.5C8.2 20 7 18.8 7 17.2 7 14.8 9.4 12 12 12z"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M19.5 14.5A7.5 7.5 0 0 1 9.5 4.5a7.5 7.5 0 1 0 10 10z"/></symbol><symbol id="i-bag" viewBox="0 0 24 24"><path d="M5.5 10.5A4.5 4.5 0 0 1 10 6h4a4.5 4.5 0 0 1 4.5 4.5v8A2 2 0 0 1 16.5 20.5h-9a2 2 0 0 1-2-2z"/><path d="M9.5 6V5a2.5 2.5 0 0 1 5 0v1"/><path d="M8.5 14h7v3.5h-7zM5.5 12.5h13"/></symbol><symbol id="i-door" viewBox="0 0 24 24"><path d="M13 20H6.5A1.5 1.5 0 0 1 5 18.5v-13A1.5 1.5 0 0 1 6.5 4H13"/><path d="M10 12h10M17 9l3 3-3 3"/></symbol><symbol id="i-chart" viewBox="0 0 24 24"><path d="M5 20v-8M10 20V5M15 20v-6M20 20V9"/></symbol><symbol id="i-cam" viewBox="0 0 24 24"><rect x="3" y="6.5" width="12.5" height="11" rx="2.5"/><path d="m15.5 10.5 5-3v9l-5-3z"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M7 3.5h3l1.5 4-2 1.3a10.5 10.5 0 0 0 5.7 5.7l1.3-2 4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 5 5.7a2 2 0 0 1 2-2.2z"/></symbol><symbol id="i-more" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="1.7" fill="currentColor" stroke="none"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="m14.5 5-7 7 7 7"/></symbol><symbol id="i-chev" viewBox="0 0 24 24"><path d="m9.5 5 7 7-7 7"/></symbol><symbol id="i-leaf" viewBox="0 0 24 24"><path d="M12 20v-7"/><path d="M12 13c0-4 3-7 7.5-7 0 4.5-3 7-7.5 7z"/><path d="M12 15.5C12 12.5 9.7 10 6 10c0 3.3 2.3 5.5 6 5.5z"/></symbol><symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6.4"/><circle cx="12" cy="12" r="2.5"/><path stroke-width="2.6" d="M12 2.6v2.4M12 21.4v-2.4M2.6 12h2.4M21.4 12h-2.4M5.35 5.35l1.7 1.7M18.65 18.65l-1.7-1.7M5.35 18.65l1.7-1.7M18.65 5.35l-1.7 1.7"/></symbol><symbol id="i-scale" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.5"/><path d="M8.4 10.2a4.2 4.2 0 0 1 7.2 0"/><path d="m12 11.6 1.7-2.4"/></symbol></defs></svg>
 <header class="appbar">
   <div id="libBack"><button id="libBackBtn" type="button" aria-label="뒤로"><svg class="ico"><use href="#i-back"/></svg>뒤로</button><span id="libBackT"></span></div>
   <button class="ab-photo" id="abPhoto" aria-label="홈으로"><img id="abImg" alt=""><span id="abPaw">🐾</span></button>
@@ -2218,7 +2381,7 @@ img.alb-th.err, .strip .sc img.err{visibility:hidden;}
   </div>
 
   <div class="grp">
-    <button class="lnk-row" type="button" onclick="goTab('stats')"><span class="g-ic" style="--c:var(--c-sleep)"><svg class="ico"><use href="#i-chart"/></svg></span><span class="lr-t"><b>기록 통계</b><span>적정성 진단 · 추세 그래프 · 전체 로그 · 지난 등원 추가</span></span><svg class="ico chev"><use href="#i-chev"/></svg></button>
+    <button class="lnk-row" type="button" onclick="goTab('stats')"><span class="g-ic" style="--c:var(--c-sleep)"><svg class="ico"><use href="#i-chart"/></svg></span><span class="lr-t"><b>기록 통계</b><span>지난주 대비 · 기준일 전/후 · 항목별 그래프 · 기록</span></span><svg class="ico chev"><use href="#i-chev"/></svg></button>
     <button class="lnk-row" type="button" onclick="goTab('settings')"><span class="g-ic" style="--c:var(--c-away)"><svg class="ico"><use href="#i-rec"/></svg></span><span class="lr-t"><b>설정</b><span>프로필 · 병원 연락처 · 유치원 · 동기화 · 백업</span></span><svg class="ico chev"><use href="#i-chev"/></svg></button>
   </div>
 
@@ -2368,7 +2531,7 @@ img.alb-th.err, .strip .sc img.err{visibility:hidden;}
       <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
       <li>의료 정보는 일반 정보입니다. 개별 판단은 수의사 진료가 우선입니다.</li>
     </ul>
-    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.0.6 · 2026-10-15</p>
+    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.1.0 · 2026-10-15</p>
   </div>
 </section>
 
@@ -2898,35 +3061,68 @@ img.alb-th.err, .strip .sc img.err{visibility:hidden;}
 
   <div id="albLb"><img id="albLbImg" alt=""><video id="albLbVid" controls playsinline preload="metadata"></video><button class="alb-nav" id="albLbPrev" aria-label="이전 사진">&#8249;</button><button class="alb-nav" id="albLbNext" aria-label="다음 사진">&#8250;</button><div class="alb-lb-bar"><span class="alb-cnt" id="albLbCnt"></span><div class="alb-cap" id="albLbCap"></div><button class="btn sm ghost alb-like" id="albLbLike" aria-label="좋아요">&#9825;</button><button class="btn sm ghost lb-more" id="albLbMore" type="button" aria-label="더보기"><svg class="ico"><use href="#i-more"/></svg></button><button class="lb-hid" id="albLbRep" type="button">대표</button><button class="lb-hid" id="albLbMemo" type="button">메모</button><button class="lb-hid" id="albLbDel" type="button">삭제</button><button class="btn sm" id="albLbClose">닫기</button></div></div>
 </section>
-<!-- ===================== STATS 기록 통계 ===================== -->
+<!-- ===================== STATS 기록 통계 (V6.1) ===================== -->
 <section class="tab-panel" id="tab-stats">
   <div class="ch-head">
     <div class="ch-no">STATS</div>
     <h2 class="serif">기록 통계</h2>
-    <p class="lede">홈 기록 버튼(배변·식사·산책·수면·유치원·외출)이 그래프와 표로 쌓이고, 월령 기준 적정 범위와 비교해 진단합니다. 90일 보관.</p>
+    <p class="lede">어제까지 기록으로 비교합니다. 오늘은 진행 중이라 평균에서 빠집니다.</p>
   </div>
 
-  <div class="card" style="margin-bottom:14px;">
-    <div class="ct" id="hcHead">적정성 진단</div>
-    <div id="hcList"><p class="muted small" style="margin:0;">불러오는 중…</p></div>
-    <p class="muted small" style="margin:10px 0 0;">월령별 일반 범위(수의학 통용 가이드)와 최근 7일 추세로 판정한 <strong>참고용</strong>입니다 — 진단이 아니며, ⚠ 주의가 이어지거나 컨디션 저하(무기력·구토·잇몸 창백)가 함께 보이면 병원 진료가 우선입니다.</p>
+  <div class="seg3 st-cmp" id="stCmp" role="tablist" aria-label="비교 기준">
+    <button type="button" data-m="wk" class="on">지난주 대비</button>
+    <button type="button" data-m="mk">기준일 전/후</button>
+  </div>
+  <div class="st-mkbar" id="stMkBar" hidden></div>
+  <div class="card st-mkform" id="stMkForm" hidden>
+    <div class="ct" id="stMkFT">기준일 추가</div>
+    <label class="st-fl">이름<input type="text" id="stMkName" maxlength="20" placeholder="예: 2끼 전환, 중성화 수술" autocomplete="off"></label>
+    <div class="st-f2">
+      <label class="st-fl">시작일<input type="date" id="stMkS"></label>
+      <label class="st-fl">끝난 날 <small>(선택)</small><input type="date" id="stMkE"></label>
+    </div>
+    <p class="muted small" style="margin:0 0 4px;">사료 교체처럼 며칠에 걸쳐 바뀐 일은 끝난 날을 넣으면 그 기간을 빼고 '시작 전 vs 끝난 뒤'를 비교합니다.</p>
+    <div class="st-fa"><button type="button" class="btn sm ghost" id="stMkCancel">취소</button><button type="button" class="btn sm" id="stMkSave">저장</button></div>
+  </div>
+  <p class="st-range" id="stRange"></p>
+
+  <div class="grp st-sum" id="stSum"></div>
+  <p class="st-note">참고용 판정입니다. 컨디션 저하(무기력·구토·잇몸 창백)가 함께 보이면 병원 진료가 우선입니다.</p>
+
+  <div class="st-det" id="stDet">
+    <div class="st-pick" id="stPick"></div>
+    <div class="card st-dcard">
+      <div class="st-dh" id="stDh"></div>
+      <div class="seg3 st-per" id="stPer">
+        <button type="button" data-p="4w" class="on">4주</button>
+        <button type="button" data-p="3m">3개월</button>
+      </div>
+      <p class="st-tip hint" id="stTip"></p>
+      <svg id="stChart" class="st-chart" role="img" aria-label="기록 그래프"></svg>
+      <p class="st-leg" id="stLeg"></p>
+      <div id="stKv"></div>
+      <div class="st-ex" id="stEx"></div>
+      <p class="st-basis" id="stBasis"></p>
+    </div>
+    <details class="card st-logbox" id="stLogBox">
+      <summary>기록 보기<span id="stLogN"></span><svg class="ico chev"><use href="#i-chev"/></svg></summary>
+      <div id="stLog"></div>
+    </details>
   </div>
 
-  <div class="st-chips" id="stCats"></div>
-  <div class="st-seg" id="stUnits">
-    <button data-u="d" class="on" type="button">일별</button>
-    <button data-u="w" type="button">주별</button>
-    <button data-u="m" type="button">월별</button>
-  </div>
-  <div class="st-cards" id="stCards"></div>
-  <div class="card" style="margin-top:12px;">
-    <div class="ct" id="stChartT"></div>
-    <svg id="stChart" viewBox="0 0 640 190" style="width:100%; height:auto;" role="img" aria-label="기록 그래프"></svg>
-  </div>
-  <h3 class="sec">숫자 데이터</h3>
-  <div class="card"><div id="stTable"></div></div>
-  <h3 class="sec">전체 로그 <span class="muted small" style="font-weight:400;">— 개별 삭제 가능 · 최근 90일</span></h3>
-  <div class="card"><div id="stLog"></div></div>
+  <details class="st-rule">
+    <summary>계산 기준</summary>
+    <ul>
+      <li>평균·비교는 어제까지의 기록으로 계산합니다. 오늘은 진행 중이라 그래프에만 테두리로 표시합니다. 설사와 혼자 시간 최장은 오늘도 포함합니다.</li>
+      <li>대변·소변·설사·식사 중 하나도 기록하지 않은 날은 0이 아니라 '기록 없음'으로 보고 평균에서 뺍니다.</li>
+      <li>유치원 간 날은 등원 시간 동안 기록이 비어 대변·소변 평균에서 뺍니다. 그래프에는 흐리게 표시합니다.</li>
+      <li>밤잠은 가장 긴 수면에 앞뒤 60분 안에 이어진 수면을 더한 값이며, 4시간 이상인 날만 셉니다.</li>
+      <li>혼자 시간은 하루 중 가장 길게 혼자 있던 1회를 봅니다. 월령+1시간 한도와 같은 기준입니다.</li>
+      <li>'늘었음·줄었음'은 차이가 평소 하루 변동폭(표준편차)보다 크고 최소폭(대변 0.5회 · 소변 1회 · 식사 0.5끼 · 밤잠 30분 · 산책 10분 · 혼자 30분 · 체중 주당 0.03kg) 이상일 때만 표시합니다. 두 기간 모두 기록일이 3일 이상이어야 비교합니다.</li>
+      <li>체중은 측정 날짜 간격대로 그리고, 주당 증가는 최근 4주 측정값 추세선의 기울기입니다.</li>
+      <li>판정 범위는 월령별 일반 가이드이며 진단이 아닙니다.</li>
+    </ul>
+  </details>
 </section>
 
 <!-- ===================== LIB 서재 ===================== -->
@@ -3728,6 +3924,16 @@ class VideoRTC extends HTMLElement {
 if(window.customElements && !customElements.get('video-stream')){ customElements.define('video-stream', VideoRTC); }
 </script>
 <script>
+/* V6.1.0 (2026-10-15): 기록 통계 재구성 — 숫자 정확도 · 전/후 비교 · 가시성.
+   ① 계산 기준: 오늘(진행 중) 제외 · 기록 없는 날 0 → 빈칸(평균 제외) · 유치원 간 날 대변·소변 평균 제외 ·
+      주 단위 합계 → 하루 평균 · 밤잠은 가장 긴 수면 ±60분 이어진 수면(4시간+) · 혼자 시간은 하루 최장 1회.
+      식사 판정 '7일 평균<3' → '기준 끼니 미달 일수'(하루 누락·유치원 식사 미기록으로 뜨던 '주의(저혈당)' 거짓 경보 제거).
+   ② 지난주 대비(최근 7일 vs 그 전 7일) · 기준일 전/후(S.marks{id:{t,s,e}} — 기간형은 전환 기간 제외).
+      변화 표시는 차이 > 평소 하루 변동폭(표준편차) 이고 최소폭 이상일 때만. 기본 기준일: 9/14 3끼 전환, 9/23~10/02 사료 교체, 유치원 첫 등원(자동).
+   ③ 화면: 요약 목록(주의·변화 먼저) → 항목 상세(4주·3개월 그래프, 실제 폭 기준 11px 글자, 기준일 선·전/후 평균선·유치원 점·오늘 테두리,
+      막대 탭 → 값) → 숫자 3칸 · 보조 지표 → 기록 보기(접힘·14일씩). 숫자 데이터 표·월별 보기 삭제, 체중 통계 추가(날짜 축·추세 기울기).
+   ④ 기록 탭 체중 그래프도 날짜 축·테마 색으로 교체. 통계는 화면이 열려 있을 때만 계산.
+   기록 저장 형식·동기화·앨범 변경 없음(S.marks·S._mk 키 추가만). */
 /* V6.0 (2026-10-15): 애플 스타일 재설계 + 유치원 스탬프 + 대표사진 확인.
    ① 디자인 레이어(#v6css): 시스템 서체·회색 바탕·흰 카드·유리 상단바/탭바(스크롤 시 축소)·선 아이콘·다크 모드·바텀 시트.
    ② 홈: 큰 제목 → 지금 카드(진행 중·급여) → 기록 8칸(외출=혼자 시간 타일 흡수) → 오늘 리본(24시간)+시간순 목록 → 다음 일정·이번 단계 → 최근 사진.
@@ -3771,7 +3977,7 @@ if(window.customElements && !customElements.get('video-stream')){ customElements
 /* V5.8 (2026-08-21): 접종 실기록 반영(2차 08.07 종합+코로나1차, 3차 08.21 종합+코로나2차, 4차 09.04 예약, 넥스가드 스펙트라 매월 21일, 코로나 보강 2027.08.21),
    04장 미니 인도어 퍼피 체중별 급여표 추가, 급여 계산기 기본 ME 3735 + kcal 누락 NaN 가드. 저장 구조·동기화·달력 로직 변경 없음. */
 /* =============== State =============== */
-const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, sleepCur:0, sleepLog:{}, feed:{kcal:3735, meals:4, adult:0, bcs:'ok', bcsAt:'', neut:0, treat:0, vetG:0, vetAt:''}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}, media:{url:''}, kgCur:0, kgLog:{}, kgCfg:{name:'도그스테이', pass:0, from:''}};
+const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, sleepCur:0, sleepLog:{}, feed:{kcal:3735, meals:4, adult:0, bcs:'ok', bcsAt:'', neut:0, treat:0, vetG:0, vetAt:''}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}, media:{url:''}, kgCur:0, kgLog:{}, kgCfg:{name:'도그스테이', pass:0, from:''}, marks:{}};
 let S = JSON.parse(JSON.stringify(DEFAULT_S));
 let storageOK = false, artOK = false, saveTimer = null, lastEditAt = 0;
 
@@ -4169,6 +4375,13 @@ function seedProfile(){
     if(!S.profile[k]){ S.profile[k]=CONTRACT[k]; ch=true; }
   });
   if(S._seed!==1){ if(!S.vax.v1) S.vax.v1={}; S.vax.v1.done=true; S._seed=1; ch=true; }
+  /* V6.1: 전/후 비교 기준일 — 한 번만 등록(지워도 다시 생기지 않음). 고정 id라 두 폰이 같이 등록해도 하나로 합쳐짐 */
+  if(S._mk!==1){
+    if(!S.marks || typeof S.marks!=='object' || Array.isArray(S.marks)) S.marks={};
+    if(!S.marks['m-meal3']) S.marks['m-meal3']={t:'하루 3끼 전환', s:'2026-09-14'};
+    if(!S.marks['m-orijen']) S.marks['m-orijen']={t:'사료 교체 (오리젠)', s:'2026-09-23', e:'2026-10-02'};
+    S._mk=1; ch=true;
+  }
   /* V5.2: 시드는 사용자 편집이 아니므로 _at을 찍지 않는다 —
      캐시 삭제 후 빈 상태가 "최신"으로 둔갑해 서버 기록을 못 받아오거나 덮어쓰는 사고 방지 */
   if(ch) persistLocal();
@@ -4280,26 +4493,8 @@ function renderWeight(){
     S.weight=S.weight.filter(w=>w!==target);
     saveState(); afterWeight();
   }));
-  // chart
-  svg.innerHTML='';
-  if(data.length<2){ svg.innerHTML='<text x="320" y="95" text-anchor="middle" fill="#A79B87" font-size="13">기록이 2개 이상이면 그래프가 표시됩니다</text>'; return; }
-  const kgs=data.map(w=>parseFloat(w.kg));
-  let min=Math.min(...kgs), max=Math.max(...kgs);
-  if(max-min<1){ const mid=(max+min)/2; min=mid-0.6; max=mid+0.6; }
-  const pad={l:42,r:14,t:14,b:26}, W=640,H=190;
-  const x=i=>pad.l+(W-pad.l-pad.r)*(data.length===1?0.5:i/(data.length-1));
-  const y=v=>H-pad.b-(H-pad.t-pad.b)*((v-min)/(max-min));
-  let g='';
-  for(let k=0;k<=2;k++){ const v=min+(max-min)*k/2, yy=y(v);
-    g+='<line x1="'+pad.l+'" y1="'+yy+'" x2="'+(W-pad.r)+'" y2="'+yy+'" stroke="#E6DECF" stroke-width="1"/>';
-    g+='<text x="'+(pad.l-6)+'" y="'+(yy+4)+'" text-anchor="end" font-size="11" fill="#8C7F6B">'+v.toFixed(1)+'</text>';
-  }
-  const pts=data.map((w,i)=>x(i)+','+y(parseFloat(w.kg))).join(' ');
-  g+='<polyline points="'+pts+'" fill="none" stroke="#8A3324" stroke-width="2.5" stroke-linejoin="round"/>';
-  data.forEach((w,i)=>{ g+='<circle cx="'+x(i)+'" cy="'+y(parseFloat(w.kg))+'" r="4" fill="#8A3324"/>'; });
-  g+='<text x="'+x(0)+'" y="'+(H-8)+'" font-size="10.5" fill="#8C7F6B" text-anchor="start">'+esc(data[0].d.slice(2))+'</text>';
-  g+='<text x="'+x(data.length-1)+'" y="'+(H-8)+'" font-size="10.5" fill="#8C7F6B" text-anchor="end">'+esc(data[data.length-1].d.slice(2))+'</text>';
-  svg.innerHTML=g;
+  /* V6.1: 날짜 간격 축 · 테마 색 · 실제 폭 기준 글자 — 통계 화면과 같은 그리기 */
+  try{ stDrawWt(svg, {all:true, h:180}); }catch(e){ console.error(e); }
 }
 function bindWeight(){
   document.getElementById('wDate').value=todayKey();
@@ -5695,7 +5890,7 @@ function albClose(fromBack){
 
 /* =============== V2: 서재 메타 + 내비게이션 =============== */
 const LIB_META=[
-  ['stats','📊','기록 통계','적정성 진단 · 배변·식사·산책·수면 추세 그래프·전체 로그', false],
+  ['stats','📊','기록 통계','지난주 대비 · 기준일 전/후 · 항목별 그래프 · 체중 성장', false],
   ['prep','01','분양 준비','계약·보상기간·용품·첫 2주 로드맵', true],
   ['health','02','건강·병원','접종 스케줄·카발리에 4대 질환', false],
   ['money','03','보험·비용','펫보험 비교 7항목·비용 총정리', false],
@@ -5740,6 +5935,7 @@ function goTab(id, silent){
   if(id!=='home'){ try{ camStop(); }catch(e){} } else { try{ camCheck(); }catch(e){} }   /* V5.10 */
   if(id==='lib'){ try{ renderLib(); }catch(e){} }
   if(id==='stats'){ try{ renderStats(); }catch(e){} }
+  if(id==='record'){ try{ renderWeight(); }catch(e){} }   /* V6.1 */
   if(id==='notice'){ try{ chatTabOpen(); }catch(e){} }
   if(!silent){
     if(NAV_HIST[NAV_HIST.length-1]!==id){ NAV_HIST.push(id); if(NAV_HIST.length>30) NAV_HIST.shift(); }
@@ -6149,7 +6345,7 @@ function renderAway(){
     }).join('');
     st.innerHTML= a.cnt? '🟢 지금 함께 · 오늘 혼자 합계 <strong>'+fmtDur(a.total)+'</strong> ('+a.cnt+'회)<div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:6px;">'+segs+'</div>' : '🟢 지금 함께 · 오늘 혼자 둔 기록 없음';
   }
-  try{ renderStats(); }catch(e){}
+  try{ statsRefresh(); }catch(e){}
 }
 function bindAway(){
   const out=document.getElementById('awOut'); if(!out) return;
@@ -6859,36 +7055,121 @@ function bindMidnight(){
   }, 60000);
 }
 
-/* =============== V4: 기록 통계 엔진 =============== */
+/* =============== V6.1: 기록 통계 — 계산 기준 정리 · 지난주 대비 · 기준일 전/후 =============== */
+/* 계산 기준 (화면 '계산 기준'과 같은 내용)
+   ① 평균·비교는 어제까지. 오늘은 진행 중이라 그래프에만 테두리로 표시 (설사·혼자 시간 최장은 오늘 포함)
+   ② 기록일 = 그날 대변·소변·설사·식사 중 1건 이상. 기록 없는 날은 0이 아니라 빈칸 → 평균 제외
+   ③ 유치원 간 날은 등원 시간 동안 기록이 비므로 대변·소변 평균에서 제외 (그래프엔 흐리게)
+   ④ 밤잠 = 가장 긴 수면 + 앞뒤 60분 안에 이어진 수면, 합계 4시간 이상인 날만 (낮잠은 따로)
+   ⑤ 혼자 시간 = 하루 최장 1회 (월령+1시간 한도와 같은 기준)
+   ⑥ '늘었음·줄었음' = 차이가 평소 하루 변동폭(표준편차)보다 크고 최소폭 이상일 때만, 두 기간 모두 기록 3일 이상 */
 const STAT_CATS=[
-  {id:'poo',  ic:'💩', nm:'대변',      kind:'count'},
-  {id:'pee',  ic:'💧', nm:'소변',      kind:'count'},
-  {id:'diar', ic:'💦', nm:'설사',      kind:'count'},
-  {id:'meal', ic:'🍚', nm:'식사',      kind:'count'},
-  {id:'walk', ic:'🐕', nm:'산책',      kind:'dur'},
-  {id:'sleep',ic:'😴', nm:'수면',      kind:'dur'},
-  {id:'away', ic:'🚪', nm:'혼자 시간', kind:'dur'},
-  {id:'kg',   ic:'🏫', nm:'유치원',    kind:'dur'}
+  {id:'meal', nm:'식사',      ic:'i-bowl',  cv:'--c-meal',  u:'끼', kind:'cnt', min:0.5},
+  {id:'poo',  nm:'대변',      ic:'i-poo',   cv:'--c-poo',   u:'회', kind:'cnt', min:0.5},
+  {id:'diar', nm:'설사',      ic:'i-drops', cv:'--c-diar',  u:'회', kind:'cnt', min:1},
+  {id:'pee',  nm:'소변',      ic:'i-drop',  cv:'--c-pee',   u:'회', kind:'cnt', min:1},
+  {id:'sleep',nm:'밤잠',      ic:'i-moon',  cv:'--c-sleep', u:'분', kind:'dur', min:30},
+  {id:'walk', nm:'산책',      ic:'i-paw',   cv:'--c-walk',  u:'분', kind:'dur', min:10},
+  {id:'away', nm:'혼자 시간', ic:'i-door',  cv:'--c-away',  u:'분', kind:'dur', min:30},
+  {id:'kg',   nm:'유치원',    ic:'i-bag',   cv:'--c-kg',    u:'분', kind:'dur', min:1},
+  {id:'wt',   nm:'체중',      ic:'i-scale', cv:'--tint',    u:'kg', kind:'wt',  min:0.03}
 ];
-const STAT={cat:'poo', unit:'d'};
-function statDayVal(cat, k){
-  if(cat==='kg'){ let m=0; (((S.kgLog||{})[k])||[]).forEach(function(s){ m+=Math.max(0,s.i-s.o); }); return Math.round(m/60000); }
-  if(cat==='walk'){ let m=0; (((S.walkLog||{})[k])||[]).forEach(function(s){ m+=Math.max(0,s.i-s.o); }); return Math.round(m/60000); }
-  if(cat==='away'){ let m=0; (((S.awayLog||{})[k])||[]).forEach(function(s){ m+=Math.max(0,s.i-s.o); }); return Math.round(m/60000); }
-  if(cat==='sleep'){ let m=0; (((S.sleepLog||{})[k])||[]).forEach(function(s){ m+=Math.max(0,s.i-s.o); }); return Math.round(m/60000); }
-  const s=(S.qlog||{})[k]; if(!s) return 0;
-  const a=s[cat];
-  return Array.isArray(a)? a.length : (typeof a==='number'? a : 0);
+const ST_LOG={walk:'walkLog', sleep:'sleepLog', away:'awayLog', kg:'kgLog'};
+const ST_DOW=['일','월','화','수','목','금','토'];
+const STAT={cat:'', per:'4w', cmp:'wk', mk:'', win:7, tip:null, logN:14, edit:'', _it:null, _info:null};
+let ST_NC=null;   /* 밤잠 계산 캐시 — 그리기 1회 동안만 */
+
+function stCat(id){ for(let i=0;i<STAT_CATS.length;i++){ if(STAT_CATS[i].id===id) return STAT_CATS[i]; } return STAT_CATS[0]; }
+function stAdd(k, n){ const d=new Date(k+'T00:00:00'); d.setDate(d.getDate()+n); return d2s(d); }
+function stDiff(a, b){ return Math.round((new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/86400000); }
+function stMD(k){ return parseInt(String(k).slice(5,7),10)+'/'+parseInt(String(k).slice(8,10),10); }
+function stDow(k){ return ST_DOW[new Date(k+'T00:00:00').getDay()]; }
+function stOkKey(k){ return /^\d{4}-\d\d-\d\d$/.test(String(k||'')); }
+function stSum(a){ let s=0; for(let i=0;i<a.length;i++) s+=a[i]; return s; }
+function statsVisible(){ const p=document.getElementById('tab-stats'); return !!(p && p.classList.contains('on')); }
+function statsRefresh(){ if(statsVisible()) renderStats(); }
+
+/* ---------- 원자료 읽기 (상태를 바꾸지 않음) ---------- */
+function stArr(k, cat){
+  const q=(S.qlog||{})[k]; if(!q) return [];
+  const a=q[cat];
+  if(Array.isArray(a)) return a;
+  return (typeof a==='number' && a>0)? new Array(a).fill('') : [];
 }
-function statFirstDate(cat){
-  const src = cat==='kg'? (S.kgLog||{}) : (cat==='walk'? (S.walkLog||{}) : (cat==='away'? (S.awayLog||{}) : (cat==='sleep'? (S.sleepLog||{}) : (S.qlog||{}))));
-  const keys=Object.keys(src).sort();
-  for(let i=0;i<keys.length;i++){ if(statDayVal(cat, keys[i])>0) return keys[i]; }
-  return null;
+function stLogged(k){ return (stArr(k,'poo').length+stArr(k,'pee').length+stArr(k,'diar').length+stArr(k,'meal').length)>0; }
+function stSegs(log, k){ const a=((S[log]||{})[k]); return Array.isArray(a)? a.filter(function(s){ return s && +s.i>+s.o; }) : []; }
+function stKgDay(k){ return stSegs('kgLog', k).length>0; }
+function stActive(k){ return stLogged(k) || stSegs('walkLog',k).length>0 || stSegs('sleepLog',k).length>0 || stSegs('awayLog',k).length>0 || stKgDay(k); }
+
+/* 밤잠: 그날(기상일) 가장 긴 수면을 기준으로 앞뒤 60분 안에 이어진 수면(전날 저녁 포함)을 합친다 */
+function stNightCalc(k){
+  const own=stSegs('sleepLog', k); if(!own.length) return null;
+  let a=own[0]; own.forEach(function(s){ if(s.i-s.o > a.i-a.o) a=s; });
+  const pool=stSegs('sleepLog', stAdd(k,-1)).concat(own);
+  const used=[a]; let st=a.o, en=a.i, tot=a.i-a.o, grew=true;
+  while(grew){
+    grew=false;
+    for(let j=0;j<pool.length;j++){
+      const s=pool[j]; if(used.indexOf(s)>-1) continue;
+      if(s.i<=st && st-s.i<=3600000){ st=s.o; tot+=s.i-s.o; used.push(s); grew=true; }
+      else if(s.o>=en && s.o-en<=3600000){ en=s.i; tot+=s.i-s.o; used.push(s); grew=true; }
+    }
+  }
+  if(tot<4*3600000) return null;
+  return {m:Math.round(tot/60000), bed:st, wake:en, used:used};
+}
+function stNight(k){
+  if(ST_NC && Object.prototype.hasOwnProperty.call(ST_NC, k)) return ST_NC[k];
+  const r=stNightCalc(k); if(ST_NC) ST_NC[k]=r; return r;
+}
+function stNapMin(k){
+  const n0=stNight(k), n1=stNight(stAdd(k,1));
+  const ex=[].concat(n0? n0.used : [], n1? n1.used : []);
+  let m=0; stSegs('sleepLog',k).forEach(function(s){ if(ex.indexOf(s)<0) m+=s.i-s.o; });
+  return Math.round(m/60000);
 }
 
-/* =============== V5: 적정성 진단 (월령 기준 절대 범위 + 최근 급변 감지) =============== */
-function qlArr(k, cat){ const q=(S.qlog||{})[k]; if(!q) return []; const a=q[cat]; return Array.isArray(a)? a : []; }
+/* 하루 값 — null 은 평균·비교에서 제외 */
+function stVal(cat, k){
+  if(cat==='poo' || cat==='pee'){ if(!stLogged(k) || stKgDay(k)) return null; return stArr(k,cat).length; }
+  if(cat==='diar' || cat==='meal'){ if(!stLogged(k)) return null; return stArr(k,cat).length; }
+  if(cat==='sleep'){ const n=stNight(k); return n? n.m : null; }
+  if(!stActive(k)) return null;
+  if(cat==='walk') return Math.round(sumSegs(stSegs('walkLog',k))/60000);
+  if(cat==='kg') return Math.round(sumSegs(stSegs('kgLog',k))/60000);
+  if(cat==='away'){ let m=0; stSegs('awayLog',k).forEach(function(s){ m=Math.max(m, s.i-s.o); }); return Math.round(m/60000); }
+  return null;
+}
+/* 그래프용 — 평균에서 빠지는 유치원 날도 실제 기록 수는 보여 준다 */
+function stRaw(cat, k){
+  if((cat==='poo'||cat==='pee') && stLogged(k) && stKgDay(k)) return {v:stArr(k,cat).length, ex:'kg'};
+  const v=stVal(cat,k); return {v:v, ex: v==null? 'none' : ''};
+}
+function stWin(cat, from, to){
+  const R={from:from, to:to, span:0, n:0, mean:null, sd:0, vals:[], days:[], miss:0, kgEx:0, sum:0, max:null, maxK:''};
+  if(!stOkKey(from) || !stOkKey(to) || from>to) return R;
+  R.span=stDiff(from,to)+1;
+  for(let k=from; k<=to; k=stAdd(k,1)){
+    const v=stVal(cat,k);
+    if(v==null){ if((cat==='poo'||cat==='pee') && stLogged(k) && stKgDay(k)) R.kgEx++; else R.miss++; continue; }
+    R.vals.push(v); R.days.push(k);
+    if(R.max==null || v>=R.max){ R.max=v; R.maxK=k; }
+  }
+  R.n=R.vals.length; R.sum=stSum(R.vals);
+  if(R.n){ R.mean=R.sum/R.n; }
+  if(R.n>1){ let q=0; R.vals.forEach(function(v){ q+=(v-R.mean)*(v-R.mean); }); R.sd=Math.sqrt(q/(R.n-1)); }
+  return R;
+}
+function stAgg(cat){ return cat==='diar'? 'sum' : (cat==='away'? 'max' : (cat==='kg'? 'cnt' : 'mean')); }
+function stAggV(cat, X){
+  const g=stAgg(cat);
+  if(g==='sum') return X.n? X.sum : null;
+  if(g==='max') return X.n? (X.max||0) : null;
+  if(g==='cnt') return X.vals.filter(function(v){ return v>0; }).length;
+  return X.mean;
+}
+
+/* ---------- 기준 (월령) ---------- */
 function ageMo(){ if(!S.profile.birth) return null; const d=Math.floor((Date.now()-new Date(S.profile.birth+'T00:00:00').getTime())/86400000); return d/30.44; }
 function walkStage(){ return !!((((S.vax||{}).v7)||{}).done); }
 function statBand(cat){
@@ -6915,395 +7196,909 @@ function statBand(cat){
     const t=Math.max(5, Math.round(mo*5));
     return {lo:t, hi:t*2, why:'월령×5분×1~2회 · 성장판 보호'};
   }
-  if(cat==='sleep'){ return {lo:420, hi:660, why:'야간 7~11시간 (낮잠 포함 총수면은 18~20시간)'}; }
+  if(cat==='sleep'){ return {lo:420, hi:660, why:'밤잠 7~11시간 (낮잠 포함 총수면 18~20시간)'}; }
   return null;
 }
-function statMA(vs, w){
-  return vs.map(function(_, i){
-    const s=Math.max(0, i-w+1); let sum=0;
-    for(let j=s;j<=i;j++) sum+=vs[j];
-    return sum/(i-s+1);
-  });
+function stMealTarget(){
+  const b=statBand('meal'), set=parseInt(feedCfg().meals,10)||0;
+  if(!b) return set||3;
+  return Math.max(1, set? Math.min(set, b.lo) : b.lo);
 }
-function hcDaily(cat, days, inclToday){
-  const first=statFirstDate(cat);
-  if(!first) return [];
-  const end=new Date(); end.setHours(0,0,0,0);
-  if(!inclToday) end.setDate(end.getDate()-1);
-  const lo=addD(end, -(days-1));
-  const start=new Date(Math.max(new Date(first+'T00:00:00').getTime(), lo.getTime()));
-  if(start>end) return [];
-  const out=[];
-  for(let d=new Date(start); d<=end; d=addD(d,1)){ const k=d2s(d); out.push({k:k, v:statDayVal(cat,k)}); }
-  return out;
+function stAwayLim(){ const mo=ageMo(); return mo==null? 0 : Math.min(Math.floor(mo)+1, 9)*60; }
+
+/* ---------- 표기 ---------- */
+function stDur(m){ m=Math.round(m); const h=Math.floor(m/60), r=m%60; return h? (h+'시간'+(r? ' '+r+'분' : '')) : (r+'분'); }
+function stDurS(m){ m=Math.round(m); if(m>=60 && m%60===0) return (m/60)+'시간'; if(m>=60) return (Math.round(m/6)/10)+'시간'; return m+'분'; }
+function stNum(v){ const r=Math.round(v*10)/10; return Number.isInteger(r)? String(r) : r.toFixed(1); }
+function stFmtV(cat, v){
+  if(v==null || isNaN(v)) return '—';
+  const c=stCat(cat);
+  if(c.kind==='dur') return stDur(v);
+  if(c.kind==='wt') return (Math.round(v*100)/100).toFixed(2)+'kg';
+  return stNum(v)+c.u;
 }
-function hcAvg(cat){
-  /* 오늘은 아직 진행 중이라 평균에서 제외(왜곡 방지) — 수면은 오늘 아침 기상 기록이 완결이므로 포함 */
-  if(cat==='sleep'){
-    /* V5.1: 낮잠이 섞여도 판정이 흔들리지 않게, 하루 중 4시간 이상 이어 잔 기록(밤잠)만 집계 */
-    const t0=new Date(); t0.setHours(0,0,0,0);
-    const vals=[];
-    for(let i=0;i<7;i++){
-      const k=d2s(addD(t0,-i));
-      let mx2=0;
-      (((S.sleepLog||{})[k])||[]).forEach(function(s){ mx2=Math.max(mx2, s.i-s.o); });
-      const nm=Math.round(mx2/60000);
-      if(nm>=240) vals.push(nm);
-    }
-    if(!vals.length) return null;
-    return {avg:vals.reduce(function(a,b){ return a+b; },0)/vals.length, days:vals.length};
-  }
-  const d=hcDaily(cat, 7, false);
-  if(!d.length) return null;
-  return {avg:d.reduce(function(a,x){ return a+x.v; },0)/d.length, days:d.length};
+/* 집계 방식에 맞춘 값 표기 (주별·요약) */
+function stFmtAgg(cat, v){
+  if(v==null) return '—';
+  const g=stAgg(cat);
+  if(g==='cnt') return v+'회';
+  if(g==='sum') return v+'회';
+  return stFmtV(cat, v);
 }
-function hcTrend(cat){
-  const d=hcDaily(cat, 14, false);
-  if(d.length<10) return null;
-  const rec=d.slice(-3), prev=d.slice(0,-3);
-  const a=rec.reduce(function(x,y){ return x+y.v; },0)/rec.length;
-  const b=prev.reduce(function(x,y){ return x+y.v; },0)/prev.length;
+function stDelta(cat, d){
+  const c=stCat(cat), sg= d>0? '+' : (d<0? '−' : '±'), a=Math.abs(d);
+  if(stAgg(cat)==='cnt' || stAgg(cat)==='sum') return sg+Math.round(a)+'회';
+  if(c.kind==='dur') return sg+stDur(a);
+  if(c.kind==='wt') return sg+(Math.round(a*100)/100).toFixed(2)+'kg';
+  return sg+stNum(a)+c.u;
+}
+function stDD(cat, a, b){ /* 화면에 보이는 값끼리의 차이 — 반올림 때문에 3.3−2.7이 +0.7로 보이지 않게 */
+  if(a==null || b==null) return null;
+  const c=stCat(cat);
+  if(c.kind==='cnt' && stAgg(cat)==='mean') return Math.round(b*10)/10-Math.round(a*10)/10;
+  if(c.kind==='dur') return Math.round(b)-Math.round(a);
+  return b-a;
+}
+function stSlopeTxt(s){ if(s==null) return '—'; return '주 '+(s>=0? '+' : '−')+Math.abs(s).toFixed(2)+'kg'; }
+function stLvHtml(st, short){
+  const t= st? ((short && st.s!=null)? st.s : st.txt) : '';
+  if(!t) return '';
+  const cls= st.lv==='warn'? 'lv-warn' : (st.lv==='watch'? 'lv-watch' : (st.lv==='ok'? 'lv-ok' : 'lv-na'));
+  return '<em class="'+cls+'">'+esc(t)+'</em>';
+}
+function stValHtml(t){
+  t=String(t==null? '' : t);
+  if(!/\d/.test(t)) return esc(t);
+  return esc(t).replace(/([^\d.\s+\u2212\-\u00b1:\/~]+)/g, '<small>$1</small>');
+}
+
+/* ---------- 체중 ---------- */
+function stWtPts(){
+  return (S.weight||[]).map(function(w){ return {d:String(w.d), kg:parseFloat(String(w.kg).replace(',','.'))}; })
+    .filter(function(p){ return stOkKey(p.d) && p.kg>0; })
+    .sort(function(a,b){ return a.d.localeCompare(b.d); });
+}
+/* 주당 kg — 최소제곱 기울기 (측정 2회 이상 · 간격 5일 이상) */
+function stSlope(pts){
+  if(!pts || pts.length<2) return null;
+  const x0=pts[0].d, xs=pts.map(function(p){ return stDiff(x0,p.d); }), ys=pts.map(function(p){ return p.kg; });
+  if(xs[xs.length-1]-xs[0]<5) return null;
+  const n=xs.length, mx=stSum(xs)/n, my=stSum(ys)/n;
+  let num=0, den=0; for(let i=0;i<n;i++){ num+=(xs[i]-mx)*(ys[i]-my); den+=(xs[i]-mx)*(xs[i]-mx); }
+  return den? num/den*7 : null;
+}
+function stWtIn(from, to){ return stWtPts().filter(function(p){ return p.d>=from && p.d<=to; }); }
+
+/* ---------- 상태 판정 (최근 7일 · 어제까지) ---------- */
+function stTrend(cat){
+  const y=stAdd(todayKey(),-1), W=stWin(cat, stAdd(y,-13), y);
+  if(W.n<10) return null;
+  const rec=W.vals.slice(-3), prev=W.vals.slice(0,-3);
+  const a=stSum(rec)/rec.length, b=stSum(prev)/prev.length;
   if(b>=2 && a>=b*1.6 && (a-b)>=2) return 'up';
   if(b>=2 && a<=b*0.45 && (b-a)>=2) return 'down';
   return null;
 }
-function renderHealth(){
-  const el=document.getElementById('hcList'); if(!el) return;
-  const head=document.getElementById('hcHead');
-  const mo=ageMo();
-  if(mo==null){
-    if(head) head.textContent='적정성 진단';
-    el.innerHTML='<p class="muted small" style="margin:0;">설정에서 생년월일을 입력하면 월령 기준 진단이 표시됩니다.</p>';
-    return;
+function stStatus(cat){
+  const mo=ageMo(), t=todayKey(), y=stAdd(t,-1);
+  const NA=function(n){ return {lv:'na', txt:'기록 부족 ('+n+'/3일)', s:'기록 부족'}; };
+  if(cat==='meal' || cat==='poo' || cat==='pee'){
+    const b=statBand(cat); if(!b) return {lv:'na', txt:'생년월일 필요'};
+    const W=stWin(cat, stAdd(y,-6), y);
+    if(W.n<3) return NA(W.n);
+    if(cat==='meal'){
+      const tg=stMealTarget(), short=[];
+      W.days.forEach(function(k,i){ if(W.vals[i]<tg) short.push({k:k, v:W.vals[i]}); });
+      const basis='하루 '+tg+'끼 · '+b.why;
+      if(!short.length) return {lv:'ok', txt:'적정', basis:basis, short:short, tg:tg};
+      if(short.length<=2) return {lv:'watch', txt:'미달 '+short.length+'일 · 기록 누락 확인', s:'미달 '+short.length+'일', basis:basis, short:short, tg:tg};
+      return {lv:'warn', txt:'미달 '+short.length+'일 · 식사량·식욕 확인', s:'미달 '+short.length+'일', basis:basis, short:short, tg:tg};
+    }
+    const avg=W.mean;
+    let lv=(avg>=b.lo && avg<=b.hi)? 'ok' : ((avg>=b.lo-1 && avg<=b.hi+1)? 'watch' : 'warn');
+    let txt= lv==='ok'? '적정' : (avg<b.lo? '적정보다 적음' : '적정보다 많음'), sh= lv==='ok'? '적정' : (avg<b.lo? '적음' : '많음');
+    const tr=stTrend(cat);
+    if(cat==='pee' && tr==='up'){ if(lv==='ok') lv='watch'; txt='최근 3일 급증 · 음수량·배뇨 불편 확인'; sh='3일 급증'; }
+    if(cat==='poo' && tr==='down'){ if(lv==='ok') lv='watch'; txt='최근 3일 급감 · 변비·식사량 확인'; sh='3일 급감'; }
+    return {lv:lv, txt:txt, s:sh, basis:b.lo+'~'+b.hi+'회/일 · '+b.why};
   }
-  if(head) head.textContent='적정성 진단 — 생후 약 '+(Math.round(mo*10)/10)+'개월 · '+(mo>=12? '성견' : (walkStage()? '지면 산책' : '안고 외출'))+' 단계 · 최근 7일 기준';
-  const B={ok:'<span class="hc-b hc-ok">✓ 적정</span>', watch:'<span class="hc-b hc-watch">관찰</span>', warn:'<span class="hc-b hc-warn">⚠ 주의</span>', na:'<span class="hc-b hc-na">기록 부족</span>'};
-  const rows=[];
-  const row=function(ic, nm, lv, val, desc){
-    rows.push('<div class="hc-row"><span class="hc-i">'+ic+'</span><div class="hc-m"><span class="n">'+nm+'</span><span class="v2">'+val+'</span><div class="d">'+desc+'</div></div>'+B[lv]+'</div>');
-  };
-  // 식사·대변·소변 — 7일 평균 vs 월령 범위 + 급변
-  [['meal','🍚','식사'],['poo','💩','대변'],['pee','💧','소변']].forEach(function(cf){
-    const cat=cf[0], band=statBand(cat), a=hcAvg(cat), tr=hcTrend(cat);
-    if(!a || a.days<3){ row(cf[1], cf[2], 'na', '—', '기록이 3일 이상 쌓이면 판정됩니다'); return; }
-    const avg=Math.round(a.avg*10)/10;
-    let lv=(avg>=band.lo && avg<=band.hi)? 'ok' : ((avg>=band.lo-1 && avg<=band.hi+1)? 'watch' : 'warn');
-    let note='적정 '+band.lo+'~'+band.hi+'회/일 · '+band.why;
-    if(cat==='pee' && tr==='up'){ if(lv==='ok') lv='watch'; note+=' · 최근 3일 빈도 급증 — 음수량·배뇨 시 불편 신호 확인'; }
-    if(cat==='poo' && tr==='down'){ if(lv==='ok') lv='watch'; note+=' · 최근 3일 급감 — 변비·식사량 확인'; }
-    if(cat==='meal' && avg<band.lo){ lv='warn'; note+=' · 끼니 수 부족 — 공복 '+feedGapTxt(feedGap().limit)+' 넘기지 않기'+(mo<6? '(저혈당)' : ''); }
-    row(cf[1], cf[2], lv, '하루 '+avg+'회', note);
-  });
-  // 설사 — 발생 자체를 신호로
-  (function(){
-    const t0=new Date(); t0.setHours(0,0,0,0);
-    let sum7=0; for(let i=0;i<7;i++){ sum7+=statDayVal('diar', d2s(addD(t0,-i))); }
-    const t=statDayVal('diar', d2s(t0)), y=statDayVal('diar', d2s(addD(t0,-1)));
-    if(!sum7){ row('💦','설사','ok','0회','최근 7일 없음'); }
-    else if(t>=3 || (t>0 && y>0)){ row('💦','설사','warn','오늘 '+t+'회','이틀 연속 또는 하루 다회 — 24시간 내 진료 권장'+(mo<4? ' · 4개월 미만은 반복 시 즉시 병원' : '')); }
-    else if(t>0 || y>0){ row('💦','설사','watch', t? '오늘 '+t+'회' : '어제 '+y+'회', '1회 발생 — 수분 급여하며 변 상태 관찰, 반복 시 진료'); }
-    else{ row('💦','설사','watch','7일 내 '+sum7+'회','최근 이틀은 없음 — 재발 여부 관찰'); }
-  })();
-  // 산책 — 단계별 분/일
-  (function(){
-    const band=statBand('walk'), a=hcAvg('walk');
-    if(!a || a.days<3){ row('🐕','산책','na','—','기록이 3일 이상 쌓이면 판정됩니다'); return; }
-    const avg=Math.round(a.avg);
-    let lv=(avg>=band.lo && avg<=band.hi)? 'ok' : ((avg>=band.lo*0.6 && avg<=band.hi*1.5)? 'watch' : 'warn');
-    let note='적정 '+band.lo+'~'+band.hi+'분/일 · '+band.why;
-    if(avg>band.hi) note+=' · 초과 — '+(mo<12? '성장판 보호를 위해 짧게 나눠서' : '짧게 나눠 진행');
-    if(avg<band.lo) note+=' · 부족';
-    row('🐕','산책',lv,'하루 '+avg+'분',note);
-  })();
-  // 수면 — 밤잠(4시간 이상 연속 수면)만 집계, 낮잠 제외
-  (function(){
-    const band=statBand('sleep'), a=hcAvg('sleep');
-    if(!a){ row('😴','수면','na','—','😴 버튼으로 취침·기상을 기록하면 판정됩니다 (밤잠 기준)'); return; }
-    if(a.days<3){ row('😴','수면','na','밤잠 '+fmtDur(Math.round(a.avg)*60000),'밤잠 기록이 3일 이상 쌓이면 판정됩니다 (현재 '+a.days+'일 · 낮잠은 제외)'); return; }
-    const avg=Math.round(a.avg);
-    const lv=(avg>=band.lo && avg<=band.hi)? 'ok' : ((avg>=band.lo-60 && avg<=band.hi+60)? 'watch' : 'warn');
-    row('😴','수면',lv,'밤잠 평균 '+fmtDur(avg*60000),'적정 '+Math.round(band.lo/60)+'~'+Math.round(band.hi/60)+'시간/밤 · 4시간 이상 이어 잔 기록만 밤잠으로 집계(낮잠 제외) · 기록 '+a.days+'일');
-  })();
-  // 혼자 시간 — 월령+1시간 룰, 최근 7일 최장 1회
-  (function(){
-    const limH=Math.min(Math.floor(mo)+1, 9);
-    const t0=new Date(); t0.setHours(0,0,0,0);
-    let longest=0, any=false;
-    for(let i=0;i<7;i++){
-      const k=d2s(addD(t0,-i));
-      (((S.awayLog||{})[k])||[]).forEach(function(s){ any=true; longest=Math.max(longest, s.i-s.o); });
+  if(cat==='diar'){
+    let sum7=0; for(let i=0;i<7;i++) sum7+=stArr(stAdd(t,-i),'diar').length;
+    const td=stArr(t,'diar').length, yd=stArr(y,'diar').length;
+    const basis='이틀 연속 또는 하루 3회 이상이면 24시간 안에 진료';
+    if(!sum7) return {lv:'ok', txt:'최근 7일 없음', s:'', basis:basis};
+    if(td>=3 || (td>0 && yd>0)) return {lv:'warn', txt:'이틀 연속 또는 하루 3회 이상 · 24시간 내 진료 권장'+((mo!=null && mo<4)? ' (4개월 미만은 즉시)' : ''), s:'진료 권장', basis:basis};
+    if(td>0 || yd>0) return {lv:'watch', txt:(td? '오늘 '+td+'회' : '어제 '+yd+'회')+' · 수분 급여하며 관찰', s:(td? '오늘 '+td+'회' : '어제 '+yd+'회'), basis:basis};
+    return {lv:'watch', txt:'최근 7일 '+sum7+'회 · 재발 관찰', s:'재발 관찰', basis:basis};
+  }
+  if(cat==='sleep'){
+    const b=statBand('sleep'); if(!b) return {lv:'na', txt:'생년월일 필요'};
+    const W=stWin('sleep', stAdd(y,-6), y);
+    if(W.n<3) return NA(W.n);
+    const avg=W.mean;
+    const lv=(avg>=b.lo && avg<=b.hi)? 'ok' : ((avg>=b.lo-60 && avg<=b.hi+60)? 'watch' : 'warn');
+    return {lv:lv, txt: lv==='ok'? '적정' : (avg<b.lo? '적정보다 짧음' : '적정보다 김'), s: lv==='ok'? '적정' : (avg<b.lo? '짧음' : '김'), basis:'7~11시간 · 낮잠 포함 총수면은 18~20시간'};
+  }
+  if(cat==='walk'){
+    const b=statBand('walk'); if(!b) return {lv:'na', txt:'생년월일 필요'};
+    const W=stWin('walk', stAdd(y,-6), y);
+    if(W.n<3) return NA(W.n);
+    const avg=W.mean;
+    const lv=(avg>=b.lo && avg<=b.hi)? 'ok' : ((avg>=b.lo*0.6 && avg<=b.hi*1.5)? 'watch' : 'warn');
+    return {lv:lv, txt: lv==='ok'? '적정' : (avg<b.lo? '권장보다 적음' : '권장 초과 · 짧게 나눠서'), s: lv==='ok'? '적정' : (avg<b.lo? '적음' : '많음'), basis:'하루 '+b.lo+'~'+b.hi+'분 · '+b.why};
+  }
+  if(cat==='away'){
+    const lim=stAwayLim(); if(!lim) return {lv:'na', txt:'생년월일 필요'};
+    const W=stWin('away', stAdd(t,-6), t);
+    const basis='1회 연속 '+(lim/60)+'시간 · 월령+1시간 룰'+((mo!=null && mo>=8)? '(상한 9시간)' : '');
+    if(!W.max) return {lv:'ok', txt:'최근 7일 혼자 둔 기록 없음', s:'', basis:basis};
+    const lv= W.max<=lim? 'ok' : (W.max<=lim*1.25? 'watch' : 'warn');
+    return {lv:lv, txt: lv==='ok'? '한도 안' : '한도 초과 · 중간 케어 필요', s: lv==='ok'? '' : '한도 초과', basis:basis};
+  }
+  if(cat==='kg'){
+    const pl=kgPassLeft();
+    return {lv:'info', txt: pl? '회차권 '+Math.max(0,pl.left)+'회 남음' : '', s: pl? '회차권 '+Math.max(0,pl.left)+'회' : '', basis:''};
+  }
+  if(cat==='wt'){
+    const pts=stWtPts(); if(!pts.length) return {lv:'na', txt:'기록 없음'};
+    const last=pts[pts.length-1];
+    const basis='최근 4주 측정값 추세';
+    if(stDiff(last.d, t)>14) return {lv:'na', txt:'마지막 측정 '+stDiff(last.d,t)+'일 전', s:'측정 '+stDiff(last.d,t)+'일 전', basis:basis};
+    const sl=stSlope(stWtIn(stAdd(last.d,-27), last.d));
+    if(sl==null) return {lv:'na', txt:'5일 이상 간격으로 2회 필요', s:'측정 부족', basis:basis};
+    if(mo==null || mo<12){
+      if(sl>=0.03) return {lv:'ok', txt:'성장 중', basis:basis, sl:sl};
+      if(sl>-0.03) return {lv:'watch', txt:'정체 · 이어지면 급여량 상담', s:'정체', basis:basis, sl:sl};
+      return {lv:'warn', txt:'감소 · 병원 상담 권장', s:'감소', basis:basis, sl:sl};
     }
-    if(!any){ row('🚪','혼자 시간','na','—','최근 7일 기록 없음'); return; }
-    const lm=Math.round(longest/60000);
-    const lv= lm<=limH*60? 'ok' : (lm<=limH*75? 'watch' : 'warn');
-    row('🚪','혼자 시간',lv,'최장 1회 '+fmtDur(longest),'권장 한도 '+limH+'시간 — 월령+1시간 룰'+(mo>=8? ' (상한 9시간)' : '')+(lv!=='ok'? ' · 초과 — 중간 케어(가족·시터) 필요' : ''));
-  })();
-  // 체중 — 성장기: 증가 여부 / 성견: 급변 여부
-  (function(){
-    const ws=(S.weight||[]).slice().sort(function(a,b){ return String(a.d).localeCompare(String(b.d)); });
-    if(ws.length<2){ row('⚖️','체중','na', ws.length? esc(ws[ws.length-1].kg)+'kg' : '—', '주 1회 이상 기록하면 성장 판정이 표시됩니다'); return; }
-    const last=ws[ws.length-1];
-    let ref=null;
-    for(let i=ws.length-2;i>=0;i--){
-      const gap=(new Date(last.d+'T00:00:00')-new Date(ws[i].d+'T00:00:00'))/86400000;
-      if(gap>=5){ ref=ws[i]; break; }
-    }
-    if(!ref){ row('⚖️','체중','na', esc(last.kg)+'kg', '5일 이상 간격의 이전 기록이 쌓이면 판정됩니다'); return; }
-    const dd=Math.max(1,(new Date(last.d+'T00:00:00')-new Date(ref.d+'T00:00:00'))/86400000);
-    const diff=parseFloat(last.kg)-parseFloat(ref.kg);
-    const wk=Math.round(diff/dd*7*100)/100;
-    if(mo<12){
-      const lv= diff>0.03? 'ok' : (diff>=-0.03? 'watch' : 'warn');
-      row('⚖️','체중',lv, esc(last.kg)+'kg', '주당 '+(wk>=0?'+':'')+wk+'kg ('+esc(ref.d.slice(5).replace('-','/'))+' 대비)'+(lv==='ok'? ' · 성장 중' : (lv==='watch'? ' · 정체 — 지속되면 급여량·건강 상담' : ' · 감소 — 성장기 체중 감소는 병원 상담 권장')));
-    }else{
-      const pct=Math.abs(diff)/Math.max(0.1,parseFloat(ref.kg));
-      const lv= pct<=0.05? 'ok' : 'watch';
-      row('⚖️','체중',lv, esc(last.kg)+'kg', '변화 '+(diff>=0?'+':'')+(Math.round(diff*100)/100)+'kg'+(lv==='watch'? ' — ±5% 이상 급변, 급여·건강 확인' : ''));
-    }
-  })();
-  el.innerHTML=rows.join('');
+    const p0=stWtIn(stAdd(last.d,-27), last.d)[0];
+    const pct=Math.abs(last.kg-p0.kg)/Math.max(0.1,p0.kg);
+    return pct<=0.05? {lv:'ok', txt:'유지', basis:basis, sl:sl} : {lv:'watch', txt:'4주 ±5% 이상 변화', s:'±5% 이상', basis:basis, sl:sl};
+  }
+  return {lv:'na', txt:''};
 }
-function statDaily(cat, maxDays){
-  const first=statFirstDate(cat);
-  if(!first) return [];
-  const today=new Date(); today.setHours(0,0,0,0);
-  const lo=addD(today, -(maxDays-1));
-  const start=new Date(Math.max(new Date(first+'T00:00:00').getTime(), lo.getTime()));
-  const out=[];
-  for(let d=new Date(start); d<=today; d=addD(d,1)){
-    const k=d2s(d);
-    out.push({k:k, v:statDayVal(cat,k)});
+
+/* ---------- 비교 기간 ---------- */
+function stMarks(){
+  const out=[], M=(S.marks && typeof S.marks==='object')? S.marks : {};
+  Object.keys(M).forEach(function(id){
+    const m=M[id]; if(!m || !stOkKey(m.s)) return;
+    out.push({id:id, t:String(m.t||'기준일').slice(0,20), s:m.s, e:(stOkKey(m.e) && m.e>m.s)? m.e : ''});
+  });
+  const kk=Object.keys(S.kgLog||{}).filter(function(k){ return stOkKey(k) && kgDay(k).length; }).sort();
+  if(kk.length) out.push({id:'auto-kg', t:'유치원 첫 등원', s:kk[0], e:'', auto:true});
+  out.sort(function(a,b){ return a.s.localeCompare(b.s) || a.t.localeCompare(b.t); });
+  return out;
+}
+function stMarkGet(id){ const ms=stMarks(); for(let i=0;i<ms.length;i++){ if(ms[i].id===id) return ms[i]; } return null; }
+function stCmpWins(cat){
+  const t=todayKey(), incl=(cat==='diar' || cat==='away' || cat==='wt');
+  const endB= incl? t : stAdd(t,-1);
+  if(STAT.cmp==='mk'){
+    const m=stMarkGet(STAT.mk);
+    if(m){
+      const N= cat==='wt'? Math.max(21, STAT.win) : STAT.win;
+      const single=!m.e, e=m.e||m.s;
+      const bF= single? m.s : stAdd(e,1);
+      let bT=stAdd(bF, N-1); if(bT>endB) bT=endB;
+      return {mode:'mk', m:m, N:N, A:[stAdd(m.s,-N), stAdd(m.s,-1)], B:[bF, bT]};
+    }
+  }
+  if(cat==='wt') return {mode:'wk', N:21, A:[stAdd(endB,-41), stAdd(endB,-21)], B:[stAdd(endB,-20), endB]};
+  return {mode:'wk', N:7, A:[stAdd(endB,-13), stAdd(endB,-7)], B:[stAdd(endB,-6), endB]};
+}
+function stChg(cat, A, B, a, b){
+  const c=stCat(cat);
+  if(cat==='kg') return {k:'info', d:(b||0)-(a||0)};
+  if(A.n<3 || B.n<3) return {k:'na', d:null};
+  if(cat==='diar'){
+    if(!a && !b) return {k:'none', d:0};
+    if(!a && b) return {k:'new', d:b};
+    if(a && !b) return {k:'gone', d:-a};
+    return {k: b>a? 'up' : (b<a? 'down' : 'same'), d:b-a};
+  }
+  if(cat==='away'){
+    if(!a && !b) return {k:'none', d:0};
+    const d=(b||0)-(a||0);
+    return {k: Math.abs(d)>=c.min? (d>0? 'up' : 'down') : 'same', d:d};
+  }
+  const d=B.mean-A.mean;
+  const sp=Math.sqrt(((A.n-1)*A.sd*A.sd+(B.n-1)*B.sd*B.sd)/Math.max(1, A.n+B.n-2));
+  const big=Math.abs(d)>=c.min-1e-9 && Math.abs(d)>sp+1e-9;
+  return {k: big? (d>0? 'up' : 'down') : 'same', d:d, sp:sp};
+}
+function stDeltaTxt(cat, ch){
+  if(!ch) return {t:'', c:'na'};
+  if(ch.k==='na') return {t:'비교 불가', c:'na'};
+  if(ch.k==='none') return {t:'', c:'same'};
+  if(ch.k==='new') return {t:'새로 생김', c:'new'};
+  if(ch.k==='gone') return {t:'없어짐', c:'same'};
+  if(ch.k==='same') return {t:'비슷함', c:'same'};
+  if(ch.dd!=null && (ch.k==='up' || ch.k==='down')) return {t:stDelta(cat, ch.dd), c:ch.k};
+  if(ch.k==='info') return {t: ch.d? stDelta('kg', ch.d) : '같음', c:'same'};
+  return {t:stDelta(cat, ch.d), c:ch.k};
+}
+
+/* ---------- 요약 1줄 ---------- */
+function stItem(cat){
+  const c=stCat(cat), w=stCmpWins(cat), it={cat:cat, c:c, w:w, st:stStatus(cat)};
+  const labA= w.mode==='mk'? '전' : '지난주';
+  if(cat==='wt'){
+    const pts=stWtPts(), last=pts.length? pts[pts.length-1] : null;
+    it.agg='wt'; it.A=null; it.B=null;
+    if(w.mode==='mk'){
+      it.a=stSlope(stWtIn(w.A[0], w.A[1])); it.b=stSlope(stWtIn(w.B[0], w.B[1]));
+      it.val= stSlopeTxt(it.b);
+      it.ch= (it.a==null || it.b==null)? {k:'na', d:null} : (Math.abs(it.b-it.a)>=c.min? {k: it.b>it.a? 'up' : 'down', d:it.b-it.a} : {k:'same', d:it.b-it.a});
+      it.sub='주당 증가 · 전 '+(it.a==null? '측정 부족' : stSlopeTxt(it.a).replace('주 ',''));
+    }else{
+      it.a=null; it.b= last? last.kg : null;
+      it.val= last? stFmtV('wt', last.kg) : '—';
+      const sl=last? stSlope(stWtIn(stAdd(last.d,-27), last.d)) : null;
+      let prev=null; if(last){ for(let i=pts.length-2;i>=0;i--){ if(stDiff(pts[i].d, last.d)>=5){ prev=pts[i]; break; } } }
+      it.ch= prev? {k:'wt', d:last.kg-prev.kg} : {k:'na', d:null};
+      it.sub=stLvHtml(it.st, true)+(sl!=null? ' · '+stSlopeTxt(sl) : '');
+    }
+    const dt= it.ch.k==='wt'? {t:stDelta('wt', it.ch.d), c:'same'} : stDeltaTxt('wt', it.ch);
+    it.dtxt=dt.t; it.dcls=dt.c;
+    if(w.mode==='mk') it.dtxt= it.ch.k==='na'? '비교 불가' : (it.ch.k==='same'? '비슷함' : (it.ch.d>0? '+' : '−')+Math.abs(it.ch.d).toFixed(2)+'kg/주');
+    return it;
+  }
+  const A=stWin(cat, w.A[0], w.A[1]), B=stWin(cat, w.B[0], w.B[1]);
+  it.A=A; it.B=B; it.agg=stAgg(cat);
+  it.a=stAggV(cat, A); it.b=stAggV(cat, B);
+  it.ch=stChg(cat, A, B, it.a, it.b);
+  if(it.agg==='mean') it.ch.dd=stDD(cat, it.a, it.b);
+  const dt=stDeltaTxt(cat, it.ch); it.dtxt=dt.t; it.dcls=dt.c;
+  const fa= it.a==null? '기록 없음' : stFmtAgg(cat, it.a).replace(/(\d)시간 (\d)/,'$1시간$2');
+  if(cat==='diar'){
+    it.val= it.b==null? '—' : (it.b? it.b+'회' : '없음');
+    const fa2= it.a==null? '기록 없음' : (it.a? it.a+'회' : '없음');
+    it.sub= ((w.mode==='mk' || !stLvHtml(it.st,true))? '' : stLvHtml(it.st,true)+' · ')+labA+' '+fa2;
+  }else if(cat==='away'){
+    it.val= it.b==null? '—' : (it.b? stDur(it.b) : '없음');
+    const fa2= it.a==null? '기록 없음' : (it.a? stDur(it.a).replace(/(\d)시간 (\d)/,'$1시간$2') : '없음');
+    it.sub= (w.mode==='mk'? '최장 1회 · ' : (stLvHtml(it.st,true)? stLvHtml(it.st,true)+' · ' : ''))+labA+' '+fa2;
+  }else if(cat==='kg'){
+    it.val=(it.b||0)+'회';
+    it.sub=(it.st.s? esc(it.st.s)+' · ' : '')+labA+' '+(it.a||0)+'회';
+  }else{
+    it.val=stFmtAgg(cat, it.b);
+    it.sub= (w.mode==='mk'? '' : stLvHtml(it.st,true)+' · ')+labA+' '+fa;
+  }
+  if(w.mode==='mk' && B.from>B.to) { it.val='—'; it.dtxt='시작 전'; it.dcls='na'; }
+  return it;
+}
+function stMini(it){
+  if(it.agg==='wt' || it.a==null || it.b==null) return '';
+  const a=Math.max(0,+it.a), b=Math.max(0,+it.b), mx=Math.max(a,b);
+  if(!(mx>0)) return '';
+  const h=function(v){ return Math.max(2, Math.round(22*v/mx)); };
+  return '<svg class="st-mini" viewBox="0 0 24 26" aria-hidden="true"><rect class="mA" x="2" y="'+(24-h(a))+'" width="8" height="'+h(a)+'" rx="2"/><rect class="mB" x="14" y="'+(24-h(b))+'" width="8" height="'+h(b)+'" rx="2"/></svg>';
+}
+function stRowHtml(it){
+  const c=it.c, sel=(STAT.cat===it.cat);
+  return '<button type="button" class="st-row'+(sel? ' sel' : '')+'" data-cat="'+c.id+'" style="--c:var('+c.cv+')">'
+    +'<span class="g-ic"><svg class="ico"><use href="#'+c.ic+'"/></svg></span>'
+    +'<span class="st-m"><span class="st-n">'+c.nm+'</span><span class="st-s">'+it.sub+'</span></span>'
+    +stMini(it)
+    +'<span class="st-v"><b>'+stValHtml(it.val)+'</b><span class="'+it.dcls+'">'+esc(it.dtxt||'')+'</span></span></button>';
+}
+
+/* ---------- 그래프 ---------- */
+function stW(svg){
+  let w=0; try{ w=Math.round(svg.getBoundingClientRect().width); }catch(e){}
+  if(!w){ const vw=document.documentElement.clientWidth||window.innerWidth||390; w=Math.max(260, Math.min(vw, 760)-64); }
+  return w;
+}
+function stTop(mx, cnt, dur){
+  if(!(mx>0)) return cnt? 2 : 60;
+  if(dur){
+    if(mx<=60) return Math.max(10, Math.ceil(mx/10)*10);
+    let h=Math.ceil(mx/60); if(h%2) h++; return h*60;
+  }
+  let t=Math.ceil(mx-1e-9); if(t<2) t=2; if(t%2) t++; return t;
+}
+function stAxis(v, cnt, dur){ if(!v) return '0'; if(dur) return stDurS(v); return stNum(v); }
+function stOut(cat, v, band, lim, tg){
+  if(v==null) return false;
+  if(cat==='poo' || cat==='pee') return !!band && (v<band.lo || v>band.hi);
+  if(cat==='meal') return tg>0 && v<tg-1e-9;
+  if(cat==='walk') return !!band && v>band.hi;
+  if(cat==='sleep') return !!band && v<band.lo;
+  if(cat==='away') return lim>0 && v>lim;
+  return false;
+}
+function stOutLbl(cat){ return {poo:'범위 밖', pee:'범위 밖', meal:'끼니 미달', walk:'권장 초과', sleep:'권장보다 짧음', away:'한도 초과'}[cat]||''; }
+function stSeries(cat, per){
+  const t=todayKey(), y=stAdd(t,-1), out=[];
+  if(per==='3m'){
+    const dow=(new Date(y+'T00:00:00').getDay()+6)%7, lastMon=stAdd(y,-dow);
+    for(let i=12;i>=0;i--){
+      const ws=stAdd(lastMon,-7*i), we0=stAdd(ws,6), we= we0>y? y : we0;
+      const W=stWin(cat, ws, we);
+      out.push({k:ws, k2:we, v: W.n? stAggV(cat, W) : null, n:W.n, span:W.span, kgEx:W.kgEx, wk:true, part:we0>y});
+    }
+    return out;
+  }
+  for(let i=28;i>=0;i--){
+    const k=stAdd(t,-i), r=stRaw(cat,k);
+    out.push({k:k, v:r.v, ex:r.ex, now:k===t, kg:stKgDay(k)});
   }
   return out;
 }
-function statSeries(cat, unit){
-  if(unit==='d'){
-    return statDaily(cat,30).map(function(x){ return {l:x.k.slice(5).replace('-','/'), v:x.v}; });
-  }
-  const daily=statDaily(cat,92);
-  if(!daily.length) return [];
-  const map={}, ord=[];
-  daily.forEach(function(x){
-    let kk;
-    if(unit==='w'){
-      const d=new Date(x.k+'T00:00:00');
-      kk=d2s(addD(d, -((d.getDay()+6)%7)));
-    }else{
-      kk=x.k.slice(0,7);
-    }
-    if(!(kk in map)){ map[kk]=0; ord.push(kk); }
-    map[kk]+=x.v;
+function stMarkSvg(o, xOf, k0, kEnd, pL, xEnd, pT, ph, dx, W){
+  let out='', lastX=-1e9, row=0;
+  stMarks().forEach(function(m){
+    const s=m.s, e=m.e||m.s;
+    if(e<k0 || s>kEnd) return;
+    const sel=(STAT.cmp==='mk' && STAT.mk===m.id);
+    const xs=Math.max(pL, xOf(s)), xe=Math.min(xEnd, xOf(e)+dx);
+    if(m.e) out+='<rect class="sx-mkr'+(sel? ' sel' : '')+'" x="'+xs.toFixed(1)+'" y="'+pT+'" width="'+Math.max(1,xe-xs).toFixed(1)+'" height="'+ph+'"/>';
+    if(s<k0) return;
+    out+='<line class="sx-mk'+(sel? ' sel' : '')+'" x1="'+xs.toFixed(1)+'" x2="'+xs.toFixed(1)+'" y1="'+(pT-3)+'" y2="'+(pT+ph)+'"/>';
+    o.marks=true;
+    row= (xs-lastX<70)? row+1 : 0; lastX=xs;
+    if(row>1) return;
+    const t0=m.t.replace(/\s*\(.*?\)\s*/g,' ').trim()||m.t; const lbl= t0.length>9? t0.slice(0,9)+'…' : t0;
+    const right= xs>W-80;
+    out+='<text class="sx-mkt'+(sel? ' sel' : '')+'" x="'+(right? xs-3 : xs+3).toFixed(1)+'" y="'+(row? 23 : 11)+'" text-anchor="'+(right? 'end' : 'start')+'">'+esc(lbl)+'</text>';
   });
-  const tail= unit==='w'? ord.slice(-13) : ord.slice(-6);
-  return tail.map(function(kk){
-    return {l: unit==='w'? kk.slice(5).replace('-','/')+'~' : parseInt(kk.slice(5),10)+'월', v:map[kk]};
-  });
+  return out;
 }
-function statFmt(cat, v){
-  const c=STAT_CATS.find(function(x){ return x.id===cat; });
-  if(c.kind==='dur'){
-    return v>=60? (Math.floor(v/60)+'시간'+(v%60? ' '+(v%60)+'분' : '')) : (v+'분');
-  }
-  return v+'회';
-}
-function renderStats(){
-  try{ renderHealth(); }catch(e){}
-  const wrap=document.getElementById('stCats'); if(!wrap) return;
-  wrap.innerHTML=STAT_CATS.map(function(c){
-    return '<button type="button" data-c="'+c.id+'" class="'+(STAT.cat===c.id?'on':'')+'">'+c.ic+' '+c.nm+'</button>';
-  }).join('');
-  wrap.querySelectorAll('button').forEach(function(b){
-    b.addEventListener('click', function(){ STAT.cat=this.dataset.c; renderStats(); });
-  });
-  document.querySelectorAll('#stUnits button').forEach(function(b){ b.classList.toggle('on', b.dataset.u===STAT.unit); });
-  const cat=STAT.cat, unit=STAT.unit;
-  const c=STAT_CATS.find(function(x){ return x.id===cat; });
-  const UNITN={d:'일', w:'주', m:'월'};
-  const ser=statSeries(cat, unit);
-  const cards=document.getElementById('stCards');
-  const chartT=document.getElementById('stChartT');
-  const svg=document.getElementById('stChart');
-  const tbl=document.getElementById('stTable');
-  if(!ser.length){
-    cards.innerHTML='';
-    chartT.textContent=c.ic+' '+c.nm+' — 기록 없음';
-    svg.innerHTML='';
-    tbl.innerHTML='<p class="muted small" style="margin:0;">아직 기록이 없습니다. 홈의 기록 버튼으로 쌓아보세요.</p>';
-    renderStatLog();
-    return;
-  }
-  const vs=ser.map(function(x){ return x.v; });
-  const sum=vs.reduce(function(a,b){ return a+b; },0);
-  const avg=Math.round(sum/vs.length*10)/10;
-  const mn=Math.min.apply(null,vs), mx=Math.max.apply(null,vs);
-  const mnL=(ser.filter(function(x){ return x.v===mn; }).pop()||{}).l||'';
-  const mxL=(ser.filter(function(x){ return x.v===mx; }).pop()||{}).l||'';
-  let extra='';
-  if(cat==='walk'){
-    let cnt=0, tot=0;
-    Object.keys(S.walkLog||{}).forEach(function(k){ (S.walkLog[k]||[]).forEach(function(s){ cnt++; tot+=Math.max(0,s.i-s.o); }); });
-    if(cnt) extra='<div class="st-card"><div class="l">평균 1회 길이</div><div class="v">'+statFmt(cat, Math.round(tot/60000/cnt))+'</div><div class="s">전체 '+cnt+'회</div></div>';
-  }
-  if(cat==='meal'){
-    let gaps=[], cntD=0;
-    Object.keys(S.qlog||{}).sort().slice(-14).forEach(function(k){
-      const arr=qlNorm(k).meal.map(function(t){ return String(t).slice(0,5); }).filter(function(t){ return /^\d\d:\d\d$/.test(t); }).sort();
-      if(arr.length>1){ cntD++;
-        for(let i=1;i<arr.length;i++){
-          const a=arr[i-1].split(':'), b2=arr[i].split(':');
-          gaps.push((parseInt(b2[0],10)*60+parseInt(b2[1],10))-(parseInt(a[0],10)*60+parseInt(a[1],10)));
-        }
-      }
+function stDrawBars(svg, cat, per, it){
+  const c=stCat(cat), ser=stSeries(cat, per), n=ser.length;
+  svg.style.setProperty('--c', 'var('+c.cv+')');
+  const W=stW(svg), H=216, pL=42, pR=10, pT=30, pB=30;
+  const pw=W-pL-pR, ph=H-pT-pB, slot=pw/n, bw=Math.max(3, Math.min(per==='3m'? 20 : 12, slot*0.64)), dx= per==='3m'? slot/7 : slot;
+  const cnt= c.kind==='cnt' || (cat==='kg' && per==='3m'), dur= !cnt && c.kind==='dur';
+  const band= (['meal','poo','pee','sleep','walk'].indexOf(cat)>-1)? statBand(cat) : null;
+  const lim= cat==='away'? stAwayLim() : 0, tg= cat==='meal'? stMealTarget() : 0;
+  const k0=ser[0].k, kEnd= per==='3m'? ser[n-1].k2 : ser[n-1].k, xEnd=pL+pw;
+  const xOf=function(k){ return pL+stDiff(k0,k)*dx; };
+  const F={};
+  let mx=0, any=false; ser.forEach(function(p){ if(p.v!=null){ any=true; mx=Math.max(mx, p.v); } });
+  const lines=[];
+  if(it && it.agg==='mean'){
+    [[it.A,'sx-ma'],[it.B,'sx-mb']].forEach(function(z){
+      const X=z[0]; if(!X || X.mean==null || X.n<3 || !stOkKey(X.from) || X.from>X.to) return;
+      if(X.to<k0 || X.from>kEnd) return;
+      lines.push({v:X.mean, x1:Math.max(pL, xOf(X.from)), x2:Math.min(xEnd, xOf(X.to)+dx), cls:z[1]});
     });
-    if(gaps.length){
-      const avgG=Math.round(gaps.reduce(function(x,y){ return x+y; },0)/gaps.length);
-      extra='<div class="st-card"><div class="l">평균 간격</div><div class="v">'+Math.floor(avgG/60)+'시간 '+(avgG%60)+'분</div><div class="s">최근 14일 · 하루 내 간격</div></div>';
+  }
+  if(band) mx=Math.max(mx, band.hi);
+  if(lim) mx=Math.max(mx, lim);
+  lines.forEach(function(L){ mx=Math.max(mx, L.v); });
+  const top=stTop(mx, cnt, dur);
+  const yOf=function(v){ return pT+ph*(1-Math.min(Math.max(v,0),top)/top); };
+  let o='';
+  [0, top/2, top].forEach(function(v){ const yy=yOf(v); o+='<line class="sx-g" x1="'+pL+'" x2="'+xEnd.toFixed(1)+'" y1="'+yy.toFixed(1)+'" y2="'+yy.toFixed(1)+'"/><text class="sx-t" x="'+(pL-6)+'" y="'+(yy+4).toFixed(1)+'" text-anchor="end">'+stAxis(v, cnt, dur)+'</text>'; });
+  if(band){ const y1=yOf(band.hi), y2=yOf(band.lo); o+='<rect class="sx-band" x="'+pL+'" y="'+y1.toFixed(1)+'" width="'+pw.toFixed(1)+'" height="'+Math.max(1,y2-y1).toFixed(1)+'"/>'; }
+  o+=stMarkSvg(F, xOf, k0, kEnd, pL, xEnd, pT, ph, dx, W);
+  ser.forEach(function(p,i){
+    const cx=pL+i*slot+slot/2, x=cx-bw/2;
+    if(p.v==null){ if(!p.now){ o+='<circle class="sx-miss" cx="'+cx.toFixed(1)+'" cy="'+(pT+ph-4)+'" r="1.7"/>'; F.miss=true; } }
+    else{
+      let cls='sx-b';
+      if(p.now){ cls+=' now'; F.now=true; }
+      else if(p.ex==='kg'){ cls+=' ex'; F.ex=true; }
+      else if(p.wk && p.n<3){ cls+=' few'; F.few=true; }
+      else if(stOut(cat, p.v, band, lim, tg)){ cls+=' out'; F.out=true; }
+      if(STAT.tip===i) cls+=' sel';
+      const h= p.v>0? Math.max(2, ph*Math.min(p.v,top)/top) : 0;
+      if(h>0) o+='<rect class="'+cls+'" x="'+x.toFixed(1)+'" y="'+(pT+ph-h).toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+h.toFixed(1)+'" rx="'+Math.min(3,bw/2).toFixed(1)+'"/>';
+      else if(STAT.tip===i) o+='<rect class="sx-b sel" x="'+x.toFixed(1)+'" y="'+(pT+ph-1)+'" width="'+bw.toFixed(1)+'" height="1"/>';
     }
+    if(!p.wk && p.kg && cat!=='kg'){ o+='<circle class="sx-kg" cx="'+cx.toFixed(1)+'" cy="'+(pT+ph+7)+'" r="2.5"/>'; F.kg=true; }
+    if((n-1-i)%(per==='3m'? 4 : 7)===0){
+      let ax='middle', tx=cx; if(cx<pL+16){ ax='start'; tx=pL; } if(cx>xEnd-16){ ax='end'; tx=xEnd; }
+      o+='<text class="sx-t" x="'+tx.toFixed(1)+'" y="'+(H-6)+'" text-anchor="'+ax+'">'+(p.now? '오늘' : stMD(p.k))+'</text>';
+    }
+  });
+  lines.forEach(function(L){ const yy=yOf(L.v).toFixed(1); o+='<line class="'+L.cls+'" x1="'+L.x1.toFixed(1)+'" x2="'+L.x2.toFixed(1)+'" y1="'+yy+'" y2="'+yy+'"/>'; F.lines=true; });
+  if(lim){ const yl=yOf(lim).toFixed(1); o+='<line class="sx-lim" x1="'+pL+'" x2="'+xEnd.toFixed(1)+'" y1="'+yl+'" y2="'+yl+'"/><text class="sx-limt" x="'+(xEnd-2).toFixed(1)+'" y="'+(+yl-4)+'" text-anchor="end">한도 '+(lim/60)+'시간</text>'; }
+  if(band){
+    const y1=yOf(band.hi), y2=yOf(band.lo), inside=(y2-y1)>=15;
+    const bt=(cat==='meal')? '권장 '+band.lo+'~'+band.hi+'끼' : '적정 '+(dur? stDurS(band.lo)+'~'+stDurS(band.hi) : band.lo+'~'+band.hi+'회');
+    o+='<text class="sx-bt" x="'+(xEnd-3).toFixed(1)+'" y="'+(inside? y1+12 : y1-4).toFixed(1)+'" text-anchor="end">'+bt+'</text>';
+  }
+  if(!any) o+='<text class="sx-empty" x="'+(pL+pw/2).toFixed(1)+'" y="'+(pT+ph/2).toFixed(1)+'" text-anchor="middle">이 기간 기록이 없습니다</text>';
+  ser.forEach(function(p,i){ o+='<rect class="sx-hit" data-i="'+i+'" x="'+(pL+i*slot).toFixed(1)+'" y="0" width="'+slot.toFixed(1)+'" height="'+H+'"/>'; });
+  svg.setAttribute('viewBox', '0 0 '+W+' '+H); svg.style.height=H+'px';
+  svg.innerHTML=o;
+  const L=['<span><i style="background:var(--c)"></i>'+(per==='3m'? ({mean:'주별 하루 평균', sum:'주별 합계', max:'주별 최장', cnt:'주별 등원'})[stAgg(cat)] : '기록')+'</span>'];
+  if(F.now) L.push('<span><i class="lg-now"></i>오늘(진행 중)</span>');
+  if(F.out) L.push('<span><i style="background:var(--warn-ink)"></i>'+stOutLbl(cat)+'</span>');
+  if(F.ex) L.push('<span><i style="background:var(--c); opacity:.3"></i>유치원 간 날(평균 제외)</span>');
+  if(F.kg) L.push('<span><i class="lg-kg"></i>유치원</span>');
+  if(F.miss) L.push('<span><i class="lg-miss"></i>기록 없음</span>');
+  if(F.few) L.push('<span><i style="background:var(--c); opacity:.45"></i>기록 3일 미만 주</span>');
+  if(F.lines) L.push('<span><i class="lg-ln"></i>'+(STAT.cmp==='mk'? '전·후 평균' : '지난주·최근 7일 평균')+'</span>');
+  if(F.marks) L.push('<span><i class="lg-mk"></i>기준일</span>');
+  return {pts:ser, leg:L.join(''), tip:function(p){ return stTipBar(cat, per, p); }};
+}
+function stTipBar(cat, per, p){
+  if(!p) return '';
+  if(p.wk){
+    const r=stMD(p.k)+'~'+stMD(p.k2)+(p.part? '(진행 중 주)' : '');
+    if(p.v==null) return r+' · 기록 없음';
+    const lb=({mean:'하루 평균', sum:'합계', max:'최장 1회', cnt:'등원'})[stAgg(cat)];
+    return r+' · '+lb+' '+stFmtAgg(cat, p.v)+' · 기록 '+p.n+'/'+p.span+'일'+(p.kgEx? ' · 유치원 '+p.kgEx+'일 제외' : '');
+  }
+  let s=stMD(p.k)+' ('+stDow(p.k)+')';
+  if(p.now) s+=' · 오늘, 진행 중';
+  if(p.v==null) return s+(cat==='sleep'? ' · 밤잠 기록 없음' : ' · 기록 없음');
+  s+=' · '+(cat==='away'? '최장 ' : '')+(stCat(cat).kind==='dur'? stDur(p.v) : p.v+stCat(cat).u);
+  if(p.ex==='kg') s+=' · 유치원 간 날(평균 제외)';
+  else if(p.kg && cat!=='kg') s+=' · 유치원';
+  return s;
+}
+function stDrawWt(svg, o){
+  o=o||{};
+  svg.style.setProperty('--c', 'var(--tint)');
+  const all=stWtPts(), t=todayKey();
+  const W=stW(svg), H=o.h||216, pL=42, pR=16, pT=o.marks? 30 : 16, pB=28;
+  svg.setAttribute('viewBox', '0 0 '+W+' '+H); svg.style.height=H+'px';
+  let from= o.all? (all.length? all[0].d : t) : o.from;
+  let to=t; if(all.length && all[all.length-1].d>to) to=all[all.length-1].d;
+  let pts=all.filter(function(p){ return p.d>=from && p.d<=to; });
+  if(pts.length<2 && all.length>=2){ pts=all.slice(-2); from=pts[0].d; }
+  if(pts.length<2){
+    svg.innerHTML='<text class="sx-empty" x="'+(W/2)+'" y="'+(H/2)+'" text-anchor="middle">체중 기록이 2개 이상이면 그래프가 표시됩니다</text>';
+    return {pts:[], leg:'', hint:'체중은 기록 탭 또는 홈의 체중 버튼으로 입력합니다', tip:function(){ return ''; }};
+  }
+  const span=Math.max(1, stDiff(from,to)), pw=W-pL-pR, ph=H-pT-pB, xEnd=pL+pw;
+  const xOf=function(k){ return pL+pw*stDiff(from,k)/span; };
+  const kgs=pts.map(function(p){ return p.kg; });
+  let mn=Math.min.apply(null,kgs), mx=Math.max.apply(null,kgs);
+  const ad=(+feedCfg().adult>0)? +feedCfg().adult : 0;
+  const ths= ad? [{v:ad*0.5, t:'성견 50%'}, {v:ad*0.8, t:'성견 80%'}] : [];
+  ths.forEach(function(h){ if(h.v>mx && h.v-mx<=0.6) mx=h.v; if(h.v<mn && mn-h.v<=0.3) mn=h.v; });
+  let lo=Math.floor((mn-0.05)*10)/10, hi=Math.ceil((mx+0.05)*10)/10;
+  if(hi-lo<0.4){ const mid=(hi+lo)/2; lo=Math.floor((mid-0.2)*10)/10; hi=Math.round((lo+0.4)*10)/10; }
+  const yOf=function(v){ return pT+ph*(1-(v-lo)/(hi-lo)); };
+  const f1=function(v){ return (Math.abs(v*10-Math.round(v*10))<1e-6)? v.toFixed(1) : v.toFixed(2); };
+  const F={};
+  let g='';
+  [lo, (lo+hi)/2, hi].forEach(function(v){ const yy=yOf(v).toFixed(1); g+='<line class="sx-g" x1="'+pL+'" x2="'+xEnd.toFixed(1)+'" y1="'+yy+'" y2="'+yy+'"/><text class="sx-t" x="'+(pL-6)+'" y="'+(+yy+4)+'" text-anchor="end">'+f1(v)+'</text>'; });
+  ths.forEach(function(h){ if(h.v<lo || h.v>hi) return; const yy=yOf(h.v).toFixed(1); g+='<line class="sx-ad" x1="'+pL+'" x2="'+xEnd.toFixed(1)+'" y1="'+yy+'" y2="'+yy+'"/><text class="sx-adt" x="'+(pL+4)+'" y="'+(+yy-4)+'">'+h.t+' · '+(Math.round(h.v*100)/100).toFixed(2)+'kg</text>'; F.ad=true; });
+  if(o.marks) g+=stMarkSvg(F, xOf, from, to, pL, xEnd, pT, ph, 0, W);
+  const last=pts[pts.length-1], tw=pts.filter(function(p){ return p.d>=stAdd(last.d,-27); });
+  const sl= tw.length>=3? stSlope(tw) : null;
+  if(sl!=null){
+    const xs=tw.map(function(p){ return stDiff(tw[0].d,p.d); }), ys=tw.map(function(p){ return p.kg; });
+    const mxx=stSum(xs)/xs.length, myy=stSum(ys)/ys.length, b=sl/7, a=myy-b*mxx;
+    const x1=xOf(tw[0].d), x2=xOf(last.d), y1=yOf(a), y2=yOf(a+b*xs[xs.length-1]);
+    g+='<line class="sx-trend" x1="'+x1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y1="'+y1.toFixed(1)+'" y2="'+y2.toFixed(1)+'"/>'; F.trend=true;
+  }
+  g+='<polyline class="sx-line" points="'+pts.map(function(p){ return xOf(p.d).toFixed(1)+','+yOf(p.kg).toFixed(1); }).join(' ')+'"/>';
+  pts.forEach(function(p,i){ g+='<circle class="sx-pt'+(i===pts.length-1? ' last' : '')+(STAT.tip===i && o.tip? ' sel' : '')+'" cx="'+xOf(p.d).toFixed(1)+'" cy="'+yOf(p.kg).toFixed(1)+'" r="'+(i===pts.length-1? 4.5 : 3.5)+'"/>'; });
+  const lx=xOf(last.d), ly=yOf(last.kg);
+  g+='<text class="sx-vt" x="'+(lx>xEnd-40? lx-6 : lx).toFixed(1)+'" y="'+(ly-9).toFixed(1)+'" text-anchor="'+(lx>xEnd-40? 'end' : 'middle')+'">'+last.kg.toFixed(2)+'kg</text>';
+  const xl=[from, to]; if(span>=20) xl.splice(1,0,stAdd(from, Math.round(span/2)));
+  xl.forEach(function(k,i){ g+='<text class="sx-t" x="'+(i===0? pL : (i===xl.length-1? xEnd : xOf(k))).toFixed(1)+'" y="'+(H-6)+'" text-anchor="'+(i===0? 'start' : (i===xl.length-1? 'end' : 'middle'))+'">'+stMD(k)+'</text>'; });
+  if(o.tip) pts.forEach(function(p,i){ g+='<circle class="sx-hit" data-i="'+i+'" cx="'+xOf(p.d).toFixed(1)+'" cy="'+yOf(p.kg).toFixed(1)+'" r="16"/>'; });
+  svg.innerHTML=g;
+  const L=['<span><i style="background:var(--c); border-radius:50%"></i>측정</span>'];
+  if(F.trend) L.push('<span><i class="lg-ln" style="background:var(--c) !important"></i>최근 4주 추세</span>');
+  if(F.ad) L.push('<span><i class="lg-mk"></i>성견 50·80% (급여 단계)</span>');
+  if(F.marks) L.push('<span><i class="lg-mk"></i>기준일</span>');
+  return {pts:pts, leg:L.join(''), hint:'점을 누르면 측정값이 보입니다', tip:function(p){
+    if(!p) return ''; const i=pts.indexOf(p), pr= i>0? pts[i-1] : null;
+    return stMD(p.d)+' ('+stDow(p.d)+') · '+p.kg.toFixed(2)+'kg'+(pr? ' · '+stMD(pr.d)+' 대비 '+stDelta('wt', p.kg-pr.kg)+' ('+stDiff(pr.d,p.d)+'일)' : '');
+  }};
+}
+
+/* ---------- 상세: 숫자 3칸 · 보조 지표 ---------- */
+function stCmpNote(cat, it, nA, nB){
+  const ch=(it && it.ch) || {k:'na'}, c=stCat(cat);
+  const fmtD=function(v){ return c.kind==='dur'? stDur(Math.abs(v)) : stNum(Math.abs(v))+c.u; };
+  if(STAT.cmp==='mk' && it.B && it.B.from>it.B.to) return '기준일 이후 기록이 아직 없습니다';
+  if(cat==='kg') return '등원 '+(it.a||0)+'회 → '+(it.b||0)+'회';
+  if(ch.k==='na') return '비교하려면 두 기간 모두 기록일이 3일 이상 필요합니다 (지금 '+nA+'일 · '+nB+'일)';
+  if(cat==='diar'){
+    if(ch.k==='none') return '두 기간 모두 설사 없음';
+    if(ch.k==='new') return '<strong class="new">새로 생김</strong> · 앞 기간에는 없었습니다';
+    if(ch.k==='gone') return '<strong>없어짐</strong> · 앞 기간 '+it.a+'회';
+    return '횟수 '+it.a+'회 → '+it.b+'회';
   }
   if(cat==='away'){
-    let longest=0;
-    Object.keys(S.awayLog||{}).forEach(function(k){ (S.awayLog[k]||[]).forEach(function(s){ longest=Math.max(longest, s.i-s.o); }); });
-    if(longest) extra='<div class="st-card"><div class="l">최장 1회</div><div class="v">'+statFmt(cat, Math.round(longest/60000))+'</div><div class="s">단일 구간</div></div>';
+    if(ch.k==='none') return '두 기간 모두 혼자 둔 기록 없음';
+    const d0=ch.d||0;
+    if(ch.k==='same') return '<strong>비슷함</strong> · 최장 1회 차이 '+stDur(Math.abs(d0))+' (30분 미만)';
+    return '<strong class="'+ch.k+'">'+(d0>0? '늘었음' : '줄었음')+'</strong> · 최장 1회 '+stDelta('away', d0);
   }
-  if(cat==='poo'){
-    const t0=new Date(); t0.setHours(0,0,0,0);
-    const cntA={s:0, m:0, l:0};
-    for(let i=0;i<7;i++){
-      qlArr(d2s(addD(t0,-i)),'poo').forEach(function(t){
-        const a=String(t||'').split('|')[1];
-        cntA[a==='s'? 's' : (a==='l'? 'l' : 'm')]++;
+  const d=ch.d||0, sp=ch.sp||0, dd=(ch.dd!=null)? ch.dd : d;
+  if(ch.k==='same'){
+    if(Math.abs(dd)<1e-9) return '<strong>비슷함</strong> · 차이 없음';
+    if(Math.abs(d)<c.min-1e-9) return '<strong>비슷함</strong> · 차이 '+stDelta(cat,dd)+' — 최소폭 '+fmtD(c.min)+' 미만';
+    return '<strong>비슷함</strong> · 차이 '+stDelta(cat,dd)+' — 평소 하루 변동 ±'+fmtD(sp)+' 안';
+  }
+  return '<strong class="'+ch.k+'">'+(d>0? '늘었음' : '줄었음')+'</strong> · '+stDelta(cat,dd)+' — 평소 하루 변동 ±'+fmtD(sp)+'보다 큼';
+}
+/* 전/후 막대 2줄 + 판정 근거 1줄 */
+function stCmpBlock(cat, it){
+  if(!it) return '';
+  const mk=(STAT.cmp==='mk'), w=it.w;
+  const labA= mk? '전' : '지난주', labB= mk? '후' : '최근 7일';
+  const rng=function(r){ return (stOkKey(r[0]) && r[0]<=r[1])? stMD(r[0])+'~'+stMD(r[1]) : '—'; };
+  if(cat==='wt'){
+    if(!mk) return '';
+    const rowW=function(lab, sub, v){ return '<div class="st-cbr nobar"><span class="l">'+lab+'<small>'+sub+'</small></span><b>'+(v==null? '측정 부족' : stValHtml(stSlopeTxt(v)))+'</b></div>'; };
+    const note= it.ch.k==='na'? '기준일 앞뒤 각 3주 안에 5일 이상 간격으로 2회 이상 측정해야 비교합니다'
+      : (it.ch.k==='same'? '<strong>비슷함</strong> · 주당 증가 차이 '+Math.abs(it.ch.d).toFixed(2)+'kg — 0.03kg 미만'
+      : '<strong class="'+it.ch.k+'">'+(it.ch.d>0? '빨라짐' : '느려짐')+'</strong> · 주당 '+(it.ch.d>0? '+' : '−')+Math.abs(it.ch.d).toFixed(2)+'kg');
+    return '<div class="st-cb">'+rowW(labA+' 주당 증가', rng(w.A), it.a)+rowW(labB+' 주당 증가', rng(w.B), it.b)+'<p class="st-cbn">'+note+'</p></div>';
+  }
+  const fv=function(v){ if(v==null) return '기록 없음'; if(cat==='diar') return v? v+'회' : '없음'; if(cat==='away') return v? stDur(v) : '없음'; return stFmtAgg(cat, v); };
+  const a=it.a, b=it.b, mx=Math.max(+a||0, +b||0);
+  const pct=function(v){ return (v==null || !(mx>0) || !(v>0))? 0 : Math.max(3, Math.round(100*v/mx)); };
+  const nA=it.A? it.A.n : 0, nB=it.B? it.B.n : 0;
+  const sub=function(r, X){ const full=X && X.span && X.n<X.span && !(cat==='kg'); return rng(r)+(full? ' ('+X.n+'일)' : ''); };
+  const row=function(lab, sb, v, cls){ return '<div class="st-cbr '+cls+'"><span class="l">'+lab+'<small>'+sb+'</small></span><span class="bar"><i style="width:'+pct(v)+'%"></i></span><b>'+stValHtml(fv(v))+'</b></div>'; };
+  const lbx= cat==='away'? ' 최장' : (cat==='diar'? ' 합계' : (cat==='kg'? ' 등원' : ''));
+  return '<div class="st-cb">'+row(labA+lbx, sub(w.A, it.A), a, 'a')+row(labB+lbx, sub(w.B, it.B), b, 'b')+'<p class="st-cbn">'+stCmpNote(cat, it, nA, nB)+'</p></div>';
+}
+function stKv(cat, it){
+  const t=todayKey(), y=stAdd(t,-1), per=STAT.per;
+  const from= per==='3m'? stSeries(cat,'3m')[0].k : stAdd(y,-27);
+  const box=function(l, v, s){ return '<div class="st-k"><span>'+l+'</span><b>'+stValHtml(v)+'</b>'+(s? '<small>'+s+'</small>' : '')+'</div>'; };
+  const rngL= per==='3m'? '최근 3개월' : '최근 4주';
+  if(cat==='wt'){
+    const pts=stWtPts(), last=pts.length? pts[pts.length-1] : null;
+    const sl= last? stSlope(stWtIn(stAdd(last.d,-27), last.d)) : null;
+    return stCmpBlock(cat, it)+'<div class="st-kv c3">'
+      +box('주당 증가 · 4주', sl==null? '—' : stSlopeTxt(sl).replace('주 ',''), '추세선 기울기')
+      +box('최근 측정', last? last.kg.toFixed(2)+'kg' : '—', last? stMD(last.d) : '')
+      +box('측정 횟수', pts.length+'회', pts.length? stMD(pts[0].d)+'부터' : '')+'</div>';
+  }
+  const W=stWin(cat, from, y), g=stAgg(cat);
+  let v1;
+  if(g==='mean') v1=stFmtAgg(cat, W.mean);
+  else if(g==='sum') v1=W.sum+'회';
+  else if(g==='max') v1= W.max? stDur(W.max) : '없음';
+  else v1=W.vals.filter(function(v){ return v>0; }).length+'회';
+  const l1= g==='mean'? rngL+' 평균' : (g==='sum'? rngL+' 합계' : (g==='max'? rngL+' 최장' : rngL+' 등원'));
+  const days=stDiff(from,y)+1;
+  const s3= (cat==='poo'||cat==='pee')? (W.kgEx? '유치원 '+W.kgEx+'일 제외' : '') : (cat==='sleep'? '밤잠 기록한 날' : '');
+  return stCmpBlock(cat, it)+'<div class="st-kv c2">'+box(l1, v1, '')+box('기록일', W.n+'/'+days+'일', s3)+'</div>';
+}
+function stAmt(from, to){
+  const r={s:0, m:0, l:0}; if(!stOkKey(from) || !stOkKey(to) || from>to) return r;
+  for(let k=from; k<=to; k=stAdd(k,1)){ stArr(k,'poo').forEach(function(x){ const a=String(x||'').split('|')[1]; r[a==='s'? 's' : (a==='l'? 'l' : 'm')]++; }); }
+  return r;
+}
+function stClock(arr, fromNoon){
+  if(!arr.length) return null;
+  const ms=arr.map(function(ts){ const d=new Date(ts); let m=d.getHours()*60+d.getMinutes(); if(fromNoon) m=(m-720+1440)%1440; return m; });
+  const mean=stSum(ms)/ms.length; let sd=0;
+  if(ms.length>1){ let q=0; ms.forEach(function(v){ q+=(v-mean)*(v-mean); }); sd=Math.sqrt(q/(ms.length-1)); }
+  let m=Math.round(mean); if(fromNoon) m=(m+720)%1440;
+  return {t:String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0'), sd:Math.round(sd), n:ms.length};
+}
+function stKgRef(cat){
+  const y=stAdd(todayKey(),-1); let n=0, s=0;
+  for(let k=stAdd(y,-27); k<=y; k=stAdd(k,1)){ if(stLogged(k) && stKgDay(k)){ n++; s+=stArr(k,cat).length; } }
+  return n? {n:n, mean:s/n} : null;
+}
+function stExtra(cat, it){
+  const t=todayKey(), y=stAdd(t,-1), mk=(STAT.cmp==='mk');
+  const labA= mk? '전' : '지난주', labB= mk? '후' : '최근 7일';
+  const R=[], row=function(l, v){ R.push('<div class="st-xr"><span>'+l+'</span><b>'+v+'</b></div>'); };
+  const w=it? it.w : stCmpWins(cat);
+  if(cat==='meal'){
+    const n=parseInt(feedCfg().meals,10)||3, plan=(typeof KG_MT!=='undefined' && KG_MT[n])? KG_MT[n] : ['06:30','13:30','21:00'];
+    const toM=function(hm){ const a=String(hm).split(':'); return parseInt(a[0],10)*60+parseInt(a[1],10); };
+    const slots=plan.map(function(p){ return {p:p, m:[]}; });
+    for(let k=stAdd(y,-13); k<=y; k=stAdd(k,1)){
+      stArr(k,'meal').forEach(function(x){
+        const hm=String(x||'').split('|')[0].slice(0,5); if(!/^\d\d:\d\d$/.test(hm)) return;
+        const mm=toM(hm); let bi=0, bd=1e9; slots.forEach(function(s,i){ const d=Math.abs(toM(s.p)-mm); if(d<bd){ bd=d; bi=i; } }); slots[bi].m.push(mm);
       });
     }
-    const totA=cntA.s+cntA.m+cntA.l;
-    if(totA) extra='<div class="st-card"><div class="l">양 분포 · 7일</div><div class="v" style="font-size:14px;">소 '+cntA.s+' · 중 '+cntA.m+' · 대 '+cntA.l+'</div><div class="s">미선택 기록은 \'중\'</div></div>';
-  }
-  if(cat==='sleep'){
-    const keysS=Object.keys(S.sleepLog||{}).sort().filter(function(k){ return ((S.sleepLog[k]||[]).length)>0; });
-    if(keysS.length){
-      const lastK=keysS[keysS.length-1];
-      let lmx=0; (S.sleepLog[lastK]||[]).forEach(function(s){ lmx=Math.max(lmx, s.i-s.o); });
-      extra='<div class="st-card"><div class="l">최장 1회</div><div class="v">'+statFmt(cat, Math.round(lmx/60000))+'</div><div class="s">'+lastK.slice(5).replace('-','/')+' · 그래프는 낮잠 포함 합계</div></div>';
-    }
-  }
-  if(cat==='kg'){
-    const mk=todayKey().slice(0,7); let n=0, tot=0;
-    Object.keys(S.kgLog||{}).forEach(function(k){ if(k.slice(0,7)===mk) (S.kgLog[k]||[]).forEach(function(s){ n++; tot+=Math.max(0,s.i-s.o); }); });
-    const pl=kgPassLeft();
-    extra='<div class="st-card"><div class="l">이번 달 등원</div><div class="v">'+n+'회</div><div class="s">'+(n? '평균 '+fmtDur(tot/n) : '기록 없음')+'</div></div>'
-      +(pl? '<div class="st-card"><div class="l">회차권</div><div class="v">'+Math.max(0,pl.left)+'회 남음</div><div class="s">'+pl.used+' / '+pl.total+'회 사용</div></div>' : '');
-  }
-  const avgV = c.kind==='dur'? statFmt(cat, Math.round(avg)) : (avg+'회');
-  cards.innerHTML=
-    '<div class="st-card"><div class="l">평균 / '+UNITN[unit]+'</div><div class="v">'+avgV+'</div><div class="s">최근 '+ser.length+UNITN[unit]+' 기준</div></div>'
-    +'<div class="st-card"><div class="l">최소</div><div class="v">'+statFmt(cat,mn)+'</div><div class="s">'+mnL+'</div></div>'
-    +'<div class="st-card"><div class="l">최대</div><div class="v">'+statFmt(cat,mx)+'</div><div class="s">'+mxL+'</div></div>'
-    +extra;
-  chartT.textContent=c.ic+' '+c.nm+' · '+UNITN[unit]+'별 '+(c.kind==='dur'?'(분)':'(회)');
-  const W=640, H=190, padL=8, padB=24, padT=18;
-  const n=ser.length, gap= n>20? 2 : 6;
-  const bw=Math.max(4, (W-padL*2-gap*(n-1))/n);
-  const band=(unit==='d' && cat!=='away')? statBand(cat) : null;
-  const awayLim=(unit==='d' && cat==='away' && ageMo()!=null)? Math.min(Math.floor(ageMo())+1, 9)*60 : 0;
-  const maxV=Math.max(mx, band? band.hi*1.12 : 0, awayLim? awayLim*1.12 : 0, 1);
-  const chH=H-padB-padT;
-  const yOf=function(v){ return H-padB-(v/maxV)*chH; };
-  let out='';
-  if(band){
-    const yT=yOf(band.hi), yB=yOf(band.lo);
-    out+='<rect x="0" y="'+yT.toFixed(1)+'" width="'+W+'" height="'+Math.max(1, yB-yT).toFixed(1)+'" fill="#4F6B58" opacity="0.10"/>';
-    out+='<line x1="0" y1="'+yT.toFixed(1)+'" x2="'+W+'" y2="'+yT.toFixed(1)+'" stroke="#4F6B58" stroke-width="1" stroke-dasharray="3 4" opacity="0.5"/>';
-    out+='<line x1="0" y1="'+yB.toFixed(1)+'" x2="'+W+'" y2="'+yB.toFixed(1)+'" stroke="#4F6B58" stroke-width="1" stroke-dasharray="3 4" opacity="0.5"/>';
-    out+='<text x="'+(W-4)+'" y="'+(yT+11).toFixed(1)+'" text-anchor="end" font-size="9.5" fill="#4F6B58" font-weight="800">적정 '+band.lo+'~'+band.hi+(c.kind==='dur'?'분':'회')+'</text>';
-  }
-  if(awayLim){
-    const yL=yOf(awayLim);
-    out+='<line x1="0" y1="'+yL.toFixed(1)+'" x2="'+W+'" y2="'+yL.toFixed(1)+'" stroke="#AC3A28" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.75"/>';
-    out+='<text x="'+(W-4)+'" y="'+(yL-4).toFixed(1)+'" text-anchor="end" font-size="9.5" fill="#AC3A28" font-weight="800">한도 '+Math.round(awayLim/60)+'시간 · 월령+1 룰</text>';
-  }
-  const step= n>20? 5 : (n>8? 2 : 1);
-  ser.forEach(function(x,i){
-    const h=Math.round((x.v/maxV)*chH);
-    const px=padL+i*(bw+gap), py=H-padB-h;
-    out+='<rect x="'+px.toFixed(1)+'" y="'+py+'" width="'+bw.toFixed(1)+'" height="'+Math.max(h,1)+'" rx="'+Math.min(5,bw/2).toFixed(1)+'" fill="'+(i===n-1?'#8A3324':'#D8C9AE')+'"/>';
-    if(x.v>0 && (n<=14 || i===n-1 || x.v===mx)){
-      out+='<text x="'+(px+bw/2).toFixed(1)+'" y="'+(py-4)+'" text-anchor="middle" font-size="10" fill="#6E6254">'+x.v+'</text>';
-    }
-    if(i%step===0 || i===n-1){
-      out+='<text x="'+(px+bw/2).toFixed(1)+'" y="'+(H-7)+'" text-anchor="middle" font-size="9.5" fill="#6E6254">'+x.l+'</text>';
-    }
-  });
-  if(n>=3){
-    const maW= unit==='d'? Math.min(7,n) : (unit==='w'? Math.min(3,n) : 2);
-    const ma=statMA(vs, maW);
-    const pts=ma.map(function(v,i){
-      const px=padL+i*(bw+gap)+bw/2;
-      return px.toFixed(1)+','+yOf(v).toFixed(1);
-    }).join(' ');
-    out+='<polyline points="'+pts+'" fill="none" stroke="#4F6B58" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="0.9"/>';
-    out+='<text x="4" y="12" font-size="9.5" fill="#4F6B58" font-weight="800">— 추세 · '+maW+UNITN[unit]+' 이동평균</text>';
-  }
-  svg.innerHTML=out;
-  const rows=ser.slice().reverse().slice(0,15);
-  tbl.innerHTML='<div class="tw"><table class="qd-table"><thead><tr><th>'+UNITN[unit]+'</th><th>'+c.ic+' '+c.nm+'</th></tr></thead><tbody>'
-    + rows.map(function(x){ return '<tr><td class="qd-d">'+x.l+'</td><td>'+statFmt(cat, x.v)+'</td></tr>'; }).join('')
-    + '</tbody></table></div>'
-    + (ser.length>15? '<p class="muted small" style="margin:8px 0 0;">표는 최근 15'+UNITN[unit]+'만 — 그래프·통계는 전체 범위 기준.</p>' : '');
-  renderStatLog();
-}
-function renderStatLog(){
-  const el=document.getElementById('stLog'); if(!el) return;
-  const cat=STAT.cat;
-  const DOW=['일','월','화','수','목','금','토'];
-  const addBtn = cat==='kg'? '<div class="kg-add"><button type="button" class="btn sm ghost" id="kgAddBtn">＋ 지난 등원 추가</button></div>' : '';
-  if(cat==='walk' || cat==='away' || cat==='sleep' || cat==='kg'){
-    const src= cat==='walk'? (S.walkLog||{}) : (cat==='sleep'? (S.sleepLog||{}) : (cat==='kg'? (S.kgLog||{}) : (S.awayLog||{})));
-    const keys=Object.keys(src).sort().reverse().slice(0, cat==='kg'? 400 : 92).filter(function(k){ return (src[k]||[]).length; });
-    if(!keys.length){ el.innerHTML=addBtn+'<p class="muted small" style="margin:0;">기록 없음.</p>'; }
-    else{
-      el.innerHTML=addBtn+'<div class="tw"><table class="qd-table"><thead><tr><th style="width:72px;">날짜</th><th>구간</th><th style="width:80px;">합계</th></tr></thead><tbody>'
-        + keys.map(function(k){
-            let tot=0;
-            const chips=src[k].map(function(s,i){
-              tot+=Math.max(0,s.i-s.o);
-              return '<span class="ql-chip">'+fmtHM(s.o)+'→'+fmtHM(s.i)+' · '+fmtDur(s.i-s.o)+((cat==='kg' && s.m)? ' · '+esc(s.m) : '')+'<button type="button" data-sl="'+cat+'" data-sld="'+k+'" data-sli="'+i+'" aria-label="삭제">✕</button></span>';
-            }).join('');
-            const today=k===todayKey();
-            return '<tr'+(today?' class="qd-today"':'')+'><td class="qd-d">'+k.slice(5).replace('-','/')+'<span>'+DOW[new Date(k+'T00:00:00').getDay()]+(today?' · 오늘':'')+'</span></td><td><div class="qd-cell">'+chips+'</div></td><td class="qd-d">'+fmtDur(tot)+'</td></tr>';
-          }).join('')+'</tbody></table></div>';
-    }
-  }else{
-    const keys=Object.keys(S.qlog||{}).sort().reverse().slice(0,92).filter(function(k){ return qlNorm(k)[cat].length; });
-    if(!keys.length){ el.innerHTML='<p class="muted small" style="margin:0;">기록 없음.</p>'; return; }
-    el.innerHTML='<div class="tw"><table class="qd-table"><thead><tr><th style="width:72px;">날짜</th><th>시각</th><th style="width:56px;">횟수</th></tr></thead><tbody>'
-      + keys.map(function(k){
-          const arr=qlNorm(k)[cat];
-          const chips=arr.map(function(t,i){
-            const parts=String(t||'').split('|');
-            const lbl=esc(String(parts[0]||'--:--').slice(0,5)) + ((cat==='poo' && parts[1] && QL_AMT_NM[parts[1]])? '·'+QL_AMT_NM[parts[1]] : '');
-            return '<span class="ql-chip">'+lbl+'<button type="button" data-sl="'+cat+'" data-sld="'+k+'" data-sli="'+i+'" aria-label="삭제">✕</button></span>';
-          }).join('');
-          const today=k===todayKey();
-          return '<tr'+(today?' class="qd-today"':'')+'><td class="qd-d">'+k.slice(5).replace('-','/')+'<span>'+DOW[new Date(k+'T00:00:00').getDay()]+(today?' · 오늘':'')+'</span></td><td><div class="qd-cell">'+chips+'</div></td><td class="qd-d">'+arr.length+'회</td></tr>';
-        }).join('')+'</tbody></table></div>';
-  }
-  const ka=document.getElementById('kgAddBtn'); if(ka) ka.addEventListener('click', function(){ kgOpen('add'); });
-  el.querySelectorAll('[data-sl]').forEach(function(b){
-    b.addEventListener('click', function(){
-      const c=this.dataset.sl, k=this.dataset.sld, i=parseInt(this.dataset.sli,10);
-      if(!confirm('이 기록을 삭제할까요?')) return;
-      if(c==='walk'){ S.walkLog[k].splice(i,1); }
-      else if(c==='away'){ S.awayLog[k].splice(i,1); }
-      else if(c==='sleep'){ S.sleepLog[k].splice(i,1); }
-      else if(c==='kg'){ S.kgLog[k].splice(i,1); try{ renderCal(); }catch(e){} }
-      else{ qlNorm(k)[c].splice(i,1); }
-      saveState(); renderQlog(); renderAway();
+    slots.forEach(function(s){
+      if(!s.m.length){ row(s.p+' 끼니', '기록 없음'); return; }
+      const av=Math.round(stSum(s.m)/s.m.length);
+      row(s.p+' 끼니 · 평균 시각', String(Math.floor(av/60)).padStart(2,'0')+':'+String(av%60).padStart(2,'0')+' · '+s.m.length+'회');
     });
+    const st=it && it.st; if(st && st.short) row('최근 7일 미달한 날', st.short.length? st.short.map(function(x){ return stMD(x.k)+'('+x.v+'끼)'; }).join(', ') : '없음');
+  }else if(cat==='poo'){
+    const a=stAmt(w.A[0], w.A[1]), b=stAmt(w.B[0], w.B[1]);
+    row('양 · '+labA, '소 '+a.s+' · 중 '+a.m+' · 대 '+a.l);
+    row('양 · '+labB, '소 '+b.s+' · 중 '+b.m+' · 대 '+b.l);
+    const r=stKgRef('poo'); if(r) row('유치원 간 날 · 4주', '하루 '+stNum(r.mean)+'회 · '+r.n+'일 (평균 제외)');
+  }else if(cat==='pee'){
+    const r=stKgRef('pee'); row('유치원 간 날 · 4주', r? '하루 '+stNum(r.mean)+'회 · '+r.n+'일 (평균 제외)' : '없음');
+  }else if(cat==='diar'){
+    const ds=[]; for(let k=stAdd(t,-27); k<=t; k=stAdd(k,1)){ const n=stArr(k,'diar').length; if(n) ds.push(stMD(k)+(n>1? '('+n+'회)' : '')); }
+    row('최근 4주 발생일', ds.length? ds.slice(-8).join(', ') : '없음');
+    let p=0, d=0; if(it && it.B) for(let k=w.B[0]; k<=w.B[1]; k=stAdd(k,1)){ p+=stArr(k,'poo').length; d+=stArr(k,'diar').length; }
+    row('대변 중 설사 비율 · '+labB, (p+d)? Math.round(d/(p+d)*100)+'% ('+d+'/'+(p+d)+'회)' : '기록 없음');
+  }else if(cat==='sleep'){
+    const beds=[], wakes=[], naps=[]; const kgN=[], oN=[];
+    for(let k=w.B[0]; k<=w.B[1]; k=stAdd(k,1)){ const n=stNight(k); if(n){ beds.push(n.bed); wakes.push(n.wake); } const nm=stNapMin(k); if(nm>0) naps.push(nm); }
+    const bc=stClock(beds, true), wc=stClock(wakes, false);
+    row('평균 취침 · '+labB, bc? bc.t+' (±'+bc.sd+'분)' : '기록 없음');
+    row('평균 기상 · '+labB, wc? wc.t+' (±'+wc.sd+'분)' : '기록 없음');
+    row('낮잠 · '+labB, naps.length? '기록 '+naps.length+'일 · 평균 '+stDur(stSum(naps)/naps.length) : '기록 없음');
+    for(let k=stAdd(y,-27); k<=y; k=stAdd(k,1)){ const n=stNight(k); if(!n) continue; if(stKgDay(stAdd(k,-1))) kgN.push(n.m); else oN.push(n.m); }
+    if(kgN.length>=2 && oN.length>=3){ row('유치원 다녀온 날 밤 · 4주', stDur(stSum(kgN)/kgN.length)+' · '+kgN.length+'일'); row('그 외 밤 · 4주', stDur(stSum(oN)/oN.length)+' · '+oN.length+'일'); }
+    else row('유치원 다녀온 날 밤 · 4주', '등원 후 밤 기록 '+kgN.length+'일 — 2일부터 비교');
+  }else if(cat==='walk'){
+    let cnt=0, tot=0, days=0, best=0, bestK='';
+    for(let k=w.B[0]; k<=w.B[1]; k=stAdd(k,1)){ if(!stActive(k)) continue; days++; stSegs('walkLog',k).forEach(function(s){ cnt++; const m=(s.i-s.o)/60000; tot+=m; if(m>best){ best=m; bestK=k; } }); }
+    row('하루 횟수 · '+labB, days? stNum(cnt/days)+'회' : '기록 없음');
+    row('1회 평균 · '+labB, cnt? stDur(tot/cnt) : '기록 없음');
+    if(best) row('가장 긴 산책 · '+labB, stDur(best)+' · '+stMD(bestK));
+  }else if(cat==='away'){
+    const B=it && it.B; const lim=stAwayLim();
+    row('최장 1회 · '+labB, (B && B.max)? stDur(B.max)+' · '+stMD(B.maxK) : '없음');
+    row('혼자 둔 날 · '+labB, (B? B.vals.filter(function(v){ return v>0; }).length : 0)+'일');
+    if(lim) row('1회 한도', (lim/60)+'시간 (월령+1시간)');
+  }else if(cat==='kg'){
+    const mk2=t.slice(0,7); let n=0, tot=0;
+    Object.keys(S.kgLog||{}).forEach(function(k){ if(k.slice(0,7)===mk2) stSegs('kgLog',k).forEach(function(s){ n++; tot+=s.i-s.o; }); });
+    row('이번 달 등원', n? n+'회 · 평균 '+fmtDur(tot/n) : '없음');
+    const pl=kgPassLeft(); if(pl) row('회차권', Math.max(0,pl.left)+'회 남음 ('+pl.used+'/'+pl.total+'회 사용)');
+    R.push('<div class="st-xa"><button type="button" class="btn sm ghost" data-kgadd="1">＋ 지난 등원 추가</button></div>');
+  }else if(cat==='wt'){
+    const pts=stWtPts(), last=pts.length? pts[pts.length-1] : null;
+    const ad=+feedCfg().adult||0;
+    if(last && ad>0){
+      const r=last.kg/ad; row('예상 성견 체중 대비', Math.round(r*100)+'% ('+ad+'kg 기준)');
+      const nx= r<0.5? 0.5 : (r<0.8? 0.8 : 0);
+      if(nx) row('다음 급여 단계', Math.round(nx*100)+'% '+(ad*nx).toFixed(2)+'kg까지 '+Math.max(0, ad*nx-last.kg).toFixed(2)+'kg');
+    }else row('성장 단계', '08장 급여 기준에 예상 성견 체중을 넣으면 표시');
+  }
+  return R.join('');
+}
+const ST_BASIS={
+  meal:'기준 끼니 수 = 08장 급여 기준의 끼니 수와 월령 최소 끼니 중 작은 값. 유치원에서 먹은 끼니는 하원 때 \'유치원에서 식사\'를 켜야 셉니다.',
+  poo:'기록 없는 날과 유치원 간 날은 평균에서 뺍니다. 양을 고르지 않은 기록은 \'중\'으로 셉니다.',
+  diar:'설사는 횟수 자체가 신호입니다. 이틀 연속이거나 하루 3회 이상이면 24시간 안에 진료를 권합니다.',
+  pee:'기록 없는 날과 유치원 간 날은 평균에서 뺍니다. 퍼피는 범위가 넓어 갑작스러운 증가가 더 중요한 신호입니다.',
+  sleep:'밤잠 = 가장 긴 수면 + 앞뒤 60분 안에 이어진 수면(4시간 이상인 날만). 막대도 밤잠만 그리고 낮잠은 아래에 따로 셉니다.',
+  walk:'산책 버튼으로 잰 하루 합계입니다. 기록이 있는 날 산책이 없으면 0분으로 셉니다.',
+  away:'막대는 하루 중 가장 길게 혼자 있던 1회입니다. 빨간 선은 한 번에 혼자 둘 수 있는 한도(월령+1시간)입니다.',
+  kg:'막대는 유치원에 있던 시간입니다. 3개월 보기는 주별 등원 횟수입니다.',
+  wt:'측정한 날짜 간격대로 그립니다. 주당 증가는 최근 4주 측정값 추세선의 기울기입니다. 점선은 예상 성견 체중의 50%·80%(급여 배수가 바뀌는 지점)입니다.'
+};
+
+/* ---------- 기록 보기 ---------- */
+function stLogRow(k, chips, tot){
+  const today=(k===todayKey());
+  return '<div class="sl-row'+(today? ' today' : '')+'"><div class="sl-d">'+stMD(k)+'<span>'+stDow(k)+(today? ' · 오늘' : '')+'</span></div><div class="sl-c">'+chips+'</div><div class="sl-n">'+tot+'</div></div>';
+}
+function stPaintLog(cat){
+  const el=document.getElementById('stLog'), cn=document.getElementById('stLogN'); if(!el) return;
+  const N=STAT.logN||14; let rows=[], total=0;
+  if(cat==='wt'){
+    const pts=stWtPts().slice().reverse(); total=pts.length;
+    rows=pts.slice(0,N).map(function(p){ return stLogRow(p.d, '<span class="ql-chip">'+p.kg.toFixed(2)+'kg<button type="button" data-sl="wt" data-sld="'+p.d+'" aria-label="삭제">✕</button></span>', ''); });
+  }else if(ST_LOG[cat]){
+    const log=ST_LOG[cat];
+    const keys=Object.keys(S[log]||{}).filter(function(k){ return stOkKey(k) && stSegs(log,k).length; }).sort().reverse(); total=keys.length;
+    rows=keys.slice(0,N).map(function(k){
+      const segs=stSegs(log,k);
+      const chips=segs.map(function(s){
+        return '<span class="ql-chip">'+fmtHM(s.o)+'–'+fmtHM(s.i)+' · '+fmtDur(s.i-s.o)+((cat==='kg' && s.f)? ' · 식사 '+esc(s.f) : '')+((cat==='kg' && s.m)? ' · '+esc(s.m) : '')
+          +'<button type="button" data-sl="'+cat+'" data-sld="'+k+'" data-slo="'+(+s.o)+'" aria-label="삭제">✕</button></span>';
+      }).join('');
+      return stLogRow(k, chips, fmtDur(sumSegs(segs)));
+    });
+  }else{
+    const keys=Object.keys(S.qlog||{}).filter(function(k){ return stOkKey(k) && stArr(k,cat).length; }).sort().reverse(); total=keys.length;
+    rows=keys.slice(0,N).map(function(k){
+      const arr=stArr(k,cat);
+      const chips=arr.map(function(x){
+        const parts=String(x||'').split('|');
+        const lbl=esc(String(parts[0]||'--:--').slice(0,5))+((cat==='poo' && parts[1] && QL_AMT_NM[parts[1]])? '·'+QL_AMT_NM[parts[1]] : '');
+        return '<span class="ql-chip">'+(lbl||'시각 없음')+'<button type="button" data-sl="'+cat+'" data-sld="'+k+'" data-slv="'+esc(String(x))+'" aria-label="삭제">✕</button></span>';
+      }).join('');
+      return stLogRow(k, chips, arr.length+(cat==='meal'? '끼' : '회'));
+    });
+  }
+  if(cn) cn.textContent= total? total+(cat==='wt'? '회' : '일') : '';
+  el.innerHTML= rows.length? rows.join('')+(total>N? '<button type="button" class="sl-more" data-slmore="1">'+Math.min(14, total-N)+(cat==='wt'? '개' : '일')+' 더 보기</button>' : '') : '<p class="sl-empty">기록이 없습니다.</p>';
+}
+function stAfterEdit(cat){
+  try{ renderQlog(); }catch(e){}
+  try{ renderAway(); }catch(e){}
+  if(cat==='kg'){ try{ renderCal(); }catch(e){} try{ kgCfgPaint(); }catch(e){} }
+  statsRefresh();
+}
+function stLogDel(b){
+  const cat=b.getAttribute('data-sl'), k=b.getAttribute('data-sld');
+  uiConfirm({msg:'이 기록을 삭제할까요?', ok:'삭제', destr:true}).then(function(ok){
+    if(!ok) return;
+    let undo=null;
+    if(cat==='wt'){
+      const old=(S.weight||[]).filter(function(x){ return x.d===k; });
+      if(!old.length) return;
+      S.weight=(S.weight||[]).filter(function(x){ return x.d!==k; });
+      saveState(); try{ afterWeight(); }catch(e){} statsRefresh();
+      undo=function(){ S.weight=(S.weight||[]).filter(function(x){ return x.d!==k; }).concat(old); saveState(); try{ afterWeight(); }catch(e){} statsRefresh(); };
+    }else if(ST_LOG[cat]){
+      const log=ST_LOG[cat], o=+b.getAttribute('data-slo'), a=((S[log]||{})[k])||[];
+      const ix=a.findIndex(function(s){ return s && +s.o===o; }); if(ix<0) return;
+      const rm=a.splice(ix,1)[0];
+      saveState(); stAfterEdit(cat);
+      undo=function(){ S[log]=S[log]||{}; (S[log][k]=S[log][k]||[]).push(rm); S[log][k].sort(function(x,z){ return x.o-z.o; }); saveState(); stAfterEdit(cat); };
+    }else{
+      const v=b.getAttribute('data-slv'), a=qlNorm(k)[cat], ix=a.indexOf(v); if(ix<0) return;
+      a.splice(ix,1);
+      saveState(); stAfterEdit(cat);
+      undo=function(){ const a2=qlNorm(k)[cat]; a2.push(v); a2.sort(); saveState(); stAfterEdit(cat); };
+    }
+    uiToast('기록 삭제', undo);
   });
+}
+
+/* ---------- 기준일 ---------- */
+function stMkDefault(){
+  const ms=stMarks(); if(!ms.length){ STAT.mk=''; return; }
+  if(STAT.mk && ms.some(function(m){ return m.id===STAT.mk; })) return;
+  const y=stAdd(todayKey(),-1), past=ms.filter(function(m){ return m.s<=y; });
+  STAT.mk=(past.length? past[past.length-1] : ms[0]).id;
+}
+function stPerAuto(){
+  /* 기준일 앞 구간이 4주 그래프 밖이면 3개월 보기로 — 전/후 평균선이 보이게 */
+  if(STAT.cmp!=='mk'){ STAT.per='4w'; return; }
+  const m=stMarkGet(STAT.mk); if(!m) return;
+  STAT.per= (stAdd(m.s,-STAT.win) < stAdd(todayKey(),-28))? '3m' : '4w';
+}
+function stPaintMk(){
+  const bar=document.getElementById('stMkBar'); if(!bar) return;
+  if(STAT.cmp!=='mk'){ bar.hidden=true; bar.innerHTML=''; return; }
+  bar.hidden=false;
+  stMkDefault();
+  const ms=stMarks();
+  let h='<div class="st-mks">'+ms.map(function(m){
+    return '<button type="button" class="st-mk'+(m.id===STAT.mk? ' on' : '')+'" data-mk="'+esc(m.id)+'">'+esc(m.t)+'<small>'+stMD(m.s)+(m.e? '~'+stMD(m.e) : '')+'</small></button>';
+  }).join('')+'<button type="button" class="st-mk add" data-mkadd="1">＋ 기준일<small>추가</small></button></div>';
+  const m=stMarkGet(STAT.mk);
+  if(m){
+    h+='<div class="st-mkinfo"><span class="st-mkt">'+(m.e? '바뀌는 기간 '+stMD(m.s)+'~'+stMD(m.e)+'은 빼고 시작 전과 끝난 뒤를 비교' : stMD(m.s)+' 전과 그날부터를 비교')+'</span>'
+      +'<div class="seg3 st-win"><button type="button" data-w="7" class="'+(STAT.win===7? 'on' : '')+'">7일</button><button type="button" data-w="14" class="'+(STAT.win===14? 'on' : '')+'">14일</button></div></div>';
+    if(!m.auto) h+='<div class="st-mkact"><button type="button" class="lnk" data-mkedit="'+esc(m.id)+'">수정</button><button type="button" class="lnk" data-mkdel="'+esc(m.id)+'">삭제</button></div>';
+  }else h+='<p class="st-mkt">기준일을 추가하면 그 날짜 앞뒤를 비교합니다. 예: 2끼 전환, 중성화 수술.</p>';
+  bar.innerHTML=h;
+}
+function stMkFormOpen(id){
+  const f=document.getElementById('stMkForm'); if(!f) return;
+  const m= id? (S.marks||{})[id] : null;
+  STAT.edit= m? id : '';
+  document.getElementById('stMkFT').textContent= m? '기준일 수정' : '기준일 추가';
+  document.getElementById('stMkName').value= m? (m.t||'') : '';
+  document.getElementById('stMkS').value= m? (m.s||'') : todayKey();
+  document.getElementById('stMkE').value= m? (m.e||'') : '';
+  f.hidden=false;
+  try{ f.scrollIntoView({behavior:(typeof REDUCED!=='undefined' && REDUCED)? 'auto' : 'smooth', block:'center'}); }catch(e){}
+}
+function stMkFormClose(){ const f=document.getElementById('stMkForm'); if(f) f.hidden=true; STAT.edit=''; }
+function stMkSave(){
+  const t=String(document.getElementById('stMkName').value||'').trim().slice(0,20);
+  const s=document.getElementById('stMkS').value||'', e=document.getElementById('stMkE').value||'';
+  if(!t){ uiAlert('이름을 입력해 주세요. 예: 2끼 전환'); return; }
+  if(!stOkKey(s)){ uiAlert('시작일을 골라 주세요.'); return; }
+  if(e && (!stOkKey(e) || e<s)){ uiAlert('끝난 날은 시작일과 같거나 뒤여야 합니다.'); return; }
+  S.marks=(S.marks && typeof S.marks==='object' && !Array.isArray(S.marks))? S.marks : {};
+  const id=STAT.edit || ('u'+Date.now().toString(36)+Math.random().toString(36).slice(2,5));
+  const rec={t:t, s:s}; if(e && e>s) rec.e=e;
+  S.marks[id]=rec;
+  saveState();
+  STAT.mk=id; STAT.cmp='mk'; STAT.tip=null; stMkFormClose(); stPerAuto();
+  renderStats();
+  uiToast('기준일 저장 · '+t);
+}
+function stMkDel(id){
+  const m=(S.marks||{})[id]; if(!m) return;
+  uiConfirm({msg:'\''+(m.t||'기준일')+'\' 기준일을 삭제할까요? 기록은 그대로 남습니다.', ok:'삭제', destr:true}).then(function(ok){
+    if(!ok) return;
+    delete S.marks[id]; saveState();
+    if(STAT.mk===id) STAT.mk='';
+    renderStats();
+    uiToast('기준일 삭제', function(){ S.marks=S.marks||{}; S.marks[id]=m; saveState(); STAT.mk=id; renderStats(); });
+  });
+}
+
+/* ---------- 화면 그리기 ---------- */
+function stPaintRange(){
+  const el=document.getElementById('stRange'); if(!el) return;
+  const w=stCmpWins('poo'), A=w.A, B=w.B;
+  const rng=function(r){ return (stOkKey(r[0]) && r[0]<=r[1])? stMD(r[0])+'~'+stMD(r[1]) : '—'; };
+  let rec=0, tot=0, kg=0;
+  [A,B].forEach(function(r){ if(!stOkKey(r[0]) || r[0]>r[1]) return; for(let k=r[0]; k<=r[1]; k=stAdd(k,1)){ tot++; if(stLogged(k)) rec++; if(stKgDay(k)) kg++; } });
+  const tail=' · 기록 '+rec+'/'+tot+'일'+(kg? ' · 유치원 '+kg+'일' : '');
+  if(w.mode==='mk') el.textContent= (B[0]>B[1])? '전 '+rng(A)+' · 후 기간이 아직 시작 전입니다' : '전 '+rng(A)+' → 후 '+rng(B)+tail;
+  else el.textContent='지난주 '+rng(A)+' → 최근 7일 '+rng(B)+tail;
+}
+function stPaintChart(){
+  const svg=document.getElementById('stChart'); if(!svg) return;
+  const cat=STAT.cat, t=todayKey();
+  let info;
+  if(cat==='wt') info=stDrawWt(svg, {from: STAT.per==='3m'? stAdd(t,-91) : stAdd(t,-27), h:216, marks:true, tip:true});
+  else info=stDrawBars(svg, cat, STAT.per, STAT._it);
+  STAT._info=info;
+  const tip=document.getElementById('stTip');
+  if(tip){
+    const p=(STAT.tip!=null && info && info.pts)? info.pts[STAT.tip] : null;
+    tip.textContent= p? info.tip(p) : ((info && info.hint) || '막대를 누르면 날짜별 값이 보입니다');
+    tip.classList.toggle('hint', !p);
+  }
+  const leg=document.getElementById('stLeg'); if(leg) leg.innerHTML=(info && info.leg) || '';
+}
+function renderStats(){
+  const sum=document.getElementById('stSum'); if(!sum) return;
+  ST_NC={};
+  try{
+    document.querySelectorAll('#stCmp button').forEach(function(b){ b.classList.toggle('on', b.dataset.m===STAT.cmp); });
+    stPaintMk();
+    stPaintRange();
+    const items=STAT_CATS.map(function(c){ return stItem(c.id); });
+    const ORD=STAT_CATS.map(function(c){ return c.id; });
+    const rank=function(it){
+      if(STAT.cmp==='mk') return (it.ch && /^(up|down|new|gone)$/.test(it.ch.k))? 0 : 1;
+      const lv=it.st? it.st.lv : 'na';
+      if(lv==='warn') return 0; if(lv==='watch') return 1;
+      if(it.ch && /^(up|down|new)$/.test(it.ch.k)) return 2;
+      return 3;
+    };
+    items.sort(function(a,b){ return rank(a)-rank(b) || ORD.indexOf(a.cat)-ORD.indexOf(b.cat); });
+    if(!STAT.cat) STAT.cat=items[0].cat;
+    sum.innerHTML=items.map(stRowHtml).join('');
+    const cat=STAT.cat, c=stCat(cat);
+    let it=null; items.forEach(function(x){ if(x.cat===cat) it=x; });
+    STAT._it=it;
+    const det=document.getElementById('stDet'); if(det) det.style.setProperty('--c', 'var('+c.cv+')');
+    const pick=document.getElementById('stPick');
+    if(pick) pick.innerHTML=STAT_CATS.map(function(x){ return '<button type="button" class="st-pk'+(x.id===cat? ' on' : '')+'" data-cat="'+x.id+'" style="--c:var('+x.cv+')"><svg class="ico"><use href="#'+x.ic+'"/></svg>'+x.nm+'</button>'; }).join('');
+    const dh=document.getElementById('stDh');
+    if(dh){
+      const st=it? it.st : null;
+      dh.innerHTML='<span class="g-ic" style="--c:var('+c.cv+')"><svg class="ico"><use href="#'+c.ic+'"/></svg></span><span class="lr-t"><b>'+c.nm+'</b><span>'+stLvHtml(st)+((st && st.basis)? (st.txt? ' · ' : '')+'기준 '+esc(st.basis) : '')+'</span></span>';
+    }
+    document.querySelectorAll('#stPer button').forEach(function(b){ b.classList.toggle('on', b.dataset.p===STAT.per); });
+    stPaintChart();
+    const kv=document.getElementById('stKv'); if(kv) kv.innerHTML=stKv(cat, it);
+    const ex=document.getElementById('stEx'); if(ex) ex.innerHTML=stExtra(cat, it);
+    const bs=document.getElementById('stBasis'); if(bs) bs.textContent=ST_BASIS[cat]||'';
+    stPaintLog(cat);
+  }catch(e){ console.error('stats', e); }
+  finally{ ST_NC=null; }
+}
+function stPick(cat, scroll){
+  STAT.cat=cat; STAT.tip=null; STAT.logN=14;
+  renderStats();
+  if(scroll){ const d=document.getElementById('stDet'); if(d && d.scrollIntoView){ try{ d.scrollIntoView({behavior:(typeof REDUCED!=='undefined' && REDUCED)? 'auto' : 'smooth', block:'start'}); }catch(e){} } }
 }
 function bindStats(){
-  const u=document.getElementById('stUnits'); if(!u) return;
-  u.querySelectorAll('button').forEach(function(b){
-    b.addEventListener('click', function(){ STAT.unit=this.dataset.u; renderStats(); });
+  const tab=document.getElementById('tab-stats'); if(!tab || tab._stb) return; tab._stb=1;
+  const on=function(id, fn){ const el=document.getElementById(id); if(el) el.addEventListener('click', fn); };
+  on('stCmp', function(e){ const b=e.target.closest('[data-m]'); if(!b) return; STAT.cmp=b.dataset.m; STAT.tip=null; if(STAT.cmp==='mk') stMkDefault(); stPerAuto(); renderStats(); });
+  on('stMkBar', function(e){
+    const t=e.target;
+    const mk=t.closest('[data-mk]'); if(mk){ STAT.mk=mk.getAttribute('data-mk'); STAT.tip=null; stPerAuto(); renderStats(); return; }
+    if(t.closest('[data-mkadd]')){ stMkFormOpen(''); return; }
+    const w=t.closest('[data-w]'); if(w){ STAT.win=parseInt(w.getAttribute('data-w'),10)||7; stPerAuto(); renderStats(); return; }
+    const ed=t.closest('[data-mkedit]'); if(ed){ stMkFormOpen(ed.getAttribute('data-mkedit')); return; }
+    const dl=t.closest('[data-mkdel]'); if(dl){ stMkDel(dl.getAttribute('data-mkdel')); }
+  });
+  on('stMkSave', stMkSave);
+  on('stMkCancel', stMkFormClose);
+  on('stSum', function(e){ const r=e.target.closest('[data-cat]'); if(r) stPick(r.getAttribute('data-cat'), true); });
+  on('stPick', function(e){ const r=e.target.closest('[data-cat]'); if(r) stPick(r.getAttribute('data-cat'), false); });
+  on('stPer', function(e){ const b=e.target.closest('[data-p]'); if(!b) return; STAT.per=b.dataset.p; STAT.tip=null; renderStats(); });
+  on('stChart', function(e){ const h=e.target.closest('[data-i]'); if(!h) return; const i=parseInt(h.getAttribute('data-i'),10); STAT.tip=(STAT.tip===i)? null : i; ST_NC={}; try{ stPaintChart(); }finally{ ST_NC=null; } });
+  on('stLog', function(e){ const d=e.target.closest('[data-sl]'); if(d){ stLogDel(d); return; } if(e.target.closest('[data-slmore]')){ STAT.logN=(STAT.logN||14)+14; stPaintLog(STAT.cat); } });
+  on('stEx', function(e){ if(e.target.closest('[data-kgadd]')){ try{ kgOpen('add'); }catch(err){ console.error(err); } } });
+  let rt=null;
+  window.addEventListener('resize', function(){
+    clearTimeout(rt);
+    rt=setTimeout(function(){
+      statsRefresh();
+      const r=document.getElementById('tab-record'); if(r && r.classList.contains('on')){ try{ renderWeight(); }catch(e){} }
+    }, 220);
   });
 }
 
@@ -7459,7 +8254,7 @@ function kgOpen(mode, key, i){
   $('kgOvl').classList.add('on');
 }
 function kgHide(){ const o=document.getElementById('kgOvl'); if(o) o.classList.remove('on'); }
-function kgAfter(){ saveState(); kgHide(); renderQlog(); try{ renderCal(); }catch(e){} try{ renderStats(); }catch(e){} try{ kgCfgPaint(); }catch(e){} }
+function kgAfter(){ saveState(); kgHide(); renderQlog(); try{ renderCal(); }catch(e){} try{ statsRefresh(); }catch(e){} try{ kgCfgPaint(); }catch(e){} }
 function kgSave(){
   const $=function(id){ return document.getElementById(id); };
   const v1=$('kgT1').value, v2=$('kgT2').value, now=Date.now();
@@ -7598,7 +8393,7 @@ function renderQlog(){
   try{ renderNow(); }catch(e){ console.error(e); }
   renderMealGap();
   try{ syncWarnPaint(); }catch(e){}
-  try{ renderStats(); }catch(e){}
+  try{ statsRefresh(); }catch(e){}   /* V6.1: 통계 화면이 열려 있을 때만 다시 계산 */
 }
 function qlBump(k, delta){
   const tk=todayKey(); const q=qlNorm(tk);
