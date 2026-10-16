@@ -1329,6 +1329,37 @@ img.alb-th.err, .strip .sc img.err{visibility:hidden;}
 .sx-vt{fill:var(--label); font-size:11.5px; font-weight:600; font-family:inherit; paint-order:stroke; stroke:var(--card); stroke-width:3px;}
 .sx-empty{fill:var(--label2); font-size:13px; font-family:inherit;}
 </style>
+<style id="v62css">
+/* ================= V6.2 — 급여 기준 카드 (2026-10-16) =================
+   현재 급여량 + 판정 캡슐 → 근거 목록(공식 범위·체중·예상 성견·성장·체형) → 확인 사항 → 입력. V6 토큰만 사용. */
+#feedCard .feed-out{margin:2px 0 0; font-size:16px; font-weight:400; color:var(--label);}
+.fd-head{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;}
+.fd-amt{display:flex; align-items:baseline; gap:6px; flex-wrap:wrap; min-width:0;}
+.fd-amt b{font-size:30px; line-height:1.1; font-weight:700; letter-spacing:-.025em; color:var(--label); font-variant-numeric:tabular-nums;}
+.fd-amt span{font-size:15px; color:var(--label2); font-variant-numeric:tabular-nums;}
+.fd-vd{flex:0 0 auto; font-size:14px; font-weight:700; border-radius:999px; padding:5px 12px; line-height:1.25; white-space:nowrap; font-variant-numeric:tabular-nums;}
+.fd-vd.ok{background:var(--sage-bg); color:var(--green);}
+.fd-vd.chk{background:var(--amber-bg); color:var(--warn-ink);}
+.fd-vd.act{background:var(--tint-fill); color:var(--tint-ink);}
+.fd-sub{margin:4px 0 0; font-size:13px; color:var(--label2); line-height:1.45;}
+.fd-kv{margin:14px 0 0; padding:0; border-top:.5px solid var(--sep);}
+.fd-kv > div{display:grid; grid-template-columns:76px minmax(0,1fr); column-gap:12px; padding:10px 0; border-bottom:.5px solid var(--sep); align-items:baseline;}
+.fd-kv dt{margin:0; font-size:13px; color:var(--label2); font-weight:500; line-height:1.4;}
+.fd-kv dd{margin:0; font-size:15px; color:var(--label); font-weight:600; line-height:1.35; font-variant-numeric:tabular-nums; overflow-wrap:anywhere;}
+.fd-kv dd small{display:block; margin-top:2px; font-size:12.5px; font-weight:400; color:var(--label2); line-height:1.45;}
+.fd-kv em{font-style:normal;}
+#feedCard .feed-stage{margin:12px 0 0; padding:10px 12px; border:none; border-radius:12px; background:var(--fill3); color:var(--label); font-size:13.5px; line-height:1.5;}
+#feedCard .feed-stage.warn{background:var(--amber-bg);}
+#feedCard .feed-stage ul{margin:0; padding-left:18px;}
+#feedCard .feed-stage li + li{margin-top:4px;}
+#feedCard .feed-stage b{font-weight:600;}
+#feedCard .feed-set{margin-top:14px;}
+.feed-set [hidden]{display:none !important;}
+.fd-adult-in{margin-top:6px;}
+.fd-now{display:inline-block; margin-top:4px; padding:2px 0; background:none; border:none; color:var(--tint); font:inherit; font-size:13px; font-weight:600; cursor:pointer;}
+.fd-now:focus-visible{outline:2px solid var(--tint); outline-offset:2px; border-radius:4px;}
+#fdKcalHint.lv-watch{color:var(--warn-ink); font-weight:600;}
+</style>
 </head>
 <body>
 
@@ -1974,46 +2005,47 @@ img.alb-th.err, .strip .sc img.err{visibility:hidden;}
       <li>목욕은 <strong>접종 후 4일 이후</strong>부터. 귀 청소는 <strong>7~10일에 1회</strong>(늘어진 귀 견종이라 빠뜨리지 말 것).</li>
     </ul>
   </div>
-  <!-- V5.16: 급여 기준표 — 08장 '급여 기준·권장량' 계산기와 같은 규칙. 참고표 값은 ME 3,735 · 체형 이상 · 간식 0% 기준 -->
-  <h3 class="sec">현재 급여 — 로얄캐닌 미니 인도어 퍼피 100% <span class="muted small" style="font-weight:400;">— 권장량은 08장 '급여 기준·권장량' 카드 (홈 화면 식사 줄을 누르면 이동)</span></h3>
+  <!-- V6.2: 급여 기준표 — 08장 '급여 기준·권장량' 카드와 같은 규칙. 참고표 값은 ME 4,000 · 체형 이상 · 간식 0% 기준 -->
+  <h3 class="sec">현재 급여 — 오리젠 스몰브리드 퍼피 100% <span class="muted small" style="font-weight:400;">— 10/02 전환 완료. 판정은 08장 '급여 기준·권장량' 카드 (홈 화면 식사 줄을 누르면 이동)</span></h3>
   <div class="box box-key">
-    <div class="bt">★ 급여량을 바꾸는 기준 8가지 — 계산기가 보는 것</div>
-    <p class="small">하루 kcal = <strong>70 × 체중<sup>0.75</sup></strong>(RER) × <strong>단계 배수</strong> × <strong>체형 보정</strong> × (1 − 간식 비율) → 사료 g = kcal ÷ 3.735. 기준을 한 번 입력해 두면 홈 화면 권장량이 체중 기록을 따라 자동으로 바뀝니다.</p>
+    <div class="bt">★ 급여량을 정하는 기준 — 계산기가 보는 것</div>
+    <p class="small">하루 kcal 범위 = <strong>70 × 체중<sup>0.75</sup></strong>(RER) × <strong>배수(하한~상한)</strong> × <strong>체형 보정</strong> × (1 − 간식 비율) → 사료 g = kcal ÷ (사료 kcal/kg ÷ 1000). 현재 급여량을 넣으면 이 범위와 체형·성장 속도로 <strong>유지 / ±10%</strong>를 판정합니다.</p>
     <div class="tw"><table>
       <thead><tr><th>기준</th><th>어디서</th><th>급여량에 미치는 영향</th></tr></thead>
       <tbody>
-        <tr><td>체중</td><td>08장 체중 기록 (자동)</td><td>RER의 기본값. 성장기는 <strong>최근 10일 최고값</strong>을 씀 — 0.1kg 측정 오차로 단계가 오르내리지 않게. 10g 단위 저울, 아침 배변 후 식전에 측정</td></tr>
-        <tr><td>나이</td><td>프로필 생년월일 (자동)</td><td>생후 12개월부터 유지기 배수</td></tr>
-        <tr><td>예상 성견 체중</td><td>직접 입력</td><td>성장 단계 결정: 성견의 <strong>50% 미만 ×3.0 → 50~80% ×2.5 → 80% 이상 ×2.0</strong>. 미입력 시 월령 기준(4개월 미만 ×3.0, 4~12개월 ×2.0)</td></tr>
-        <tr><td>체형 (갈비뼈)</td><td>주 1회 손으로 판정</td><td>마름 <strong>+10%</strong> · 이상 0 · 과체중 <strong>−10%</strong>. 털 때문에 눈으로는 안 됨 — 갈비뼈가 얇은 지방 아래 쉽게 만져지고 위에서 허리가 잘록하면 이상(WSAVA 9점 중 4~5)</td></tr>
-        <tr><td>중성화</td><td>직접 입력</td><td>유지기 ×1.6(수술 전 ×1.8), 성장기 80% 이상 구간 ×1.8(수술 전 ×2.0)</td></tr>
+        <tr><td>체중</td><td>08장 체중 기록 (자동)</td><td>RER의 기본값. 성장기는 <strong>최근 10일 최고값</strong>. 같은 저울로 아침 배변 후 식전에 측정, 성장기엔 주 1회 이상</td></tr>
+        <tr><td>나이</td><td>프로필 생년월일 (자동)</td><td>하한 배수 구분(4개월 미만 ×3.0 · 이후 ×2.0). 생후 300~365일에 성견 배수로 직선 전환</td></tr>
+        <tr><td>예상 성견 체중</td><td>자동 추정(기본) · 직접 입력</td><td>상한 배수를 정함: 성견 대비 <strong>50% 이하 ×3.0 → 80% ×2.0</strong>, 사이는 직선(계단 없음). 자동 추정 = 최근 7주 체중에 로지스틱 성장곡선을 맞춘 값(성장률 주 9~19%, 소·중형견 문헌 범위). 범위·신뢰도를 같이 보여주고, 성장이 꺾이는 6개월 이후 범위가 좁아짐</td></tr>
+        <tr><td>체형 (갈비뼈)</td><td>주 1회 손으로 판정</td><td>마름 <strong>+10%</strong> · 이상 0 · 과체중 <strong>−10%</strong> — 급여량 조정의 1순위 근거. 털 때문에 눈으로는 안 됨. 갈비뼈가 얇은 지방 아래 쉽게 만져지고 위에서 허리가 잘록하면 이상(WSAVA 9점 중 4~5). 같은 상태면 '같은 상태로 오늘 확인'</td></tr>
+        <tr><td>성장 속도</td><td>체중 기록 (자동)</td><td>최근 2주 증체 vs 직전 2주. 절반 미만 = 둔화, 1.5배 초과 = 가속, 감소 → 갈비뼈 재확인 표시(양은 체형 판정으로만 바꿈)</td></tr>
+        <tr><td>중성화</td><td>직접 입력</td><td>성견: 수술 전 ×1.6~1.8, 후 ×1.4~1.6 (AAHA 2021 — 카발리에는 비만 소인이라 하한을 기본으로). 성장기 80% 이후 상한 ×1.8</td></tr>
         <tr><td>간식 비율</td><td>직접 입력</td><td>그 비율만큼 사료에서 차감. 상한 10%</td></tr>
         <tr><td>사료 kcal/kg · 끼니 수</td><td>봉지 뒷면 · 직접 입력</td><td>g 환산 · 끼당 양. 끼니는 ~6개월 3~4회 → 6~12개월 2~3회 → 성견 2회</td></tr>
-        <tr><td>수의사·급여표 지시량</td><td>있을 때만 입력</td><td>계산값 대신 우선 표시. 기준일에서 30일이 지나면 재확인 표시</td></tr>
+        <tr><td>현재 급여량</td><td>직접 입력</td><td>실제로 주는 양. 체형 마름/과체중이면 ±10% 권장, 그 밖에는 유지 + 확인 사항 표시. 수의사 지시량도 여기에</td></tr>
       </tbody>
     </table></div>
   </div>
   <div class="box box-core">
-    <div class="bt">■ 참고표 — 체중 × 배수별 하루 g (ME 3,735 · 체형 이상 · 간식 0%)</div>
+    <div class="bt">■ 참고표 — 체중 × 배수별 하루 g (ME 4,000 · 체형 이상 · 간식 0%)</div>
     <div class="tw"><table>
-      <thead><tr><th>체중</th><th>×3.0</th><th>×2.5</th><th>×2.0</th><th>×1.8</th><th>×1.6</th></tr></thead>
+      <thead><tr><th>체중</th><th>×3.0</th><th>×2.5</th><th>×2.0</th><th>×1.6</th><th>×1.4</th></tr></thead>
       <tbody>
-        <tr><td>2.0kg</td><td>95g</td><td>79g</td><td>63g</td><td>57g</td><td>50g</td></tr>
-        <tr><td>2.5kg</td><td>112g</td><td>93g</td><td>75g</td><td>67g</td><td>60g</td></tr>
-        <tr><td>3.0kg</td><td>128g</td><td>107g</td><td>85g</td><td>77g</td><td>68g</td></tr>
-        <tr><td>3.5kg</td><td>144g</td><td>120g</td><td>96g</td><td>86g</td><td>77g</td></tr>
-        <tr><td>4.0kg</td><td>159g</td><td>133g</td><td>106g</td><td>95g</td><td>85g</td></tr>
-        <tr><td>4.5kg</td><td>174g</td><td>145g</td><td>116g</td><td>104g</td><td>93g</td></tr>
-        <tr><td>5.0kg</td><td>188g</td><td>157g</td><td>125g</td><td>113g</td><td>100g</td></tr>
-        <tr><td>5.5kg</td><td>202g</td><td>168g</td><td>135g</td><td>121g</td><td>108g</td></tr>
-        <tr><td>6.0kg</td><td>216g</td><td>180g</td><td>144g</td><td>129g</td><td>115g</td></tr>
+        <tr><td>2.0kg</td><td>88g</td><td>74g</td><td>59g</td><td>47g</td><td>41g</td></tr>
+        <tr><td>2.5kg</td><td>104g</td><td>87g</td><td>70g</td><td>56g</td><td>49g</td></tr>
+        <tr><td>3.0kg</td><td>120g</td><td>100g</td><td>80g</td><td>64g</td><td>56g</td></tr>
+        <tr><td>3.5kg</td><td>134g</td><td>112g</td><td>90g</td><td>72g</td><td>63g</td></tr>
+        <tr><td>4.0kg</td><td>148g</td><td>124g</td><td>99g</td><td>79g</td><td>69g</td></tr>
+        <tr><td>4.5kg</td><td>162g</td><td>135g</td><td>108g</td><td>87g</td><td>76g</td></tr>
+        <tr><td>5.0kg</td><td>176g</td><td>146g</td><td>117g</td><td>94g</td><td>82g</td></tr>
+        <tr><td>5.5kg</td><td>189g</td><td>157g</td><td>126g</td><td>101g</td><td>88g</td></tr>
+        <tr><td>6.0kg</td><td>201g</td><td>168g</td><td>134g</td><td>107g</td><td>94g</td></tr>
       </tbody>
     </table></div>
     <ul class="ls small" style="margin-top:8px;">
-      <li>단계 전환(×3.0→×2.5, ×2.5→×2.0)은 한 번에 줄이지 말고 <strong>2~3주에 걸쳐 10%씩</strong>. 계산기의 '다음 전환' 줄이 전환 체중과 그때의 g을 미리 보여줍니다.</li>
-      <li>증량·감량은 한 번에 10%, 2주 뒤 체형 재판정. 최종 판단은 수치가 아니라 BCS — 같은 저울·같은 시간에 재고 갈비뼈를 손으로 확인.</li>
-      <li>예상 성견 체중 정하는 법: ① 부모견 체중 평균 ② 없으면 4~6개월 성장 추이로 추정 ③ 불확실하면 <strong>낮은 값</strong>(비만 소인 견종 — 낮게 잡을수록 급여량이 보수적으로 나옴). 2026.09.21 기준 부모견 체중 미확인 → <strong>4.5kg 입력</strong>, 11.20(6개월) 체중으로 재추정.</li>
-      <li>성장 검증: 08.14 1.0kg → 09.19 2.3kg (5주 연속 하루 +36g). 증가폭이 꺾이면 그때 양 조정.</li>
+      <li>기준마다 배수가 다릅니다 — AAHA는 4개월 이후 ×2.0, 영국 수의간호 기준은 성견 50~80% 구간 ×2.5 전후, NRC 2006 성장식은 ×3.0 안팎. 같은 체중·사료에서 ±20% 차이가 나서 숫자 하나가 아니라 <strong>범위 + 실측(체형·성장)</strong>으로 판정합니다.</li>
+      <li>증량·감량은 한 번에 10%, 2주 뒤 체형 재판정. 같은 저울·같은 시간에 재고 갈비뼈를 손으로 확인.</li>
+      <li>예상 성견 체중: 부모견 체중 확인 불가 → 자동 추정 사용. 범위가 넓은 동안(대략 6개월 전)은 판정을 체형·성장 속도 위주로 봅니다.</li>
+      <li>성장 기록: 08.14 1.0kg → 09.19 2.3kg (하루 +36g). 이후는 08장 카드 '성장' 줄에서 자동 판정.</li>
     </ul>
   </div>
   <div class="box box-warn">
@@ -2400,18 +2432,18 @@ img.alb-th.err, .strip .sc img.err{visibility:hidden;}
   <h3 class="sec">급여 기준 · 권장량 <span class="muted small" style="font-weight:400;">— 홈 화면 권장량은 여기 기준으로 계산</span></h3>
   <div class="card" id="feedCard">
     <div class="feed-out" id="fdOut">체중을 먼저 입력하세요.</div>
-    <p class="feed-base" id="fdBase"></p>
-    <div class="feed-set">
-      <div><label>예상 성견 체중 (kg)</label><input type="number" id="fdAdult" inputmode="decimal" step="0.1" min="1" max="60" placeholder="예: 4.5"><p class="hint">성장 단계의 기준. 부모견 평균 → 모르면 낮게(보수적). 04장 참고</p></div>
-      <div><label>체형 — 갈비뼈 (주 1회 손으로)</label><select id="fdBcs"><option value="thin">마름 — 갈비뼈·등뼈 도드라짐</option><option value="ok">이상 — 쉽게 만져지고 허리 잘록</option><option value="heavy">과체중 — 눌러야 만져짐·허리 없음</option></select><p class="hint" id="fdBcsHint"></p></div>
-      <div><label>중성화</label><select id="fdNeut"><option value="0">수술 전</option><option value="1">완료</option></select></div>
-      <div><label>간식 비율 (하루 열량 중)</label><select id="fdTreat"><option value="0">0% — 사료알로만</option><option value="5">5%</option><option value="10">10% (상한)</option></select></div>
-      <div><label>사료 칼로리 (kcal/kg — 봉지 뒷면)</label><input type="number" id="fdKcal" inputmode="numeric" step="50" min="2500" max="6000"></div>
-      <div><label>하루 끼니 수</label><select id="fdMeals"><option value="2">2회</option><option value="3">3회</option><option value="4">4회</option><option value="5">5회</option></select><p class="hint" id="fdMealsHint"></p></div>
-      <div class="full"><label>수의사·봉지 급여표 지시량 (g/일 · 있을 때만)</label><div class="row" style="flex-wrap:nowrap;"><input type="number" id="fdVet" inputmode="numeric" step="1" min="0" max="2000" placeholder="없음" style="flex:1; width:auto;"><input type="date" id="fdVetAt" style="flex:1.4; width:auto;"></div><p class="hint">입력하면 계산값 대신 이 값을 표시. 기준일에서 30일이 지나면 재확인 표시. 지우면 계산값으로 복귀.</p></div>
-    </div>
+    <dl class="fd-kv" id="fdKv"></dl>
     <div class="feed-stage" id="fdStage" style="display:none;"></div>
-    <p class="muted small" style="margin:10px 0 0;">체중은 위 <strong>체중 기록</strong>에서, 나이는 프로필 <strong>생년월일</strong>에서 가져옵니다. 변경은 한 번에 10%씩, 2주 뒤 체형 재판정. 수의 표준 RER 공식 참고치(개체차 ±20%)이며 <strong>봉지 급여표와 수의사 지시가 우선</strong>. 기준 설명은 서재 04장.</p>
+    <div class="feed-set">
+      <div class="full"><label for="fdVet">현재 급여량 (g/일) · 시작일</label><div class="row" style="flex-wrap:nowrap;"><input type="number" id="fdVet" inputmode="numeric" step="1" min="0" max="2000" placeholder="예: 83" style="flex:1; width:auto;"><input type="date" id="fdVetAt" aria-label="현재 급여량 시작일" style="flex:1.4; width:auto;"></div><p class="hint">실제로 주는 하루 사료량. 넣으면 유지·조정을 판정합니다. 수의사 지시량도 여기에. 바꾸면 시작일이 오늘로 바뀝니다.</p></div>
+      <div class="full"><label for="fdBcs">체형 — 갈비뼈 (주 1회 손으로)</label><select id="fdBcs"><option value="thin">마름 — 갈비뼈·등뼈 도드라짐</option><option value="ok">이상 — 쉽게 만져지고 허리 잘록</option><option value="heavy">과체중 — 눌러야 만져짐·허리 없음</option></select><p class="hint" id="fdBcsHint"></p><button type="button" class="fd-now" id="fdBcsNow">같은 상태로 오늘 확인</button></div>
+      <div><label for="fdAdultMode">예상 성견 체중</label><select id="fdAdultMode"><option value="auto">자동 추정</option><option value="manual">직접 입력</option></select><input type="number" id="fdAdult" class="fd-adult-in" inputmode="decimal" step="0.1" min="1" max="60" placeholder="kg" aria-label="예상 성견 체중 직접 입력" hidden><p class="hint" id="fdAdultHint"></p></div>
+      <div><label for="fdNeut">중성화</label><select id="fdNeut"><option value="0">수술 전</option><option value="1">완료</option></select></div>
+      <div><label for="fdTreat">간식 비율 (하루 열량 중)</label><select id="fdTreat"><option value="0">0% — 사료알로만</option><option value="5">5%</option><option value="10">10% (상한)</option></select></div>
+      <div><label for="fdKcal">사료 칼로리 (kcal/kg)</label><input type="number" id="fdKcal" inputmode="numeric" step="10" min="2500" max="6000"><p class="hint" id="fdKcalHint"></p></div>
+      <div class="full"><label for="fdMeals">하루 끼니 수</label><select id="fdMeals"><option value="2">2회</option><option value="3">3회</option><option value="4">4회</option><option value="5">5회</option></select><p class="hint" id="fdMealsHint"></p></div>
+    </div>
+    <p class="muted small" style="margin:12px 0 0;">공식 범위는 AAHA 2021(하한)과 영국 수의간호 기준(상한) 사이입니다. 같은 체중·사료라도 기준마다 ±20% 달라서, 숫자 하나 대신 범위와 실측(체형·성장)으로 판정합니다. 급여량 변경은 한 번에 10%, 2주 뒤 갈비뼈 재판정. 기준 설명은 서재 04장.</p>
   </div>
 
 
@@ -2531,7 +2563,7 @@ img.alb-th.err, .strip .sc img.err{visibility:hidden;}
       <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
       <li>의료 정보는 일반 정보입니다. 개별 판단은 수의사 진료가 우선입니다.</li>
     </ul>
-    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.1.0 · 2026-10-15</p>
+    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.2.0 · 2026-10-16</p>
   </div>
 </section>
 
@@ -3924,6 +3956,13 @@ class VideoRTC extends HTMLElement {
 if(window.customElements && !customElements.get('video-stream')){ customElements.define('video-stream', VideoRTC); }
 </script>
 <script>
+/* V6.2.0 (2026-10-16): 급여 기준 카드 개편 — 숫자 하나 → 공식 범위 + 현재 급여량 판정.
+   ① 배수: 50%·80% 계단(하루아침 −17%/−20%) → 성견 대비 비율에 따른 직선 보간. 하한 AAHA 2021 · 상한 영국 수의간호 기준.
+      생후 300~365일 성견 배수로 직선 전환. 성견 배수 중성화 전 ×1.6~1.8 / 후 ×1.4~1.6.
+   ② 예상 성견 체중 자동 추정: 최근 7주 체중에 로지스틱 성장곡선 적합(성장률 0.09~0.19/주), 범위·신뢰도 표시. 직접 입력 선택 가능.
+   ③ 현재 급여량(기존 지시량 칸 재사용 — vetG/vetAt) 입력 시 판정: 체형 → ±10%, 성장 속도(최근 2주 vs 직전 2주)·범위 이탈·
+      체중/체형 기록 경과 → 확인 표시. 홈 식사 줄은 '28g/끼' 또는 '28g/끼 → 25g'.
+   ④ 04장 기준표·참고표(ME 4,000) 갱신. 저장 형식은 S.feed.adultMode 추가만. */
 /* V6.1.0 (2026-10-15): 기록 통계 재구성 — 숫자 정확도 · 전/후 비교 · 가시성.
    ① 계산 기준: 오늘(진행 중) 제외 · 기록 없는 날 0 → 빈칸(평균 제외) · 유치원 간 날 대변·소변 평균 제외 ·
       주 단위 합계 → 하루 평균 · 밤잠은 가장 긴 수면 ±60분 이어진 수면(4시간+) · 혼자 시간은 하루 최장 1회.
@@ -3977,7 +4016,7 @@ if(window.customElements && !customElements.get('video-stream')){ customElements
 /* V5.8 (2026-08-21): 접종 실기록 반영(2차 08.07 종합+코로나1차, 3차 08.21 종합+코로나2차, 4차 09.04 예약, 넥스가드 스펙트라 매월 21일, 코로나 보강 2027.08.21),
    04장 미니 인도어 퍼피 체중별 급여표 추가, 급여 계산기 기본 ME 3735 + kcal 누락 NaN 가드. 저장 구조·동기화·달력 로직 변경 없음. */
 /* =============== State =============== */
-const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, sleepCur:0, sleepLog:{}, feed:{kcal:3735, meals:4, adult:0, bcs:'ok', bcsAt:'', neut:0, treat:0, vetG:0, vetAt:''}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}, media:{url:''}, kgCur:0, kgLog:{}, kgCfg:{name:'도그스테이', pass:0, from:''}, marks:{}};
+const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, sleepCur:0, sleepLog:{}, feed:{kcal:4000, meals:4, adult:0, adultMode:'auto', bcs:'ok', bcsAt:'', neut:0, treat:0, vetG:0, vetAt:''}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}, media:{url:''}, kgCur:0, kgLog:{}, kgCfg:{name:'도그스테이', pass:0, from:''}, marks:{}};
 let S = JSON.parse(JSON.stringify(DEFAULT_S));
 let storageOK = false, artOK = false, saveTimer = null, lastEditAt = 0;
 
@@ -6813,7 +6852,7 @@ function renderMealGap(){
   const hr=new Date().getHours();
   const lm=lastMealTs();
   const fd=feedCalc();
-  const per=fd? ' · '+(fd.vet? '지시 ' : '권장 약 ')+fd.per+'g/끼' : '';
+  const per=feedMealTxt(fd);                                         /* V6.2: 현재 급여량(+조정) 또는 공식 범위 */
   const g=feedGap();                                                  /* V5.17: 월령·끼니 수 기준 */
   if(hr>=22 || hr<6){ mgSet(el,'mg-night','🌙 야간 — 아침 첫 식사는 06~08시'+per); return; }
   if(!lm){ mgSet(el,'mg-warn','⚠ 식사 기록 없음 — 공복 한계 '+feedGapTxt(g.limit)+per); return; }
@@ -6839,12 +6878,21 @@ function renderMealGap(){
     mgSet(el,'mg-ok','✓ 다음 식사 ~'+fmtHM(next)+' (마지막 '+fmtHM(lm)+')'+per);
   }
 }
-/* F2: 급여 기준·권장량 (V5.16)
-   기준 = 자동 2(체중·나이) + 입력 6(예상 성견 체중·체형·중성화·간식 비율·사료 kcal·끼니 수) + 지시량(선택).
-   하루 kcal = RER(70×kg^0.75) × 단계 배수 × 체형 보정 × (1−간식 비율) → 사료 g = kcal ÷ (kcal/kg ÷ 1000).
-   단계 배수: 성견 체중 대비 <50% ×3.0 / 50~80% ×2.5 / 80%~ ×2.0(중성화 ×1.8) / 12개월~ ×1.8(중성화 ×1.6).
-   성견 체중 미입력 시 월령 기준(4개월 미만 ×3.0 / 4~12개월 ×2.0). */
-const FEED_BCS={thin:{adj:1.10, t:'마름 +10%'}, ok:{adj:1.0, t:'이상'}, heavy:{adj:0.90, t:'과체중 −10%'}};
+/* F2: 급여 기준·권장량 (V6.2 — V5.16 계산기 개편)
+   ■ 공식 범위: 하루 kcal = RER(70×kg^0.75) × 배수 × 체형 보정 × (1−간식 비율) → 사료 g = kcal ÷ (사료 kcal/kg ÷ 1000)
+     · 하한 배수 = AAHA 2021 — 4개월 미만 ×3.0 · 4~12개월 ×2.0 · 성견 중성화 전 ×1.6 / 후 ×1.4
+     · 상한 배수 = 영국 수의간호 기준 — 성견 대비 50% 이하 ×3.0 → 80% ×2.0(중성화 ×1.8), 사이는 직선(계단 없음) · 성견 ×1.8 / ×1.6
+     · 생후 300~365일은 성장기 배수에서 성견 배수로 직선 전환
+   ■ 예상 성견 체중: 자동(기본) = 최근 7주 체중(하루 평균)에 로지스틱 성장곡선 W = A / (1 + e^(−r(t−t0))) 적합.
+     r(주당 성장률)은 소·중형견 문헌 범위 0.09~0.19(Posada 2014)로 제한. 범위 = 프로파일 우도 95%(독립 관측 수 = 측정한 주 수).
+     출생일과 무관하게 체중 추세만 쓴다. '직접 입력'을 고르면 그 값을 쓴다.
+   ■ 판정(현재 급여량을 넣었을 때): ① 체형 마름/과체중 → ±10% (체형 판정일 뒤에 급여량을 바꿨으면 반영된 것으로 보고 다시 권하지 않음)
+     ② 최근 2주 증체가 직전 2주의 절반 미만 · 1.5배 초과 · 감소 → 갈비뼈 재확인 표시 ③ 공식 범위 ±10% 밖 → 표시.
+     ②③과 체중·체형 기록 경과는 양을 바꾸지 않고 확인만 요청한다. */
+const FEED_BCS={thin:{adj:1.10, t:'마름'}, ok:{adj:1.0, t:'이상'}, heavy:{adj:0.90, t:'과체중'}};
+const FEED_R=[0.09, 0.19];        /* 로지스틱 성장률(주당) 탐색 범위 — 소·중형견 0.091~0.189 (Posada 2014) */
+const FEED_WIN=49;                /* 성견 체중 추정에 쓰는 최근 기록 기간(일) */
+let FEED_EST_CACHE={k:null, v:null};
 /* V5.17: 공복 기준 — limit=월령별 최대 공복(시간), est=다음 끼니 예상 간격(깨어있는 16시간 ÷ (끼니−1), 단 limit 이내) */
 const FEED_MEALTIME={p4:'07:00 · 11:30 · 16:00 · 20:30', p6:'06:30 · 13:30 · 21:00', p12:'07:00 · 13:30 · 20:00', ad:'07:00 · 19:30'};
 function feedGap(){
@@ -6857,7 +6905,8 @@ function feedGapTxt(h){ return (h===Math.round(h))? (h+'시간') : (Math.floor(h
 function feedCfg(){ return Object.assign({}, DEFAULT_S.feed, S.feed||{}); }     /* 옛 저장본(kcal·meals만)도 기본값으로 채워 읽음 */
 function feedSet(k, v){ S.feed=feedCfg(); S.feed[k]=v; saveState(); renderFeed(); renderMealGap(); }
 function feedAgeDays(){ if(!S.profile.birth) return null; return Math.floor((new Date()-new Date(S.profile.birth+'T00:00:00'))/86400000); }
-/* 기준 체중 — 성장기는 최신 기록일 기준 최근 10일 최고값(0.1kg 측정 오차로 단계가 오르내리지 않게), 12개월부터는 최신값 */
+function feedMD(k){ k=String(k||''); return parseInt(k.slice(5,7),10)+'/'+parseInt(k.slice(8,10),10); }
+/* 기준 체중 — 성장기는 최신 기록일 기준 최근 10일 최고값(0.1kg 측정 오차로 값이 오르내리지 않게), 12개월부터는 최신값 */
 function feedBaseWeight(days){
   const lw=latestWeight(); if(!lw) return null;
   let best=lw;
@@ -6867,115 +6916,258 @@ function feedBaseWeight(days){
   }
   return {kg:parseFloat(best.kg), d:best.d, hi:best!==lw};
 }
-function feedStage(kg, days, c){
-  const n=!!c.neut;
-  if(days>=365) return {id:'adult', mult:n?1.6:1.8, name:'유지기 (12개월~)', ratio:c.adult>0? kg/c.adult : null};
-  if(c.adult>0){
-    const r=kg/c.adult;
-    if(r<0.5) return {id:'g1', mult:3.0, name:'성장기 1단계 (성견 50% 미만)', ratio:r};
-    if(r<0.8) return {id:'g2', mult:2.5, name:'성장기 2단계 (성견 50~80%)', ratio:r};
-    return {id:'g3', mult:n?1.8:2.0, name:'성장기 3단계 (성견 80% 이상)', ratio:r};
+
+/* ---------- 예상 성견 체중 — 로지스틱 성장곡선 적합 ---------- */
+function feedAdultEst(){
+  const pts=stWtPts();
+  const key=pts.map(function(p){ return p.d+':'+p.kg; }).join('|');
+  if(FEED_EST_CACHE.k===key) return FEED_EST_CACHE.v;
+  let v;
+  try{ v=feedAdultFit(pts); }catch(e){ console.error(e); v={ok:false, why:'계산 오류'}; }
+  FEED_EST_CACHE={k:key, v:v};
+  return v;
+}
+function feedAdultFit(pts){
+  if(!pts.length) return {ok:false, why:'체중 기록이 없습니다'};
+  const last=pts[pts.length-1].d, by={};
+  pts.forEach(function(p){ if(stDiff(p.d, last)<=FEED_WIN){ (by[p.d]=by[p.d]||[]).push(p.kg); } });
+  const keys=Object.keys(by).sort();
+  if(keys.length<4) return {ok:false, why:'최근 7주 체중 '+keys.length+'회 — 4회 이상 필요'};
+  const span=stDiff(keys[0], last);
+  if(span<21) return {ok:false, why:'기록 기간 '+span+'일 — 21일 이상 필요'};
+  const t=keys.map(function(k){ return stDiff(keys[0], k)/7; });
+  const w=keys.map(function(k){ return stSum(by[k])/by[k].length; });
+  const lw=w.map(Math.log), n=t.length;
+  const wmax=Math.max.apply(null, w), A0=wmax*1.01, AMAX=Math.max(15, wmax*4);
+  const RS=[]; for(let i=0;i<=20;i++) RS.push(FEED_R[0]+(FEED_R[1]-FEED_R[0])*i/20);
+  let best=null; const prof=[];
+  for(let A=A0; A<=AMAX; A*=1.005){
+    const lA=Math.log(A), z=w.map(function(x){ return Math.log(A/x-1); });
+    let bs=Infinity, br=0, ba=0;
+    for(let j=0;j<RS.length;j++){
+      const r=RS[j]; let a=0;
+      for(let i=0;i<n;i++) a+=z[i]+r*t[i];
+      a/=n;
+      let sse=0;
+      for(let i=0;i<n;i++){ const e=lw[i]-lA+Math.log(1+Math.exp(a-r*t[i])); sse+=e*e; }
+      if(sse<bs){ bs=sse; br=r; ba=a; }
+    }
+    prof.push([A, bs]);
+    if(!best || bs<best.sse) best={A:A, sse:bs, r:br, a:ba};
   }
-  if(days<122) return {id:'a1', mult:3.0, name:'월령 기준 (4개월 미만)', ratio:null};
-  return {id:'a2', mult:n?1.8:2.0, name:'월령 기준 (4~12개월)', ratio:null};
+  const wk={}; t.forEach(function(x){ wk[Math.floor(x)]=1; });
+  const neff=Math.max(3, Math.min(n, Object.keys(wk).length));
+  const thr=Math.max(best.sse, 1e-12)*Math.exp(3.84/neff);
+  let lo=Infinity, hi=0;
+  prof.forEach(function(q){ if(q[1]<=thr){ if(q[0]<lo) lo=q[0]; if(q[0]>hi) hi=q[0]; } });
+  const top=hi*1.005>AMAX;
+  const rel=(hi-lo)/best.A;
+  const r1=function(x){ return Math.round(x*10)/10; };
+  return {ok:true, A:r1(best.A), lo:r1(lo), hi:top? null : r1(hi),
+          grade:(top || rel>0.35)? '낮음' : (rel>0.15? '보통' : '높음'), n:n, span:span, r:best.r};
 }
-function feedGrams(kg, mult, c){
-  const bc=FEED_BCS[c.bcs]||FEED_BCS.ok;
-  const kcal=70*Math.pow(kg,0.75)*mult*bc.adj;
-  const fk=(c.kcal>0)? c.kcal : 3735;                                /* kcal 누락·0 시 NaN 방지 (V5.8) */
-  const treat=Math.min(50, Math.max(0, +c.treat||0));
-  return {kcal:Math.round(kcal), grams:Math.round(kcal*(1-treat/100)/(fk/1000))};
+
+function feedKg1(x){ return (Math.round(x*10)/10).toFixed(1); }
+function feedEstTxt(e){ return e.hi==null? (feedKg1(e.lo)+'kg 이상 (상한 미정 — 계산엔 하한 사용)') : (feedKg1(e.A)+'kg ('+feedKg1(e.lo)+'~'+feedKg1(e.hi)+')'); }
+/* ---------- 배수 범위 — 계단 없이 연속 ---------- */
+function feedMults(kg, days, adult, neut){
+  const adLo=neut? 1.4 : 1.6, adHi=neut? 1.6 : 1.8, m80=neut? 1.8 : 2.0;
+  const gLo= days<122? 3.0 : 2.0;
+  let p=null, gHi=gLo;
+  if(adult>0){ p=kg/adult; gHi= p<=0.5? 3.0 : (p>=0.8? m80 : 3.0-(p-0.5)/0.3*(3.0-m80)); }
+  let lo=Math.min(gLo, gHi), hi=Math.max(gLo, gHi), phase='grow';
+  if(days>=365){ lo=adLo; hi=adHi; phase='adult'; }
+  else if(days>=300){ const f=(days-300)/65; lo=lo+(adLo-lo)*f; hi=hi+(adHi-hi)*f; phase='ramp'; }
+  return {lo:lo, hi:hi, p:p, phase:phase};
 }
+
+/* ---------- 성장 속도 — 최근 2주 vs 직전 2주 (성견: 4주 변화율) ---------- */
+function feedGrowth(days){
+  const pts=stWtPts(); if(!pts.length) return {st:'na', txt:'체중 기록 없음'};
+  const last=pts[pts.length-1].d;
+  const sp=function(a){ return a.length>=2? stDiff(a[0].d, a[a.length-1].d) : 0; };
+  const gd=function(a){ const s=stSlope(a); return s==null? null : s/7*1000; };      /* g/일 */
+  const f=function(x){ return (x>=0? '+' : '−')+Math.abs(Math.round(x))+'g/일'; };
+  if(days>=365){
+    const a=stWtIn(stAdd(last,-28), last);
+    if(sp(a)<14) return {st:'na', txt:'4주 안에 14일 이상 간격으로 2회 측정 필요'};
+    const pct=gd(a)*28/1000/pts[pts.length-1].kg*100;
+    const st= pct>3? 'fast' : (pct<-3? 'drop' : 'ok');
+    return {st:st, txt:'4주 '+(pct>=0? '+' : '−')+Math.abs(pct).toFixed(1)+'%', lab:{ok:'유지', fast:'증가', drop:'감소'}[st]};
+  }
+  const rec=stWtIn(stAdd(last,-14), last), prev=stWtIn(stAdd(last,-28), stAdd(last,-14));
+  if(sp(rec)<7) return {st:'na', txt:'최근 2주에 7일 이상 간격으로 2회 측정 필요'};
+  const gr=gd(rec), gp= sp(prev)>=7? gd(prev) : null;
+  let st='ok';
+  if(gr<-5) st='drop';
+  else if(gp!=null && gp>=8){ const q=gr/gp; if(q<0.5) st='slow'; else if(q>1.5) st='fast'; }
+  else if(days<300 && gr<3) st='slow';
+  return {st:st, rec:gr, prev:gp, txt:f(gr), sub: gp!=null? '직전 2주 '+f(gp) : '직전 2주 기록 부족',
+          lab:{ok:'정상', slow:'둔화', fast:'가속', drop:'감소'}[st]};
+}
+
+/* ---------- 계산 ---------- */
 function feedCalc(){
   const days=feedAgeDays(); if(days==null) return null;
   const bw=feedBaseWeight(days); if(!bw || !(bw.kg>0)) return null;
-  const c=feedCfg();
-  const st=feedStage(bw.kg, days, c);
-  const g=feedGrams(bw.kg, st.mult, c);
-  const meals=c.meals||4;
-  const vet=(c.vetG>0)? Math.round(c.vetG) : 0;
-  const grams=vet||g.grams;
-  /* 다음 전환 예고 — 언제(체중·날짜)부터 배수가 바뀌고, 체중 기준 전환이면 그때 하루 몇 g인지 */
-  let next=null;
-  const b=new Date(S.profile.birth+'T00:00:00');
-  if(st.id==='g1'||st.id==='g2'){
-    const r=(st.id==='g1')? 0.5 : 0.8, kg2=c.adult*r, st2=feedStage(kg2, days, c);
-    next={when:(Math.round(kg2*100)/100)+'kg('+Math.round(r*100)+'%)부터', mult:st2.mult, grams:feedGrams(kg2, st2.mult, c).grams};
-  }else if(st.id==='a1'){ next={when:'생후 4개월('+d2s(addD(b,122))+')부터', mult:c.neut?1.8:2.0, grams:null}; }
-  else if(st.id==='g3'||st.id==='a2'){ next={when:'생후 12개월('+d2s(addD(b,365))+')부터 유지기', mult:c.neut?1.6:1.8, grams:null}; }
-  return {kcal:g.kcal, calc:g.grams, grams:grams, per:Math.round(grams/meals), meals:meals, mult:st.mult, stage:st,
-          bcs:c.bcs, bw:bw, days:days, vet:vet, vetAt:c.vetAt||'', next:next, adult:c.adult>0? c.adult : 0, neut:!!c.neut, treat:+c.treat||0};
+  const c=feedCfg(), lw=latestWeight(), est=feedAdultEst();
+  let adult=0, src='';
+  if(c.adultMode==='manual'){ if(c.adult>0){ adult=c.adult; src='manual'; } }
+  else if(est && est.ok){ adult= est.hi==null? est.lo : est.A; src='auto'; }   /* 상한이 안 잡히면 하한(보수적)으로 계산 */
+  const m=feedMults(bw.kg, days, adult, !!c.neut);
+  const bcs=FEED_BCS[c.bcs]? c.bcs : 'ok', bc=FEED_BCS[bcs];
+  const rer=70*Math.pow(bw.kg, 0.75);
+  const fk=(c.kcal>0)? c.kcal : 4000;                                  /* kcal 누락·0 시 NaN 방지 */
+  const treat=Math.min(50, Math.max(0, +c.treat||0));
+  const kLo=Math.round(rer*m.lo*bc.adj), kHi=Math.round(rer*m.hi*bc.adj);
+  const g=function(k){ return Math.round(k*(1-treat/100)/(fk/1000)); };
+  const meals=c.meals||4, gLo=g(kLo), gHi=g(kHi);
+  const cur=(c.vetG>0)? Math.round(c.vetG) : 0;
+  const wAge=lw? stDiff(lw.d, todayKey()) : 0;
+  const fd={days:days, bw:bw, rer:rer, mult:m, kLo:kLo, kHi:kHi, gLo:gLo, gHi:gHi, meals:meals,
+    perLo:Math.round(gLo/meals), perHi:Math.round(gHi/meals),
+    cur:cur, curPer:cur? Math.round(cur/meals) : 0, curAt:c.vetAt||'',
+    adult:adult, src:src, est:est, bcs:bcs, bcsAt:c.bcsAt||'', neut:!!c.neut, treat:treat, kcal:fk,
+    gr:feedGrowth(days), lw:lw, wAge:wAge, stale: days<365? wAge>=8 : wAge>=35};
+  fd.verdict=feedVerdict(fd);
+  return fd;
 }
+/* ---------- 판정 — 현재 급여량 기준 ---------- */
+function feedVerdict(fd){
+  if(!fd.cur) return null;
+  const notes=[]; let act='keep', g=fd.cur, why='';
+  if(fd.bcs!=='ok'){
+    if(fd.curAt && fd.bcsAt && fd.curAt>fd.bcsAt) notes.push('체형('+FEED_BCS[fd.bcs].t+') 조정을 '+feedMD(fd.curAt)+'에 반영 — 2주 뒤 갈비뼈를 다시 판정');
+    else{
+      act= fd.bcs==='heavy'? 'down' : 'up';
+      g=Math.round(fd.cur*(fd.bcs==='heavy'? 0.9 : 1.1));
+      why= fd.bcs==='heavy'? '갈비뼈를 눌러야 만져짐' : '갈비뼈·등뼈가 도드라짐';
+    }
+  }
+  if(fd.gr.st==='drop') notes.push('체중 감소 — 갈비뼈를 확인하고, 1주 더 이어지면 병원');
+  else if(fd.gr.st==='slow') notes.push('증체 둔화 — 갈비뼈가 도드라지면 체형을 \'마름\'으로');
+  else if(fd.gr.st==='fast') notes.push('증체 가속 — 갈비뼈를 눌러야 만져지면 체형을 \'과체중\'으로');
+  if(act==='keep'){
+    if(fd.cur<fd.gLo*0.9) notes.push('공식 하한보다 '+Math.round((1-fd.cur/fd.gLo)*100)+'% 적음 — 성장·체형이 정상이면 유지');
+    else if(fd.cur>fd.gHi*1.1) notes.push('공식 상한보다 '+Math.round((fd.cur/fd.gHi-1)*100)+'% 많음 — 체형 확인');
+  }
+  if(fd.stale) notes.push('체중을 '+fd.wAge+'일 전에 쟀습니다 — 다시 재야 판정이 맞습니다');
+  const bAge= fd.bcsAt? stDiff(fd.bcsAt, todayKey()) : null;
+  if(bAge==null) notes.push('체형 판정 전 — 갈비뼈를 만져보고 고르세요');
+  else if(bAge>=14) notes.push('체형 판정 '+bAge+'일 경과 — 다시 만져보세요');
+  return {act:act, g:g, per:Math.round(g/fd.meals), why:why, notes:notes};
+}
+/* 홈 식사 줄 끝에 붙는 급여량 */
+function feedMealTxt(fd){
+  if(!fd) return '';
+  if(fd.cur){ const v=fd.verdict; return ' · '+fd.curPer+'g/끼'+((v && v.act!=='keep')? ' → '+v.per+'g' : ''); }
+  return ' · 권장 '+(fd.perLo===fd.perHi? '약 '+fd.perLo : fd.perLo+'~'+fd.perHi)+'g/끼';
+}
+
+/* ---------- 화면 ---------- */
+function feedRangeTxt(a, b, u){ return a===b? ('약 '+a+u) : (a+'~'+b+u); }
 function renderFeed(){
   const out=document.getElementById('fdOut'); if(!out) return;
   const c=feedCfg();
   const setV=function(id, v){ const el=document.getElementById(id); if(el && document.activeElement!==el) el.value=v; };
-  setV('fdKcal', c.kcal||3735); setV('fdMeals', String(c.meals||4)); setV('fdAdult', c.adult>0? c.adult : '');
+  const auto= c.adultMode!=='manual';
+  setV('fdKcal', c.kcal||4000); setV('fdMeals', String(c.meals||4)); setV('fdAdult', c.adult>0? c.adult : '');
+  setV('fdAdultMode', auto? 'auto' : 'manual');
   setV('fdBcs', FEED_BCS[c.bcs]? c.bcs : 'ok'); setV('fdNeut', c.neut? '1' : '0'); setV('fdTreat', String(c.treat||0));
   setV('fdVet', c.vetG>0? c.vetG : ''); setV('fdVetAt', c.vetAt||'');
+  const man=document.getElementById('fdAdult'); if(man) man.hidden=auto;
   const mo=ageMo();
   const mh=document.getElementById('fdMealsHint');
   if(mh){                                                             /* V5.17: 권장 횟수 + 권장 시각 + 공복 한계 */
     if(mo==null) mh.textContent='';
     else{
-      const g=feedGap();
+      const gp=feedGap();
       const rec = mo<4? {n:'4회', t:FEED_MEALTIME.p4} : (mo<6? {n:'3~4회', t:FEED_MEALTIME.p6} : (mo<12? {n:'2~3회', t:FEED_MEALTIME.p12} : {n:'2회', t:FEED_MEALTIME.ad}));
-      mh.textContent='이 월령 권장: '+rec.n+' · '+rec.t+' (공복 한계 '+feedGapTxt(g.limit)+')';
+      mh.textContent='이 월령 권장: '+rec.n+' · '+rec.t+' (공복 한계 '+feedGapTxt(gp.limit)+')';
     }
   }
   const bh=document.getElementById('fdBcsHint');
   if(bh){
-    const ago=c.bcsAt? Math.floor((new Date(todayKey()+'T00:00:00')-new Date(c.bcsAt+'T00:00:00'))/86400000) : null;
-    bh.textContent = ago==null? '아직 판정 전 — 갈비뼈를 만져보고 고르세요' : ('마지막 판정 '+c.bcsAt.slice(5).replace('-','/')+(ago>=7? ' · '+ago+'일 경과 — 다시 만져보세요' : ''));
+    const ago=c.bcsAt? stDiff(c.bcsAt, todayKey()) : null;
+    bh.textContent = ago==null? '아직 판정 전 — 갈비뼈를 만져보고 고르세요' : ('마지막 판정 '+feedMD(c.bcsAt)+(ago>=7? ' · '+ago+'일 경과 — 다시 만져보세요' : (ago? ' · '+ago+'일 전' : ' · 오늘')));
   }
-  const base=document.getElementById('fdBase'), stg=document.getElementById('fdStage');
+  const kh=document.getElementById('fdKcalHint');
+  if(kh){
+    const fk=c.kcal||4000;
+    kh.textContent= fk===3735? '3,735는 이전 사료(로얄캐닌 미니 인도어 퍼피) 값 — 지금 사료 봉지 값으로 바꾸세요' : '봉지 뒷면 대사에너지(ME) 값';
+    kh.classList.toggle('lv-watch', fk===3735);
+  }
+  const est=feedAdultEst();
+  const ah=document.getElementById('fdAdultHint');
+  if(ah){
+    const et= est.ok? (feedEstTxt(est)+' · 신뢰도 '+est.grade) : est.why;
+    ah.textContent= auto? (est.ok? '최근 7주 체중 '+est.n+'회로 성장곡선 적합 — '+et : et) : ('직접 입력값 사용 · 자동 추정 '+(est.ok? et : '불가 — '+est.why));
+  }
+  const kv=document.getElementById('fdKv'), stg=document.getElementById('fdStage');
   const fd=feedCalc();
-  if(!fd){ out.textContent='체중과 생년월일을 입력하면 계산됩니다.'; if(base) base.textContent=''; if(stg){ stg.textContent=''; stg.style.display='none'; } return; }
-  if(fd.vet) out.innerHTML='지시량 <u>'+fd.grams+'g/일</u> → '+fd.meals+'끼 기준 <u>끼당 약 '+fd.per+'g</u> <span class="muted small" >(계산값 '+fd.calc+'g)</span>';
-  else out.innerHTML='하루 약 <u>'+fd.grams+'g</u> ('+fd.kcal+'kcal) → '+fd.meals+'끼 기준 <u>끼당 약 '+fd.per+'g</u>';
-  if(base){
-    const mon=Math.floor(fd.days/30.44);
-    const parts=['기준 체중 <b>'+fd.bw.kg+'kg</b> ('+esc(fd.bw.d.slice(5).replace('-','/'))+(fd.bw.hi? ' · 최근 10일 최고' : '')+')',
-      '생후 <b>'+mon+'개월</b> '+fd.days+'일',
-      '<b>'+fd.stage.name+'</b>'+(fd.stage.ratio!=null? ' — 성견 '+fd.adult+'kg의 '+Math.round(fd.stage.ratio*100)+'%' : ''),
-      '배수 <b>×'+fd.mult.toFixed(1)+'</b>',
-      '체형 <b>'+(FEED_BCS[fd.bcs]||FEED_BCS.ok).t+'</b>'];
-    if(fd.neut) parts.push('중성화 완료');
-    if(fd.treat) parts.push('간식 '+fd.treat+'% 차감');
-    base.innerHTML=parts.join(' · ');
+  if(!fd){
+    out.textContent='체중과 생년월일을 입력하면 계산됩니다.';
+    if(kv) kv.innerHTML='';
+    if(stg){ stg.textContent=''; stg.style.display='none'; }
+    return;
+  }
+  const v=fd.verdict, rng=feedRangeTxt(fd.gLo, fd.gHi, 'g');
+  if(fd.cur){
+    const vd= v.act==='keep'? (v.notes.length? '<span class="fd-vd chk">유지 · 확인</span>' : '<span class="fd-vd ok">유지</span>')
+      : '<span class="fd-vd act">'+(v.act==='up'? '+10%' : '−10%')+' → '+v.g+'g</span>';
+    const pos= fd.cur<fd.gLo*0.9? '공식 범위('+rng+')보다 '+Math.round((1-fd.cur/fd.gLo)*100)+'% 적음'
+      : (fd.cur<fd.gLo? '공식 범위('+rng+') 하한 근처'
+      : (fd.cur>fd.gHi*1.1? '공식 범위('+rng+')보다 '+Math.round((fd.cur/fd.gHi-1)*100)+'% 많음'
+      : (fd.cur>fd.gHi? '공식 범위('+rng+') 상한 근처' : '공식 범위('+rng+') 안')));
+    out.innerHTML='<div class="fd-head"><div class="fd-amt"><b>'+fd.cur+'g</b><span>/일 · 끼당 '+fd.curPer+'g</span></div>'+vd+'</div>'
+      +'<p class="fd-sub">현재 급여량 · '+pos+'</p>';
+  }else{
+    out.innerHTML='<div class="fd-head"><div class="fd-amt"><b>'+rng+'</b><span>/일 · 끼당 '+feedRangeTxt(fd.perLo, fd.perHi, 'g')+'</span></div></div>'
+      +'<p class="fd-sub">공식 범위 — 아래 현재 급여량을 넣으면 유지·조정을 판정합니다</p>';
+  }
+  if(kv){
+    const mon=Math.floor(fd.days/30.44), dd=fd.days-Math.round(mon*30.44);
+    const ml= fd.mult.lo===fd.mult.hi? '×'+fd.mult.lo.toFixed(1) : '×'+fd.mult.lo.toFixed(1)+'~'+fd.mult.hi.toFixed(1);
+    const row=function(k, val, sub){ return '<div><dt>'+k+'</dt><dd>'+val+(sub? '<small>'+sub+'</small>' : '')+'</dd></div>'; };
+    let h=row('공식 범위', rng, ml+' · '+feedRangeTxt(fd.kLo, fd.kHi, 'kcal')+(fd.treat? ' · 간식 '+fd.treat+'% 차감' : '')+(fd.bcs!=='ok'? ' · 체형 '+(fd.bcs==='heavy'? '−' : '+')+'10% 반영' : ''));
+    h+=row('체중', fd.bw.kg.toFixed(2)+'kg', feedMD(fd.bw.d)+(fd.bw.hi? ' · 최근 10일 최고' : '')+' · 생후 '+mon+'개월 '+Math.max(0,dd)+'일'+(fd.stale? ' · <em class="lv-watch">'+fd.wAge+'일 전 측정</em>' : ''));
+    if(fd.mult.phase==='adult') h+=row('성견', '유지기', (fd.neut? '중성화 후' : '중성화 전')+' · AAHA 성견 배수');
+    else if(fd.adult) h+=row('예상 성견', feedKg1(fd.adult)+'kg'+((fd.src==='auto' && fd.est.hi==null)? ' 이상' : ''),
+      (fd.src==='auto'? (fd.est.hi==null? '상한 미정 · 계산엔 하한 사용' : feedKg1(fd.est.lo)+'~'+feedKg1(fd.est.hi)+'kg')+' · 신뢰도 '+fd.est.grade : '직접 입력')+' · 지금 '+Math.round(fd.mult.p*100)+'%');
+    else h+=row('예상 성견', '추정 전', (fd.src===''&& feedCfg().adultMode==='manual'? '직접 입력값 없음' : (fd.est.why||''))+' — 상한 없이 AAHA 기준만');
+    const gs=fd.gr, lvc={ok:'lv-ok', slow:'lv-watch', fast:'lv-watch', drop:'lv-warn'}[gs.st]||'lv-na';
+    h+=row('성장', gs.st==='na'? '판정 보류' : gs.txt, gs.st==='na'? gs.txt : ((fd.stale && fd.lw? feedMD(fd.lw.d)+'까지 · ' : '')+(gs.sub? gs.sub+' · ' : '')+'<em class="'+lvc+'">'+gs.lab+'</em>'));
+    h+=row('체형', FEED_BCS[fd.bcs].t, fd.bcsAt? feedMD(fd.bcsAt)+' 판정' : '판정 전');
+    kv.innerHTML=h;
   }
   if(stg){
-    stg.style.display='';
-    if(fd.vet){
-      const ago=fd.vetAt? Math.floor((new Date(todayKey()+'T00:00:00')-new Date(fd.vetAt+'T00:00:00'))/86400000) : null;
-      stg.className='feed-stage vet';
-      stg.textContent='지시량 '+fd.grams+'g/일을 우선 표시 중'+(fd.vetAt? ' (기준일 '+fd.vetAt+(ago!=null && ago>30? ' · '+ago+'일 경과 — 병원·급여표 재확인' : '')+')' : ' — 기준일을 함께 적어두세요')+'. 계산값과 10% 이상 차이 나면 이유(체형·성장 속도)를 확인.';
-    }else{
-      stg.className='feed-stage';
-      let t='';
-      if(!fd.adult) t='예상 성견 체중이 없어 월령 기준으로 계산 중 — 성견 체중을 입력하면 성장 단계(50%·80%) 기준으로 바뀝니다. ';
-      if(fd.next) t+='다음 전환: '+fd.next.when+' ×'+fd.next.mult.toFixed(1)+(fd.next.grams? ' → 하루 약 '+fd.next.grams+'g' : '')+'. 전환은 2~3주에 걸쳐 10%씩.';
-      if(fd.stage.id==='adult') t+='유지기 — 체형 판정으로만 조정(±10%).';
-      stg.textContent=t;
-    }
+    const lines=[];
+    if(v && v.act!=='keep') lines.push('<b>'+v.why+' → '+fd.cur+'g에서 '+v.g+'g (끼당 '+v.per+'g)</b> · '+(v.act==='down'? '줄인' : '늘린')+' 뒤 아래 현재 급여량 칸에 '+v.g+' 입력');
+    if(v) v.notes.forEach(function(t){ lines.push(t); });
+    else if(fd.stale) lines.push('체중을 '+fd.wAge+'일 전에 쟀습니다 — 다시 재면 범위가 맞춰집니다');
+    if(fd.mult.phase==='ramp') lines.push('10~12개월 — 성견 배수로 넘어가는 중 (생후 365일 완료)');
+    stg.className='feed-stage'+((v && (v.act!=='keep' || v.notes.length)) || fd.stale? ' warn' : '');
+    stg.innerHTML= lines.length? '<ul>'+lines.map(function(t){ return '<li>'+t+'</li>'; }).join('')+'</ul>' : '';
+    stg.style.display= lines.length? '' : 'none';
   }
 }
 function bindFeed(){
   const on=function(id, fn){ const el=document.getElementById(id); if(el) el.addEventListener('change', fn); };
   on('fdKcal', function(){ const v=parseInt(this.value,10); if(v>=2500 && v<=6000) feedSet('kcal', v); else renderFeed(); });
   on('fdMeals', function(){ feedSet('meals', parseInt(this.value,10)||4); });
+  on('fdAdultMode', function(){ feedSet('adultMode', this.value==='manual'? 'manual' : 'auto'); });
   on('fdAdult', function(){ const v=parseFloat(String(this.value).replace(',','.')); feedSet('adult', (v>=1 && v<=60)? Math.round(v*10)/10 : 0); });
   on('fdBcs', function(){ S.feed=feedCfg(); S.feed.bcs=FEED_BCS[this.value]? this.value : 'ok'; S.feed.bcsAt=todayKey(); saveState(); renderFeed(); renderMealGap(); });
   on('fdNeut', function(){ feedSet('neut', this.value==='1'? 1 : 0); });
   on('fdTreat', function(){ feedSet('treat', parseInt(this.value,10)||0); });
-  on('fdVet', function(){
+  on('fdVet', function(){                                            /* 현재 급여량 — 바꾸면 시작일을 오늘로 */
     const v=parseInt(this.value,10);
-    S.feed=feedCfg(); S.feed.vetG=(v>0)? v : 0;
-    if(S.feed.vetG && !S.feed.vetAt) S.feed.vetAt=todayKey();
-    if(!S.feed.vetG) S.feed.vetAt='';
+    S.feed=feedCfg(); S.feed.vetG=(v>0)? v : 0; S.feed.vetAt=(v>0)? todayKey() : '';
     saveState(); renderFeed(); renderMealGap();
   });
   on('fdVetAt', function(){ feedSet('vetAt', this.value||''); });
+  const now=document.getElementById('fdBcsNow');
+  if(now) now.addEventListener('click', function(){ S.feed=feedCfg(); S.feed.bcsAt=todayKey(); saveState(); renderFeed(); renderMealGap(); });
   /* 홈 식사 줄 → 08장 급여 기준 카드로 이동 */
   const mg=document.getElementById('mealGap');
   if(mg){
