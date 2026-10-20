@@ -210,6 +210,42 @@ tr.tent td{color:var(--ink2)}
 .rvn{font-weight:700}
 .rvs{font-size:12px;color:var(--ink2);margin-top:2px}
 .toast.long{white-space:normal;border-radius:16px;line-height:1.4;text-align:center;width:max-content}
+/* ── v5.6 동선 ── */
+.tl-item.travel.city{padding:5px 10px}
+.tl-item.travel.city .nm{font-size:13px;font-weight:600;color:var(--ink2)}
+.tl-item.travel .nm .gml{font-size:11.5px;font-weight:600;color:var(--blue);white-space:nowrap;margin-left:4px}
+.rs{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-top:5px;font-size:11.5px;line-height:1.35;color:var(--ink2)}
+.rs .st{display:inline-block;padding:2px 7px;border-radius:7px;background:#f0f0f4}
+.rs .st.mu{background:transparent;color:var(--ink3);padding:2px 1px}
+.rs .st.ride{background:#f0f0f4;background:color-mix(in srgb,var(--lc) 13%,#fff);box-shadow:inset 3px 0 0 var(--lc);color:var(--ink)}
+.rs .sa{color:#c7c7cc}
+.tl-item .nm .no{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:var(--ink);color:#fff;font-size:11px;font-weight:700;margin-right:6px;vertical-align:1px}
+.tl-item.block.bad .nm .no{background:var(--bad)}
+.rsec{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.rsec .rh{font-size:14px;font-weight:700;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.rsec .rh .m{font-size:12px;font-weight:500;color:var(--ink3)}
+.rtools{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.rnote{font-size:11.5px;color:var(--ink3);margin:8px 0 0;line-height:1.45}
+.mapbox{margin-top:10px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#eef0f3}
+.mapchips{display:flex;gap:6px;padding:8px;flex-wrap:wrap;background:#fff;border-bottom:1px solid var(--line)}
+#lmap{height:340px;width:100%;position:relative;z-index:0}
+@media(max-width:959px){#lmap{height:280px}}
+.maplg{display:flex;flex-wrap:wrap;gap:4px 12px;padding:7px 10px;background:#fff;border-top:1px solid var(--line);font-size:11px;color:var(--ink2)}
+.maplg i{display:inline-block;width:18px;height:0;margin-right:4px;vertical-align:middle;border-top:3px dashed #1d1d1f}
+.maplg i.lr{border-top:4px solid #0a8f4f}.maplg i.lb{border-top:3px dashed #7a5cc7}.maplg i.lj{border-top:3px dotted #6e6e73}
+.mpin{background:none;border:0}
+.mpin span{display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:13px;background:var(--ink);color:#fff;font:700 12px/1 var(--font);box-shadow:0 0 0 2px #fff,0 2px 6px rgba(0,0,0,.35)}
+.mpin.mp-warn span{background:var(--warn)}.mpin.mp-bad span{background:var(--bad)}.mpin.mp-home span{background:var(--blue)}.mpin.mp-gw span{background:#6e6e73;font-size:9.5px}
+.svmap{width:100%;height:auto;display:block;background:#f5f5f7}
+.svmap .sv{fill:#1d1d1f;stroke:#fff;stroke-width:2}.svmap .sv.mp-warn{fill:#a05e00}.svmap .sv.mp-bad{fill:#d0342c}.svmap .sv.mp-home{fill:#0071e3}.svmap .sv.mp-gw{fill:#6e6e73}
+.svmap text{fill:#fff;font:700 11px sans-serif;pointer-events:none}
+.optc{margin-top:10px;padding:12px 14px;border-radius:12px;background:var(--blue-s);font-size:13px;line-height:1.5}
+.optc .nm{font-weight:700;margin-bottom:4px}
+.optc ol{margin:8px 0 0;padding-left:20px}.optc li.mv{font-weight:700;color:var(--blue)}
+.optc .hint{list-style:none;margin:6px 0 0;padding:0}.optc .hint li{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;border-top:1px solid rgba(0,113,227,.15)}.optc .okc{color:var(--ok)}
+.fl{color:var(--blue);font-weight:600}
+.mi.leg{font-size:12.5px;color:var(--ink3);padding:2px 0}.mi.leg .nm{font-size:12.5px}
+.mi.leg::before{width:6px;height:6px;left:-18px;top:9px;background:#e5e5ea;box-shadow:none}
 .total{display:flex;justify-content:space-between;align-items:baseline;padding:14px 6px 4px;font-size:15px;font-weight:700}
 .total .v{font-size:28px;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
 .settings{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
@@ -847,7 +883,7 @@ const EDGES={ /* car:[min,km,toll] , pt:[min, fare¥ 2인] */
 };
 const HUBS=['sap','tom','cts','obi','asa'];
 const INTRA={sap:15,tom:10,ota:10,obi:10,cts:5,home:0,icn:0,fur:10,bie:15,asa:10,jz:5,nob:10,shi:0,moi:0,mis:0,fac:0,tka:0};
-const PT_BAD=['bie','tka','jz','moi','shi','nob','fur'];
+const PT_BAD=['bie','tka','jz','nob','fur'];   /* v5.6 moi·shi는 시내 경로 계산으로 이동 */
 
 /* ===== 블록 (v5.5 · 2026-10-20 전수 재검증) =====
  z 존 / c 카테고리 see·food·cafe·onsen·ski·act·shop / dur 분
@@ -1018,6 +1054,239 @@ const SOUV=[
 
 /* 선호 → 레시피 (자동 조합) */
 const PREFS=[['ski','스키'],['onsen','온천'],['food','미식'],['night','야경·일루미'],['drive','당일치기 (JR 오비히로·아사히카와)'],['photo','사진'],['shop','쇼핑'],['dessert','디저트']];
+/* ===================== v5.6 동선 엔진 (2026-10-20) =====================
+ 좌표: 국토지리원 주소검색(GSI) 2026-10-20 · 역 좌표·순서: ekidata 공개데이터(open-data-jp-railway-stations)
+ 소요시간 [판단]: 도보 = 직선거리 × 1.3(격자 도로) ÷ 분당 70m(겨울 눈길) · 지하철 역간 난보쿠선 1.8 / 도자이선 2.0 / 도호선 1.9분
+   · 시덴 정류장 간 2.3분(1바퀴 약 55분) · 승강장 이동·대기 4분 · 환승 3~6분 · JR 오타루 대기 7분(시간당 약 3편) · JR 공항 대기 6분(12분 간격)
+ 운임(대인): 지하철 1~3km ¥210 · ~7km ¥250 · ~11km ¥290 · ~15km ¥330 · ~19km ¥360 · ~21km ¥380 (2019.10 개정 · 현행) / 시덴 ¥230 (2024.12.1 개정)
+   · 지하철↔시덴 乗継 할인 미반영 · JR 札幌↔小樽·南小樽 ¥800 · 札幌↔新千歳空港 ¥1,230 (2025.4 개정) · 小樽駅前 4번 → 天狗山 중앙버스 9번 ¥240 · 약 17~20분(계산은 20분)
+ 실시간 출발 시각·환승은 각 구간 “구글맵 ↗” (대중교통 모드) */
+const GEO_LINES={"N":{"n":"난보쿠선","k":"南北線","c":"#0a8f4f","m":1.8,"st":[["麻生",43.109106,141.338255,"아자부"],["北３４条",43.099883,141.342028,"기타34조"],["北２４条",43.089811,141.344604,"기타24조"],["北１８条",43.081568,141.346686,"기타18조"],["北１２条",43.074829,141.348403,"기타12조"],["さっぽろ",43.06637,141.350299,"삿포로"],["大通",43.060479,141.354526,"오도리"],["すすきの",43.05578,141.353257,"스스키노"],["中島公園",43.048892,141.354913,"나카지마코엔"],["幌平橋",43.040073,141.355886,"호로히라바시"],["中の島",43.037727,141.360758,"나카노시마"],["平岸",43.034666,141.36853,"히라기시"],["南平岸",43.026842,141.371355,"미나미히라기시"],["澄川",43.016845,141.367308,"스미카와"],["自衛隊前",43.006038,141.364776,"지에이타이마에"],["真駒内",42.991134,141.358499,"마코마나이"]]},"T":{"n":"도자이선","k":"東西線","c":"#f08300","m":2.0,"st":[["宮の沢",43.089962,141.27717,"미야노사와"],["発寒南",43.081732,141.289312,"핫사무미나미"],["琴似",43.075941,141.303931,"고토니"],["二十四軒",43.070221,141.314093,"니주욘켄"],["西２８丁目",43.060345,141.314522,"니시28초메"],["円山公園",43.055582,141.318863,"마루야마코엔"],["西１８丁目",43.057168,141.330204,"니시18초메"],["西１１丁目",43.058557,141.341036,"니시11초메"],["大通",43.060479,141.354526,"오도리"],["バスセンター前",43.061268,141.360473,"바스센터마에"],["菊水",43.057169,141.3727,"기쿠스이"],["東札幌",43.051614,141.384922,"히가시삿포로"],["白石",43.046076,141.396242,"시로이시"],["南郷７丁目",43.040091,141.411759,"난고7초메"],["南郷１３丁目",43.035783,141.422697,"난고13초메"],["南郷１８丁目",43.030229,141.435196,"난고18초메"],["大谷地",43.028008,141.452972,"오야치"],["ひばりが丘",43.032175,141.464638,"히바리가오카"],["新さっぽろ",43.039141,141.473106,"신삿포로"]]},"H":{"n":"도호선","k":"東豊線","c":"#1a8fd8","m":1.9,"st":[["栄町",43.112995,141.367142,"사카에마치"],["新道東",43.104663,141.369086,"신도히가시"],["元町",43.094355,141.371598,"모토마치"],["環状通東",43.082166,141.374643,"간조도리히가시"],["東区役所前",43.078197,141.364769,"히가시쿠야쿠쇼마에"],["北１３条東",43.07689,141.354851,"기타13조히가시"],["さっぽろ",43.06637,141.350299,"삿포로"],["大通",43.060479,141.354526,"오도리"],["豊水すすきの",43.055008,141.356838,"호스이스스키노"],["学園前",43.047448,141.36909,"가쿠엔마에"],["豊平公園",43.041929,141.376573,"도요히라코엔"],["美園",43.036338,141.385756,"미소노"],["月寒中央",43.030553,141.396263,"쓰키사무추오"],["福住",43.021621,141.403105,"후쿠즈미"]]},"SC":{"n":"시덴","k":"市電","c":"#7a8c2a","m":2.3,"st":[["西４丁目",43.058904,141.352148,"니시4초메"],["西８丁目",43.058033,141.345358,"니시8초메"],["中央区役所前",43.057823,141.34224,"주오쿠야쿠쇼마에"],["西１５丁目",43.056955,141.336108,"니시15초메"],["西線６条",43.051352,141.335088,"니시센6조"],["西線９条旭山公園通",43.04722,141.336365,"니시센9조아사히야마코엔도리"],["西線１１条",43.044664,141.335957,"니시센11조"],["西線１４条",43.040775,141.336429,"니시센14조"],["西線１６条",43.037733,141.336772,"니시센16조"],["ロープウェイ入口",43.03367,141.337287,"로프웨이이리구치"],["電車事業所前",43.031271,141.337609,"덴샤지교쇼마에"],["中央図書館前",43.030455,141.340227,"주오토쇼칸마에"],["石山通",43.030706,141.344175,"이시야마도리"],["東屯田通",43.031051,141.347501,"히가시톤덴도리"],["幌南小学校前",43.032196,141.351814,"고난쇼각코마에"],["山鼻１９条",43.034706,141.351514,"야마하나19조"],["静修学園前",43.038329,141.351063,"세이슈가쿠엔마에"],["行啓通",43.041544,141.35072,"교케이도리"],["中島公園通",43.045652,141.350269,"나카지마코엔도리"],["山鼻９条",43.048067,141.349862,"야마하나9조"],["東本願寺前",43.051783,141.34939,"히가시혼간지마에"],["資生館小学校前",43.055217,141.34969,"시세이칸쇼각코마에"],["すすきの",43.05578,141.353257,"스스키노"],["狸小路",43.057279,141.352927,"다누키코지"]],"loop":true}};
+const LL={"sap_odori":[43.06086,141.352753],"sap_tvtower":[43.061016,141.356369],"sap_yamagoya":[43.055328,141.352585],"sap_daruma44":[43.055328,141.352585],"sap_susukino":[43.055328,141.352585],"sap_tanuki":[43.056877,141.352219],"sap_nijo":[43.058006,141.358307],"sap_jingu":[43.05611,141.308182],"sap_station":[43.067268,141.349594],"sap_kinotoya":[43.057949,141.3535],"fac_beer":[43.072754,141.369202],"shi_park":[43.089111,141.271469],"moi_night":[43.031784,141.333267],"ota_isezushi":[43.200806,140.995453],"sap_garaku":[43.058144,141.359299],"sap_suage":[43.055225,141.350983],"sap_okushiba":[43.066715,141.354721],"sap_ippin":[43.068001,141.351227],"sap_hanamaru":[43.068001,141.351227],"sap_daruma":[43.054348,141.352844],"sap_ishida":[43.060818,141.344772],"sap_matsuo":[43.064865,141.350204],"sap_matsuo_sq":[43.06538,141.351685],"sap_shingen":[43.052032,141.34697],"mis_saimi":[43.035233,141.381989],"sap_ichigen":[43.051174,141.344818],"sap_keyaki":[43.053528,141.354782],"sap_toriton":[43.071987,141.361389],"sap_sato":[43.059025,141.354935],"sap_pal":[43.056221,141.355637],"sap_initial":[43.056374,141.350708],"sap_yukijirushi":[43.063839,141.351685],"sap_hachikyo":[43.056789,141.353806],"sap_yokota":[43.054253,141.354477],"sap_miyagawa":[43.062172,141.317551],"sap_arima":[43.056576,141.352249],"sap_moliere":[43.057289,141.311646],"sap_sushikai":[43.055828,141.321045],"sap_wakichi":[43.054466,141.319061],"sap_petpara":[43.067524,141.351089],"sap_montbell":[43.063679,141.350494],"sap_majisand":[43.058037,141.35643],"sap_xmas":[43.060799,141.354446],"ota_canal":[43.199028,141.002686],"ota_sakaimachi":[43.192055,141.00737],"ota_letao":[43.192055,141.00737],"ota_kitakaro":[43.192055,141.00737],"ota_masazushi":[43.194111,140.999603],"ota_yoshi":[43.19635,141.001587],"ota_naruto":[43.200249,140.994858],"ota_miyofuku":[43.19706,140.996994],"ota_tengu":[43.177963,140.974503],"obi_rokkatei":[42.921982,143.20253],"obi_pancho":[42.91972,143.203613],"obi_tonta":[42.913582,143.222885],"obi_ippin":[42.912823,143.14296],"asa_zoo":[43.75967,142.486755],"jz_onsen":[42.965847,141.167007],"nob_onsen":[42.494759,141.145325],"tka_onsen":[42.938103,143.299973],"ota_canal_night":[43.199028,141.002686],"shi_illumi":[43.089111,141.271469],"ota_isezushi_din":[43.200806,140.995453],"ota_isezushi_eki":[43.197172,140.993653]};
+const HOTEL_LL=[43.066151,141.348251];
+const GW={sap:{k:'sap',ll:[43.068612,141.350768],n:'JR 삿포로역',jp:'札幌'},ota:{k:'ota',ll:[43.197172,140.993653],n:'JR 오타루역',jp:'小樽'},mot:{k:'mot',ll:[43.186529,141.007883],n:'JR 미나미오타루역',jp:'南小樽'},cts:{k:'cts',ll:[42.787546,141.680823],n:'신치토세공항역',jp:'新千歳空港'}};
+const CITY={sap:'sap',shi:'sap',moi:'sap',mis:'sap',fac:'sap',ota:'ota'};
+const CITYN={sap:'삿포로',ota:'오타루'};
+const ACC={ota_tengu:{hub:[43.197172,140.993653],hubN:'小樽駅前 4번 승강장',n:'중앙버스 9번 天狗山ロープウエイ行',min:20,wait:10,fare:240}};
+const JR_OTA={ota:34,mot:31}, JR_OTA_WAIT=7, JR_CTS={min:37,wait:6,fare:1230};
+const TRANSFERS=[['N','さっぽろ','H','さっぽろ',5],['N','大通','T','大通',5],['N','大通','H','大通',5],['T','大通','H','大通',5],['N','すすきの','SC','すすきの',3],['N','大通','SC','西４丁目',4],['T','大通','SC','西４丁目',4],['H','豊水すすきの','N','すすきの',5],['SC','狸小路','N','大通',6]];
+BLOCKS.forEach(b=>{ if(LL[b.id]) b.ll=LL[b.id]; });
+const R_WALK=70, R_DET=1.3, R_WAIT=4;
+const bShort=b=>b.n.split(' (')[0];
+function hav(a,b){ const R=6371000, r=Math.PI/180; const dLa=(b[0]-a[0])*r, dLo=(b[1]-a[1])*r; const x=Math.sin(dLa/2)**2+Math.cos(a[0]*r)*Math.cos(b[0]*r)*Math.sin(dLo/2)**2; return 2*R*Math.asin(Math.min(1,Math.sqrt(x))); }
+const walkM=(a,b)=>Math.round(hav(a,b)*R_DET/10)*10;
+const walkMin=m=>Math.max(1,Math.ceil(m/R_WALK));
+const fmtM=m=>m>=1000?(Math.round(m/100)/10)+'km':m+'m';
+const stLabel=nd=>nd.ko?nd.ko+'('+nd.n+')':nd.n;
+let GN=null, GD=null, GX=null, GXW=null;
+function buildGraph(){
+  const nodes=[], idx={};
+  for(const k in GEO_LINES) GEO_LINES[k].st.forEach((s,i)=>{ idx[k+'|'+i]=nodes.length; nodes.push({L:k,i,n:s[0],ll:[s[1],s[2]],ko:s[3]||''}); });
+  const N=nodes.length, D=[], X=[];
+  for(let i=0;i<N;i++){ const r=new Float64Array(N).fill(1e9); r[i]=0; D.push(r); const x=new Int16Array(N).fill(-1); x[i]=i; X.push(x); }
+  const link=(a,b,w)=>{ if(a==null||b==null) return; if(w<D[a][b]){ D[a][b]=w; D[b][a]=w; X[a][b]=b; X[b][a]=a; } };
+  for(const k in GEO_LINES){ const Ln=GEO_LINES[k]; for(let i=0;i+1<Ln.st.length;i++) link(idx[k+'|'+i],idx[k+'|'+(i+1)],Ln.m); if(Ln.loop) link(idx[k+'|'+(Ln.st.length-1)],idx[k+'|0'],Ln.m); }
+  const byN=(k,n)=>{ const i=GEO_LINES[k].st.findIndex(s=>s[0]===n); return i<0?null:idx[k+'|'+i]; };
+  const XW={}; TRANSFERS.forEach(([L1,n1,L2,n2,w])=>{ const a=byN(L1,n1), b=byN(L2,n2); if(a==null||b==null) return; link(a,b,w); XW[a+'|'+b]=w; XW[b+'|'+a]=w; });
+  for(let k=0;k<N;k++){ const Dk=D[k]; for(let i=0;i<N;i++){ const Di=D[i], dik=Di[k]; if(dik>=1e9) continue; const Xi=X[i]; for(let j=0;j<N;j++){ const v=dik+Dk[j]; if(v<Di[j]-1e-9){ Di[j]=v; Xi[j]=Xi[k]; } } } }
+  GN=nodes; GD=D; GX=X; GXW=XW;
+}
+function gpath(a,b){ if(GX[a][b]<0) return null; const p=[a]; let u=a, g=0; while(u!==b&&g++<300){ u=GX[u][b]; p.push(u); } return u===b?p:null; }
+function subFare(km){ return km<=3?210:km<=7?250:km<=11?290:km<=15?330:km<=19?360:380; }
+function ridePlan(a,b){
+  const p=gpath(a,b); if(!p) return null; const items=[];
+  for(let i=1;i<p.length;i++){ const u=GN[p[i-1]], v=GN[p[i]];
+    if(u.L!==v.L){ items.push({t:'xfer',min:GXW[p[i-1]+'|'+p[i]]||4,at:stLabel(v)}); continue; }
+    const last=items[items.length-1];
+    if(last&&last.t==='ride'&&last.L===v.L&&last.toIdx===p[i-1]){ last.to=stLabel(v); last.toIdx=p[i]; last.toI=v.i; last.stops++; last.path.push(v.ll); last.km+=hav(u.ll,v.ll)/1000; }
+    else items.push({t:'ride',L:v.L,from:stLabel(u),fromI:u.i,to:stLabel(v),toIdx:p[i],toI:v.i,stops:1,path:[u.ll,v.ll],km:hav(u.ll,v.ll)/1000});
+  }
+  while(items.length&&items[0].t==='xfer') items.shift(); while(items.length&&items[items.length-1].t==='xfer') items.pop();
+  const rides=items.filter(x=>x.t==='ride'); if(!rides.length) return null;
+  rides.forEach(s=>{ const Ln=GEO_LINES[s.L]; s.min=Math.max(1,Math.round(s.stops*Ln.m)); if(!Ln.loop){ const e=s.toI>s.fromI?Ln.st[Ln.st.length-1]:Ln.st[0]; s.dir=e[3]?e[3]+'('+e[0]+')':e[0]; } });
+  const subKm=rides.filter(s=>s.L!=='SC').reduce((x,s)=>x+s.km,0), tram=rides.filter(s=>s.L==='SC').length;
+  return {items,fare:(subKm>0?subFare(Math.ceil(subKm)):0)+tram*230,sub:subKm>0,tram:tram>0};
+}
+function transit(a,b){
+  if(!GN) buildGraph();
+  const near=p=>GN.map((nd,i)=>({i,d:hav(p,nd.ll)})).filter(x=>x.d<=1500).sort((x,y)=>x.d-y.d).slice(0,6);
+  const A=near(a), B=near(b); let best=null;
+  for(const x of A) for(const y of B){ if(x.i===y.i||GN[x.i].n===GN[y.i].n) continue; const rd=GD[x.i][y.i]; if(rd>=1e9) continue;
+    const tot=walkMin(x.d*R_DET)+R_WAIT+rd+walkMin(y.d*R_DET); if(!best||tot<best.tot) best={x,y,tot}; }
+  if(!best) return null;
+  const P=ridePlan(best.x.i,best.y.i); if(!P) return null;
+  const s1=GN[best.x.i], s2=GN[best.y.i]; const m1=Math.round(best.x.d*R_DET/10)*10, m2=Math.round(best.y.d*R_DET/10)*10;
+  const steps=[{t:'walk',min:walkMin(m1),m:m1,to:stLabel(s1)+(s1.L==='SC'?' 정류장':'역')},{t:'wait',min:R_WAIT}].concat(P.items,[{t:'walk',min:walkMin(m2),m:m2,last:true}]);
+  return {mode:P.tram&&P.sub?'mix':(P.tram?'tram':'sub'),min:steps.reduce((x,s)=>x+(s.min||0),0),m:m1+m2,fare:P.fare,steps,gm:'transit'};
+}
+const RCACHE=new Map();
+function route(a,b,city){
+  const key=a.join()+'|'+b.join()+'|'+city; if(RCACHE.has(key)) return RCACHE.get(key);
+  const m=walkM(a,b), wmin=hav(a,b)<60?1:walkMin(m);
+  let best={mode:'walk',min:wmin,m,fare:0,steps:[{t:'walk',min:wmin,m}],gm:'walking'};
+  if(city==='sap'&&hav(a,b)>=400){ const tr=transit(a,b); if(tr){ if(tr.min<=wmin-6||(m>2000&&tr.min<wmin)) best=tr; else if(tr.min<wmin&&wmin>=15) best=Object.assign({},best,{alt:{mode:tr.mode,min:tr.min,fare:tr.fare}}); } }
+  RCACHE.set(key,best); return best;
+}
+function busStep(acc,dir,blockLL){ return {t:'bus',n:acc.n,min:acc.min,wait:acc.wait,fare:acc.fare,from:dir>0?acc.hubN:'天狗山 山麓',to:dir>0?'天狗山 山麓':acc.hubN,pa:dir>0?acc.hub:blockLL,pb:dir>0?blockLL:acc.hub}; }
+function routeAB(a,b,city,toAcc,fromAcc){
+  const parts=[]; let s=a, e=b;
+  if(fromAcc){ parts.push({mode:'bus',min:fromAcc.min+fromAcc.wait,m:0,fare:fromAcc.fare,steps:[busStep(fromAcc,-1,a)],gm:'transit'}); s=fromAcc.hub; }
+  if(toAcc) e=toAcc.hub;
+  if(hav(s,e)>=60) parts.push(route(s,e,city));
+  if(toAcc) parts.push({mode:'bus',min:toAcc.min+toAcc.wait,m:0,fare:toAcc.fare,steps:[busStep(toAcc,1,b)],gm:'transit'});
+  if(!parts.length) return {mode:'walk',min:1,m:0,fare:0,steps:[{t:'walk',min:1,m:0}],gm:'walking'};
+  if(parts.length===1) return parts[0];
+  const modes=[...new Set(parts.map(p=>p.mode))];
+  return {mode:modes.includes('bus')?'bus':(modes.length===1?modes[0]:'mix'),min:parts.reduce((x,p)=>x+p.min,0),m:parts.reduce((x,p)=>x+p.m,0),fare:parts.reduce((x,p)=>x+p.fare,0),steps:[].concat(...parts.map(p=>p.steps)),gm:'transit'};
+}
+const gmDir=(a,b,mode)=>'https://www.google.com/maps/dir/?api=1&origin='+a[0]+','+a[1]+'&destination='+b[0]+','+b[1]+'&travelmode='+(mode||'walking');
+function gwNear(city,ll,acc){ if(city==='sap') return GW.sap; if(city==='ota'){ if(acc||!ll) return GW.ota; return hav(ll,GW.ota.ll)<=hav(ll,GW.mot.ll)?GW.ota:GW.mot; } return null; }
+const MODEI={walk:'🚶',sub:'🚇',tram:'🚋',mix:'🚇',bus:'🚌'};
+const MODEN={walk:'도보',sub:'지하철',tram:'시덴',mix:'지하철+시덴',bus:'버스'};
+function legLabel(r,toName){
+  const base=r.mode==='walk'?('도보 '+fmtDur(r.min)+(r.m?' · '+fmtM(r.m):'')):(MODEN[r.mode]+' '+fmtDur(r.min)+(r.fare?' · ¥'+r.fare.toLocaleString()+'/인':''));
+  return base+(toName?' → '+toName:'')+(r.alt?' (지하철이면 '+fmtDur(r.alt.min)+' · ¥'+r.alt.fare+'/인)':''); }
+function stepsHtml(o){ const st=o.steps||[]; if(st.length<2) return '';
+  return '<div class="rs">'+st.map(s=>{
+    if(s.t==='walk') return `<span class="st">🚶 ${s.min}분${s.m?' · '+fmtM(s.m):''}${s.to?' → '+esc(s.to):''}</span>`;
+    if(s.t==='wait') return `<span class="st mu">승강장·대기 ${s.min}분</span>`;
+    if(s.t==='xfer') return `<span class="st mu">환승 ${s.min}분</span>`;
+    if(s.t==='ride'){ const Ln=GEO_LINES[s.L]; return `<span class="st ride" style="--lc:${Ln.c}">${s.L==='SC'?'🚋':'🚇'} ${Ln.n} ${esc(s.from)} → ${esc(s.to)} · ${s.stops}정거장 ${s.min}분${s.dir?' · '+esc(s.dir)+' 방면':''}</span>`; }
+    if(s.t==='bus') return `<span class="st ride" style="--lc:#7a5cc7">🚌 ${esc(s.n)} · ${esc(s.from)} → ${esc(s.to)} · 대기 약 ${s.wait}분 + ${s.min}분 · ¥${s.fare}/인</span>`;
+    return ''; }).join('<span class="sa">›</span>')+'</div>'; }
+function legStats(sc){ let wm=0, sub=0, tram=0, bus=0, jr=0;
+  sc.ev.forEach(o=>{ if(o.type!=='travel') return; if(o.city) (o.steps||[]).forEach(s=>{ if(s.t==='walk') wm+=s.m||0; else if(s.t==='ride'){ if(s.L==='SC') tram++; else sub++; } else if(s.t==='bus') bus++; }); else if(o.mode==='jr') jr++; });
+  const p=[]; if(wm) p.push('도보 '+fmtM(wm)); if(sub) p.push('지하철 '+sub+'회'); if(tram) p.push('시덴 '+tram+'회'); if(bus) p.push('버스 '+bus+'회'); if(jr) p.push('JR '+jr+'회');
+  return {wm,sub,tram,bus,jr,txt:p.join(' · ')}; }
+/* 하루 동선 점 목록 (지도·구글맵·KML 공용) — 블록 번호 = 타임라인 번호 */
+const gwCity=g=>g.k==='sap'?'sap':((g.k==='ota'||g.k==='mot')?'ota':null);
+function dayPoints(d){ const sc=ALL[d]; const pts=[]; let k=0; if(!sc) return pts;
+  sc.ev.forEach(o=>{
+    if(o.type==='block'){ const b=BLOCK[o.id]; if(!b||!b.ll) return; pts.push({ll:b.ll,n:bShort(b),kind:'block',no:++k,id:o.id,bad:!!o.bad,warn:(o.warn||[]).length>0,city:CITY[b.z]||null,t:o.start}); }
+    else if(o.type==='travel'&&(o.gwA||o.gwB)){ if(o.gwA) pts.push({ll:o.gwA.ll,n:o.gwA.n+' '+o.gwA.jp,kind:'gw',city:gwCity(o.gwA),t:o.start}); if(o.gwB) pts.push({ll:o.gwB.ll,n:o.gwB.n+' '+o.gwB.jp,kind:'gw',city:gwCity(o.gwB),t:o.end}); }
+    else if(o.type==='anchor'&&o.ll){ pts.push({ll:o.ll,n:'숙소 · 솔라리아 니시테츠',kind:'home',city:'sap',t:o.start}); }
+  });
+  return pts.filter((p,i,a)=>!(i>0&&p.kind!=='block'&&a[i-1].kind===p.kind&&hav(p.ll,a[i-1].ll)<40)); }
+function citySegments(pts){ const seg=[]; pts.forEach(p=>{ if(!p.city) return; const last=seg[seg.length-1]; if(last&&last.city===p.city) last.pts.push(p); else seg.push({city:p.city,pts:[p]}); }); return seg; }
+function dayGLinks(d){ const out=[]; citySegments(dayPoints(d)).forEach(sg=>{ if(!sg.pts.some(p=>p.kind==='block')) return;
+  const P=sg.pts.filter((p,i,a)=>i===0||hav(p.ll,a[i-1].ll)>=40); if(P.length<2) return;
+  const CH=11, n=Math.ceil((P.length-1)/(CH-1));
+  for(let c=0;c<n;c++){ const ch=P.slice(c*(CH-1),c*(CH-1)+CH); if(ch.length<2) break; const o=ch[0], dd=ch[ch.length-1], w=ch.slice(1,-1);
+    const url='https://www.google.com/maps/dir/?api=1&origin='+o.ll.join(',')+'&destination='+dd.ll.join(',')+(w.length?'&waypoints='+encodeURIComponent(w.map(p=>p.ll.join(',')).join('|')):'')+'&travelmode=walking';
+    out.push({n:CITYN[sg.city]+' 동선'+(n>1?' '+(c+1)+'/'+n:'')+' · '+ch.length+'곳',url,count:ch.length,city:sg.city}); } });
+  return out; }
+function exportKML(){ const d=S.day, pts=dayPoints(d); if(!pts.length){ toast('좌표가 있는 블록이 없습니다'); return; }
+  const x=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const pm=pts.map(p=>`<Placemark><name>${x((p.no?p.no+'. ':'')+fmtT(p.t)+' '+p.n)}</name><description>${x(p.kind==='block'?((BLOCK[p.id].note||'')+' · '+hoursText(BLOCK[p.id],d)):p.n)}</description><Point><coordinates>${p.ll[1]},${p.ll[0]},0</coordinates></Point></Placemark>`).join('');
+  const ls=citySegments(pts).map(sg=>`<Placemark><name>${x(CITYN[sg.city]+' 동선 (방문 순서 직선 연결 · 실제 도로 아님)')}</name><LineString><tessellate>1</tessellate><coordinates>${sg.pts.map(p=>p.ll[1]+','+p.ll[0]+',0').join(' ')}</coordinates></LineString></Placemark>`).join('');
+  const kml=`<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>${x('삿포로·토마무 DAY'+(d+1)+' '+dlabel(d))}</name>${pm}${ls}</Document></kml>`;
+  try{ const blob=new Blob([kml],{type:'application/vnd.google-earth.kml+xml'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='trip_DAY'+(d+1)+'_'+DATES[d].slice(5).replace('-','')+'.kml'; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1500); toast('KML 저장 — PC 구글 “내 지도” → 가져오기'); }catch(e){ toast('저장 실패 — 브라우저 제한'); }
+}
+/* 지도 (Leaflet 1.9.4 · OpenStreetMap — 지도를 열 때만 불러옴, 실패 시 간략도) */
+let LMAP=null;
+function loadLeaflet(){ if(window.L&&window.L.map) return Promise.resolve(true); if(loadLeaflet.p) return loadLeaflet.p;
+  loadLeaflet.p=new Promise(res=>{ const css=document.createElement('link'); css.rel='stylesheet'; css.href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css'; document.head.appendChild(css);
+    const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js'; s.onload=()=>res(!!(window.L&&window.L.map)); s.onerror=()=>{ loadLeaflet.p=null; res(false); }; document.head.appendChild(s); setTimeout(()=>res(!!(window.L&&window.L.map)),9000); });
+  return loadLeaflet.p; }
+function mapLegs(d){ const legs=[]; (ALL[d]?ALL[d].ev:[]).forEach(o=>{ if(o.type!=='travel') return;
+  if(o.city&&o.a&&o.b){ let cur=o.a; (o.steps||[]).forEach(s=>{ if(s.t==='ride'){ legs.push({k:'walk',pts:[cur,s.path[0]]}); legs.push({k:'ride',c:GEO_LINES[s.L].c,pts:s.path}); cur=s.path[s.path.length-1]; } else if(s.t==='bus'){ if(hav(cur,s.pa)>20) legs.push({k:'walk',pts:[cur,s.pa]}); legs.push({k:'bus',pts:[s.pa,s.pb]}); cur=s.pb; } }); if(hav(cur,o.b)>20) legs.push({k:'walk',pts:[cur,o.b]}); }
+  else if(o.gwA&&o.gwB) legs.push({k:'jr',pts:[o.gwA.ll,o.gwB.ll]}); }); return legs; }
+const pinCls=p=>'mp-'+(p.kind==='block'?(p.bad?'bad':(p.warn?'warn':'ok')):p.kind);
+const pinTxt=p=>p.kind==='block'?String(p.no):(p.kind==='home'?'⌂':'JR');
+function mapSel(pts){ const segs=citySegments(pts); return UI.mapCity&&segs.some(s=>s.city===UI.mapCity)?UI.mapCity:(segs[0]?segs[0].city:null); }
+function drawMap(){ const host=document.getElementById('lmap'); if(!host) return; const d=S.day; const pts=dayPoints(d);
+  const sel=mapSel(pts); const focus=pts.filter(p=>!sel||p.city===sel); const legs=mapLegs(d);
+  if(!pts.length){ host.innerHTML='<p class="small muted" style="padding:14px;margin:0">이 날은 좌표가 있는 블록이 없습니다 (토마무 리조트 안은 셔틀·도보 10분 기준).</p>'; return; }
+  loadLeaflet().then(okL=>{ const h=document.getElementById('lmap'); if(!h||S.day!==d) return; if(!okL){ svgMap(h,focus.length?focus:pts,legs); return; }
+    if(LMAP){ try{ LMAP.remove(); }catch(e){} LMAP=null; }
+    h.innerHTML=''; LMAP=L.map(h,{zoomControl:true,attributionControl:true,scrollWheelZoom:false});
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(LMAP);
+    legs.forEach(g=>{ const st=g.k==='ride'?{color:g.c,weight:5,opacity:.85}:g.k==='jr'?{color:'#6e6e73',weight:3,dashArray:'2 8',opacity:.8}:g.k==='bus'?{color:'#7a5cc7',weight:4,dashArray:'6 6',opacity:.9}:{color:'#1d1d1f',weight:3,dashArray:'4 6',opacity:.65}; L.polyline(g.pts,st).addTo(LMAP); });
+    pts.forEach(p=>{ L.marker(p.ll,{icon:L.divIcon({className:'mpin '+pinCls(p),html:'<span>'+pinTxt(p)+'</span>',iconSize:[26,26],iconAnchor:[13,13]}),zIndexOffset:p.kind==='block'?1000:0}).addTo(LMAP).bindPopup('<b>'+(p.no?p.no+'. ':'')+esc(p.n)+'</b><br>'+fmtT(p.t)); });
+    const B=L.latLngBounds((focus.length?focus:pts).map(p=>p.ll)); LMAP.fitBounds(B.pad(.18),{maxZoom:16});
+    setTimeout(()=>{ try{ LMAP&&LMAP.invalidateSize(); }catch(e){} },300);
+  }); }
+function svgMap(host,pts,legs){ const W=600,H=320,pad=26; const la=pts.map(p=>p.ll[0]), lo=pts.map(p=>p.ll[1]); const a0=Math.min(...la),a1=Math.max(...la),o0=Math.min(...lo),o1=Math.max(...lo);
+  const kx=Math.cos(((a0+a1)/2)*Math.PI/180); const sx=(o1-o0)*kx||1e-4, sy=(a1-a0)||1e-4; const sc=Math.min((W-2*pad)/sx,(H-2*pad)/sy);
+  const P=ll=>[(pad+((ll[1]-o0)*kx)*sc).toFixed(1),(H-pad-(ll[0]-a0)*sc).toFixed(1)]; const inb=ll=>ll[0]>=a0-1e-3&&ll[0]<=a1+1e-3&&ll[1]>=o0-1e-3&&ll[1]<=o1+1e-3;
+  const lines=legs.filter(g=>g.pts.every(inb)).map(g=>`<polyline points="${g.pts.map(P).map(q=>q.join(',')).join(' ')}" fill="none" stroke="${g.k==='ride'?g.c:(g.k==='bus'?'#7a5cc7':'#86868b')}" stroke-width="${g.k==='ride'?4:2}" ${g.k==='ride'?'':'stroke-dasharray="4 5"'}/>`).join('');
+  const dots=pts.filter(p=>inb(p.ll)).map(p=>{ const q=P(p.ll); return `<g><circle cx="${q[0]}" cy="${q[1]}" r="11" class="sv ${pinCls(p)}"/><text x="${q[0]}" y="${(+q[1]+4).toFixed(1)}" text-anchor="middle">${pinTxt(p)}</text></g>`; }).join('');
+  host.innerHTML=`<svg class="svmap" viewBox="0 0 ${W} ${H}" role="img" aria-label="동선 간략도">${lines}${dots}</svg><p class="small muted" style="padding:4px 10px 8px;margin:0">지도 타일을 불러오지 못해 간략도로 표시 — 위치 관계만 맞음 (인터넷 연결 시 실제 지도)</p>`; }
+function toggleMap(){ UI.map=!UI.map; lsSet('_map_trip',UI.map?'1':'0'); dirty('compose'); paint('compose'); }
+function setMapCity(c){ UI.mapCity=c; document.querySelectorAll('.mapchips .chip').forEach(b=>b.classList.toggle('on',b.dataset.c===c)); drawMap(); }
+/* 직전 위치 → 팔레트 블록 이동 */
+function lastPoint(d){ const sc=ALL[d]; if(!sc||d<2) return null; let p={ll:HOTEL_LL,acc:null,city:'sap',n:'숙소'};
+  sc.ev.forEach(o=>{ if(o.type!=='block') return; const b=BLOCK[o.id]; if(b&&b.ll&&CITY[b.z]) p={ll:b.ll,acc:ACC[b.id]||null,city:CITY[b.z],n:bShort(b)}; else if(d!==2) p=null; });
+  return p; }
+function interMin(fromC,fromLL,fromAcc,b){ const cb=CITY[b.z]; const gA=gwNear(fromC,fromLL,fromAcc), gB=gwNear(cb,b.ll,null); const ot=gA.k==='sap'?gB:gA;
+  return routeAB(fromLL,gA.ll,fromC,null,fromAcc).min+JR_OTA_WAIT+(JR_OTA[ot.k]||34)+routeAB(gB.ll,b.ll,cb,ACC[b.id]||null,null).min; }
+function fromLastHtml(b,lp){ if(!lp||!b.ll||!CITY[b.z]) return ''; const cb=CITY[b.z];
+  if(cb===lp.city){ if(!lp.acc&&!ACC[b.id]&&hav(lp.ll,b.ll)<60) return ` · <span class="fl">📍 ${esc(lp.n)} 바로 옆</span>`; const r=routeAB(lp.ll,b.ll,cb,ACC[b.id]||null,lp.acc); return ` · <span class="fl">📍 ${esc(lp.n)}에서 ${MODEI[r.mode]} ${fmtDur(r.min)}${r.mode==='walk'?' · '+fmtM(r.m):(r.fare?' · ¥'+r.fare+'/인':'')}</span>`; }
+  return ` · <span class="fl">📍 ${esc(lp.n)}에서 🚆 JR 경유 약 ${fmtDur(interMin(lp.city,lp.ll,lp.acc,b))}</span>`; }
+/* 동선 최적화 — 같은 도시 안 연속 블록의 순서만 바꿔 불가·주의·이동·종료 시각 비교 (도시 간 이동·첫 출발은 고정) */
+function scheduleWith(d,list){ const keep=S.days[d]; S.days[d]=list; try{ return schedule(d); } finally{ S.days[d]=keep; } }
+/* 순서 의미 (판단): 야경 명소(텐구야마·TV타워 등 야경 태그)는 일몰(16:00) 15분 뒤까지 머무는 순서 · 시메파르페는 저녁 식사 뒤 */
+const SHIME=['sap_sato','sap_pal','sap_initial'];
+function daySoft(blk){ let p=0; blk.forEach(o=>{ const b=BLOCK[o.id]; if(b&&!b.night&&(b.tags||[]).includes('야경')&&o.end<SUNSET+15) p+=200; });
+  const dn=blk.find(o=>BLOCK[o.id]&&BLOCK[o.id].c==='food'&&o.start>=17*60); if(dn) blk.forEach(o=>{ if(SHIME.includes(o.id)&&o.start<dn.start) p+=200; }); return p; }
+function dayCost(sc){ const blk=sc.ev.filter(o=>o.type==='block'); const bad=blk.filter(o=>o.bad).length;
+  const warns=blk.filter(o=>!o.bad&&o.warn.some(w=>!/예약|미예약|오픈/.test(w))).length;
+  const travel=sc.ev.filter(o=>o.type==='travel'&&!o.fixed).reduce((a,o)=>a+(o.end-o.start),0); const wait=blk.reduce((a,o)=>a+(o.wait||0),0);
+  return {bad,warns,travel,wait,end:sc.end,score:bad*10000+warns*300+daySoft(blk)+(sc.end-sc.start)+travel*0.5}; }
+function permuteAll(arr,cb){ const a=arr.slice(), n=a.length, c=new Array(n).fill(0); cb(a.slice()); let i=0; while(i<n){ if(c[i]<i){ if(i%2===0){ const t=a[0]; a[0]=a[i]; a[i]=t; } else { const t=a[c[i]]; a[c[i]]=a[i]; a[i]=t; } cb(a.slice()); c[i]++; i=0; } else { c[i]=0; i++; } } }
+function cityRuns(list){ const cityOf=id=>{ const b=BLOCK[id]; return b&&b.ll?(CITY[b.z]||null):null; }; const runs=[]; let i=0;
+  while(i<list.length){ const c=cityOf(list[i]); if(c){ let j=i; while(j+1<list.length&&cityOf(list[j+1])===c) j++; if(j>i) runs.push([i,j]); i=j+1; } else i++; } return runs; }
+function optimizeDay(d){ const cur=S.days[d].slice(); let best=cur.slice(); let bestC=dayCost(scheduleWith(d,best)); const curC=bestC;
+  cityRuns(cur).forEach(([s,e])=>{ const n=e-s+1;
+    const tryList=seg=>{ const cand=best.slice(0,s).concat(seg,best.slice(e+1)); const c=dayCost(scheduleWith(d,cand)); if(c.score<bestC.score-0.5){ bestC=c; best=cand; return true; } return false; };
+    if(n<=6){ permuteAll(best.slice(s,e+1),tryList); return; }
+    for(let round=0;round<8;round++){ let imp=false; const base=()=>best.slice(s,e+1);
+      for(let a=0;a<n;a++) for(let b=0;b<n;b++){ if(a===b) continue; const g=base(); const [x]=g.splice(a,1); g.splice(b,0,x); if(tryList(g)) imp=true; }
+      for(let a=0;a<n-1;a++) for(let b=a+1;b<n;b++){ const g=base(); const r=g.slice(0,a).concat(g.slice(a,b+1).reverse(),g.slice(b+1)); if(tryList(r)) imp=true; }
+      if(!imp) break; } });
+  const changed=best.join()!==cur.join()&&(curC.score-bestC.score>=5);   /* 5점(≈5분) 미만 차이는 제안 안 함 */
+  return {cur,best:changed?best:cur,curC,bestC:changed?bestC:curC,changed}; }
+const DAY_LATE=22*60+30;
+function dayBad(sc){ return sc.ev.filter(o=>o.type==='block'&&o.bad).length; }
+/* 순서로 해결 안 될 때 — 블록을 빼 보고 종료(22:30)·불가가 풀리는 조합 (예약 완료 블록 제외) · 짧은 블록 2개 조합도 비교 */
+function dropHints(d,list){ const sc0=scheduleWith(d,list), bad0=dayBad(sc0);
+  const ids=list.filter(id=>BLOCK[id]&&!rsvGet(id,d)); const ev=x=>{ const sc=scheduleWith(d,list.filter(id=>!x.includes(id))); const bad=dayBad(sc); return {ids:x,end:sc.end,bad,dur:x.reduce((a,id)=>a+BLOCK[id].dur,0),fix:sc.end<=DAY_LATE&&bad===0}; };
+  const one=ids.map(id=>ev([id])).filter(h=>h.end<sc0.end||h.bad<bad0);
+  const fix1=one.filter(h=>h.fix).sort((x,y)=>x.dur-y.dur), rest=one.filter(h=>!h.fix).sort((x,y)=>x.bad-y.bad||x.end-y.end);
+  const out=fix1.slice(0,2);
+  if(!fix1.length||fix1[0].dur>=60){ const sm=ids.filter(id=>BLOCK[id].dur<=45); let bp=null;
+    for(let i=0;i<sm.length;i++) for(let j=i+1;j<sm.length;j++){ const h=ev([sm[i],sm[j]]); if(h.fix&&(!bp||h.dur<bp.dur)) bp=h; }
+    if(bp&&(!fix1.length||bp.dur<fix1[0].dur)) out.unshift(bp); }
+  const fd=fitDay(d,list), rm=list.filter(id=>!fd.includes(id)); if(rm.length&&!rm.some(id=>rsvGet(id,d))){ const h=ev(rm); if(h.fix||h.end<sc0.end) out.unshift(h); }   /* 자동 조합 우선순위 (사토 → 오도리 → 운하 낮) */
+  rest.forEach(h=>{ if(out.length<3) out.push(h); });
+  const seen=new Set(); return out.filter(h=>{ const k=h.ids.slice().sort().join(); if(seen.has(k)) return false; seen.add(k); return true; }).slice(0,3); }
+function optimizeUI(){ const d=S.day; const t0=performance.now(); const r=optimizeDay(d); const base=r.changed?r.best:r.cur; const sc=scheduleWith(d,base);
+  const hints=(sc.end>DAY_LATE||dayBad(sc))?dropHints(d,base):[]; const ms=Math.round(performance.now()-t0);
+  if(!r.changed&&!hints.length){ UI.opt=null; dirty('compose'); paint('compose'); toast('지금 순서가 가장 효율적입니다 (같은 도시 안 순서 비교 · '+ms+'ms)'); return; }
+  UI.opt={d,from:r.cur.slice(),list:base.slice(),cur:r.curC,best:r.bestC,changed:r.changed,hints}; dirty('compose'); paint('compose');
+  const el=document.querySelector('.optc'); if(el&&el.scrollIntoView) el.scrollIntoView({block:'nearest',behavior:RM?'auto':'smooth'}); }
+function dropBlocks(ids){ if(!UI.opt) return; const d=UI.opt.d; S.days[d]=UI.opt.list.filter(x=>!ids.includes(x)); S.manual[d]=true; UI.opt=null; saveAll(); renderLight(); toast(ids.map(id=>bShort(BLOCK[id])).join(' · ')+' 뺌'+(ALL[d]?' — 종료 '+fmtT(ALL[d].end):'')); }
+function applyOpt(){ if(!UI.opt) return; const d=UI.opt.d; S.days[d]=UI.opt.list.slice(); S.manual[d]=true; UI.opt=null; saveAll(); renderLight(); toast('추천 순서 적용 — 되돌리려면 순서 편집으로 이동'); }
+function optCard(d){ const o=UI.opt; if(!o||o.d!==d) return ''; if((S.days[d]||[]).join()!==o.from.join()){ UI.opt=null; return ''; }
+  const nm=id=>esc(bShort(BLOCK[id])); const diff=(a,b,f)=>a===b?f(a):f(a)+' → <b>'+f(b)+'</b>';
+  let h='<div class="optc">';
+  if(o.changed){ const moved=o.list.map((id,i)=>id!==o.from[i]); const gain=[];
+    if(o.best.bad<o.cur.bad) gain.push('불가 '+(o.cur.bad-o.best.bad)+'건 해소'); if(o.best.warns<o.cur.warns) gain.push('주의 '+(o.cur.warns-o.best.warns)+'건 감소');
+    if(o.best.travel<o.cur.travel) gain.push('이동 '+fmtDur(o.cur.travel-o.best.travel)+' 절약'); if(o.best.end<o.cur.end) gain.push('종료 '+fmtDur(o.cur.end-o.best.end)+' 앞당김');
+    h+=`<div class="nm">동선 최적화 제안${gain.length?' · '+gain.join(' · '):''}</div><div class="small">이동 ${diff(o.cur.travel,o.best.travel,fmtDur)} · 대기 ${diff(o.cur.wait,o.best.wait,fmtDur)} · 종료 ${diff(o.cur.end,o.best.end,fmtT)} · 불가 ${diff(o.cur.bad,o.best.bad,String)} · 주의 ${diff(o.cur.warns,o.best.warns,String)}</div><ol>${o.list.map((id,i)=>`<li class="${moved[i]?'mv':''}">${nm(id)}</li>`).join('')}</ol><div class="tools" style="margin-top:6px"><button class="btn sm" onclick="applyOpt()">추천 순서 적용</button></div>`; }
+  else h+=`<div class="nm">순서는 지금이 최선 — 시간이 모자랍니다 (종료 ${fmtT(o.cur.end)})</div>`;
+  if(o.hints&&o.hints.length) h+=`<div class="small" style="margin-top:10px"><b>빼면</b> (${o.changed?'추천 순서':'현재 순서'} 기준 · 예약 완료 블록 제외)</div><ul class="hint">${o.hints.map(x=>`<li><span>${x.ids.map(nm).join(' + ')} 빼기 → 종료 ${fmtT(x.end)}${x.bad?' · 불가 '+x.bad+'건':''}${x.fix?' <b class="okc">✓ 해결</b>':''}</span><button class="btn sm sec" onclick="dropBlocks(${esc(JSON.stringify(x.ids))})">빼기${o.changed?' (추천 순서로)':''}</button></li>`).join('')}</ul>`;
+  return h+`<div class="tools" style="margin-top:6px"><button class="btn sm sec" onclick="UI.opt=null;dirty('compose');paint('compose')">닫기</button></div></div>`; }
+/* 자동 조합이 무리면 선택 블록부터 뺌 (실제 이동시간 기준 · 22:30 이후 종료 또는 불가 블록) */
+const FIT_OPT=['sap_sato','sap_odori','ota_canal'];
+function fitDay(d,L){ if(d<2) return L; let cur=L.slice();
+  const st=list=>{ const sc=scheduleWith(d,list); return {late:sc.end>DAY_LATE?1:0,bad:dayBad(sc)}; }; let s0=st(cur);
+  for(const id of FIT_OPT){ if(!s0.late&&!s0.bad) break; if(!cur.includes(id)) continue; const cand=cur.filter(x=>x!==id), s1=st(cand); if(s1.bad<=s0.bad&&s1.late<=s0.late){ cur=cand; s0=s1; } }
+  return cur; }
+/* 오타루 페이지 — 실제 계산 동선 한 줄 */
+function otaruLine(){ const inSun=(S.days[3]||[]).some(id=>id.startsWith('ota_')); const sc=scheduleWith(3,inSun?S.days[3].slice():fitDay(3,presetOtaruSun())); if(!sc) return '';
+  const parts=sc.ev.filter(o=>o.type==='block'||(o.type==='travel'&&o.gwA)).map(o=>o.type==='block'?fmtT(o.start)+' '+esc(bShort(BLOCK[o.id])):fmtT(o.start)+' JR '+o.gwA.jp+'→'+o.gwB.jp);
+  return parts.join(' → ')+' → 숙소 '+fmtT(sc.end)+' <span class="b calc">'+(inSun?'현재 DAY 4 계산':'적용 시 계산')+'</span>'; }
 /* ===================== ENGINE ===================== */
 const toMin=s=>{const [h,m]=String(s).split(':').map(Number);return h*60+(m||0);};
 const fmtT=m=>{let p='';if(m>=1440){p='+1 ';m-=1440;}if(m<0){p='-1 ';m+=1440;}return p+String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');};
@@ -1067,9 +1336,10 @@ function ftag(f,kind){
   if(leave<8*60+30) return ['오전 ✕','bad']; if(leave<10*60) return ['오전 짧음','warn']; if(leave<12*60) return ['추천','ok']; return [home>=23*60?'알차게 · 귀가 23시+':'알차게','info'];
 }
 
-/* 하루 스케줄 계산 — 교통은 버스·JR·지하철(pt) + 집↔인천공항 자차/택시(own) */
+/* 하루 스케줄 계산 — 교통은 버스·JR·지하철(pt) + 집↔인천공항 자차/택시(own) · v5.6 시내 구간은 좌표 기반 도보·지하철·시덴·버스 */
 function schedule(d){
   const ev=[]; const flags=[]; let t=0, z='home'; let prevWasBlock=false;
+  let pos=null, posAcc=null;   /* v5.6 현재 좌표 · 버스로만 나가는 곳(텐구야마) */
   const push=o=>{ev.push(o);return o;};
   const anchor=(n,dur,extra)=>{ const o=Object.assign({type:'anchor',n,z,start:t,end:t+Math.max(0,dur),warn:[]},extra||{}); t=o.end; push(o); prevWasBlock=false; return o; };
   const ride=(o)=>{ const r=Object.assign({type:'travel',warn:[],km:0,toll:0,fare:0,fixed:true},o); push(r); t=r.end; z=r.to; prevWasBlock=false; return r; };
@@ -1080,10 +1350,42 @@ function schedule(d){
     if(!own&&PT_BAD.includes(zone)) o.warn.push('대중교통 편수 적음 — 시각표 확인');
     push(o); t=o.end; z=zone; prevWasBlock=false; return o;
   };
+  /* 시내 구간: 현재 좌표 → 목적지 (도보·지하철·시덴·텐구야마 버스) */
+  const cityLeg=(to,ck,opt)=>{ opt=opt||{}; if(!pos||!to) return null;
+    const r=routeAB(pos,to,ck,opt.toAcc||null,posAcc);
+    const o={type:'travel',city:true,n:legLabel(r,opt.toName),from:z,to:opt.toZ||z,start:t,end:t+r.min,km:0,toll:0,fare:(r.fare||0)*2,mode:r.mode,line:'pt',warn:[],steps:r.steps,m:r.m||0,gm:gmDir(pos,to,r.mode==='walk'?'walking':'transit'),a:pos.slice(),b:to.slice(),ck};
+    if(r.mode==='walk'&&r.min>=25) o.warn.push('눈길 도보 '+fmtDur(r.min)+' ('+fmtM(r.m)+') — '+(ck==='sap'?'지하철·택시':'버스·택시')+' 고려');
+    if(['sub','tram','mix'].includes(r.mode)&&(t>=23*60+30||t<6*60)) o.warn.push(fmtT(t)+' 출발 — 지하철·시덴 막차·첫차 시간대, 택시 대비');
+    push(o); t=o.end; if(opt.toZ) z=opt.toZ; prevWasBlock=false; pos=to.slice(); posAcc=null; return o; };
+  /* 삿포로 ↔ 오타루 JR — 출발지·목적지에 가까운 小樽·南小樽 자동 선택 */
+  const jrOta=(fromC,toC,dest,opt)=>{ opt=opt||{};
+    const gA=gwNear(fromC,pos,posAcc), gB=gwNear(toC,dest,null);
+    if(pos&&(posAcc||hav(pos,gA.ll)>=60)) cityLeg(gA.ll,fromC,{toName:gA.n+' ('+gA.jp+')'});
+    const ot=gA.k==='sap'?gB:gA; const rm=JR_OTA[ot.k]||34;
+    const o=ride({n:'JR 쾌속 에어포트 '+gA.jp+' → '+gB.jp+' · 대기 약 '+JR_OTA_WAIT+'분 + 승차 약 '+rm+'분 · ¥800/인',mode:'jr',line:'pt',from:z,to:opt.toZ||toC,start:t,end:t+JR_OTA_WAIT+rm,fare:1600,fixed:false,gwA:gA,gwB:gB,gm:gmDir(gA.ll,gB.ll,'transit')});
+    pos=gB.ll.slice(); posAcc=null;
+    if(dest&&(opt.toAcc||hav(pos,dest)>=60)) cityLeg(dest,toC,{toAcc:opt.toAcc||null,toName:opt.toName,toZ:opt.toZ});
+    return o; };
+  /* 도시 → 도시 밖 존(조잔케이·노보리베츠·아사히카와 등): 출발역·버스터미널까지 */
+  const toHub=zone=>{ const cz=CITY[z]; if(!cz||!pos) return; const g=cz==='sap'?GW.sap:GW.ota; if(posAcc||hav(pos,g.ll)>=60) cityLeg(g.ll,cz,{toName:g.n+(zone==='jz'?' · 버스터미널':'')}); };
+  const backHotel=()=>{ const cz=CITY[z];
+    if(cz==='sap'){ if(!pos) pos=GW.sap.ll.slice(); if(posAcc||hav(pos,HOTEL_LL)>=60) cityLeg(HOTEL_LL,'sap',{toName:'숙소',toZ:'sap'}); z='sap'; }
+    else if(cz==='ota') jrOta('ota','sap',HOTEL_LL,{toName:'숙소',toZ:'sap'});
+    else { travelTo('sap','삿포로 복귀'); pos=GW.sap.ll.slice(); posAcc=null; cityLeg(HOTEL_LL,'sap',{toName:'숙소',toZ:'sap'}); }
+    pos=HOTEL_LL.slice(); posAcc=null; };
   const place=(b)=>{
-    travelTo(b.z);
+    const cb=CITY[b.z]||null; let near=false;
+    if(cb&&b.ll){
+      const cz=CITY[z]||null;
+      if(!cz){ travelTo(cb); pos=(cb==='sap'?GW.sap:GW.ota).ll.slice(); posAcc=null; }
+      else if(!pos){ pos=(cz==='sap'?GW.sap:GW.ota).ll.slice(); posAcc=null; }
+      if(CITY[z]===cb){ if(!posAcc&&!ACC[b.id]&&hav(pos,b.ll)<60) near=true; else cityLeg(b.ll,cb,{toAcc:ACC[b.id]||null,toName:bShort(b),toZ:b.z}); }
+      else jrOta(CITY[z],cb,b.ll,{toAcc:ACC[b.id]||null,toName:bShort(b),toZ:b.z});
+      z=b.z;
+    } else if(b.z!==z){ toHub(b.z); travelTo(b.z); pos=null; posAcc=null; }
     const o={type:'block',id:b.id,n:b.n,z:b.z,c:b.c,start:t,end:0,dur:b.dur,warn:[],cost:b.cost||0,gap:0};
-    if(prevWasBlock&&INTRA[z]){o.gap=INTRA[z];t+=o.gap;o.start=t;}
+    if(near&&prevWasBlock){o.gap=2;o.near=true;t+=2;o.start=t;}
+    else if(!cb&&prevWasBlock&&INTRA[z]){o.gap=INTRA[z];t+=o.gap;o.start=t;}
     const bad=m=>{ if(!o.bad){o.bad=true;o.why=m;} o.warn.push(m); };
     const cw=closedWhy(b,d); if(cw) bad(cw);
     const H=cw?null:hoursOn(b,d); const rs=rsvEval(b,d);
@@ -1104,7 +1406,9 @@ function schedule(d){
     if(rs.lv==='bad') bad(rs.msg); else if(rs.lv==='warn') o.warn.push(rs.msg); else if(rs.msg&&!rs.walk&&!rs.booked) o.rinfo=rs.msg;
     if(rs.booked) o.rok=rs.msg;
     if(rs.booked&&rs.slot!=null&&t>rs.slot+15) o.warn.push('예약 '+fmtT(rs.slot)+'인데 도착 '+fmtT(t)+' — 앞 일정 줄이기');
-    o.end=t+b.dur; t=o.end; push(o); prevWasBlock=true; return o;
+    o.end=t+b.dur; t=o.end; push(o); prevWasBlock=true;
+    if(cb&&b.ll){ pos=b.ll.slice(); posAcc=ACC[b.id]||null; }
+    return o;
   };
   const blocks=(S.days[d]||[]).map(id=>BLOCK[id]).filter(Boolean);
   if(d===0){
@@ -1137,10 +1441,10 @@ function schedule(d){
       if(blocks.some(b=>b.id==='tom_horse')){ if(t<510) anchor('숙소 대기 — 승마 당일권 판매 08:30',510-t); anchor('승마 당일권 구매 — GAO 아웃도어센터 (08:30 선착순 · 11:00 슬롯 요청)',15,{tag:'당일권'}); }
       if(blocks.some(b=>b.id==='tom_terrace')) flags.push(['info','무빙테라스: 아침에 공식 “오늘의 영업 정보”로 곤돌라 운행·무빙 발생 확인 후 결정 — 미발생·운휴면 12/19 09:00 예비 슬롯']);
     }
-    else anchor('기상 · 준비',30);
+    else { anchor('기상 · 준비',30,{ll:HOTEL_LL}); pos=HOTEL_LL.slice(); }
     for(const b of blocks) place(b);
-    if(z!==DAYMETA[d].base) travelTo(DAYMETA[d].base,'숙소 복귀');
-    anchor('숙소 — '+DAYMETA[d].sleep,0);
+    if(d===3) backHotel(); else if(z!==DAYMETA[d].base) travelTo(DAYMETA[d].base,'숙소 복귀');
+    anchor('숙소 — '+DAYMETA[d].sleep,0,d===3?{ll:HOTEL_LL}:null);
   }
   else if(d===2){
     z='tom'; t=toMin(S.wake[2]||'08:00'); anchor('조식 (플랜 포함)',BREAKFAST);
@@ -1154,24 +1458,30 @@ function schedule(d){
       else if(D-SHUTTLE-t<10) flags.push(['warn','토마무역 셔틀 여유 '+(D-SHUTTLE-t)+'분 — 빠듯']);
       anchor('무료 셔틀 → 토마무역',SHUTTLE);
       if(t<D) anchor('토마무역 · 특급 대기 (역에 매표소·매점 없음)',D-t);
-      ride({n:'JR '+T.n+' → 삿포로 (전석 지정 · ¥5,880/인 · '+(isFix('jr')?'구매 완료':'11/19 발매 · 미구매')+')',mode:'jr',line:'jrx',from:'tom',to:'sap',start:D,end:A,fare:JR_TOM_FARE*2});
+      ride({n:'JR '+T.n+' → 삿포로 (전석 지정 · ¥5,880/인 · '+(isFix('jr')?'구매 완료':'11/19 발매 · 미구매')+')',mode:'jr',line:'jrx',from:'tom',to:'sap',start:D,end:A,fare:JR_TOM_FARE*2,gwB:GW.sap}); pos=GW.sap.ll.slice(); posAcc=null;
     };
-    const arriveSap=()=>{ if(inSap) return; inSap=true; if(t<900) anchor(hotel().n+' 도착 · 짐 보관 (체크인 15:00~)',20,{k:1}); else anchor('체크인 — '+hotel().n,20,{k:1}); };
+    const arriveSap=()=>{ if(inSap) return; inSap=true; if(!pos) pos=GW.sap.ll.slice(); cityLeg(HOTEL_LL,'sap',{toName:'숙소',toZ:'sap'}); if(t<900) anchor(hotel().n+' 도착 · 짐 보관 (체크인 15:00~)',10,{k:1,ll:HOTEL_LL}); else anchor('체크인 — '+hotel().n,15,{k:1,ll:HOTEL_LL}); pos=HOTEL_LL.slice(); posAcc=null; };
     for(const b of blocks){
       if(b.z==='tom'){ if(!out&&t>=600) checkout(); place(b); }
       else { if(!out) checkout(); if(z==='tom') goJR(); if(z==='sap'&&!inSap) arriveSap(); place(b); }
     }
     if(!out) checkout();
     if(!onTrain) goJR();
-    if(!inSap){ if(z!=='sap') travelTo('sap','삿포로 복귀'); arriveSap(); }
-    else if(z!=='sap') travelTo('sap','숙소 복귀');
-    anchor('숙소 — '+hotel().n,0);
+    if(!inSap){ if(CITY[z]!=='sap') travelTo('sap','삿포로 복귀'); arriveSap(); }
+    else backHotel();
+    anchor('숙소 — '+hotel().n,0,{ll:HOTEL_LL});
   }
   else if(d===4){
-    z='sap'; t=toMin(S.wake[4]||'08:00');
-    anchor('체크아웃 — '+hotel().n+' (마감 11:00 · 짐 정리)',30,{tag:'확정'});
+    z='sap'; t=toMin(S.wake[4]||'08:00'); pos=HOTEL_LL.slice();
+    anchor('체크아웃 — '+hotel().n+' (마감 11:00 · 짐 정리)',30,{tag:'확정',ll:HOTEL_LL});
+    if(blocks.some(b=>CITY[b.z]==='sap')) flags.push(['info','체크아웃 후 짐 — 타임라인은 마지막 장소에서 바로 JR 삿포로역 기준 · 호텔에 맡겼다면 호텔 경유 +약 10분 (호텔↔역 도보 약 7분)']);
     const dep=toMin(S.retT.dep), arr=toMin(S.retT.arr); let atAir=false;
-    const goAir=()=>{ if(atAir) return; atAir=true; travelTo('cts','JR 쾌속 에어포트 → 신치토세 (¥1,230/인 · 37분 + 이동)');
+    const goAir=()=>{ if(atAir) return; atAir=true; const cz=CITY[z];
+      if(cz==='sap'){ if(!pos) pos=GW.sap.ll.slice(); if(posAcc||hav(pos,GW.sap.ll)>=60) cityLeg(GW.sap.ll,'sap',{toName:GW.sap.n+' (札幌)'});
+        ride({n:'JR 쾌속 에어포트 札幌 → 新千歳空港 · 대기 약 '+JR_CTS.wait+'분 + 승차 약 '+JR_CTS.min+'분 · ¥1,230/인',mode:'jr',line:'pt',from:z,to:'cts',start:t,end:t+JR_CTS.wait+JR_CTS.min,fare:JR_CTS.fare*2,fixed:false,gwA:GW.sap,gwB:GW.cts,gm:gmDir(GW.sap.ll,GW.cts.ll,'transit')});
+        anchor('신치토세공항역 → 국제선 터미널 (연결통로 도보)',WALK_TERM); }
+      else { if(cz==='ota'&&pos&&(posAcc||hav(pos,GW.ota.ll)>=60)) cityLeg(GW.ota.ll,'ota',{toName:GW.ota.n+' (小樽)'}); travelTo('cts',cz==='ota'?'JR 쾌속 에어포트 小樽 → 新千歳空港 (¥2,030/인)':undefined); }
+      pos=null; posAcc=null;
       const lead=dep-t; const o=anchor('국제선 터미널 체크인 · 수하물 위탁 (출발 '+fmtDur(Math.max(0,lead))+' 전)',30,{k:1});
       if(lead<MIN_LEAD){o.bad=true;o.warn.push('출발 '+fmtDur(Math.max(0,lead))+' 전 도착 — 체크인 마감 위험');flags.push(['bad','공항 도착이 늦음 — 오전 블록 줄이기']);} else if(lead<REC_LEAD){flags.push(['warn','공항 도착 여유 '+fmtDur(lead)+' — 2h 권장']);} };
     for(const b of blocks){ if(b.z==='cts') goAir(); const o=place(b); if(b.z==='cts'){ if(o.end>dep-40){o.bad=true;o.warn.push('탑승 시간 충돌 — 블록 축소');} else if(o.end>dep-60) o.warn.push('탑승 40분 전 마무리 — 빠듯'); } }
@@ -1233,13 +1543,13 @@ function autoDay(d){
     else if(leave<14*60){ L=['sap_nijo','shi_park','cts_shop']; }
     else { L=['sap_nijo']; L.push(P.onsen?'jz_onsen':'shi_park'); L.push(P.food?'sap_ichigen':'sap_okushiba'); L.push('cts_shop'); }
   }
-  return L.filter((x,i,a)=>BLOCK[x]&&a.indexOf(x)===i);
+  return fitDay(d,L.filter((x,i,a)=>BLOCK[x]&&a.indexOf(x)===i));
 }
 function autoAll(){ for(let d=0;d<5;d++) S.days[d]=autoDay(d); }
 /* 오타루 프리셋 (판단) — 12/20 JR 당일치기만 (12/19 렌터카 경유안은 v3에서 삭제) */
-function presetOtaruSun(){ const P=S.prefs; const L=['ota_letao','ota_sakaimachi', P.food?'ota_isezushi':'ota_masazushi','ota_canal','ota_tengu','ota_canal_night','sap_xmas','sap_odori', P.food?'sap_daruma':'sap_hanamaru']; if(P.dessert) L.push('sap_sato'); return L; }
+function presetOtaruSun(){ const P=S.prefs; const L=['ota_letao','ota_sakaimachi','ota_canal', P.food?'ota_isezushi':'ota_masazushi','ota_tengu','ota_canal_night','sap_xmas','sap_odori', P.food?'sap_daruma':'sap_hanamaru']; if(P.dessert) L.push('sap_sato'); return L; }   /* v5.6 순서: 사카이마치 → 운하(낮) → 역 앞 점심 → 텐구야마(일몰) → 운하 야경 · 무리면 fitDay가 사토→오도리→운하(낮) 순으로 뺌 */
 function presetSapporoSun(){ return ['sap_nijo','sap_jingu','shi_park','sap_hanamaru','moi_night','sap_susukino','sap_shingen']; }
-function applyOtaru(){ S.days[3]=presetOtaruSun(); S.manual[3]=true; S.day=3; saveAll(); renderAll(); toast('12/20(일) 오타루 코스 적용 — JR 왕복'); go('compose'); }
+function applyOtaru(){ S.days[3]=fitDay(3,presetOtaruSun()); S.manual[3]=true; S.day=3; saveAll(); renderAll(); toast('12/20(일) 오타루 코스 적용 — JR 왕복'); go('compose'); }
 
 /* 예산 */
 function budget(all){
@@ -1253,8 +1563,8 @@ function budget(all){
     {id:'h_sap', n:'삿포로 2박 — 솔라리아 니시테츠 (확정)', cur:'KRW', v:num(I.solariaKRW), b:'fix', paid:true, note:'09/11 결제완료 · 무료취소 12/17 21:58까지 · 예약 26091116013EA2ES1'},
     {id:'bus', n:'리조트 라이너 신치토세 → 토마무 (2인 · 확정)', cur:'JPY', v:busJPY, b:'fix', note:'¥6,000/인 × 2 · 예약 26X12170014'+(fareBus?'':' · 현재 타임라인은 JR 대체 — 예약분 취소 규정 확인')},
     {id:'jr', n:'JR 특급 토마무 → 삿포로 (2인)', cur:'JPY', v:fareJRX, b:jf?'fix':'src', tent:!jf, note:fareJRX?(tr.n+' '+tr.dep+' · 운임 ¥3,520 + 지정석 특급 ¥2,360 = ¥5,880/인 (駅探 2026.9)'+(jf?' · 구매 완료'+(I.jrRes?' · 예약 '+I.jrRes:''):' · 11/19 10:00 에키넷 발매 (미구매)')):'타임라인에 JR 특급 없음'},
-    {id:'pt', n:'JR 오타루 왕복 · 공항 · 시내 이동 (2인)', cur:'JPY', v:farePT, b:'calc', tent:true, note:'타임라인 이동 구간 요금 합산 — 오타루 ¥800·공항 ¥1,230/인 (2025.4 개정)'},
-    {id:'city', n:'시내 교통 예비 (지하철·버스)', cur:'JPY', v:num(I.cityJPY), b:'judge', tent:true, note:'판단값 — 수정 가능'},
+    {id:'pt', n:'JR 오타루 왕복 · 공항 · 시내 이동 (2인)', cur:'JPY', v:farePT, b:'calc', tent:true, note:'타임라인 이동 구간 요금 합산 — 오타루 JR ¥800·공항 ¥1,230/인 (2025.4 개정) · 시내 지하철 ¥210~·시덴 ¥230 구간별 계산'},
+    {id:'city', n:'시내 교통 예비 (택시·추가 이동)', cur:'JPY', v:num(I.cityJPY), b:'judge', tent:true, note:'판단값 — 시내 지하철·시덴은 위 줄에 구간별 계산 포함 · 수정 가능'},
     {id:'tax', n:'숙박세 (2인 4박 · 현장 결제)', cur:'JPY', v:num(I.taxJPY), b:'calc', tent:true, note:'삿포로 道+市 ¥300/400/1,000 · 占冠村 道+村 ¥200/400/1,000 (1인1박 素泊まり 기준) → 예상 ¥2,000~3,200 · 상한값 계상 · 체크인 시 확정'},
     {id:'icn', n:'인천공항 왕복 (자차 · T1 P5 예약주차장 5일)', cur:'KRW', v:num(I.icnKRW), b:'judge', tent:true, note:'주차 45,000 + 통행료 왕복 약 6,400 + 유류 약 16,000(판단) · 예약보증금 10,000원은 출차 후 승인취소 — 수정 가능'},
     {id:'pet', n:'빼꼼이 위탁 — 도그스테이 (12/16 입실 ~ 12/22 퇴실 · 6박)', cur:'KRW', v:num(I.petKRW), b:'calc', note:'예약 확정 · 1~5kg 30,000원/일 × 6일 = 180,000원 (업체 요금표 기준 계산) · 예약금 10,000원 입금 완료(금액에서 차감) · 7일 이상 5% 할인 적용 시 171,000원 — 정산 시 확인'},
@@ -1274,6 +1584,7 @@ function summaryText(all){
   const lines=['🗼 삿포로·토마무 12/17(목)~12/21(월) — 토마무 먼저 · 렌터카 없음 · v4','✈ 출국 '+S.outT.dep+'→'+S.outT.arr+' ('+fnLabel(fo)+(fo.res?' · '+fo.res:'')+') / 귀국 '+S.retT.dep+'→'+S.retT.arr+' ('+fnLabel(fr)+(fr.res?' · '+fr.res:'')+') — '+((fo.fix&&fr.fix)?'발권 확정':'시뮬레이션'),'🏨 토마무 더 타워2 12/17~19 (확정 · 한아름) · '+h.n+' 12/19~21 (확정 · '+h.res+')','🚌 리조트 라이너 703 국내선 12:20→더 타워 14:20 (예약 '+BUS_INFO.res+' · 집합 12:10) · 🚆 '+tr.n+' '+tr.dep+'→삿포로 '+tr.arr+' ('+(isFix('jr')?'구매 완료':'11/19 발매 · 미구매')+') · 오타루 JR 왕복',''];
   all.forEach((x,i)=>{ lines.push('DAY'+(i+1)+' '+dlabel(i)+' '+DAYMETA[i].t+' ['+({ok:'OK',warn:'주의',bad:'불가'})[x.level]+']');
     x.ev.forEach(o=>{ if(o.type==='travel'&&!o.fixed&&o.end-o.start<20) return; lines.push('  '+fmtT(o.start)+' '+o.n.replace(/\s\(.*?\)$/,'')+(o.warn.length?' ⚠'+o.warn[0]:'')); });
+    dayGLinks(i).forEach(g=>lines.push('  🗺 구글맵 '+g.n+': '+g.url));
     lines.push(''); });
   const open=ITEMS.filter(it=>!isFix(it.id)&&!it.decided&&!it.dayof).map(it=>it.n.split(' —')[0]);
   lines.push('💰 확정 '+fmtW(B.fixTotal)+' (김도우 '+fmtW(B.byDowoo)+' / 한아름 '+fmtW(B.byAreum)+') + 미확정 예상 '+fmtW(B.tentSum+B.res)+' (예비비 10% 포함) = '+fmtW(B.total)+' · 환율 100엔='+B.rate+'원 · 교통비 '+fmtJ(B.transportJPY)+' (2인)');
@@ -1290,7 +1601,7 @@ const ICON={car:'🚗',own:'🚗',bus:'🚌',jr:'🚆',pt:'🚆'};
 const RM=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isMobile=()=>window.matchMedia('(max-width:959px)').matches;
 let ALL=[]; let palCat='all', palZone='all', palQ='';
-const UI={altOut:false,altRet:false,hotels:false};
+const UI={altOut:false,altRet:false,hotels:false,map:(()=>{ const v=lsGet('_map_trip'); return v===null?!isMobile():v==='1'; })(),mapCity:null,opt:null};
 function load(){ try{ let raw=localStorage.getItem(KEY), legacy=false; if(!raw){ raw=localStorage.getItem(KEY_V3); legacy=!!raw; } if(raw){ const o=JSON.parse(raw); const base=JSON.parse(JSON.stringify(DEFAULT_STATE)); S=Object.assign(base,o); S.prefs=Object.assign({},DEFAULT_STATE.prefs,o.prefs||{}); if(!(o.days&&o.days.length===5)) S.days=[[],[],[],[],[]]; S.days=S.days.map(a=>(a||[]).filter(id=>BLOCK[id])); S.wake=(o.wake&&o.wake.length===5)?o.wake:DEFAULT_STATE.wake.slice(); S.manual=o.manual||{}; S.transport='pt'; S.hotel='solaria'; if(!FLIGHTS_OUT.some(f=>f.id===S.out)){S.out=DEFAULT_STATE.out;S.outT=Object.assign({},DEFAULT_STATE.outT);} if(!FLIGHTS_RET.some(f=>f.id===S.ret)){S.ret=DEFAULT_STATE.ret;S.retT=Object.assign({},DEFAULT_STATE.retT);} if(!AIRLINES.some(a=>a.id===S.airline)) S.airline=DEFAULT_STATE.airline; if(!JR_TOM.some(x=>x.id===S.jrTrain)) S.jrTrain=DEFAULT_STATE.jrTrain; if(typeof S.day!=='number'||S.day<0||S.day>4) S.day=0; ['flightPP','fareBasis','tomamuKRW','hotelNight','rate','icnKRW','petKRW','cityJPY'].forEach(k=>{ delete S[k]; }); if(o.souv&&!Object.keys(SH.ck).some(k=>k.startsWith('souv:'))){ Object.keys(o.souv).forEach(i=>{ if(o.souv[i]) SH.ck['souv:'+i]=true; }); persistSH(false); } delete S.souv; if(legacy){ S.out='ZE621'; S.outT={dep:'07:40',arr:'10:20'}; S.ret='WE532'; S.retT={dep:'14:05',arr:'17:30'}; } for(let d=0;d<5;d++){ if(!S.manual[d]) S.days[d]=autoDay(d); } return true; } }catch(e){} return false; }
 function saveAll(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
 function toast(m){ const t=$('#toast'); if(!t) return; t.textContent=m; t.classList.toggle('long',String(m).length>34); t.classList.add('on'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('on'),2200); }
@@ -1314,7 +1625,7 @@ const ICONS={
  info:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5h.01"/></svg>'
 };
 const LEAF={}; NAV.forEach(g=>g.leaves.forEach(l=>{ LEAF[l.id]=Object.assign({},l,{g:g.id,gn:g.n}); }));
-const BUILD='v5.5 · 2026-10-20';
+const BUILD='v5.6 · 2026-10-20';
 let PAGE='glance'; const LAST={};
 function groupOf(id){ const l=LEAF[id]||LEAF.glance; return NAV.find(g=>g.id===l.g); }
 function go(id,opt){
@@ -1485,7 +1796,17 @@ function renderMove(){
 <li><span>7710</span><span>토마무 풀데이 후 삿포로 저녁만 가능</span></li>
 <li><span>시각 근거</span><span>ANA 스키버스 안내 2026.9.17 (2026-27 · 복로 12/2~3/31) — 요금 ¥7,000은 2025-26 기준</span></li>
 </ul></div>
-  <div class="card tent"><h3>삿포로 시내 · 오타루 · 공항 — JR 쾌속 에어포트</h3><ul class="kv"><li><span>삿포로 ↔ 오타루</span><span>¥800/인 · 32~36분 · 시간당 3편 (2025.4 개정)</span></li><li><span>삿포로 → 신치토세</span><span>¥1,230/인 · 37분 · 12분 간격 · u시트 지정석 +¥840 (2025.4 개정)</span></li><li><span>시내</span><span>지하철·시덴 — 예산에 예비 ¥3,000 (판단)</span></li></ul><p>12/21 귀국: 삿포로역 <b>10:45</b> JR → 공항 11:35(출발 2h30 전) → 체크인 후 국내선 터미널 기념품 → 13:05 보안검색.</p><div class="links"><a target="_blank" rel="noopener" href="https://www.jrhokkaido.co.jp/global/korean/">JR북해도 한국어</a></div></div>
+  <div class="card tent"><h3>삿포로 시내 · 오타루 · 공항 — JR 쾌속 에어포트</h3><ul class="kv"><li><span>삿포로 ↔ 오타루</span><span>¥800/인 · 32~36분 · 시간당 3편 (2025.4 개정)</span></li><li><span>삿포로 → 신치토세</span><span>¥1,230/인 · 37분 · 12분 간격 · u시트 지정석 +¥840 (2025.4 개정)</span></li><li><span>시내</span><span>지하철·시덴 — 하루 조합에서 구간별 계산 (아래 기준) · 예산 예비 ¥3,000 (판단)</span></li></ul><p>12/21 귀국: 삿포로역 <b>10:45</b> JR → 공항 11:35(출발 2h30 전) → 체크인 후 국내선 터미널 기념품 → 13:05 보안검색.</p><div class="links"><a target="_blank" rel="noopener" href="https://www.jrhokkaido.co.jp/global/korean/">JR북해도 한국어</a></div></div>
+  <div class="card tent"><h3>시내 이동 계산 기준 (v5.6 · 하루 조합 자동 계산)</h3><ul class="kv">
+<li><span>좌표</span><span>국토지리원 주소검색(GSI) — 블록 주소 기준 · 역 좌표 ekidata 공개데이터 (10/20)</span></li>
+<li><span>도보</span><span>직선거리 × 1.3(격자 도로) ÷ 분당 70m (겨울 눈길) <span class="b judge">판단</span> · 25분 이상이면 경고</span></li>
+<li><span>지하철</span><span>역간 난보쿠선 1.8 · 도자이선 2.0 · 도호선 1.9분 + 승강장·대기 4분 + 환승 3~6분 <span class="b judge">판단</span> · 운임 1~3km ¥210 · ~7km ¥250 · ~11km ¥290 (2019.10 개정 현행)</span></li>
+<li><span>시덴</span><span>정류장 간 2.3분 (1바퀴 약 55분) · ¥230 (2024.12.1 개정) · 지하철↔시덴 乗継 할인 미반영</span></li>
+<li><span>선택</span><span>대중교통이 6분 이상 빠르거나 도보 2km 초과면 대중교통 · 도보가 15분 이상인데 지하철이 더 빠르면 괄호로 병기</span></li>
+<li><span>오타루</span><span>JR 札幌 → 南小樽 약 31분 · 小樽 약 34분 · ¥800/인 · 대기 약 7분 <span class="b judge">판단</span> — 가까운 역 자동 선택 (사카이마치·르타오 = 南小樽, 운하·역 앞 = 小樽)</span></li>
+<li><span>텐구야마</span><span>小樽駅前 4번 승강장 중앙버스 9번 · 약 17~20분(계산 20분) · ¥240 (johnny88 2026.10 · cotaru 2026.6) · 대기 약 10분 <span class="b judge">판단</span></span></li>
+<li><span>공항</span><span>JR 쾌속 에어포트 札幌 → 新千歳空港 약 37분 · ¥1,230/인 · 대기 약 6분(12분 간격) + 국제선 터미널 도보 10분</span></li>
+<li><span>실시간</span><span>출발 시각·환승은 각 이동 줄의 “구글맵 ↗” (대중교통 모드)</span></li></ul></div>
   </div>`;
 }
 function setJR(id){ S.jrTrain=id; if(!S.manual[2]) S.days[2]=autoDay(2); saveAll(); renderAll(); toast(jrTrain().n+' '+jrTrain().dep+' 선택 — DAY 3 재계산'); }
@@ -1497,7 +1818,7 @@ function renderOtaru(){
   const cell=(b,d)=>{ if(closedWhy(b,d)) return 'n'; if(!b.rv) return 'y'; const e=rsvEval(b,d); if(e.booked) return 'b'; if(e.lv==='bad') return 'n'; if(['none','ticket'].includes(b.rv.t)) return 'w'; if(e.lv==='warn') return 'm'; return 'y'; };
   const rows=OTA_ROWS.map(id=>BLOCK[id]).filter(Boolean);
   const mk=v=>`<span class="ok-x ${v}">${v==='y'?'○':v==='n'?'✕':v==='b'?'✓ 예약':v==='w'?'대기':'예약'}</span>`;
-  $('#pg-otaru .body').innerHTML=`<div class="grid g2"><div class="card tent on"><span class="tag pill ok">추천 · 미확정</span><h3>12/20 (일) — 삿포로에서 JR 당일치기</h3><div class="t">JR 쾌속 에어포트<small>¥800/인 · 32~36분 · 시간당 3편</small></div><p>08:30 출발 → 09:05 르타오 2F 카페(일요일이라 오픈 직행) → 사카이마치 → 11:40 이세즈시/마사즈시 점심(예약) → 운하 낮 → 텐구야마 → <b>16:00 青の運河 블루아워</b> → 17:05 삿포로 → 크리스마스마켓·오도리 → 다루마 → 파르페 사토. 종료 22시 전후.</p><p><b>장점</b> 눈길 운전 0, 오타루·삿포로 야경 둘 다. <b>단점</b> 크리스마스 직전 일요일 인파(점심 예약·르타오 9시 필수), 미요후쿠 일요일 휴무. 伊勢鮨 12/20분 예약은 10/20 11:00 오픈.</p><div class="tools"><button class="btn sm" onclick="applyOtaru()">12/20 오타루 코스 적용${inSun?' ✓':''}</button></div><p class="small">${inSun?'DAY 4 타임라인에 오타루 코스가 들어가 있습니다. 하루 조합에서 순서·블록을 바꿔도 됩니다.':'아직 오타루 블록이 없습니다. 버튼을 누르면 DAY 4 타임라인이 채워집니다.'}</p></div>
+  $('#pg-otaru .body').innerHTML=`<div class="grid g2"><div class="card tent on"><span class="tag pill ok">추천 · 미확정</span><h3>12/20 (일) — 삿포로에서 JR 당일치기</h3><div class="t">JR 쾌속 에어포트<small>¥800/인 · 32~36분 · 시간당 3편</small></div><p>${otaruLine()}</p><p class="small muted">이동은 실제 좌표 기준 계산 (JR 札幌→南小樽 · 사카이마치~역 앞 도보 · 텐구야마 버스 왕복 · JR 小樽→札幌). 시간이 모자라면 자동 조합이 파르페 사토 → 오도리 → 운하(낮) 순으로 뺍니다.</p><p><b>장점</b> 눈길 운전 0, 오타루·삿포로 야경 둘 다. <b>단점</b> 크리스마스 직전 일요일 인파(점심 예약·르타오 9시 필수), 미요후쿠 일요일 휴무. 伊勢鮨 12/20분 예약은 10/20 11:00 오픈.</p><div class="tools"><button class="btn sm" onclick="applyOtaru()">12/20 오타루 코스 적용${inSun?' ✓':''}</button></div><p class="small">${inSun?'DAY 4 타임라인에 오타루 코스가 들어가 있습니다. 하루 조합에서 순서·블록을 바꿔도 됩니다.':'아직 오타루 블록이 없습니다. 버튼을 누르면 DAY 4 타임라인이 채워집니다.'}</p></div>
   <div class="card tent"><span class="tag pill bad">비추 · 대안</span><h3>12/21 (월) — 귀국일 오전</h3><div class="t">14:05 편이라 불가<small>삿포로 10:45 JR 출발이 상한</small></div><p>귀국 편이 WE532 14:05로 확정되면서 오전 오타루는 시간상 불가(오타루 왕복만 1h10 + 공항 이동). 월요일이라 사이미 휴무. 대설 시 JR 지연이 곧 항공 지연으로 이어짐.</p></div></div>
   <div class="card" style="margin-top:12px;padding:6px 8px 2px"><table><thead><tr><th>영업일·예약 판별 (블록 데이터 자동 계산 · 10/20 확인)</th><th class="r">토 19</th><th class="r">일 20</th><th class="r">월 21</th></tr></thead><tbody>${rows.map(b=>`<tr><td><div class="n">${esc(b.n.split(' (')[0])}</div><div class="note">${esc(ZONES[b.z])} · 일 ${esc(hoursText(b,3))}${b.rv?' · '+esc(RVT[b.rv.t]):''}${b.rate?' · '+esc(b.rate):''}</div></td>${[2,3,4].map(d=>`<td class="r">${mk(cell(b,d))}</td>`).join('')}</tr>`).join('')}</tbody></table><p class="small muted" style="padding:4px 6px 8px;margin:0">○ 가능 · 예약 = 예약 필요(미예약) · ✓ 예약 완료 · 대기 = 예약 불가·현장 대기 · ✕ 휴무·만석</p></div>`;
 }
@@ -1508,39 +1829,47 @@ function renderCompose(){
   const tabs=`<div class="seg day">${[0,1,2,3,4].map(i=>`<button class="${i===d?'on':''}" onclick="setDay(${i})"><span class="n">DAY ${i+1}<span class="lvdot ${ALL[i].level}"></span></span><span class="d">${dlabel(i).replace(/[()]/g,'')}</span></button>`).join('')}</div>`;
   const prefs=PREFS.map(p=>`<button class="chip sm ${S.prefs[p[0]]?'on':''}" onclick="togglePref('${p[0]}')">${S.prefs[p[0]]?'✓ ':''}${p[1]}</button>`).join('');
   const wake=d>0?`<label class="small muted" style="display:inline-flex;align-items:center;gap:6px">기상 <input type="time" value="${S.wake[d]||'08:00'}" onchange="setWake(${d},this.value)"></label>`:`<span class="small muted">첫날 시작은 항공편이 정함 — 집 ${fmtT(toMin(S.outT.dep)-CHECKIN_LEAD-HOME_ICN)} 출발</span>`;
-  let bi=0;
+  let bi=0, pno=0;
+  const gml=u=>u?` <a class="gml" target="_blank" rel="noopener" href="${esc(u)}" title="구글맵에서 이 구간 경로 열기">구글맵 ↗</a>`:'';
   const items=sc.ev.map(o=>{
-    if(o.type==='travel') return `<li class="tl-item travel ${o.fixed?'fixed':''}"><div class="tm">${fmtT(o.start)}<small>${o.fixed?'→ '+fmtT(o.end):fmtDur(o.end-o.start)}</small></div><div><div class="nm">${ICON[o.mode]||'🚆'} ${esc(o.n)}${o.fare?` · ¥${o.fare.toLocaleString()} (2인)`:''}</div>${warnHtml(o)}</div><div></div></li>`;
+    if(o.type==='travel'){
+      if(o.city) return `<li class="tl-item travel city"><div class="tm">${fmtT(o.start)}<small>${fmtDur(o.end-o.start)}</small></div><div><div class="nm">${MODEI[o.mode]||'🚶'} ${esc(o.n)}${gml(o.gm)}</div>${stepsHtml(o)}${warnHtml(o)}</div><div></div></li>`;
+      return `<li class="tl-item travel ${o.fixed?'fixed':''}"><div class="tm">${fmtT(o.start)}<small>${o.fixed?'→ '+fmtT(o.end):fmtDur(o.end-o.start)}</small></div><div><div class="nm">${ICON[o.mode]||'🚆'} ${esc(o.n)}${o.fare?` · ¥${o.fare.toLocaleString()} (2인)`:''}${gml(o.gm)}</div>${warnHtml(o)}</div><div></div></li>`; }
     if(o.type==='anchor') return `<li class="tl-item anchor ${o.k?'k':''}"><div class="tm">${fmtT(o.start)}${o.end>o.start?`<small>~${fmtT(o.end)}</small>`:''}</div><div><div class="nm">${esc(o.n)} ${o.tag?`<span class="b fix">${o.tag}</span>`:''}</div>${o.note?`<div class="meta">${esc(o.note)}</div>`:''}${warnHtml(o)}</div><div></div></li>`;
     if(o.type==='flight') return `<li class="tl-item flight"><div class="tm">${fmtT(o.start)}<small>→ ${fmtT(o.end)}</small></div><div><div class="nm">${esc(o.n)}</div><div class="meta">${fmtDur(o.end-o.start)} 비행 · 기내 Visit Japan Web 준비</div></div><div></div></li>`;
-    const b=BLOCK[o.id]; const i=bi++;
-    return `<li class="tl-item block ${o.bad?'bad':''}" data-id="${o.id}" data-bi="${i}"><div class="tm">${fmtT(o.start)}<small>~${fmtT(o.end)} · ${fmtDur(o.dur)}</small></div><div><div class="nm">${esc(b.n)}</div><div class="meta">${ZONES[b.z]} · ${CATS[b.c]||b.c} · ${esc(hoursText(b,d))}${b.slot?` · 슬롯 ${b.slot}`:''}${b.cost?` · ¥${b.cost.toLocaleString()}/인`:' · 무료'}${b.rate?` · ⭐ ${esc(b.rate)}`:''}${o.gap?` · 도보 ${o.gap}분`:''} · <a target="_blank" rel="noopener" href="${gm(b.q)}">지도</a> · <a target="_blank" rel="noopener" href="${gi(b.q)}">사진</a></div>${rvRow(b,d,true)}${warnHtml(o)}</div><div class="act"><span class="ib grip" title="드래그로 순서 변경">⋮⋮</span><button class="ib x" onclick="removeBlock(${i})" title="삭제">×</button></div></li>`;
+    const b=BLOCK[o.id]; const i=bi++; const no=b.ll?++pno:0;
+    return `<li class="tl-item block ${o.bad?'bad':''}" data-id="${o.id}" data-bi="${i}"><div class="tm">${fmtT(o.start)}<small>~${fmtT(o.end)} · ${fmtDur(o.dur)}</small></div><div><div class="nm">${no?`<span class="no">${no}</span>`:''}${esc(b.n)}</div><div class="meta">${ZONES[b.z]} · ${CATS[b.c]||b.c} · ${esc(hoursText(b,d))}${b.slot?` · 슬롯 ${b.slot}`:''}${b.cost?` · ¥${b.cost.toLocaleString()}/인`:' · 무료'}${b.rate?` · ⭐ ${esc(b.rate)}`:''}${o.near?' · 바로 옆 (2분)':(o.gap?` · 도보 ${o.gap}분`:'')} · <a target="_blank" rel="noopener" href="${gm(b.q)}">지도</a> · <a target="_blank" rel="noopener" href="${gi(b.q)}">사진</a></div>${rvRow(b,d,true)}${warnHtml(o)}</div><div class="act"><span class="ib grip" title="드래그로 순서 변경">⋮⋮</span><button class="ib x" onclick="removeBlock(${i})" title="삭제">×</button></div></li>`;
   }).join('');
   const flags=sc.flags.map(f=>`<li class="${f[0]}">${f[0]==='bad'?'✕':f[0]==='warn'?'▲':'ⓘ'} ${esc(f[1])}</li>`).join('');
   const zones=DAYZONES[d]; const used=new Set(S.days[d]||[]);
   const avail=BLOCKS.filter(b=>zones.includes(b.z)&&(palCat==='all'||(palCat==='wish'?!!b.wish:b.c===palCat))&&(palZone==='all'||b.z===palZone));
   const catChips=[['all','전체'],...Object.entries(CATS),['wish','♡ 한아름 위시']].map(c=>`<button class="chip sm ${palCat===c[0]?'on':''}" onclick="palCat='${c[0]}';dirty('compose');paint('compose')">${c[1]}</button>`).join('');
   const zoneChips=[['all','모든 지역'],...zones.map(z=>[z,ZONES[z]])].map(c=>`<button class="chip sm ${palZone===c[0]?'on':''}" onclick="palZone='${c[0]}';dirty('compose');paint('compose')">${c[1]}</button>`).join('');
+  const lp=lastPoint(d);
   const pal=avail.map(b=>{const u=used.has(b.id); const ptBad=PT_BAD.includes(b.z); const cw=closedWhy(b,d); const re=b.rv?rsvEval(b,d):null; const nogo=!!cw||(re&&re.lv==='bad');
     const dayLine=cw?`<span class="dv bad">✕ ${dlabel(d)} ${esc(cw)}</span>`:`<span class="dv ${nogo?'bad':''}">${nogo?'✕':'○'} ${dlabel(d)} ${esc(hoursText(b,d))}</span>`;
-    return `<div class="pal-item ${u?'disabled':''} ${nogo?'nogo':''}" data-id="${b.id}"><div><div class="nm">${b.wish?'<span class="wish">♡ 위시</span> ':''}${esc(b.n)}</div><div class="meta">${ZONES[b.z]} · ${CATS[b.c]||b.c} · ${fmtDur(b.dur)} · ${b.cost?'¥'+b.cost.toLocaleString()+'/인':'무료'}${b.rate?' · ⭐ '+esc(b.rate):''}${b.night?' · 🌙 야경':''}${b.slot?' · 슬롯 '+b.slot:''}${ptBad?' · <span style="color:var(--warn)">대중교통 불리</span>':''}</div><div class="meta">${dayLine}</div>${rvRow(b,d,false)}<div class="note">${esc(b.note)} <span style="color:#aeaeb2">[${esc(b.src)}]</span> · <a target="_blank" rel="noopener" href="${gm(b.q)}">지도</a> · <a target="_blank" rel="noopener" href="${gi(b.q)}">사진</a></div></div><div class="act">${u?'<span class="b src">추가됨</span>':`<button class="ib add" onclick="addBlock('${b.id}')" title="타임라인 끝에 추가">＋</button><span class="ib grip" title="드래그">⋮⋮</span>`}</div></div>`;}).join('');
+    return `<div class="pal-item ${u?'disabled':''} ${nogo?'nogo':''}" data-id="${b.id}"><div><div class="nm">${b.wish?'<span class="wish">♡ 위시</span> ':''}${esc(b.n)}</div><div class="meta">${ZONES[b.z]} · ${CATS[b.c]||b.c} · ${fmtDur(b.dur)} · ${b.cost?'¥'+b.cost.toLocaleString()+'/인':'무료'}${b.rate?' · ⭐ '+esc(b.rate):''}${b.night?' · 🌙 야경':''}${b.slot?' · 슬롯 '+b.slot:''}${ptBad?' · <span style="color:var(--warn)">대중교통 불리</span>':''}</div><div class="meta">${dayLine}${u?'':fromLastHtml(b,lp)}</div>${rvRow(b,d,false)}<div class="note">${esc(b.note)} <span style="color:#aeaeb2">[${esc(b.src)}]</span> · <a target="_blank" rel="noopener" href="${gm(b.q)}">지도</a> · <a target="_blank" rel="noopener" href="${gi(b.q)}">사진</a></div></div><div class="act">${u?'<span class="b src">추가됨</span>':`<button class="ib add" onclick="addBlock('${b.id}')" title="타임라인 끝에 추가">＋</button><span class="ib grip" title="드래그">⋮⋮</span>`}</div></div>`;}).join('');
+  const pts=dayPoints(d), gl=dayGLinks(d), runs=cityRuns(S.days[d]||[]), ls=legStats(sc);
+  const cities=[...new Set(pts.map(p=>p.city).filter(Boolean))], msel=mapSel(pts);
+  const routeSec=pts.length?`<div class="rsec"><div class="rh">동선 <span class="m">${ls.txt?esc(ls.txt):'시내 이동 없음'}</span></div><div class="rtools"><button class="btn sm ${UI.map?'':'sec'}" onclick="toggleMap()">🗺 지도 ${UI.map?'닫기':'보기'}</button>${gl.map(g=>`<a class="btn sm sec" target="_blank" rel="noopener" href="${esc(g.url)}">구글맵 ${esc(g.n)} ↗</a>`).join('')}<button class="btn sm sec" onclick="exportKML()">KML 저장</button>${runs.length?`<button class="btn sm sec" onclick="optimizeUI()">동선 최적화</button>`:''}</div><p class="rnote">구글맵 묶음 = 방문 순서를 도보 경로로 표시 (대중교통 다중 경유는 구글 미지원 · 경유지 앱 9곳 / 모바일 브라우저 3곳) · 지하철·시덴 실시간은 각 이동 줄 “구글맵 ↗” · KML = PC 구글 “내 지도” → 가져오기 · 최적화 = 같은 도시 안 순서만 비교</p>${optCard(d)}${UI.map?`<div class="mapbox">${cities.length>1?`<div class="mapchips">${cities.map(c=>`<button class="chip sm ${c===msel?'on':''}" data-c="${c}" onclick="setMapCity('${c}')">${CITYN[c]}</button>`).join('')}</div>`:''}<div id="lmap"></div><div class="maplg"><span><i></i>도보</span><span><i class="lr"></i>지하철·시덴</span><span><i class="lb"></i>버스</span><span><i class="lj"></i>JR</span><span>번호 = 타임라인 순서 · ⌂ 숙소</span></div></div>`:''}</div>`:'';
   const palEl=document.getElementById('pal'); const palScroll=palEl?palEl.scrollTop:0;
   $('#pg-compose .body').innerHTML=`${tabs}
   <div class="prefs"><span class="lbl">자동 조합 취향</span>${prefs}</div>
   <div class="tools"><button class="btn sm" onclick="autoThis()">DAY ${d+1} 자동 조합</button><button class="btn sm sec" onclick="autoAllUI()">5일 전체</button><button class="btn sm sec" onclick="clearDay()">비우기</button><span class="sp"></span>${wake}</div>
   <div class="board">
-   <div class="panel tlpanel"><h3>DAY ${d+1} · ${esc(DAYMETA[d].t)} ${lvPill(sc.level)}<span class="m" style="flex-basis:100%">${dlabel(d)} · 숙박 ${esc(DAYMETA[d].sleep)}</span></h3><div class="tools editbar"><button class="btn sm addpal" onclick="openSheet()">＋ 블록 추가</button><button class="btn sm ${EDITM?'':'sec'}" onclick="setEdit(${EDITM?'false':'true'})">${EDITM?'편집 중 · 잠그기':'순서 편집'}</button><span class="small muted">${EDITM?'⋮⋮ 를 끌거나 카드를 길게 눌러 이동':'잠금 — 스크롤만 됩니다'}</span></div><ul class="tl" id="tl">${items}</ul><div class="daysum"><span>종료 ${fmtT(sc.end)}</span>${sc.drive?`<span>· 이동 ${fmtDur(sc.drive)}</span>`:''}${sc.fare?`<span>· 교통비 ¥${sc.fare.toLocaleString()} (2인)</span>`:''}<span>· 식사·입장 ¥${sc.cost.toLocaleString()}/인</span></div>${flags?`<ul class="flags">${flags}</ul>`:''}<div class="tools"><button class="btn sm ghost" onclick="go('master')">완성본 보기</button></div></div>
+   <div class="panel tlpanel"><h3>DAY ${d+1} · ${esc(DAYMETA[d].t)} ${lvPill(sc.level)}<span class="m" style="flex-basis:100%">${dlabel(d)} · 숙박 ${esc(DAYMETA[d].sleep)}</span></h3><div class="tools editbar"><button class="btn sm addpal" onclick="openSheet()">＋ 블록 추가</button><button class="btn sm ${EDITM?'':'sec'}" onclick="setEdit(${EDITM?'false':'true'})">${EDITM?'편집 중 · 잠그기':'순서 편집'}</button><span class="small muted">${EDITM?'⋮⋮ 를 끌거나 카드를 길게 눌러 이동':'잠금 — 스크롤만 됩니다'}</span></div><ul class="tl" id="tl">${items}</ul><div class="daysum"><span>종료 ${fmtT(sc.end)}</span>${sc.drive?`<span>· 이동 ${fmtDur(sc.drive)}</span>`:''}${sc.fare?`<span>· 교통비 ¥${sc.fare.toLocaleString()} (2인)</span>`:''}<span>· 식사·입장 ¥${sc.cost.toLocaleString()}/인</span></div>${flags?`<ul class="flags">${flags}</ul>`:''}${routeSec}<div class="tools"><button class="btn sm ghost" onclick="go('master')">완성본 보기</button></div></div>
    <div class="panel palpanel" id="palHost"><div class="handle"></div><h3>팔레트 <span class="m">${avail.length}개 · ＋ 또는 끌어오기</span><button class="ib close sp" onclick="closeSheet()" title="닫기">×</button></h3><div class="palhead"><input type="search" placeholder="이름·메모 검색" value="${esc(palQ)}" oninput="palSearch(this.value)"><div class="chips">${catChips}</div><div class="chips">${zoneChips}</div></div><div class="pal" id="pal">${pal||'<div class="meta" style="color:var(--ink3)">해당 조건의 블록 없음</div>'}</div></div>
   </div>`;
   const np=document.getElementById('pal'); if(np) np.scrollTop=palScroll; palSearch(palQ,true);
+  if(UI.map&&pts.length) drawMap();
 }
 function palSearch(q,keep){ palQ=String(q||''); const s=palQ.trim().toLowerCase(); document.querySelectorAll('#pal .pal-item').forEach(el=>{ el.classList.toggle('hide',!!s&&!el.textContent.toLowerCase().includes(s)); }); }
-function setDay(i){ S.day=i; palCat='all'; palZone='all'; saveAll(); dirty('compose'); paint('compose'); }
+function setDay(i){ S.day=i; palCat='all'; palZone='all'; UI.mapCity=null; UI.opt=null; saveAll(); dirty('compose'); paint('compose'); }
 function togglePref(k){ S.prefs[k]=!S.prefs[k]; saveAll(); dirty('compose'); paint('compose'); }
 function autoThis(){ S.days[S.day]=autoDay(S.day); S.manual[S.day]=false; saveAll(); renderLight(); toast('DAY '+(S.day+1)+' 자동 조합 완료 — 취향 바꾸고 다시 눌러도 됨'); }
 function autoAllUI(){ autoAll(); S.manual={}; saveAll(); renderLight(); toast('5일 전체 자동 조합 완료'); }
 function clearDay(){ S.days[S.day]=[]; S.manual[S.day]=true; saveAll(); renderLight(); }
-function evalToast(id){ const sc=ALL[S.day]; const ev=sc?sc.ev.find(o=>o.type==='block'&&o.id===id):null; const nm=BLOCK[id].n.split(' (')[0]; if(!ev){ toast(nm+' 추가'); return; } const m=ev.bad?('✕ '+(ev.why||ev.warn[0])):(ev.warn.length?('▲ '+ev.warn[0]):(ev.rok?('✓ '+ev.rok):(ev.rinfo?('ⓘ '+ev.rinfo):'● 가능 · '+fmtT(ev.start)+' 시작'))); toast(nm+' — '+m); }
+function evalToast(id){ const sc=ALL[S.day]; const k=sc?sc.ev.findIndex(o=>o.type==='block'&&o.id===id):-1; const ev=k>=0?sc.ev[k]:null; const pv=k>0?sc.ev[k-1]:null; const leg=(pv&&pv.type==='travel'&&pv.city)?' · 직전에서 '+(MODEI[pv.mode]||'')+' '+fmtDur(pv.end-pv.start):''; const nm=BLOCK[id].n.split(' (')[0]; if(!ev){ toast(nm+' 추가'); return; } const m=ev.bad?('✕ '+(ev.why||ev.warn[0])):(ev.warn.length?('▲ '+ev.warn[0]):(ev.rok?('✓ '+ev.rok):(ev.rinfo?('ⓘ '+ev.rinfo):'● 가능 · '+fmtT(ev.start)+' 시작'))); toast(nm+' — '+m+leg); }
 function addBlock(id){ S.days[S.day].push(id); S.manual[S.day]=true; saveAll(); renderLight(); evalToast(id); }
 function removeBlock(i){ S.days[S.day].splice(i,1); S.manual[S.day]=true; saveAll(); renderLight(); }
 function setWake(d,v){ if(/^\d\d:\d\d$/.test(v)){ S.wake[d]=v; saveAll(); renderLight(); } }
@@ -1619,11 +1948,12 @@ function routeSVG(){
    ${N('icn','air',.4,'인천','12/17 07:40 · 12/21 17:30','middle',0,24)}${N('cts','air',.78,'신치토세','버스 703 12:20 → 14:20','middle',0,24)}${N('tom','',1.1,'토마무','12/17–19 더 타워2','end',-23,4)}${N('sap','',1.42,'삿포로','12/19–21 솔라리아','start',10,18)}${N('ota','',1.74,'오타루','12/20 당일 · JR','end',-10,4)}
   </svg>`;
 }
+const legMi=o=>`<div class="mi travel leg"><div class="tm">${fmtT(o.start)}</div><div class="nm">${MODEI[o.mode]||'🚶'} ${esc(o.n)}${(o.warn||[]).map(w=>`<div class="w">▲ ${esc(w)}</div>`).join('')}</div></div>`;
 function renderMaster(opt){
   const move=ALL.reduce((a,x)=>a+x.drive,0), fare=ALL.reduce((a,x)=>a+x.fare,0), blocks=S.days.reduce((a,x)=>a+(x||[]).length,0), lv=overallLevel(ALL); const B=budget(ALL);
   const home=ALL[4].ev.find(o=>o.n==='집 도착'); const otaru=(S.days[3]||[]).some(id=>id.startsWith('ota_'));
   const st=(l,v,f)=>`<div class="st"><div class="l">${l}</div><div class="v" data-v="${v}" data-f="${f}">—</div></div>`;
-  const days=ALL.map((x,i)=>`<div class="mday" style="--i:${i}"><div class="hd"><span class="d">DAY ${i+1} · ${dlabel(i)}</span>${lvPill(x.level)}<h3>${esc(DAYMETA[i].t)}</h3><div class="m"><span>${fmtT(x.start)} → ${fmtT(x.end)}</span>${x.drive?`<span>· 이동 ${fmtDur(x.drive)}</span>`:''}${x.fare?`<span>· 교통비 ¥${x.fare.toLocaleString()}</span>`:''}<span>· 숙박 ${esc(DAYMETA[i].sleep)}</span><a class="lk" href="#compose" onclick="event.preventDefault();S.day=${i};saveAll();dirty('compose');go('compose')">이 날 수정 ›</a></div></div><div class="mtl"><span class="ln"></span>${x.ev.filter(o=>!(o.type==='travel'&&!o.fixed&&o.end-o.start<20)).map(o=>`<div class="mi ${o.type} ${o.k?'k':''} ${o.fixed?'fixed':''}"><div class="tm">${fmtT(o.start)}${o.end>o.start&&o.type!=='anchor'?`–${fmtT(o.end)}`:''}</div><div class="nm">${o.type==='travel'?(ICON[o.mode]||'🚆')+' ':''}<b>${esc(o.type==='block'?BLOCK[o.id].n:o.n)}</b>${o.type==='travel'&&o.fare?` <span class="small muted">· ¥${o.fare.toLocaleString()} (2인)</span>`:''}${o.type==='block'&&o.gap?` <span class="small muted">· 도보 ${o.gap}분</span>`:''}${(o.warn||[]).map(w=>`<div class="w ${o.bad?'bad':''}">${o.bad?'✕':'▲'} ${esc(w)}</div>`).join('')}${o.info?`<div class="w i">ⓘ ${esc(o.info)}</div>`:''}${o.rok?`<div class="w i">✓ ${esc(o.rok)}</div>`:''}${o.rinfo?`<div class="w i">ⓘ ${esc(o.rinfo)}</div>`:''}</div></div>`).join('')}</div></div>`).join('');
+  const days=ALL.map((x,i)=>`<div class="mday" style="--i:${i}"><div class="hd"><span class="d">DAY ${i+1} · ${dlabel(i)}</span>${lvPill(x.level)}<h3>${esc(DAYMETA[i].t)}</h3><div class="m"><span>${fmtT(x.start)} → ${fmtT(x.end)}</span>${x.drive?`<span>· 이동 ${fmtDur(x.drive)}</span>`:''}${x.fare?`<span>· 교통비 ¥${x.fare.toLocaleString()}</span>`:''}<span>· 숙박 ${esc(DAYMETA[i].sleep)}</span><a class="lk" href="#compose" onclick="event.preventDefault();S.day=${i};saveAll();dirty('compose');go('compose')">이 날 수정 ›</a>${dayGLinks(i).map(g=>`<a class="lk" target="_blank" rel="noopener" href="${esc(g.url)}">구글맵 ${esc(g.n)} ↗</a>`).join('')}</div></div><div class="mtl"><span class="ln"></span>${x.ev.filter(o=>!(o.type==='travel'&&!o.fixed&&!o.city&&!o.gwA&&o.end-o.start<20)).map(o=>o.city?legMi(o):`<div class="mi ${o.type} ${o.k?'k':''} ${o.fixed?'fixed':''}"><div class="tm">${fmtT(o.start)}${o.end>o.start&&o.type!=='anchor'?`–${fmtT(o.end)}`:''}</div><div class="nm">${o.type==='travel'?(ICON[o.mode]||'🚆')+' ':''}<b>${esc(o.type==='block'?BLOCK[o.id].n:o.n)}</b>${o.type==='travel'&&o.fare?` <span class="small muted">· ¥${o.fare.toLocaleString()} (2인)</span>`:''}${o.type==='block'&&o.gap?` <span class="small muted">· 도보 ${o.gap}분</span>`:''}${(o.warn||[]).map(w=>`<div class="w ${o.bad?'bad':''}">${o.bad?'✕':'▲'} ${esc(w)}</div>`).join('')}${o.info?`<div class="w i">ⓘ ${esc(o.info)}</div>`:''}${o.rok?`<div class="w i">✓ ${esc(o.rok)}</div>`:''}${o.rinfo?`<div class="w i">ⓘ ${esc(o.rinfo)}</div>`:''}</div></div>`).join('')}</div></div>`).join('');
   $('#pg-master .body').innerHTML=`<div class="hero" id="hero"><canvas id="snow"></canvas><span class="stamp ${lv}">${lv==='ok'?'● 전체 일정 가능':lv==='warn'?'▲ 주의 항목 있음':'✕ 불가 항목 있음'}</span><div class="in"><div class="kick an">완성본 · 김도우 · 한아름</div><h2 class="an d1">삿포로 · 토마무<br>12.17 → 12.21</h2><div class="dates an d2">${esc(fnLabel(flightOut()))} ${S.outT.dep} 출발 → 버스 703 → 토마무 2박 → ${esc(jrTrain().n)} → 삿포로 2박${otaru?' · 오타루 당일':''} → ${esc(fnLabel(flightRet()))} ${S.retT.dep} → 집 ${home?fmtT(home.start):'—'} 도착</div>${routeSVG()}<div class="stats an d3">${st('총 예산 · 예비비 포함',B.total,'w')}${st('교통비 · 버스·JR',fare,'j')}${st('이동 시간',move,'d')}${st('일정 블록',blocks,'n')}</div></div></div>
   <div class="tools"><button class="btn sm" onclick="copySummary()">요약 복사 (카톡)</button><button class="btn sm sec" onclick="window.print()">PDF · 인쇄</button><button class="btn sm sec" onclick="playMaster()">다시 보기</button></div>
   <div class="master" id="master">${days}</div>`;
