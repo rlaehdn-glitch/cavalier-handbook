@@ -1359,6 +1359,16 @@ img.alb-th.err, .strip .sc img.err{visibility:hidden;}
 .fd-now{display:inline-block; margin-top:4px; padding:2px 0; background:none; border:none; color:var(--tint); font:inherit; font-size:13px; font-weight:600; cursor:pointer;}
 .fd-now:focus-visible{outline:2px solid var(--tint); outline-offset:2px; border-radius:4px;}
 #fdKcalHint.lv-watch{color:var(--warn-ink); font-weight:600;}
+/* V6.2.1: 지금 카드 — 진행 중 기록의 시작 시각 수정 버튼 */
+.now-ed{flex:0 0 auto; border:none; border-radius:999px; padding:8px 12px; font-family:inherit; font-size:14px; font-weight:600; cursor:pointer; background:var(--fill2); color:var(--label); white-space:nowrap;}
+.now-ed:active, .now-btn:active{opacity:.6;}
+.now-ed:focus-visible, .now-btn:focus-visible{outline:2px solid var(--tint); outline-offset:2px;}
+.now-row .now-btn{white-space:nowrap;}
+@media (max-width:370px){ .now-row{gap:8px;} .now-ed{padding:8px 10px; font-size:13px;} .now-row .now-btn{padding:8px 13px;} }
+/* 보조 줄 — 좁으면 항목 단위로 줄바꿈, 줄 맨 앞의 구분점은 숨김 */
+.now-tx .now-sb{display:flex; flex-wrap:wrap; column-gap:1.1em; overflow:hidden;}
+.now-sb i{font-style:normal; white-space:nowrap; margin-left:-1.1em;}
+.now-sb i::before{content:'·'; display:inline-block; width:1.1em; text-align:center;}
 </style>
 </head>
 <body>
@@ -2563,7 +2573,7 @@ img.alb-th.err, .strip .sc img.err{visibility:hidden;}
       <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
       <li>의료 정보는 일반 정보입니다. 개별 판단은 수의사 진료가 우선입니다.</li>
     </ul>
-    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.2.0 · 2026-10-16</p>
+    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.2.1 · 2026-10-22</p>
   </div>
 </section>
 
@@ -3956,6 +3966,10 @@ class VideoRTC extends HTMLElement {
 if(window.customElements && !customElements.get('video-stream')){ customElements.define('video-stream', VideoRTC); }
 </script>
 <script>
+/* V6.2.1 (2026-10-22): 진행 중 기록(산책·수면·외출·유치원)의 시작 시각을 진행 중에 바로 수정.
+   홈 '지금' 카드 각 줄에 '시작 수정'(수면 '취침 수정' · 외출 '외출 수정' · 유치원 '등원 수정') 버튼 추가 → 진행 중 시트.
+   유치원도 같은 시트(QE_CUR.kcur) — 하원은 기존 하원 버튼·타일 그대로. 오늘 목록 '등원 중' 줄도 등원 시각 수정으로 통일.
+   타일 한 번 탭 = 시작/종료 동작은 그대로. 저장 형식 변경 없음. */
 /* V6.2.0 (2026-10-16): 급여 기준 카드 개편 — 숫자 하나 → 공식 범위 + 현재 급여량 판정.
    ① 배수: 50%·80% 계단(하루아침 −17%/−20%) → 성견 대비 비율에 따른 직선 보간. 하한 AAHA 2021 · 상한 영국 수의간호 기준.
       생후 300~365일 성견 배수로 직선 전환. 성견 배수 중성화 전 ×1.6~1.8 / 후 ×1.4~1.6.
@@ -6418,6 +6432,13 @@ function fmtHrs(ms){ const h=Math.round(ms/360000)/10; return (h%1===0? h.toFixe
 const QL_OPEN={};
 /* ===== V5.6: 퀵액션 기록 수정 시트 ===== */
 const QE={mode:'', k:'', i:-1, amt:''};
+/* V6.2.1: 진행 중 기록 — 시작 시각만 수정 · 진행 취소. 유치원(kcur)도 같은 시트로(하원은 하원 버튼). */
+const QE_CUR={
+  wcur:{k:'walkCur',  t:'🐕 산책 진행 중',    l:'시작 시각', x:'진행 취소', q:'진행 중인 산책을 취소할까요? 이번 산책은 기록되지 않습니다.'},
+  scur:{k:'sleepCur', t:'😴 수면 진행 중',    l:'취침 시각', x:'진행 취소', q:'진행 중인 수면 기록을 취소할까요? 이번 수면은 저장되지 않습니다.'},
+  acur:{k:'awayCur',  t:'🚪 외출 진행 중',    l:'외출 시각', x:'진행 취소', q:'이 외출 기록을 취소할까요? 시간이 저장되지 않습니다.'},
+  kcur:{k:'kgCur',    t:'🎒 유치원 등원 중',  l:'등원 시각', x:'등원 취소', q:'진행 중인 등원을 취소할까요? 이번 등원은 기록되지 않습니다.'}
+};
 function qeTimeStr(v){ return /^\d\d:\d\d$/.test(v||'')? v+':00' : null; }
 function qeSortCount(arr){ arr.sort(function(a,b){ a=String(a).split('|')[0]; b=String(b).split('|')[0]; return a<b? -1 : a>b? 1 : 0; }); }
 function qeApplyHM(baseMs, hm){ const d=new Date(baseMs); const p=hm.split(':'); d.setHours(parseInt(p[0],10), parseInt(p[1],10), 0, 0); return d.getTime(); }
@@ -6452,13 +6473,14 @@ function qeOpen(mode, k, i){
     t1.value=fmtHM(s.o); t2.value=fmtHM(s.i);
     t2.style.display=''; l2.style.display='';
     if(d2s(new Date(s.o))!==d2s(new Date(s.i))) hint.textContent='자정을 넘긴 기록 — 시작은 전날, 종료는 오늘 날짜로 저장됩니다.';
-  }else if(mode==='wcur' || mode==='scur' || mode==='acur'){
-    const cur=(mode==='wcur'? S.walkCur : (mode==='scur'? S.sleepCur : S.awayCur)); if(!cur) return;
-    T.textContent=(mode==='wcur'? '🐕 산책 진행 중' : (mode==='scur'? '😴 수면 진행 중' : '🚪 외출 진행 중'));
-    l1.textContent='시작 시각';
+  }else if(QE_CUR[mode]){
+    const C=QE_CUR[mode], cur=S[C.k]; if(!cur) return;
+    T.textContent= mode==='kcur'? '🎒 '+kgName()+' 등원 중' : C.t;
+    l1.textContent=C.l;
     t1.value=fmtHM(cur);
-    del.textContent='진행 취소';
-    hint.textContent='시작 시각만 고칠 수 있습니다. 진행 취소를 누르면 이번 기록 자체가 저장되지 않습니다.';
+    del.textContent=C.x;
+    hint.textContent= mode==='kcur'? '등원 시각만 고칩니다. 하원은 하원 버튼으로 기록하세요. 등원 취소를 누르면 이번 등원은 저장되지 않습니다.'
+      : C.l+'만 고칩니다. '+C.x+'를 누르면 이번 기록은 저장되지 않습니다.';
   }
   qeShow();
 }
@@ -6481,12 +6503,12 @@ function qeSave(){
     if(ni>now || no>now){ alert('미래 시각으로는 저장할 수 없습니다.'); return; }
     s.o=no; s.i=ni;
     list.sort(function(a,b){ return a.o-b.o; });
-  }else if(QE.mode==='wcur' || QE.mode==='scur' || QE.mode==='acur'){
+  }else if(QE_CUR[QE.mode]){
     if(!/^\d\d:\d\d$/.test(v1)){ alert('시각을 입력해주세요.'); return; }
-    const cur=(QE.mode==='wcur'? S.walkCur : (QE.mode==='scur'? S.sleepCur : S.awayCur)); if(!cur){ qeHide(); return; }
+    const C=QE_CUR[QE.mode], cur=S[C.k]; if(!cur){ qeHide(); return; }
     const nc=qeApplyHM(cur, v1);
     if(nc>now){ alert('미래 시각으로는 저장할 수 없습니다.'); return; }
-    if(QE.mode==='wcur') S.walkCur=nc; else if(QE.mode==='scur') S.sleepCur=nc; else S.awayCur=nc;
+    S[C.k]=nc;
   }
   saveState(); renderQlog(); if(typeof renderAway==='function') renderAway(); qeHide();
 }
@@ -6505,15 +6527,10 @@ function qeDelete(){
   }else if(QE.mode==='away'){
     if(!confirm('외출 기록을 삭제할까요?')) return;
     ((S.awayLog||{})[key]||[]).splice(QE.i,1);
-  }else if(QE.mode==='wcur'){
-    if(!confirm('진행 중인 산책을 취소할까요? 이번 산책은 기록되지 않습니다.')) return;
-    S.walkCur=0;
-  }else if(QE.mode==='scur'){
-    if(!confirm('진행 중인 수면 기록을 취소할까요? 이번 수면은 저장되지 않습니다.')) return;
-    S.sleepCur=0;
-  }else if(QE.mode==='acur'){
-    if(!confirm('이 외출 기록을 취소할까요? 시간이 저장되지 않습니다.')) return;
-    S.awayCur=0;
+  }else if(QE_CUR[QE.mode]){
+    const C=QE_CUR[QE.mode];
+    if(!confirm(C.q)) return;
+    S[C.k]=0;
   }
   saveState(); renderQlog(); if(typeof renderAway==='function') renderAway(); qeHide();
 }
@@ -8697,7 +8714,7 @@ function qlChipTap(e){
   else if(d.ak!==undefined) qeOpen('away', '', parseInt(d.ak,10));
   else if(d.acur!==undefined) qeOpen('acur');
   else if(d.kk!==undefined) kgOpen('edit', todayKey(), parseInt(d.kk,10));
-  else if(d.kcur!==undefined) kgOpen('end');
+  else if(d.kcur!==undefined) qeOpen('kcur');
 }
 function renderRibbon(){
   const svg=document.getElementById('ribSvg'); if(!svg) return;
@@ -8733,8 +8750,9 @@ function renderRibbon(){
 function renderNow(){
   const el=document.getElementById('nowAct'); if(!el) return;
   const rows=[], now=Date.now();
+  const ED={kcur:'등원 수정', wcur:'시작 수정', scur:'취침 수정', acur:'외출 수정'};   /* V6.2.1 */
   const row=function(c, ic, title, sub, btn, act, edit){
-    rows.push('<div class="now-row" style="--c:var(--c-'+c+')"><button type="button" class="now-main" data-nedit="'+edit+'"><span class="now-ic"><svg class="ico"><use href="#'+ic+'"/></svg></span><span class="now-tx"><b>'+title+'</b><span>'+sub+'</span></span></button><button type="button" class="now-btn" data-nact="'+act+'">'+btn+'</button></div>');
+    rows.push('<div class="now-row" style="--c:var(--c-'+c+')"><button type="button" class="now-main" data-nedit="'+edit+'"><span class="now-ic"><svg class="ico"><use href="#'+ic+'"/></svg></span><span class="now-tx"><b>'+title+'</b><span class="now-sb">'+sub.split(' · ').map(function(x){ return '<i>'+x+'</i>'; }).join('')+'</span></span></button><button type="button" class="now-ed" data-nedit="'+edit+'">'+ED[edit]+'</button><button type="button" class="now-btn" data-nact="'+act+'">'+btn+'</button></div>');
   };
   if(S.kgCur) row('kg', 'i-bag', esc(kgName())+' 등원 중', fmtHM(S.kgCur)+' 등원 · '+fmtDur(now-S.kgCur)+'째'+kgPassTxt(), '하원', 'kg', 'kcur');
   if(S.walkCur) row('walk', 'i-paw', '산책 중', fmtHM(S.walkCur)+' 시작 · '+fmtDur(now-S.walkCur)+'째', '종료', 'walk', 'wcur');
@@ -8759,7 +8777,7 @@ function nowTap(e){
     return;
   }
   const ed=e.target.closest('[data-nedit]');
-  if(ed){ const k=ed.dataset.nedit; if(k==='kcur') kgOpen('end'); else qeOpen(k); }
+  if(ed) qeOpen(ed.dataset.nedit);                                   /* V6.2.1: 유치원도 등원 시각 수정 시트 — 하원은 하원 버튼 */
 }
 function openWtSheet(){
   const ov=document.getElementById('wtOvl'), inp=document.getElementById('wtInput'); if(!ov || !inp) return;
