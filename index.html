@@ -1580,11 +1580,57 @@ body.wg-scr-on #uiToast.on{transform:translate(-50%, 0);}
 @media (prefers-reduced-motion: reduce){ .wg-me, .wg-live{animation:none;} .wg-ring .pr, .wg-ringbig .pr{transition:none;} }
 @media (max-height:640px){ .wg-time{font-size:42px;} .wg-ringbig, .wg-ringbig svg{width:64px; height:64px;} .wg-cb.main i{width:62px; height:62px;} .wg-cb i{width:50px; height:50px;} .wg-stats{margin:10px 0 8px;} }
 </style>
+<style id="v64css">
+/* ================= V6.4 — 목욕 관리 (2026-10-26) =================
+   홈 '목욕 줄'은 기록 버튼(.ql-v6)과 같은 표면(--card)·선 아이콘·종류별 색 규칙. 높이 44px(기록 버튼의 절반 이하). */
+:root{ --c-bath:#30B0C7; --bath-ink:#0B7285; }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --c-bath:#40C8E0; --bath-ink:#7FDBEA; } }
+:root[data-theme="dark"]{ --c-bath:#40C8E0; --bath-ink:#7FDBEA; }
+
+/* ---------- 홈 목욕 줄 ---------- */
+.bath-row{display:flex; align-items:center; min-height:44px; margin:10px 0 0; background:var(--card); border-radius:16px; padding-right:2px; transition:background .2s;}
+.bath-row:empty{display:none;}
+.bath-row.due{background:var(--fill2); background:color-mix(in srgb, var(--c-bath) 14%, var(--card));}
+.br-main{flex:1; min-width:0; display:flex; align-items:center; gap:10px; min-height:44px; padding:0 10px 0 12px; margin:0; background:none; border:none; border-radius:16px; font-family:inherit; color:var(--label); text-align:left; cursor:pointer;}
+.br-main svg.br-ic{width:20px; height:20px; color:var(--c-bath); stroke-width:1.9;}
+.br-main svg.chev{flex:0 0 auto;}
+.br-tx{flex:1; min-width:0; display:flex; align-items:baseline; gap:6px; white-space:nowrap; overflow:hidden;}
+.br-tx b{font-size:15px; font-weight:600; line-height:1.3; flex:0 0 auto;}
+.br-tx span{font-size:13.5px; color:var(--label2); overflow:hidden; text-overflow:ellipsis; font-variant-numeric:tabular-nums;}
+.bath-row.due .br-tx span{color:var(--label); opacity:.72;}
+.bath-row.late .br-tx span{color:var(--warn-ink); opacity:1; font-weight:600;}
+.br-go{flex:0 0 auto; min-height:44px; display:flex; align-items:center; padding:0 4px; margin:0; background:none; border:none; font-family:inherit; cursor:pointer;}
+.br-go span{display:inline-block; background:var(--card); color:var(--bath-ink); font-size:14px; font-weight:700; border-radius:999px; padding:7px 14px; line-height:1.2; transition:transform .12s ease;}
+.br-go:active span{transform:scale(.95);}
+
+/* ---------- 목욕 시트 ---------- */
+#bathHold{color:var(--warn-ink); font-weight:600; text-align:center; margin:0 4px 6px;}
+.bath-date{display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:6px 8px; background:var(--sheet-card); border-radius:14px; padding:10px 10px 10px 14px; margin-top:10px;}
+.bath-date label{grid-column:1 / -1; font-size:13px; font-weight:600; color:var(--label2);}
+#bathOvl .bath-date input[type="date"]{width:100%; min-width:0; box-sizing:border-box; background:var(--fill3); min-height:40px; padding:6px 10px; border-radius:10px; font-size:16px;}
+#bathMsg{color:var(--red-sys);}
+.bath-lbl{font-size:13px; font-weight:600; color:var(--label2); margin:16px 4px 6px;}
+.bath-list{background:var(--sheet-card); border-radius:14px; overflow:hidden;}
+.bath-li{display:flex; align-items:center; gap:10px; min-height:46px; padding:0 6px 0 14px; border-bottom:.5px solid var(--sep);}
+.bath-li:last-child{border-bottom:none;}
+.bath-li .d{flex:1; min-width:0; font-size:15px; color:var(--label); font-variant-numeric:tabular-nums;}
+.bath-li .g{font-size:13.5px; color:var(--label2); font-variant-numeric:tabular-nums; white-space:nowrap;}
+.bath-li button{border:none; background:none; color:var(--red-sys); font-family:inherit; font-size:15px; font-weight:600; padding:12px 8px; cursor:pointer;}
+.bath-guide{font-size:13px; line-height:1.55; color:var(--label2); margin:14px 4px 0;}
+#bathGuide{margin:2px 4px 0;}
+
+/* ---------- 달력 ---------- */
+.dot.bt{background:var(--c-bath);}
+.ev-tag.bt{background:rgba(48,176,199,.16); background:color-mix(in srgb, var(--c-bath) 16%, transparent); color:var(--bath-ink);}
+.bath-cal{margin-top:6px;}
+.bath-cal .ev-row{cursor:pointer;}
+@media (prefers-reduced-motion: reduce){ .bath-row, .br-go span{transition:none;} }
+</style>
 
 </head>
 <body>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 10.5 12 4l8.5 6.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5.5h4V20"/></symbol><symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></symbol><symbol id="i-rec" viewBox="0 0 24 24"><path d="M12 4H6.5A2.5 2.5 0 0 0 4 6.5v11A2.5 2.5 0 0 0 6.5 20h11a2.5 2.5 0 0 0 2.5-2.5V12"/><path d="M17.6 3.6a1.9 1.9 0 0 1 2.8 2.8L12 14.8l-3.6.8.8-3.6z"/></symbol><symbol id="i-photo" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="m20.5 16-4.5-4.5-7.5 7.5"/></symbol><symbol id="i-lib" viewBox="0 0 24 24"><path d="M5 4.5h3.2V20H5zM10.4 4.5h3.2V20h-3.2z"/><path d="m15.6 5.6 3-.8 3.4 14.6-3 .8z"/></symbol><symbol id="i-poo" viewBox="0 0 24 24"><path d="M6 20h12a2.5 2.5 0 0 0 0-5H6a2.5 2.5 0 0 0 0 5z"/><path d="M8.3 15h7.4a2.25 2.25 0 0 0 0-4.5H8.3a2.25 2.25 0 0 0 0 4.5z"/><path d="M10 10.5h4a2 2 0 0 0 .2-4C13.6 4.9 12.6 4 11 4c.6.9.4 2-.6 2.5A2 2 0 0 0 10 10.5z"/></symbol><symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3.5c3 4 6 7.4 6 10.8a6 6 0 0 1-12 0c0-3.4 3-6.8 6-10.8z"/></symbol><symbol id="i-drops" viewBox="0 0 24 24"><path d="M9 4c2.3 3.1 4.6 5.6 4.6 8.2a4.6 4.6 0 0 1-9.2 0C4.4 9.6 6.7 7.1 9 4z"/><path d="M17 10.5c1.5 2 3 3.6 3 5.4a3 3 0 0 1-6 0c0-1.8 1.5-3.4 3-5.4z"/></symbol><symbol id="i-bowl" viewBox="0 0 24 24"><path d="M3.5 12h17a8.5 6.5 0 0 1-17 0z"/><path d="M9 9c0-1.1.9-1.4.9-2.6M14 9c0-1.1.9-1.4.9-2.6"/></symbol><symbol id="i-paw" viewBox="0 0 24 24"><ellipse cx="6.8" cy="10.2" rx="1.7" ry="2.2"/><ellipse cx="10.2" cy="6.4" rx="1.7" ry="2.3"/><ellipse cx="13.8" cy="6.4" rx="1.7" ry="2.3"/><ellipse cx="17.2" cy="10.2" rx="1.7" ry="2.2"/><path d="M12 12c2.6 0 5 2.8 5 5.2 0 1.6-1.2 2.8-2.8 2.8-1 0-1.4-.5-2.2-.5s-1.2.5-2.2.5C8.2 20 7 18.8 7 17.2 7 14.8 9.4 12 12 12z"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M19.5 14.5A7.5 7.5 0 0 1 9.5 4.5a7.5 7.5 0 1 0 10 10z"/></symbol><symbol id="i-bag" viewBox="0 0 24 24"><path d="M5.5 10.5A4.5 4.5 0 0 1 10 6h4a4.5 4.5 0 0 1 4.5 4.5v8A2 2 0 0 1 16.5 20.5h-9a2 2 0 0 1-2-2z"/><path d="M9.5 6V5a2.5 2.5 0 0 1 5 0v1"/><path d="M8.5 14h7v3.5h-7zM5.5 12.5h13"/></symbol><symbol id="i-door" viewBox="0 0 24 24"><path d="M13 20H6.5A1.5 1.5 0 0 1 5 18.5v-13A1.5 1.5 0 0 1 6.5 4H13"/><path d="M10 12h10M17 9l3 3-3 3"/></symbol><symbol id="i-chart" viewBox="0 0 24 24"><path d="M5 20v-8M10 20V5M15 20v-6M20 20V9"/></symbol><symbol id="i-cam" viewBox="0 0 24 24"><rect x="3" y="6.5" width="12.5" height="11" rx="2.5"/><path d="m15.5 10.5 5-3v9l-5-3z"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M7 3.5h3l1.5 4-2 1.3a10.5 10.5 0 0 0 5.7 5.7l1.3-2 4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 5 5.7a2 2 0 0 1 2-2.2z"/></symbol><symbol id="i-more" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="1.7" fill="currentColor" stroke="none"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="m14.5 5-7 7 7 7"/></symbol><symbol id="i-chev" viewBox="0 0 24 24"><path d="m9.5 5 7 7-7 7"/></symbol><symbol id="i-leaf" viewBox="0 0 24 24"><path d="M12 20v-7"/><path d="M12 13c0-4 3-7 7.5-7 0 4.5-3 7-7.5 7z"/><path d="M12 15.5C12 12.5 9.7 10 6 10c0 3.3 2.3 5.5 6 5.5z"/></symbol><symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6.4"/><circle cx="12" cy="12" r="2.5"/><path stroke-width="2.6" d="M12 2.6v2.4M12 21.4v-2.4M2.6 12h2.4M21.4 12h-2.4M5.35 5.35l1.7 1.7M18.65 18.65l-1.7-1.7M5.35 18.65l1.7-1.7M18.65 5.35l-1.7 1.7"/></symbol><symbol id="i-scale" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.5"/><path d="M8.4 10.2a4.2 4.2 0 0 1 7.2 0"/><path d="m12 11.6 1.7-2.4"/></symbol></defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 10.5 12 4l8.5 6.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5.5h4V20"/></symbol><symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></symbol><symbol id="i-rec" viewBox="0 0 24 24"><path d="M12 4H6.5A2.5 2.5 0 0 0 4 6.5v11A2.5 2.5 0 0 0 6.5 20h11a2.5 2.5 0 0 0 2.5-2.5V12"/><path d="M17.6 3.6a1.9 1.9 0 0 1 2.8 2.8L12 14.8l-3.6.8.8-3.6z"/></symbol><symbol id="i-photo" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="m20.5 16-4.5-4.5-7.5 7.5"/></symbol><symbol id="i-lib" viewBox="0 0 24 24"><path d="M5 4.5h3.2V20H5zM10.4 4.5h3.2V20h-3.2z"/><path d="m15.6 5.6 3-.8 3.4 14.6-3 .8z"/></symbol><symbol id="i-poo" viewBox="0 0 24 24"><path d="M6 20h12a2.5 2.5 0 0 0 0-5H6a2.5 2.5 0 0 0 0 5z"/><path d="M8.3 15h7.4a2.25 2.25 0 0 0 0-4.5H8.3a2.25 2.25 0 0 0 0 4.5z"/><path d="M10 10.5h4a2 2 0 0 0 .2-4C13.6 4.9 12.6 4 11 4c.6.9.4 2-.6 2.5A2 2 0 0 0 10 10.5z"/></symbol><symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3.5c3 4 6 7.4 6 10.8a6 6 0 0 1-12 0c0-3.4 3-6.8 6-10.8z"/></symbol><symbol id="i-drops" viewBox="0 0 24 24"><path d="M9 4c2.3 3.1 4.6 5.6 4.6 8.2a4.6 4.6 0 0 1-9.2 0C4.4 9.6 6.7 7.1 9 4z"/><path d="M17 10.5c1.5 2 3 3.6 3 5.4a3 3 0 0 1-6 0c0-1.8 1.5-3.4 3-5.4z"/></symbol><symbol id="i-bowl" viewBox="0 0 24 24"><path d="M3.5 12h17a8.5 6.5 0 0 1-17 0z"/><path d="M9 9c0-1.1.9-1.4.9-2.6M14 9c0-1.1.9-1.4.9-2.6"/></symbol><symbol id="i-paw" viewBox="0 0 24 24"><ellipse cx="6.8" cy="10.2" rx="1.7" ry="2.2"/><ellipse cx="10.2" cy="6.4" rx="1.7" ry="2.3"/><ellipse cx="13.8" cy="6.4" rx="1.7" ry="2.3"/><ellipse cx="17.2" cy="10.2" rx="1.7" ry="2.2"/><path d="M12 12c2.6 0 5 2.8 5 5.2 0 1.6-1.2 2.8-2.8 2.8-1 0-1.4-.5-2.2-.5s-1.2.5-2.2.5C8.2 20 7 18.8 7 17.2 7 14.8 9.4 12 12 12z"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M19.5 14.5A7.5 7.5 0 0 1 9.5 4.5a7.5 7.5 0 1 0 10 10z"/></symbol><symbol id="i-bag" viewBox="0 0 24 24"><path d="M5.5 10.5A4.5 4.5 0 0 1 10 6h4a4.5 4.5 0 0 1 4.5 4.5v8A2 2 0 0 1 16.5 20.5h-9a2 2 0 0 1-2-2z"/><path d="M9.5 6V5a2.5 2.5 0 0 1 5 0v1"/><path d="M8.5 14h7v3.5h-7zM5.5 12.5h13"/></symbol><symbol id="i-door" viewBox="0 0 24 24"><path d="M13 20H6.5A1.5 1.5 0 0 1 5 18.5v-13A1.5 1.5 0 0 1 6.5 4H13"/><path d="M10 12h10M17 9l3 3-3 3"/></symbol><symbol id="i-chart" viewBox="0 0 24 24"><path d="M5 20v-8M10 20V5M15 20v-6M20 20V9"/></symbol><symbol id="i-cam" viewBox="0 0 24 24"><rect x="3" y="6.5" width="12.5" height="11" rx="2.5"/><path d="m15.5 10.5 5-3v9l-5-3z"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M7 3.5h3l1.5 4-2 1.3a10.5 10.5 0 0 0 5.7 5.7l1.3-2 4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 5 5.7a2 2 0 0 1 2-2.2z"/></symbol><symbol id="i-more" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="1.7" fill="currentColor" stroke="none"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="m14.5 5-7 7 7 7"/></symbol><symbol id="i-chev" viewBox="0 0 24 24"><path d="m9.5 5 7 7-7 7"/></symbol><symbol id="i-bath" viewBox="0 0 24 24"><path d="M3.5 11.5h17V13a5.5 5.5 0 0 1-5.5 5.5H9A5.5 5.5 0 0 1 3.5 13z"/><path d="M7.5 18.3 6.5 20.5M16.5 18.3l1 2.2"/><path d="M6.5 11.5V7a3 3 0 0 1 6 0v.8"/><path d="M11 7.8h3"/></symbol><symbol id="i-leaf" viewBox="0 0 24 24"><path d="M12 20v-7"/><path d="M12 13c0-4 3-7 7.5-7 0 4.5-3 7-7.5 7z"/><path d="M12 15.5C12 12.5 9.7 10 6 10c0 3.3 2.3 5.5 6 5.5z"/></symbol><symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6.4"/><circle cx="12" cy="12" r="2.5"/><path stroke-width="2.6" d="M12 2.6v2.4M12 21.4v-2.4M2.6 12h2.4M21.4 12h-2.4M5.35 5.35l1.7 1.7M18.65 18.65l-1.7-1.7M5.35 18.65l1.7-1.7M18.65 5.35l-1.7 1.7"/></symbol><symbol id="i-scale" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.5"/><path d="M8.4 10.2a4.2 4.2 0 0 1 7.2 0"/><path d="m12 11.6 1.7-2.4"/></symbol></defs></svg>
 <header class="appbar">
   <div id="libBack"><button id="libBackBtn" type="button" aria-label="뒤로"><svg class="ico"><use href="#i-back"/></svg>뒤로</button><span id="libBackT"></span></div>
   <button class="ab-photo" id="abPhoto" aria-label="홈으로"><img id="abImg" alt=""><span id="abPaw">🐾</span></button>
@@ -1631,6 +1677,7 @@ body.wg-scr-on #uiToast.on{transform:translate(-50%, 0);}
     <button class="ql" id="qlAway" type="button" style="--c:var(--c-away)"><svg class="qi"><use href="#i-door"/></svg><span id="qlAwayT">외출</span><b id="qlAwayN">—</b></button>
   </div>
   <div class="ql-amt" id="pooAmt"></div>
+  <div class="bath-row" id="bathRow"></div>
 
   <div class="card rib-card">
     <div class="rib-h"><b>오늘</b><button class="lnk" id="ribStats" type="button">통계<svg class="ico"><use href="#i-chev"/></svg></button></div>
@@ -2784,7 +2831,7 @@ body.wg-scr-on #uiToast.on{transform:translate(-50%, 0);}
       <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
       <li>의료 정보는 일반 정보입니다. 개별 판단은 수의사 진료가 우선입니다.</li>
     </ul>
-    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.3.0 · 2026-10-23</p>
+    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.4.0 · 2026-10-26</p>
   </div>
 </section>
 
@@ -3473,6 +3520,7 @@ body.wg-scr-on #uiToast.on{transform:translate(-50%, 0);}
 <div id="uiSheet" class="sheet-ovl" role="dialog" aria-modal="true"><div class="sheet"><div class="grab"></div><div class="sh-t" id="uiT"></div><div class="sh-m" id="uiM"></div><textarea id="uiIn" rows="3" maxlength="300" style="display:none;"></textarea><div class="sh-acts" id="uiActs"></div><button type="button" class="sh-cancel" id="uiNo">취소</button></div></div>
 <div id="repOvl" class="sheet-ovl" role="dialog" aria-modal="true" aria-label="대표 사진 바꾸기"><div class="sheet"><div class="grab"></div><div class="sh-t">대표 사진 바꾸기</div><div class="rep-cmp"><figure><span class="rep-ph" id="repOld"></span><figcaption>지금</figcaption></figure><svg class="ico rep-arr"><use href="#i-chev"/></svg><figure><span class="rep-ph" id="repNew"></span><figcaption>새 사진</figcaption></figure></div><button type="button" class="sh-b1" id="repOk">대표 사진으로 설정</button><button type="button" class="sh-cancel" id="repNo">취소</button></div></div>
 <div id="kgOvl" class="sheet-ovl" role="dialog" aria-modal="true" aria-label="유치원 기록"><div class="sheet"><div class="grab"></div><div class="sh-t" id="kgTitle">하원 기록</div><div class="sh-sub" id="kgSub">유치원</div><div class="kg-f" id="kgDateRow"><label for="kgDate">날짜</label><input type="date" id="kgDate"></div><div class="kg-2"><div class="kg-f"><label for="kgT1">등원</label><input type="time" id="kgT1" step="60"></div><div class="kg-f"><label for="kgT2">하원</label><input type="time" id="kgT2" step="60"></div></div><label class="kg-chk" id="kgMealRow"><input type="checkbox" class="sw" id="kgMeal"><span>유치원에서 식사</span><input type="time" id="kgMealT" step="60" aria-label="식사 시각"></label><label class="kg-lbl" for="kgMemo">알림장 메모</label><textarea id="kgMemo" rows="2" maxlength="200" placeholder="예: 친구들과 잘 놀았고 대변 1회"></textarea><p class="sh-hint" id="kgHint"></p><div class="sh-btns"><button type="button" class="sh-b2" id="kgDel">등원 취소</button><button type="button" class="sh-b1" id="kgSave">하원 기록</button></div><button type="button" class="sh-cancel" id="kgCancel">닫기</button></div></div>
+<div id="bathOvl" class="sheet-ovl" role="dialog" aria-modal="true" aria-labelledby="bathT"><div class="sheet"><div class="grab"></div><div class="sh-t" id="bathT">목욕</div><div class="sh-sub" id="bathSub"></div><p class="sh-hint" id="bathHold"></p><button type="button" class="sh-b1" id="bathToday">오늘 목욕했어요</button><div class="bath-date"><label for="bathDate">다른 날에 했어요</label><input type="date" id="bathDate"><button type="button" class="btn sm ghost" id="bathDateAdd">기록</button></div><p class="sh-hint" id="bathMsg" role="alert"></p><div class="bath-lbl" id="bathListLbl">최근 기록</div><div class="bath-list" id="bathList"></div><p class="bath-guide">목욕 전 빗질 → 38℃ 미온수, 샴푸는 희석 → 귀에 물 안 들어가게 → 뿌리까지 완전 건조. 항문낭도 이때. 접종·수술 직후엔 미루기.</p><button type="button" class="lnk" id="bathGuide">13장 위생 실전 보기<svg class="ico"><use href="#i-chev"/></svg></button><button type="button" class="sh-cancel" id="bathClose">닫기</button></div></div>
 <div id="uiToast" role="status" aria-live="polite"><span id="uiToastT"></span><button type="button" id="uiToastU">되돌리기</button></div>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
@@ -4177,6 +4225,13 @@ class VideoRTC extends HTMLElement {
 if(window.customElements && !customElements.get('video-stream')){ customElements.define('video-stream', VideoRTC); }
 </script>
 <script>
+/* V6.4.0 (2026-10-26): 목욕 관리 — 홈 기록 버튼 4×2 바로 아래 '목욕 줄'(높이 44px) 1줄.
+   평소 '목욕 · N일 전'(흰 바탕) → 14일째부터 '목욕해도 좋아요'(연청록) + '했어요'(오늘로 저장, 5초 되돌리기). 28일 이상은 경과일만 주황.
+   경과 14일 이상이면서 접종 후 0~3일(접종 표의 '접종' 차수 완료일 · 제목에 '접종'이 든 내 일정)이면 '목욕은 M/D부터'로 보류.
+   줄 탭 → 목욕 시트(오늘·다른 날 기록, 최근 5회·간격·삭제, 13장 위생 실전 요약·바로가기). 달력: 목욕한 날 청록 점 + 선택일 '목욕' 줄.
+   저장 S.bathLog{날짜:{t}} — 첫 기록 때 만들고 마지막 기록을 지우면 키째 삭제(DEFAULT_S에 넣지 않음: RTDB가 빈 객체를 버려
+   빈 {}가 동기화마다 '변경'으로 잡혀 재업로드·재렌더가 반복되기 때문). 산책 지도 카드 삽입 기준만 #pooAmt → #bathRow.
+   기존 기록·통계·리본·오늘 목록·산책·앨범 동작 변경 없음. */
 /* V6.3.0 (2026-10-23): 산책 지도 기록(GPS) — 홈 '산책 지도' 카드 → 산책 화면(지도·시간·거리·평균 속도·킁킁·쉼·고도·날씨),
    권장 시간 링(통계와 같은 statBand), 더위·뛰기·15분 정지 알림, 주머니 모드(검은 화면·밀어서 해제), 대변·소변·사진 핀,
    산책 후 상태 체크 5항목 → 판정, 산책 기록(목록·전체 지도·기준·설정·직접 추가·삭제), 달력 산책 표시, 새로고침 후 복구,
@@ -4951,7 +5006,7 @@ function renderCal(){
     const ds=calY+'-'+String(calM+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
     const dow=(first+d-1)%7;
     const cls=['cal-cell']; if(dow===0)cls.push('sun'); if(ds===tk)cls.push('today'); if(ds===calSel)cls.push('sel');
-    const dots=(byDay[ds]||[]).slice(0,4).map(e=>'<span class="dot '+e.cls+'"></span>').join('')+(typeof wgCalDot==='function'? wgCalDot(ds) : '');   /* V6.3 */
+    const dots=(byDay[ds]||[]).slice(0,4).map(e=>'<span class="dot '+e.cls+'"></span>').join('')+(typeof wgCalDot==='function'? wgCalDot(ds) : '')+(typeof bathCalDot==='function'? bathCalDot(ds) : '');   /* V6.3 · V6.4 */
     html+='<div class="'+cls.join(' ')+'" data-d="'+ds+'"><span class="dn">'+d+'</span><div class="dots">'+dots+'</div></div>';
   }
   const grid=document.getElementById('calGrid');
@@ -4990,6 +5045,7 @@ function renderSel(byDay){
     saveState(); renderAll();
   }); });
   try{ if(typeof wgCalSel==='function') wgCalSel(calSel, box); }catch(e){ console.error(e); }   /* V6.3 */
+  try{ if(typeof bathCalSel==='function') bathCalSel(calSel, box); }catch(e){ console.error(e); }   /* V6.4 */
 }
 function renderUpcoming(){
   const el=document.getElementById('upList'); if(!el) return;
@@ -8820,6 +8876,7 @@ function renderQlog(){
   renderMealGap();
   try{ syncWarnPaint(); }catch(e){}
   try{ statsRefresh(); }catch(e){}   /* V6.1: 통계 화면이 열려 있을 때만 다시 계산 */
+  try{ if(typeof bathPaint==='function') bathPaint(); }catch(e){ console.error(e); }   /* V6.4 */
   try{ if(typeof wgHomePaint==='function') wgHomePaint(); }catch(e){ console.error(e); }   /* V6.3 */
 }
 function qlBump(k, delta){
@@ -9104,6 +9161,7 @@ function bindV6(){
   const mo=document.getElementById('albLbMore'); if(mo) mo.addEventListener('click', lbMore);
   const hs=document.getElementById('hxSet'); if(hs) hs.addEventListener('click', function(){ goTab('settings'); });
   bindKgCfg();
+  try{ if(typeof bindBath==='function') bindBath(); }catch(e){ console.error('bath bind', e); }   /* V6.4 */
   try{ bindTheme(); }catch(e){ console.error('theme', e); }
   let lastY=window.scrollY||0, ticking=false;
   window.addEventListener('scroll', function(){
@@ -10432,7 +10490,7 @@ function wgSegHtml(s, p, compact){
 /* ---------- 홈 카드 ---------- */
 function wgHomeEnsure(){
   if(document.getElementById('wgHome')) return true;
-  const anchor=document.getElementById('pooAmt') || document.querySelector('#tab-home .ql-v6');
+  const anchor=document.getElementById('bathRow') || document.getElementById('pooAmt') || document.querySelector('#tab-home .ql-v6');   /* V6.4: 목욕 줄 아래 */
   if(!anchor) return false;
   const d=document.createElement('div'); d.className='card wg-home'; d.id='wgHome';
   anchor.insertAdjacentElement('afterend', d);
@@ -10775,6 +10833,163 @@ function walkInit(){
   setTimeout(wgQFlush, 3000);
 }
 
+</script>
+<script id="bathV64">
+/* =============== V6.4 (2026-10-26): 목욕 관리 ===============
+   홈 '목욕 줄' + 목욕 시트 + 달력 점. 판정: N = 오늘 날짜 − 마지막 목욕 날짜(시각 무관).
+   기록 없음 → 보류(N≥14 이고 접종 후 0~3일) → 4주 이상(N≥28) → 해도 좋아요(N≥14) → 평소 순으로 먼저 맞는 것.
+   근거: 13장 '목욕 2~4주 1회'(14일 하한·28일 상한), 04장 인계 지침 '목욕은 접종 후 4일 이후부터', 02장 '접종 당일 목욕 금지'.
+   저장: S.bathLog{'YYYY-MM-DD':{t}} — 첫 기록 때 만들고, 마지막 기록을 지우면 키째 지운다(빈 객체를 남기지 않음). */
+const BATH={due:14, late:28, hold:3, list:5};
+const BATH_DOW=['일','월','화','수','목','금','토'];
+function bathLog(){ const b=S.bathLog; return (b && typeof b==='object' && !Array.isArray(b))? b : {}; }
+function bathKeys(){ return Object.keys(bathLog()).filter(function(k){ return /^\d{4}-\d{2}-\d{2}$/.test(k); }).sort(); }
+function bathDiff(a, b){ return Math.round((new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/86400000); }
+function bathPlus(k, n){ return d2s(addD(new Date(k+'T00:00:00'), n)); }
+function bathMD(k){ return (+k.slice(5,7))+'월 '+(+k.slice(8,10))+'일'; }
+function bathMDs(k){ return (+k.slice(5,7))+'/'+(+k.slice(8,10)); }
+function bathLast(tk){ tk=tk||todayKey(); const ks=bathKeys().filter(function(k){ return k<=tk; }); return ks.length? ks[ks.length-1] : ''; }
+function bathVaxDates(){
+  const out=[];
+  try{
+    (typeof VAX_PLAN!=='undefined'? VAX_PLAN : []).forEach(function(p){
+      if(!/접종/.test(String(p.t||''))) return;                 /* 항체가 검사 등 접종이 아닌 차수는 제외 */
+      const v=(S.vax||{})[p.id]; if(v && v.done && v.date) out.push(String(v.date));
+    });
+  }catch(e){}
+  (S.events||[]).forEach(function(e){ if(e && e.d && /접종/.test(String(e.t||''))) out.push(String(e.d)); });
+  return out;
+}
+function bathHold(tk){
+  tk=tk||todayKey(); let v='';
+  bathVaxDates().forEach(function(d){ if(!/^\d{4}-\d{2}-\d{2}$/.test(d)) return; const n=bathDiff(d, tk); if(n>=0 && n<=BATH.hold && d>v) v=d; });
+  return v? {vax:v, from:bathPlus(v, BATH.hold+1)} : null;
+}
+function bathState(){
+  const tk=todayKey(), last=bathLast(tk);
+  if(!last) return {k:'none'};
+  const n=bathDiff(last, tk);
+  if(n>=BATH.due){ const h=bathHold(tk); if(h) return {k:'hold', n:n, last:last, from:h.from}; }
+  if(n>=BATH.late) return {k:'late', n:n, last:last};
+  if(n>=BATH.due) return {k:'due', n:n, last:last};
+  return {k:'ok', n:n, last:last};
+}
+function bathPaint(){
+  const el=document.getElementById('bathRow'); if(!el) return;
+  const st=bathState();
+  let b='목욕', sub='', go=false;
+  if(st.k==='none') sub='지난 목욕일을 넣어 주세요';
+  else if(st.k==='ok') sub= st.n===0? '오늘' : st.n+'일 전';
+  else if(st.k==='hold'){ b='목욕은 '+bathMDs(st.from)+'부터'; sub='접종 후 쉬는 기간'; }
+  else { b='목욕해도 좋아요'; sub=st.n+'일 전'; go=true; }
+  el.className='bath-row'+(go? ' due' : '')+(st.k==='late'? ' late' : '');
+  el.innerHTML='<button type="button" class="br-main" data-bath="open"><svg class="ico br-ic" aria-hidden="true"><use href="#i-bath"/></svg>'+
+    '<span class="br-tx"><b>'+b+'</b><span>'+sub+'</span></span>'+(go? '' : '<svg class="ico chev" aria-hidden="true"><use href="#i-chev"/></svg>')+'</button>'+
+    (go? '<button type="button" class="br-go" data-bath="done" aria-label="오늘 목욕했어요"><span>했어요</span></button>' : '');
+}
+function bathSet(k, v){ const b=Object.assign({}, bathLog()); b[k]=v||{t:Date.now()}; S.bathLog=b; }
+function bathUnset(k){ const b=Object.assign({}, bathLog()); delete b[k]; if(Object.keys(b).length) S.bathLog=b; else delete S.bathLog; }
+function bathOpenNow(){ const o=document.getElementById('bathOvl'); return !!(o && o.classList.contains('on')); }
+function bathAfter(){
+  saveState();
+  try{ renderQlog(); }catch(e){ console.error(e); }
+  try{ renderCal(); }catch(e){}
+  if(bathOpenNow()) bathSheetPaint();
+}
+function bathAdd(k, msg){
+  if(bathLog()[k]) return false;
+  const v={t:Date.now()};
+  bathSet(k, v); bathAfter();
+  uiToast(msg||'목욕 기록했어요', function(){ const cur=bathLog()[k]; if(cur && cur.t===v.t){ bathUnset(k); bathAfter(); } });
+  return true;
+}
+function bathDone(){
+  const tk=todayKey();
+  if(bathLog()[tk]){ uiToast('오늘 목욕은 이미 기록돼 있어요'); return; }
+  bathAdd(tk, '목욕 기록했어요');
+}
+function bathDel(k){
+  const v=bathLog()[k]; if(!v) return;
+  bathUnset(k); bathAfter();
+  uiToast(bathMD(k)+' 목욕 기록을 지웠어요', function(){ if(!bathLog()[k]){ bathSet(k, v); bathAfter(); } });
+}
+function bathOpen(){
+  const o=document.getElementById('bathOvl'); if(!o) return;
+  const m=document.getElementById('bathMsg'); if(m) m.textContent='';
+  const tk=todayKey(), di=document.getElementById('bathDate'), bd=(S.profile && S.profile.birth) || '';
+  if(di){
+    di.max=tk;
+    if(bd) di.min=bd; else di.removeAttribute('min');
+    let dv=bathPlus(tk, -1); if(bd && dv<bd) dv=tk;
+    di.value=dv;
+  }
+  bathSheetPaint();
+  o.classList.add('on');
+}
+function bathHide(){ const o=document.getElementById('bathOvl'); if(o) o.classList.remove('on'); }
+function bathSheetPaint(){
+  const tk=todayKey(), last=bathLast(tk), today=!!bathLog()[tk], h=bathHold(tk);
+  const sub=document.getElementById('bathSub');
+  if(sub) sub.textContent= last? '마지막 '+bathMD(last)+(last===tk? '(오늘)' : '')+' · '+bathMD(bathPlus(last, BATH.due))+'부터 해도 좋아요' : '마지막 목욕일을 넣으면 14일 뒤부터 홈에 알려 드려요';
+  const hd=document.getElementById('bathHold');
+  if(hd) hd.textContent= (h && !today)? '접종 후 쉬는 기간이에요 · '+bathMD(h.from)+'부터 권장' : '';
+  const bt=document.getElementById('bathToday');
+  if(bt){ bt.disabled=today; bt.textContent= today? '오늘 기록됨' : '오늘 목욕했어요'; }
+  const ks=bathKeys(), rec=ks.slice(-BATH.list).reverse();
+  const lbl=document.getElementById('bathListLbl'), ls=document.getElementById('bathList');
+  if(lbl) lbl.style.display= rec.length? '' : 'none';
+  if(ls){
+    ls.style.display= rec.length? '' : 'none';
+    ls.innerHTML=rec.map(function(k){
+      const i=ks.indexOf(k), prev=i>0? ks[i-1] : '', d=new Date(k+'T00:00:00');
+      return '<div class="bath-li"><span class="d">'+bathMD(k)+' ('+BATH_DOW[d.getDay()]+')</span><span class="g">'+(prev? bathDiff(prev, k)+'일 간격' : '첫 기록')+'</span>'+
+        '<button type="button" data-bdel="'+k+'" aria-label="'+bathMD(k)+' 기록 삭제">삭제</button></div>';
+    }).join('');
+  }
+}
+function bathDateAdd(){
+  const di=document.getElementById('bathDate'), m=document.getElementById('bathMsg'); if(!di) return;
+  const k=di.value||'', tk=todayKey(), bd=(S.profile && S.profile.birth) || '';
+  const say=function(t){ if(m) m.textContent=t; };
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(k)){ say('날짜를 골라 주세요'); return; }
+  if(k>tk){ say('미래 날짜는 기록할 수 없어요'); return; }
+  if(bd && k<bd){ say('생일 이전 날짜예요'); return; }
+  if(bathLog()[k]){ say('이미 기록된 날이에요'); return; }
+  say('');
+  bathAdd(k, bathMD(k)+' 목욕 기록했어요');
+}
+function bathCalDot(ds){ return bathLog()[ds]? '<span class="dot bt"></span>' : ''; }
+function bathCalSel(ds, box){
+  if(!box || !bathLog()[ds]) return;
+  const ks=bathKeys(), i=ks.indexOf(ds), prev=i>0? ks[i-1] : '';
+  box.insertAdjacentHTML('beforeend', '<div class="bath-cal"><div class="ev-row" role="button" tabindex="0"><span><span class="ev-tag bt">목욕</span> '+(prev? bathDiff(prev, ds)+'일 간격' : '첫 기록')+'</span><svg class="ico chev" aria-hidden="true"><use href="#i-chev"/></svg></div></div>');
+  const r=box.querySelector('.bath-cal .ev-row');
+  if(r){ r.addEventListener('click', bathOpen); r.addEventListener('keydown', function(e){ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); bathOpen(); } }); }
+}
+function bindBath(){
+  const row=document.getElementById('bathRow');
+  if(row && !row.dataset.bound){
+    row.dataset.bound='1';
+    row.addEventListener('click', function(e){
+      const b=e.target.closest('[data-bath]'); if(!b) return;
+      if(b.dataset.bath==='done') bathDone(); else bathOpen();
+    });
+  }
+  const o=document.getElementById('bathOvl'); if(!o || o.dataset.bound) return;
+  o.dataset.bound='1';
+  o.addEventListener('click', function(e){
+    if(e.target===o){ bathHide(); return; }
+    const d=e.target.closest('[data-bdel]'); if(d) bathDel(d.dataset.bdel);
+  });
+  const on=function(id, fn){ const el=document.getElementById(id); if(el) el.addEventListener('click', fn); };
+  on('bathToday', function(){ const tk=todayKey(); if(bathLog()[tk]) return; bathHide(); bathAdd(tk, '목욕 기록했어요'); });
+  on('bathDateAdd', bathDateAdd);
+  on('bathClose', bathHide);
+  on('bathGuide', function(){
+    bathHide(); goTab('life');
+    setTimeout(function(){ const g=document.getElementById('l-groom'); if(!g) return; try{ g.scrollIntoView({behavior:'smooth', block:'start'}); }catch(e){ g.scrollIntoView(); } }, 80);
+  });
+}
 </script>
 </body>
 </html>
