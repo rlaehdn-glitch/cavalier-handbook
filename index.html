@@ -1627,6 +1627,40 @@ body.wg-scr-on #uiToast.on{transform:translate(-50%, 0);}
 @media (prefers-reduced-motion: reduce){ .bath-row, .br-go span{transition:none;} }
 </style>
 
+<style id="v65css">
+/* ===== V6.5 쇼츠 — 앨범 연결 ===== */
+.alb-tools{grid-template-columns:repeat(4,1fr) !important;}
+.alb-tool.sx-tile{position:relative; color:var(--tint-ink); background:var(--tint-fill); border-color:transparent;}
+.alb-tool.sx-tile .i{display:flex; align-items:center; justify-content:center; height:1.18em;}
+.alb-tool.sx-tile svg{width:25px; height:25px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;}
+.alb-tool .sx-n{position:absolute; top:-7px; right:-4px; background:var(--tint-btn,var(--tint)); color:#fff; font-size:11.5px; font-weight:700; border-radius:999px; padding:2px 7px; line-height:1.35; display:none; box-shadow:0 0 0 2px var(--card);}
+.alb-tool .sx-n.on{display:block;}
+.alb-filter{align-items:center;}
+.alb-sel-b{margin-left:auto; background:none; border:none; color:var(--tint); font-family:inherit; font-size:15px; font-weight:500; cursor:pointer; padding:5px 4px;}
+.alb-ck{display:none; position:absolute; top:7px; right:7px; width:24px; height:24px; border-radius:50%; border:2px solid #fff; background:rgba(0,0,0,.2); pointer-events:none; box-shadow:0 1px 3px rgba(0,0,0,.25);}
+body.alb-sel .alb-ck{display:block;}
+body.alb-sel #albGrid .alb-lkb{display:none;}
+.alb-cell.alb-on .alb-ck{background:var(--tint-btn,var(--tint));}
+.alb-cell.alb-on .alb-ck::after{content:""; position:absolute; left:7px; top:3px; width:6px; height:11px; border:solid #fff; border-width:0 2.4px 2.4px 0; transform:rotate(45deg);}
+.alb-cell.alb-on .alb-th{opacity:.78 !important;}
+body.alb-sel #albGrid .alb-nosel{opacity:.35;}
+.alb-use{position:absolute; left:6px; bottom:6px; background:rgba(20,16,12,.72); color:#fff; font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:999px; line-height:1.5; pointer-events:none; z-index:1;}
+.alb-use.cool{background:rgba(120,120,128,.8);}
+.alb-rv .alb-use{bottom:24px;}
+#albSelBar{position:fixed; left:14px; right:14px; bottom:calc(10px + env(safe-area-inset-bottom)); z-index:66; max-width:520px; margin:0 auto; display:none; align-items:center; gap:12px; padding:7px 7px 7px 20px; border-radius:30px; background:var(--glass); -webkit-backdrop-filter:saturate(180%) blur(22px); backdrop-filter:saturate(180%) blur(22px); border:.5px solid var(--glass-bd); box-shadow:0 10px 30px rgba(0,0,0,.14);}
+body.alb-sel #albSelBar{display:flex;}
+body.alb-sel #bnav{display:none;}
+#albSelBar .n{flex:1; font-size:16px; font-weight:600; color:var(--label);}
+#albSelGo{border:none; border-radius:24px; background:var(--tint-btn,var(--tint)); color:#fff; font-family:inherit; font-size:16px; font-weight:700; padding:12px 26px; cursor:pointer;}
+#albSelGo:disabled{background:var(--fill2); color:var(--label3); cursor:default;}
+.alb-lb-tags{display:flex; align-items:center; gap:10px; padding:10px 12px 0 14px;}
+.alb-lb-tags .tg{flex:1; min-width:0; display:flex; flex-wrap:wrap; align-items:center; gap:6px;}
+.alb-lb-tags .tg span{background:rgba(255,255,255,.16); color:#fff; font-size:13px; padding:4px 12px; border-radius:999px;}
+.alb-lb-tags .tg button{background:none; border:none; color:rgba(255,255,255,.72); font-family:inherit; font-size:13px; padding:4px 6px; cursor:pointer;}
+.lb-sx{border:none; border-radius:999px; background:var(--tint-btn,var(--tint)); color:#fff; font-family:inherit; font-size:14px; font-weight:700; padding:8px 15px; cursor:pointer; white-space:nowrap; display:inline-flex; align-items:center; gap:5px;}
+.lb-sx svg{width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
+.lb-sx[hidden]{display:none;}
+</style>
 </head>
 <body>
 
@@ -2831,7 +2865,7 @@ body.wg-scr-on #uiToast.on{transform:translate(-50%, 0);}
       <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
       <li>의료 정보는 일반 정보입니다. 개별 판단은 수의사 진료가 우선입니다.</li>
     </ul>
-    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.4.0 · 2026-10-26</p>
+    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.5.0 · 2026-10-28</p>
   </div>
 </section>
 
@@ -3279,6 +3313,7 @@ body.wg-scr-on #uiToast.on{transform:translate(-50%, 0);}
         <button class="alb-tool" id="albPhotoBtn" type="button"><span class="i">&#128247;</span>사진</button>
         <button class="alb-tool" id="albVidUp" type="button"><span class="i">&#127909;</span>영상</button>
         <button class="alb-tool" id="albVidBtn" type="button"><span class="i">&#9654;&#65039;</span>유튜브</button>
+        <button class="alb-tool sx-tile" id="albSxBtn" type="button"><span class="i"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M10 9l5 3-5 3z"/></svg></span>쇼츠<span class="sx-n" id="albSxN"></span></button>
       </div>
       <input type="file" id="albFile" accept="image/*" multiple style="display:none;">
       <input type="file" id="albVidFile" accept="video/*" style="display:none;">
@@ -3340,6 +3375,7 @@ body.wg-scr-on #uiToast.on{transform:translate(-50%, 0);}
       <button class="alb-chip" data-f="p" type="button">사진</button>
       <button class="alb-chip" data-f="v" type="button">영상</button>
       <button class="alb-chip" data-f="l" type="button">&#10084; 좋아요</button>
+      <button class="alb-sel-b" id="albSelB" type="button">선택</button>
     </div>
     <p class="alb-err" id="albErr" style="display:none;"></p>
     <div class="alb-grid" id="albGrid"></div>
@@ -3359,7 +3395,8 @@ body.wg-scr-on #uiToast.on{transform:translate(-50%, 0);}
     </details>
   </div>
 
-  <div id="albLb"><img id="albLbImg" alt=""><video id="albLbVid" controls playsinline preload="metadata"></video><button class="alb-nav" id="albLbPrev" aria-label="이전 사진">&#8249;</button><button class="alb-nav" id="albLbNext" aria-label="다음 사진">&#8250;</button><div class="alb-lb-bar"><span class="alb-cnt" id="albLbCnt"></span><div class="alb-cap" id="albLbCap"></div><button class="btn sm ghost alb-like" id="albLbLike" aria-label="좋아요">&#9825;</button><button class="btn sm ghost lb-more" id="albLbMore" type="button" aria-label="더보기"><svg class="ico"><use href="#i-more"/></svg></button><button class="lb-hid" id="albLbRep" type="button">대표</button><button class="lb-hid" id="albLbMemo" type="button">메모</button><button class="lb-hid" id="albLbDel" type="button">삭제</button><button class="btn sm" id="albLbClose">닫기</button></div></div>
+  <div id="albLb"><img id="albLbImg" alt=""><video id="albLbVid" controls playsinline preload="metadata"></video><button class="alb-nav" id="albLbPrev" aria-label="이전 사진">&#8249;</button><button class="alb-nav" id="albLbNext" aria-label="다음 사진">&#8250;</button><div class="alb-lb-tags"><div class="tg" id="albLbTags"></div><button class="lb-sx" id="albLbSx" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M10 9l5 3-5 3z"/></svg>쇼츠</button></div><div class="alb-lb-bar"><span class="alb-cnt" id="albLbCnt"></span><div class="alb-cap" id="albLbCap"></div><button class="btn sm ghost alb-like" id="albLbLike" aria-label="좋아요">&#9825;</button><button class="btn sm ghost lb-more" id="albLbMore" type="button" aria-label="더보기"><svg class="ico"><use href="#i-more"/></svg></button><button class="lb-hid" id="albLbRep" type="button">대표</button><button class="lb-hid" id="albLbMemo" type="button">메모</button><button class="lb-hid" id="albLbDel" type="button">삭제</button><button class="btn sm" id="albLbClose">닫기</button></div></div>
+  <div id="albSelBar" role="toolbar" aria-label="쇼츠로 만들 사진 고르기"><span class="n" id="albSelN">사진을 고르세요</span><button id="albSelGo" type="button" disabled>쇼츠로</button></div>
 </section>
 <!-- ===================== STATS 기록 통계 (V6.1) ===================== -->
 <section class="tab-panel" id="tab-stats">
@@ -4225,6 +4262,10 @@ class VideoRTC extends HTMLElement {
 if(window.customElements && !customElements.get('video-stream')){ customElements.define('video-stream', VideoRTC); }
 </script>
 <script>
+/* V6.5.0 (2026-10-28): 쇼츠 1단계 — 앨범에 '쇼츠' 타일(새 추천 수), 여러 장 선택 → '쇼츠로', 쇼츠에 쓴 사진 'N회' 표시,
+   확대 화면 [쇼츠]·장면 태그(계절·상황·분위기, 태그 수정), 사진 올린 뒤 장면 태그 시트(산책·목욕·유치원·수면 기록과 시간이 겹치면 미리 선택),
+   촬영 시각(sd) 자동 저장(사진 EXIF · 영상 mvhd — 압축 전에 읽음). 쇼츠 화면·영상 만들기는 별도 파일 shorts.js(앨범을 열 때 불러옴).
+   기존 앨범 동작(업로드·확대·좋아요·메모·삭제·백업·이관) 변경 없음. meta에는 항목만 덧붙임(ts·tm·sd·su·sl·ih). */
 /* V6.4.0 (2026-10-26): 목욕 관리 — 홈 기록 버튼 4×2 바로 아래 '목욕 줄'(높이 44px) 1줄.
    평소 '목욕 · N일 전'(흰 바탕) → 14일째부터 '목욕해도 좋아요'(연청록) + '했어요'(오늘로 저장, 5초 되돌리기). 28일 이상은 경과일만 주황.
    경과 14일 이상이면서 접종 후 0~3일(접종 표의 '접종' 차수 완료일 · 제목에 '접종'이 든 내 일정)이면 '목욕은 M/D부터'로 보류.
@@ -5183,6 +5224,7 @@ function renderAlbumHead(){
   albStat('사진 '+p+' · 영상 '+v);
   ALB.store={bytes:fbb+p2b, fbb:fbb, p2b:p2b, vb:vb};
   renderMediaCfg();
+  try{ shBadge(); }catch(e){}   /* V6.5 */
 }
 function albumOnOpen(){
   const gate=document.getElementById('albGate'), main=document.getElementById('albMain');
@@ -5238,15 +5280,15 @@ function renderAlbum(){
     if(m.t==='v'){
       /* V5.9.2: 유튜브 링크 — 영상 ID를 읽어 썸네일 표시, 누르면 유튜브로 */
       const yid=ytId(m.u);
-      out+='<a class="alb-cell'+(yid?'':' alb-vid')+'" data-lid="'+id+'" href="'+esc(m.u||'#')+'" target="_blank" rel="noopener">'
+      out+='<a class="alb-cell'+(yid?'':' alb-vid')+(ALB.selOn?' alb-nosel':'')+'" data-lid="'+id+'" href="'+esc(m.u||'#')+'" target="_blank" rel="noopener">'
         +(yid?'<img class="alb-th ld" src="https://i.ytimg.com/vi/'+yid+'/mqdefault.jpg" loading="lazy" alt="">':'<span class="alb-play">&#9654;</span><span class="alb-vm">'+esc(m.m||'유튜브')+'</span>')
         +'<span class="alb-badge">&#9654; 유튜브</span>'+lkb+'<span class="alb-d">'+(yid?memo:'')+dd+'</span></a>';
     }else if(m.t==='r'){
       /* V5.9: R2 영상 — 썸네일은 사진과 같은 th/ 경로, 탭하면 라이트박스에서 재생 */
-      out+='<div class="alb-cell alb-rv" data-open="'+id+'">'+(m.th?'<img class="alb-th" data-aid="'+id+'" alt="">':'')
-        +'<span class="alb-badge">&#9654; '+(m.dur?mediaDur(m.dur):'영상')+'</span>'+lkb+'<span class="alb-d">'+memo+dd+'</span></div>';
+      out+='<div class="alb-cell alb-rv'+albSelCls(id)+'" data-open="'+id+'">'+(m.th?'<img class="alb-th" data-aid="'+id+'" alt="">':'')
+        +'<span class="alb-badge">&#9654; '+(m.dur?mediaDur(m.dur):'영상')+'</span>'+lkb+albUseB(m)+'<span class="alb-d">'+memo+dd+'</span><span class="alb-ck"></span></div>';
     }else{
-      out+='<div class="alb-cell" data-open="'+id+'"><img class="alb-th" data-aid="'+id+'" alt="">'+lkb+'<span class="alb-d">'+dd+'</span></div>';
+      out+='<div class="alb-cell'+albSelCls(id)+'" data-open="'+id+'"><img class="alb-th" data-aid="'+id+'" alt="">'+lkb+albUseB(m)+'<span class="alb-d">'+dd+'</span><span class="alb-ck"></span></div>';
     }
   });
   const empty = f==='l' ? '아직 좋아요가 없습니다. 사진을 크게 열고 ♡ 를 누르거나, 사진을 두 번 톡톡 두드려 보세요.'
@@ -5291,9 +5333,11 @@ function bindAlbum(){
     this.value='';
     if(!files.length) return;
     if(!syncConfigured()){ alert('설정에서 동기화를 먼저 켜주세요.'); return; }
+    const newIds=[];   /* V6.5: 올린 사진 → 장면 태그 시트 */
     for(let i=0;i<files.length;i++){
       albStat('올리는 중 '+(i+1)+'/'+files.length+'… (화면을 닫지 마세요)');
       try{
+        const sd=await albShotDate(files[i]);   /* V6.5: 압축하면 촬영 정보가 지워지므로 먼저 읽음 */
         let fu=await albCompress(files[i],1280,0.72);
         if(fu.length>1200000) fu=await albCompress(files[i],1280,0.55);
         const th=await albCompress(files[i],360,0.7);
@@ -5305,19 +5349,22 @@ function bindAlbum(){
           await mediaUpload(fb, albP2Key('full',id), albP2Ct());
           await mediaUpload(tb, albP2Key('th',id), albP2Ct());
           meta={t:'p', d:todayKey(), m:'', at:Date.now(), s:fb.size+tb.size, p2:1, ps:albP2Scheme().id};
+          if(sd) meta.sd=sd;
           await albFetch('meta/'+id,'PUT',JSON.stringify(meta));
-          ALB.meta=ALB.meta||{}; ALB.meta[id]=meta; ALB.thumbs.set(id,th);
+          ALB.meta=ALB.meta||{}; ALB.meta[id]=meta; ALB.thumbs.set(id,th); newIds.push(id);
         }else{
           await albFetch('full/'+id,'PUT',JSON.stringify(fu));
           await albFetch('th/'+id,'PUT',JSON.stringify(th));
           meta={t:'p', d:todayKey(), m:'', at:Date.now(), s:fu.length+th.length};
+          if(sd) meta.sd=sd;
           await albFetch('meta/'+id,'PUT',JSON.stringify(meta));
-          ALB.meta=ALB.meta||{}; ALB.meta[id]=meta; ALB.thumbs.set(id,th);
+          ALB.meta=ALB.meta||{}; ALB.meta[id]=meta; ALB.thumbs.set(id,th); newIds.push(id);
         }
       }catch(e){ alert((i+1)+'번째 사진 업로드에 실패했습니다. 인터넷 확인 후 다시 시도해주세요.'); break; }
     }
     await albBumpIdx();
     renderAlbum();
+    if(newIds.length) shLoad().then(function(sx){ sx.tagSheet(newIds, {auto:true}); }).catch(function(){});   /* V6.5: SH-00-3 */
   });
   document.getElementById('albVidBtn').addEventListener('click', function(){
     const fm=document.getElementById('albVidForm');
@@ -5367,9 +5414,20 @@ function bindAlbum(){
   const ms=document.getElementById('mediaSave'); if(ms) ms.addEventListener('click', mediaConnect);
   document.getElementById('albMore').addEventListener('click', function(){ ALB.shown+=24; renderAlbum(); });
   document.getElementById('albGrid').addEventListener('click', function(ev){
+    if(ALB.selOn){   /* V6.5: 여러 장 선택 */
+      const c=ev.target.closest('[data-open],[data-lid]');
+      if(c){ ev.preventDefault(); if(c.dataset.open) albSelToggle(c.dataset.open); else uiToast('유튜브 링크는 쇼츠에 넣을 수 없어요'); }
+      return;
+    }
     const cell=ev.target.closest('[data-open]');
     if(cell) albOpen(cell.dataset.open);
   });
+  /* V6.5: 쇼츠 — 타일 · 선택 · 확대 화면 */
+  const sxb=document.getElementById('albSxBtn'); if(sxb) sxb.addEventListener('click', function(){ if(!syncConfigured()){ alert('설정에서 동기화를 먼저 켜주세요.'); return; } albSelEnd(); shCall(function(sx){ sx.open('rec'); }); });
+  const slb=document.getElementById('albSelB'); if(slb) slb.addEventListener('click', function(){ if(ALB.selOn) albSelEnd(); else albSelStart(); });
+  const slg=document.getElementById('albSelGo'); if(slg) slg.addEventListener('click', function(){ const ids=(ALB.selOrder||[]).slice(); if(ids.length<2) return; albSelEnd(); shCall(function(sx){ sx.fromIds(ids); }); });
+  const lbs=document.getElementById('albLbSx'); if(lbs) lbs.addEventListener('click', function(){ const id=ALB.cur; if(id) shCall(function(sx){ sx.fromPhoto(id); }); });
+  const lbt=document.getElementById('albLbTags'); if(lbt) lbt.addEventListener('click', function(ev){ if(!ev.target.closest('button')) return; const id=ALB.cur; if(id) shCall(function(sx){ sx.tagSheet([id], {after:function(){ albLbTagsPaint(id); }}); }); });
   document.getElementById('albLbClose').addEventListener('click', albClose);
   /* V5.11: 좋아요 — 버튼, 사진 두 번 탭, PC 더블클릭 */
   document.getElementById('albLbLike').addEventListener('click', function(){ if(ALB.cur) albToggleLike(ALB.cur, true); });
@@ -6027,6 +6085,7 @@ async function albVideoUpload(file){
     albStat('마무리 중…');
     if(th) await albFetch('th/'+id,'PUT',JSON.stringify(th));
     const meta={t:'r', d:todayKey(), m:'', at:Date.now(), s:th?th.length:0, vs:file.size, k:key, ct:ct, dur:Math.round(dur||0), th:th?1:0};
+    try{ const sd=await vidShotDate(file); if(sd) meta.sd=sd; }catch(e){}   /* V6.5 */
     await albFetch('meta/'+id,'PUT',JSON.stringify(meta));
     await albBumpIdx();
     ALB.meta=ALB.meta||{}; ALB.meta[id]=meta; if(th) ALB.thumbs.set(id,th);
@@ -6179,6 +6238,7 @@ async function albOpen(id){
   document.getElementById('albLbNext').disabled = pos<0 || pos>=ids.length-1;
   const im=document.getElementById('albLbImg'); im.src='';
   try{ renderLikeUI(id); }catch(e){}   /* V5.11 */
+  try{ albLbTagsPaint(id); }catch(e){}   /* V6.5 */
   const lbEl=document.getElementById('albLb'), vd=document.getElementById('albLbVid');
   if(m.t==='r'){
     /* V5.9: 영상 — Worker 경유 스트리밍 재생(구간 탐색 가능) */
@@ -6212,6 +6272,137 @@ function albClose(fromBack){
   ALB.cur=null;
   /* V5.9.4: 닫기 버튼·Esc·삭제로 닫은 경우 라이트박스용 history 항목을 되돌려 다음 뒤로가기가 정상 동작하게 */
   if(wasOpen && fromBack!==true && history.state && history.state.lb){ LB_CLOSING=true; try{ history.back(); }catch(e){ LB_CLOSING=false; } }   /* 닫기 버튼은 click 이벤트가 인자로 들어오므로 === true 로 구분 */
+}
+
+/* =============== V6.5: 쇼츠 — 앨범 연결 (SH-00) ===============
+   쇼츠 화면·영상 만들기는 shorts.js(별도 파일)에 있고, 앨범을 열 때 한 번 불러온다. 본체에는 입구·표시·촬영 시각만 둔다. */
+const SH_VER='6.5.0';
+let SHL=null;
+function shLoad(){
+  if(window.SHORTS) return Promise.resolve(window.SHORTS);
+  if(SHL) return SHL;
+  SHL=new Promise(function(res, rej){
+    const sc=document.createElement('script'); sc.src='shorts.js?v='+SH_VER; sc.async=true;
+    sc.onload=function(){ if(window.SHORTS) res(window.SHORTS); else { SHL=null; rej(new Error('load')); } };
+    sc.onerror=function(){ SHL=null; try{ sc.remove(); }catch(e){} rej(new Error('load')); };
+    document.head.appendChild(sc);
+  });
+  return SHL;
+}
+function shCall(fn){ shLoad().then(fn, function(){ uiToast('쇼츠 기능을 불러오지 못했어요 — 인터넷 확인 후 다시 시도해 주세요'); }); }
+let SHB_T=null;
+function shBadge(){
+  clearTimeout(SHB_T);
+  SHB_T=setTimeout(function(){
+    if(!syncConfigured() || !ALB.meta) return;
+    shLoad().then(function(sx){ return sx.badge(); }).then(function(n){
+      const e=document.getElementById('albSxN'); if(!e) return;
+      e.textContent = n? n+'편' : ''; e.classList.toggle('on', !!n);
+    }).catch(function(){});
+  }, 700);
+}
+function shCool(){ try{ const c=window.SHORTS && window.SHORTS._D && window.SHORTS._D.cfg; if(c && c.cool!=null) return +c.cool; }catch(e){} return 30; }
+function albDayDiff(a, b){ return Math.round((new Date(String(b).slice(0,10)+'T00:00:00')-new Date(String(a).slice(0,10)+'T00:00:00'))/86400000); }
+function albUseB(m){
+  if(!m || !(m.su>0)) return '';
+  const cool = m.sl && albDayDiff(m.sl, todayKey()) < shCool();
+  return '<span class="alb-use'+(cool?' cool':'')+'">쇼츠 '+m.su+'회</span>';
+}
+function albSelCls(id){ return (ALB.sel && ALB.sel[id]) ? ' alb-on' : ''; }
+function albSelPaint(){
+  const n=(ALB.selOrder||[]).length;
+  const t=document.getElementById('albSelN'); if(t) t.textContent = n? n+'장 선택됨' : '쇼츠로 만들 사진을 고르세요';
+  const g=document.getElementById('albSelGo'); if(g) g.disabled = n<2;
+  const b=document.getElementById('albSelB'); if(b) b.textContent = ALB.selOn? '취소' : '선택';
+}
+function albSelStart(){
+  if(!syncConfigured()){ alert('설정에서 동기화를 먼저 켜주세요.'); return; }
+  const ap=document.getElementById('tab-album'); if(ap && !ap.classList.contains('on')) goTab('album');
+  ALB.selOn=true; ALB.sel={}; ALB.selOrder=[];
+  document.body.classList.add('alb-sel'); albSelPaint(); renderAlbum();
+}
+function albSelEnd(){
+  if(!ALB.selOn) return;
+  ALB.selOn=false; ALB.sel={}; ALB.selOrder=[];
+  document.body.classList.remove('alb-sel'); albSelPaint(); renderAlbum();
+}
+function albSelToggle(id){
+  const m=ALB.meta && ALB.meta[id]; if(!m || m.t==='v') return;
+  ALB.sel=ALB.sel||{}; ALB.selOrder=ALB.selOrder||[];
+  if(ALB.sel[id]){ delete ALB.sel[id]; ALB.selOrder=ALB.selOrder.filter(function(x){ return x!==id; }); }
+  else{ ALB.sel[id]=1; ALB.selOrder.push(id); }
+  const cell=document.querySelector('#albGrid [data-open="'+id+'"]'); if(cell) cell.classList.toggle('alb-on', !!ALB.sel[id]);
+  albSelPaint();
+}
+const ALB_SEASON=['겨울','겨울','봄','봄','봄','여름','여름','여름','가을','가을','가을','겨울'];
+function albLbTagsPaint(id){
+  const box=document.getElementById('albLbTags'), sxb=document.getElementById('albLbSx');
+  const m=ALB.meta && ALB.meta[id];
+  if(sxb) sxb.hidden = !m || m.t==='v';
+  if(!box) return;
+  if(!m || m.t==='v'){ box.innerHTML=''; return; }
+  const d=String(m.sd||m.d||''), mo=+d.slice(5,7), out=[];
+  if(mo) out.push(ALB_SEASON[mo-1]);
+  String(m.ts||'').split(',').map(function(x){ return x.trim(); }).filter(Boolean).forEach(function(x){ out.push(x); });
+  if(m.tm) out.push(m.tm);
+  box.innerHTML = out.map(function(x){ return '<span>'+esc(x)+'</span>'; }).join('') + '<button type="button">'+((m.ts||m.tm)? '태그 수정' : '장면 태그 추가')+'</button>';
+}
+/* 촬영 시각 — 사진: JPEG EXIF DateTimeOriginal · 영상: mvhd 생성 시각. 없으면 파일 수정 시각(지금과 2분 이상 차이 날 때만) */
+function albLocalISO(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+'T'+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0'); }
+function albLmISO(file){
+  try{ const lm=file && file.lastModified, now=Date.now(); if(lm && now-lm>120000 && now-lm<6*365*86400000) return albLocalISO(new Date(lm)); }catch(e){}
+  return '';
+}
+function albExifDate(dv){
+  try{
+    if(dv.byteLength<12 || dv.getUint16(0)!==0xFFD8) return '';
+    let off=2;
+    while(off+10<dv.byteLength){
+      const mk=dv.getUint16(off); if((mk&0xFF00)!==0xFF00) return '';
+      if(mk===0xFFDA || mk===0xFFD9) return '';
+      const len=dv.getUint16(off+2);
+      if(mk===0xFFE1 && dv.getUint32(off+4)===0x45786966){
+        const t0=off+10, le=dv.getUint16(t0)===0x4949;
+        const u16=function(o){ return dv.getUint16(t0+o, le); }, u32=function(o){ return dv.getUint32(t0+o, le); };
+        const str=function(o, n){ let s=''; for(let i=0;i<n-1 && t0+o+i<dv.byteLength;i++){ const c=dv.getUint8(t0+o+i); if(!c) break; s+=String.fromCharCode(c); } return s; };
+        const scan=function(ifd, want){ const out={}; const n=u16(ifd); for(let i=0;i<n && i<400;i++){ const e=ifd+2+i*12, tag=u16(e), type=u16(e+2), cnt=u32(e+4); if(want.indexOf(tag)<0) continue; if(type===2) out[tag]= cnt>4? str(u32(e+8), cnt) : str(e+8, cnt); else if(type===4) out[tag]=u32(e+8); } return out; };
+        const a=scan(u32(4), [0x8769, 0x0132]);
+        let dt='';
+        if(a[0x8769]){ const b=scan(a[0x8769], [0x9003, 0x9004]); dt=b[0x9003]||b[0x9004]||''; }
+        if(!dt) dt=a[0x0132]||'';
+        const m=/^(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})/.exec(dt);
+        return (m && m[1]>'1990')? m[1]+'-'+m[2]+'-'+m[3]+'T'+m[4]+':'+m[5]+':'+m[6] : '';
+      }
+      off+=2+len;
+    }
+  }catch(e){}
+  return '';
+}
+async function albShotDate(file){
+  try{ const s=albExifDate(new DataView(await file.slice(0, 262144).arrayBuffer())); if(s) return s; }catch(e){}
+  return albLmISO(file);
+}
+function albMvhd(dv){
+  try{
+    for(let i=4;i+24<dv.byteLength;i++){
+      if(dv.getUint32(i)!==0x6D766864) continue;   /* 'mvhd' */
+      const ver=dv.getUint8(i+4);
+      let sec = ver===1 ? (dv.getUint32(i+8)*4294967296 + dv.getUint32(i+12)) : dv.getUint32(i+8);
+      const ms=(sec-2082844800)*1000;
+      if(ms>Date.UTC(2015,0,1) && ms<Date.now()+86400000) return albLocalISO(new Date(ms));
+      return '';
+    }
+  }catch(e){}
+  return '';
+}
+async function vidShotDate(file){
+  try{
+    const H=2*1048576;
+    let s=albMvhd(new DataView(await file.slice(0, Math.min(file.size, H)).arrayBuffer()));
+    if(!s && file.size>H) s=albMvhd(new DataView(await file.slice(Math.max(H, file.size-8*1048576)).arrayBuffer()));
+    if(s) return s;
+  }catch(e){}
+  return albLmISO(file);
 }
 
 /* =============== V2: 서재 메타 + 내비게이션 =============== */
@@ -6258,6 +6449,7 @@ function goTab(id, silent){
   const keep=(LIB_TABS.indexOf(id)>-1 || id==='lib') && SCROLL_POS[id];
   window.scrollTo({top: keep? SCROLL_POS[id] : 0});
   if(id==='album'){ try{ albumOnOpen(); }catch(e){} }
+  else{ try{ albSelEnd(); }catch(e){} }   /* V6.5: 앨범을 떠나면 여러 장 선택 끝 */
   if(id!=='home'){ try{ camStop(); }catch(e){} } else { try{ camCheck(); }catch(e){} }   /* V5.10 */
   if(id==='lib'){ try{ renderLib(); }catch(e){} }
   if(id==='stats'){ try{ renderStats(); }catch(e){} }
@@ -6283,6 +6475,7 @@ function navBack(){
 let LB_CLOSING=false;   /* V5.9.4: 닫기 버튼으로 라이트박스를 닫으며 되돌린 history 항목 표시 */
 window.addEventListener('popstate', function(e){
   if(LB_CLOSING){ LB_CLOSING=false; return; }
+  try{ if(window.SHORTS && window.SHORTS.onPop(e)) return; }catch(er){}   /* V6.5: 쇼츠 화면 한 장씩 닫기 */
   const lbEl=document.getElementById('albLb');
   if(lbEl && lbEl.classList.contains('on')){   /* V5.9.4: 뒤로가기 = 사진·영상 닫기(앨범 탭이면 탭 이동 없음) */
     albClose(true);
