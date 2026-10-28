@@ -2865,7 +2865,7 @@ body.alb-sel #bnav{display:none;}
       <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
       <li>의료 정보는 일반 정보입니다. 개별 판단은 수의사 진료가 우선입니다.</li>
     </ul>
-    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.5.1 · 2026-10-28</p>
+    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.5.2 · 2026-10-28</p>
   </div>
 </section>
 
@@ -4262,6 +4262,8 @@ class VideoRTC extends HTMLElement {
 if(window.customElements && !customElements.get('video-stream')){ customElements.define('video-stream', VideoRTC); }
 </script>
 <script>
+/* V6.5.2 (2026-10-28): 쇼츠 — 만들다 만 쇼츠(초안) 삭제: 쇼츠 홈 목록 행마다 [삭제]·2편 이상이면 [모두 삭제], 구성 편집 위 [삭제].
+   영상까지 만든 초안은 '유튜브에 올렸어요 · 기록으로 옮기기'도 고를 수 있음. 지운 초안의 빼꼼 #번호는 다음 영상이 이어받음(번호 안 비게). 본체 변경은 버전 표기·shorts.js 버전뿐. */
 /* V6.5.1 (2026-10-28): 쇼츠 — 영상에 한글 자막을 자동으로 넣지 않음(위쪽 영문 2줄: 제목 훅 · day N만), 한글은 장면마다 추천 문구·문장에서 골라 붙임,
    영어 문구마다 한글 뜻(직접 쓴 문장은 파파고 링크), 폰 뒤로가기 = 열린 시트부터 닫고 한 화면씩. 본체 변경은 버전 표기·shorts.js 버전뿐. */
 /* V6.5.0 (2026-10-28): 쇼츠 1단계 — 앨범에 '쇼츠' 타일(새 추천 수), 여러 장 선택 → '쇼츠로', 쇼츠에 쓴 사진 'N회' 표시,
@@ -6278,7 +6280,7 @@ function albClose(fromBack){
 
 /* =============== V6.5: 쇼츠 — 앨범 연결 (SH-00) ===============
    쇼츠 화면·영상 만들기는 shorts.js(별도 파일)에 있고, 앨범을 열 때 한 번 불러온다. 본체에는 입구·표시·촬영 시각만 둔다. */
-const SH_VER='6.5.1';
+const SH_VER='6.5.2';
 let SHL=null;
 function shLoad(){
   if(window.SHORTS) return Promise.resolve(window.SHORTS);
