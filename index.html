@@ -1661,6 +1661,17 @@ body.alb-sel #bnav{display:none;}
 .lb-sx svg{width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
 .lb-sx[hidden]{display:none;}
 </style>
+<style id="v66css">
+/* ================= V6.6 — 안정화판 (2026-10-28) =================
+   진단 화면(설정 맨 아래) · 이 폰 저장 실패 경고(홈 '지금' 카드, 동기화 경고와 같은 모양) */
+.dg{font-size:13px; line-height:1.5;}
+.dg-row{display:flex; gap:10px; padding:7px 0; border-bottom:.5px solid var(--sep);}
+.dg-row:last-child{border-bottom:none;}
+.dg-row span{flex:0 0 84px; color:var(--label2);}
+.dg-row b{flex:1; min-width:0; font-weight:600; overflow-wrap:anywhere;}
+.dg-errs{margin:6px 0 0; padding-left:18px; font-size:12px; color:var(--label2);}
+.dg-err{margin:2px 0; overflow-wrap:anywhere;}
+</style>
 </head>
 <body>
 
@@ -1698,6 +1709,7 @@ body.alb-sel #bnav{display:none;}
     <div id="nowAct"></div>
     <p class="mg-line" id="mealGap" role="button" tabindex="0" title="급여 기준·권장량 열기"></p>
     <p id="syncWarn" class="sync-warn" style="display:none;"></p>
+    <p id="lsWarn" class="sync-warn" style="display:none;"></p>
   </div>
 
   <div class="ql-grid ql-v6" role="group" aria-label="기록 버튼">
@@ -2833,23 +2845,27 @@ body.alb-sel #bnav{display:none;}
       <ol class="ls small" style="margin-top:8px;">
         <li>console.firebase.google.com 접속 → 구글 로그인 → <strong>프로젝트 만들기</strong> (이름 자유, 애널리틱스는 꺼도 됨)</li>
         <li>왼쪽 메뉴 <strong>빌드 → Realtime Database → 데이터베이스 만들기</strong> → 위치 아시아(asia-southeast1) → <strong>테스트 모드</strong> 선택</li>
-        <li><strong>규칙</strong> 탭 내용을 아래로 바꾸고 <strong>게시</strong>:<br><code>{ "rules": { "handbook": { "$fam": { ".read": true, ".write": true } } } }</code></li>
+        <li><strong>규칙</strong> 탭 내용을 아래로 바꾸고 <strong>게시</strong>:<br><code>{ "rules": { "handbook": { "$fam": { ".read": true, ".write": true } }, "chat": { "$fam": { ".read": true, ".write": true } } } }</code> (handbook = 기록·앨범·쇼츠·산책, chat = 채팅)</li>
         <li><strong>데이터</strong> 탭 상단의 <code>https://…firebasedatabase.app</code> 주소를 복사 → 위 첫 칸에 붙여넣기</li>
         <li>가족 코드를 정해 입력 → <strong>동기화 켜기</strong>. 상대 폰에서도 같은 주소·같은 코드 입력이면 끝.</li>
       </ol>
-      <p class="muted small">주의: 코드를 아는 사람은 이 기록을 읽고 쓸 수 있으니 코드를 비밀번호처럼 길게 만드세요. 두 폰에서 동시에 수정하면 나중에 저장한 쪽이 남습니다.</p>
+      <p class="muted small">주의: 코드를 아는 사람은 이 기록을 읽고 쓸 수 있으니 코드를 비밀번호처럼 길게 만드세요. 두 폰에서 같은 때 기록해도 양쪽 기록을 합칩니다(같은 칸을 동시에 고치면 나중 것이 남음).</p>
     </details>
   </div>
 
   <h3 class="sec">백업</h3>
   <div class="card">
-    <button class="btn sm" id="bkupBtn" type="button">전체 기록 파일로 저장</button>
-    <p class="muted small" style="margin:8px 0 0;">기록·설정을 JSON 파일로 저장합니다. 앨범 사진은 클라우드에 있어 제외됩니다. 큰 변경 전에는 한 번 받아 두세요.</p>
+    <div class="row">
+      <button class="btn sm" id="bkupBtn" type="button">전체 기록 파일로 저장</button>
+      <button class="btn sm ghost" id="impFileBtn" type="button">백업 파일에서 가져오기</button>
+      <input type="file" id="impFile" accept=".json,application/json,text/plain" style="display:none;">
+    </div>
+    <p class="muted small" style="margin:8px 0 0;">기록·설정을 JSON 파일로 저장합니다. 앨범 사진은 클라우드에 있어 제외됩니다. 큰 변경 전에는 한 번 받아 두세요. 가져올 때는 '합치기'(지금 기록 유지)와 '백업 시점으로 되돌리기' 중 고릅니다.</p>
   </div>
 
   <h3 class="sec">백업 텍스트 <span class="muted small">다른 기기로 옮기거나 복원할 때</span></h3>
   <div class="card">
-    <p class="muted small">아래 버튼으로 전체 기록을 텍스트(JSON)로 내보내 메모장 등에 보관할 수 있습니다. 복원하려면 붙여넣고 "가져오기".</p>
+    <p class="muted small">아래 버튼으로 전체 기록을 텍스트(JSON)로 내보내 메모장 등에 보관할 수 있습니다. 복원하려면 붙여넣고 "가져오기" — 백업 파일 내용을 붙여넣어도 됩니다.</p>
     <div class="row" style="margin-bottom:8px;">
       <button class="btn sm ghost" id="expBtn">내보내기</button>
       <button class="btn sm ghost" id="impBtn">가져오기</button>
@@ -2865,7 +2881,17 @@ body.alb-sel #bnav{display:none;}
       <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
       <li>의료 정보는 일반 정보입니다. 개별 판단은 수의사 진료가 우선입니다.</li>
     </ul>
-    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.5.2 · 2026-10-28</p>
+    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.6.0 · 2026-10-28</p>
+  </div>
+
+  <h3 class="sec">진단 <span class="muted small" id="diagErrN"></span></h3>
+  <div class="card">
+    <p class="muted small" style="margin-top:0;">앱이 이상하면 '진단 내용 복사'를 눌러 대화창에 붙여넣어 주세요. 버전·저장공간·최근 오류만 담기고 기록 내용은 들어가지 않습니다.</p>
+    <div id="diagBody" class="dg"></div>
+    <div class="row" style="margin-top:10px;">
+      <button class="btn sm" id="diagCopy" type="button">진단 내용 복사</button>
+      <button class="btn sm ghost" id="diagClear" type="button">오류 기록 지우기</button>
+    </div>
   </div>
 </section>
 
@@ -4262,6 +4288,18 @@ class VideoRTC extends HTMLElement {
 if(window.customElements && !customElements.get('video-stream')){ customElements.define('video-stream', VideoRTC); }
 </script>
 <script>
+/* V6.6.0 (2026-10-28): 안정화판 — 보이는 기능은 그대로, 숨은 결함 5건·위험 6건 수정(통신량 R5는 진단 화면에서 측정만) + 구조 정리. 점검 보고서: '빼꼼 핸드북 안정화 점검 보고서'.
+   ① 두 폰이 거의 동시에 기록하면 한쪽 기록이 사라지던 문제(D1) — 업로드마다 기기별 번호(_seen)를 남겨, 상대가 내 업로드를 못 보고 덮어쓴 경우 내 기록을 지키고 다시 올림.
+   ② 백업 가져오기(D2) — 파일 백업 형식도 인식, 기본 '합치기'(지금 기록 유지), '백업 시점으로 되돌리기'는 확인 후 지금 상태를 파일로 먼저 저장, 5초 되돌리기, '백업 파일에서 가져오기' 버튼.
+   ③ 확인창(D3) — confirm() 15곳을 앱 확인창(askConfirm)으로 직접 교체하고 '탭 다시 재생' 가로채기 삭제. 아이콘을 눌러 시작한 확인('계속')이 무시되던 문제 해결.
+      이름 묻기(prompt)도 앱 입력창(uiPrompt)으로.
+   ④ 뒤로가기(D4) — 화면 관리 한 곳(NAV): 시트·확인창·사진 확대·산책 화면을 층으로 쌓고 폰 뒤로가기 = 맨 위 층 닫기. 쇼츠는 층이 없을 때 넘겨받음.
+      기록 칸은 앱·쇼츠 모두 문지기(navHistPush/navHistBack)로만 넣고 뺌 — 되돌리기 도중 넣은 칸을 브라우저가 잃지 않게(쇼츠 시트를 닫자마자 입력창을 열 때).
+   ⑤ 빠른 수정 시트(D5) — 연 날짜를 기억(자정을 넘겨 저장·삭제해도 그 날 기록에 적용).
+   ⑥ 이 폰 저장 실패 경고(R1), 시작·화면 그리기 단계별 보호(R2), 오류 기록함 + 설정 '진단'(R3), 버전 한 곳(VERSION)·두 파일 버전 확인(R4),
+      Firebase 규칙 안내에 chat 경로·동시 수정 문구 수정(R6), 대변·소변·식사·산책·수면·외출 100일 자동 삭제 중지(R7).
+   ⑦ 구조 — 소스를 기능별 파일(dev/src)로 나누고 빌드로 2개 파일 생성, 자동 테스트 27묶음(dev/tests, 구조 검사 포함), 안 쓰는 함수 8개 삭제, 앨범 ID 생성 1곳,
+      개발 기준서(dev/README.md). */
 /* V6.5.2 (2026-10-28): 쇼츠 — 만들다 만 쇼츠(초안) 삭제: 쇼츠 홈 목록 행마다 [삭제]·2편 이상이면 [모두 삭제], 구성 편집 위 [삭제].
    영상까지 만든 초안은 '유튜브에 올렸어요 · 기록으로 옮기기'도 고를 수 있음. 지운 초안의 빼꼼 #번호는 다음 영상이 이어받음(번호 안 비게). 본체 변경은 버전 표기·shorts.js 버전뿐. */
 /* V6.5.1 (2026-10-28): 쇼츠 — 영상에 한글 자막을 자동으로 넣지 않음(위쪽 영문 2줄: 제목 훅 · day N만), 한글은 장면마다 추천 문구·문장에서 골라 붙임,
@@ -4346,6 +4384,7 @@ if(window.customElements && !customElements.get('video-stream')){ customElements
 /* V5.8 (2026-08-21): 접종 실기록 반영(2차 08.07 종합+코로나1차, 3차 08.21 종합+코로나2차, 4차 09.04 예약, 넥스가드 스펙트라 매월 21일, 코로나 보강 2027.08.21),
    04장 미니 인도어 퍼피 체중별 급여표 추가, 급여 계산기 기본 ME 3735 + kcal 누락 NaN 가드. 저장 구조·동기화·달력 로직 변경 없음. */
 /* =============== State =============== */
+const APP_VER='6.6.0', APP_DATE='2026-10-28';   /* V6.6: 앱 버전 — dev/VERSION 한 곳에서 빌드할 때 채움 */
 const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, sleepCur:0, sleepLog:{}, feed:{kcal:4000, meals:4, adult:0, adultMode:'auto', bcs:'ok', bcsAt:'', neut:0, treat:0, vetG:0, vetAt:''}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}, media:{url:''}, kgCur:0, kgLog:{}, kgCfg:{name:'도그스테이', pass:0, from:''}, marks:{}};
 let S = JSON.parse(JSON.stringify(DEFAULT_S));
 let storageOK = false, artOK = false, saveTimer = null, lastEditAt = 0;
@@ -4367,7 +4406,14 @@ async function loadState(){
 }
 function persistLocal(){
   const raw=JSON.stringify(S);
-  lsSet('ckcs-data', raw);
+  let ok=lsSet('ckcs-data', raw);
+  if(!ok){   /* V6.6(R1): 저장공간 부족 — 다시 받을 수 있는 것(산책 경로 캐시·대표사진·동기화 임시본)부터 비우고 재시도, 그래도 안 되면 경고 */
+    try{ if(typeof wgCacheSave==='function') wgCacheSave(wgCacheAll(), 2); }catch(e){}
+    try{ localStorage.removeItem('_hero_v1'); localStorage.removeItem('_sync_par'); }catch(e){}
+    ok=lsSet('ckcs-data', raw);
+    if(!ok) logErr('이 폰 저장', '저장공간 부족 — 기록 '+Math.round(raw.length/1024)+'KB를 이 폰에 저장하지 못함');
+  }
+  try{ lsWarnPaint(!ok); }catch(e){}
   if(artOK){ try{ window.storage.set('ckcs-data', raw); }catch(e){ console.error('save fail', e); } }
 }
 function saveCommit(){
@@ -4434,7 +4480,7 @@ async function syncPushNow(){
     const remote=await syncFetch('GET');
     if(remote && typeof remote==='object'){
       if(remote._at) SYNC.lastRemoteAt=remote._at;
-      const merged=mergeStates(syncBaseGet(), S, remote);
+      const merged=mergeStates(syncBaseFor(remote), S, remote);
       syncBaseSet(remote);
       if(!sEq(syncStrip(merged), syncStrip(S))){
         S=Object.assign(JSON.parse(JSON.stringify(DEFAULT_S)), merged);
@@ -4445,12 +4491,19 @@ async function syncPushNow(){
       }
     }
     const snap=JSON.parse(JSON.stringify(S));
+    const seq=Math.max(syncSeqGet()+1, Date.now());            /* V6.6: 이 업로드의 기기별 번호 */
+    snap._seen=seenMax(S._seen, remote && remote._seen); snap._seen[DEV_ID]=seq;
     await syncFetch('PUT', JSON.stringify(snap));
+    lsSet('_sync_seq', String(seq));
+    lsSet('_sync_par', JSON.stringify(syncStrip(remote || {})));  /* 이 업로드가 바탕으로 삼은 서버본 — 경쟁이 생기면 병합 기준 */
+    S._seen=seenMax(S._seen, snap._seen);
+    DIAG.syncOkAt=Date.now();
     SYNC.lastRemoteAt=snap._at||Date.now();
     syncBaseSet(snap);
     if((S._at||0)<=(snap._at||0)){ SYNC.dirty=false; SYNC.retry=0; }
     syncStat('동기화됨 · '+syncHM());
   }catch(e){
+    logErr('동기화: 올리기', e);
     SYNC.dirty=true;
     SYNC.retry=Math.min((SYNC.retry||0)+1, 6);
     clearTimeout(SYNC.pushT);
@@ -4475,8 +4528,9 @@ async function syncPull(){
     SYNC.pulledOK=true;
     if(remote && typeof remote==='object'){
       if(remote._at) SYNC.lastRemoteAt=remote._at;
-      const merged=mergeStates(syncBaseGet(), S, remote);
+      const merged=mergeStates(syncBaseFor(remote), S, remote);
       syncBaseSet(remote);                                   /* base = 서버에서 실제로 본 상태만 */
+      DIAG.syncOkAt=Date.now();
       const chLocal =!sEq(syncStrip(merged), syncStrip(S));
       const chRemote=!sEq(syncStrip(merged), syncStrip(remote));
       if(chLocal){
@@ -4488,7 +4542,7 @@ async function syncPull(){
     } else if(remote===null && (S._at||0)>0){
       syncPushSoon();
     }
-  }catch(e){ /* 다음 주기에 재시도 */ }
+  }catch(e){ logErr('동기화: 받기', e); /* 다음 주기에 재시도 */ }
   finally{ SYNC.pulling=false; syncWarnPaint(); }
 }
 /* =============== V5.15: 3-way 병합 엔진 =============== */
@@ -4500,7 +4554,23 @@ function sCanon(v){                                     /* 키 순서가 달라�
 }
 function sEq(a,b){ return JSON.stringify(sCanon(a))===JSON.stringify(sCanon(b)); }
 function sObj(v){ return !!v && typeof v==='object' && !Array.isArray(v); }
-function syncStrip(o){ const c=sClone(o||{}); delete c._at; delete c._dev; return c; }
+function syncStrip(o){ const c=sClone(o||{}); delete c._at; delete c._dev; delete c._seen; return c; }
+/* V6.6: 두 폰 동시 저장 경쟁(D1) — 업로드마다 문서에 기기별 번호(_seen[기기]=번호)를 남긴다.
+   받은 서버본이 내 마지막 업로드를 포함하지 않으면(상대가 내 업로드를 못 보고 그 전 상태로 덮어씀),
+   '내 업로드가 바탕으로 삼은 서버본(_sync_par)'을 기준으로 병합한다 → 내 기록을 '상대가 지운 것'으로 오해하지 않고 다시 올린다.
+   (V6.5.2까지: 내가 올린 상태를 기준으로 삼아, 상대의 늦은 업로드에 없는 내 기록을 삭제로 처리했다) */
+function syncSeqGet(){ return +(lsGet('_sync_seq')||0)||0; }
+function syncParGet(){ try{ const r=lsGet('_sync_par'); return r? JSON.parse(r) : null; }catch(e){ return null; } }
+function syncBaseFor(remote){
+  const mine=syncSeqGet();
+  if(!mine || !remote) return syncBaseGet();
+  const seen=+(((remote._seen||{})[DEV_ID])||0);
+  if(seen>=mine){ if(lsGet('_sync_par')){ try{ localStorage.removeItem('_sync_par'); }catch(e){} } return syncBaseGet(); }   /* 서버본에 내 마지막 업로드가 들어 있음 = 평소(바탕 서버본은 더 필요 없음) */
+  logErr('동기화: 동시 저장 감지', '상대 폰이 이 폰의 마지막 업로드를 보기 전 상태로 저장 — 이 폰 기록을 지키며 다시 올림');
+  return syncParGet() || undefined;                           /* 바탕 서버본이 없으면 기준 없이 합침(어느 쪽도 지우지 않음) */
+}
+function seenMax(a, b){ const o={}; [a, b].forEach(function(x){ if(x && typeof x==='object') Object.keys(x).forEach(function(k){ const v=+x[k]||0; if(!(o[k]>=v)) o[k]=v; }); }); return o; }
+function seenOff(o){ if(!o || typeof o!=='object' || !('_seen' in o)) return o; const c=Object.assign({}, o); delete c._seen; return c; }
 function syncBaseGet(){ try{ const r=lsGet('_sync_base'); return r? JSON.parse(r) : null; }catch(e){ return null; } }
 function syncBaseSet(o){ try{ lsSet('_sync_base', JSON.stringify(syncStrip(o))); }catch(e){} }
 function mKey(it){
@@ -4560,9 +4630,10 @@ function merge3(base, loc, rem, remNewer){
 }
 function mergeStates(base, loc, rem){
   const remNewer=((rem&&rem._at)||0) > ((loc&&loc._at)||0);
-  const out=merge3(base||undefined, loc||{}, rem||{}, remNewer);
+  const out=merge3(seenOff(base)||undefined, seenOff(loc)||{}, seenOff(rem)||{}, remNewer);
   out._at=Math.max((loc&&loc._at)||0, (rem&&rem._at)||0);
   out._dev=(loc&&loc._dev)||DEV_ID;
+  const sn=seenMax(loc && loc._seen, rem && rem._seen); if(Object.keys(sn).length) out._seen=sn;   /* V6.6: 업로드 번호는 기기별 큰 값 */
   return out;
 }
 
@@ -4604,8 +4675,6 @@ function bindSync(){
 
 /* =============== 오늘의 공지 (교대 인수인계 팝업) =============== */
 const NTC={shownAt:0, shownId:'', show:10, editId:''};
-function ntcDismissGet(){ try{ return JSON.parse(lsGet('_ntc_dismiss')||'null'); }catch(e){ return null; } }
-function ntcDismissSet(at){ lsSet('_ntc_dismiss', JSON.stringify({at:at, day:todayKey()})); }
 function ntcFmt(ts){ if(!ts) return ''; const d=new Date(ts); return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
 function renderNotice(){
   const feed=document.getElementById('ntcFeed');
@@ -4649,8 +4718,8 @@ function renderNotice(){
       NTC.editId='';
       saveState(); renderNotice(); renderHomeNotice();
     }); });
-    feed.querySelectorAll('[data-ndel]').forEach(function(b){ b.addEventListener('click', function(){
-      if(!confirm('이 공지를 삭제할까요? 두 폰 모두에서 사라집니다.')) return;
+    feed.querySelectorAll('[data-ndel]').forEach(function(b){ b.addEventListener('click', async function(){
+      if(!(await askConfirm('이 공지를 삭제할까요? 두 폰 모두에서 사라집니다.'))) return;
       const id=this.dataset.ndel;
       const victim=(S.ntc||[]).find(function(x){ return x.id===id; });
       S.ntc=S.ntc.filter(function(x){ return x.id!==id; });
@@ -4714,10 +4783,10 @@ function bindNotice(){
     const ovl=document.getElementById('ntcOvl'); ovl.dataset.nid=''; ovl.classList.add('on');
   });
   document.getElementById('ntcClose').addEventListener('click', function(){ document.getElementById('ntcOvl').classList.remove('on'); });
-  document.getElementById('ntcAck').addEventListener('click', function(){
+  document.getElementById('ntcAck').addEventListener('click', async function(){
     const ovl=document.getElementById('ntcOvl');
     const id=ovl.dataset.nid;
-    if(id){ if(!ntcAck(id)) return; }
+    if(id){ if(!(await ntcAck(id))) return; }
     ovl.classList.remove('on');
   });
   document.getElementById('ntcOvl').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('on'); });
@@ -4754,18 +4823,6 @@ function seedProfile(){
   /* V5.2: 시드는 사용자 편집이 아니므로 _at을 찍지 않는다 —
      캐시 삭제 후 빈 상태가 "최신"으로 둔갑해 서버 기록을 못 받아오거나 덮어쓰는 사고 방지 */
   if(ch) persistLocal();
-}
-function renderWarranty(){
-  const el=document.getElementById('warrantyBox'); if(!el) return;
-  const h=S.profile.home;
-  if(!h){ el.innerHTML=''; return; }
-  const end=addD(new Date(h+'T00:00:00'), 15);
-  const left=Math.round((end-new Date(todayKey()+'T00:00:00'))/86400000);
-  if(left<0){ el.innerHTML=''; return; }
-  el.innerHTML='<div class="box box-warn" style="margin-top:14px;">'
-    +'<div class="bt">&#9888; 분양 보상기간 D-'+left+' &mdash; '+d2s(end)+'까지</div>'
-    +'<p class="small">이 기간 안에 전염성 질병(파보·코로나·홍역)이 확인되면 업체 부담 치료 대상입니다. 단 <strong>병원에 가기 전 바크바크 010-2999-4743으로 먼저 연락</strong>해야 하고, 업체 지정병원에서 진료받아야 합니다.</p>'
-    +'<p class="small" style="margin-top:6px;"><strong>지금 할 일</strong> — 아직 병원 초진 전이면 이번 주 안에 다녀오세요. 진료기록이 곧 증빙입니다. 이상 징후는 날짜·사진으로 남기세요.</p></div>';
 }
 function renderHome(){
   const nameEl=document.getElementById('homeName'), ageEl=document.getElementById('homeAge'),
@@ -4926,19 +4983,64 @@ function bindExpenses(){
 }
 
 /* =============== 백업 =============== */
+/* V6.6: 가져오기 — 텍스트 내보내기(기록 그대로)와 '전체 기록 파일로 저장' 파일({app, exported, data}) 둘 다 읽는다.
+   기본은 '합치기'(지금 기록은 그대로, 백업에만 있는 기록을 더함). '백업 시점으로 되돌리기'는 한 번 더 확인하고,
+   지우기 전에 지금 상태를 파일로 먼저 저장한다. 끝나면 5초 동안 '되돌리기'.
+   (V6.5.2까지: 파일 내용을 붙여넣으면 빈 기록으로 덮어써 두 폰의 기록이 모두 지워졌다) */
+const IO_KEYS=['qlog', 'weight', 'walkLog', 'sleepLog', 'awayLog', 'kgLog', 'events', 'ntc', 'visits', 'expenses', 'profile', 'bathLog'];
+function ioParse(text){
+  let p; try{ p=JSON.parse(String(text||'').trim()); }catch(e){ return {err:'형식이 올바르지 않습니다. 내보내기 텍스트나 백업 파일 내용을 그대로 붙여넣어 주세요.'}; }
+  let at='';
+  if(p && typeof p==='object' && p.app==='cavalier-handbook' && p.data && typeof p.data==='object'){ at=p.exported||''; p=p.data; }
+  if(!p || typeof p!=='object' || Array.isArray(p) || !IO_KEYS.some(function(k){ return k in p; })) return {err:'빼꼼 핸드북 기록이 아닙니다. 내보내기 텍스트나 \'전체 기록 파일로 저장\' 파일을 넣어 주세요.'};
+  return {data:p, at:at || (p._at? new Date(p._at).toISOString() : '')};
+}
+function ioCount(o){
+  const n=function(v){ return Array.isArray(v)? v.length : (v && typeof v==='object')? Object.keys(v).length : 0; };
+  return '빠른 기록 '+n(o.qlog)+'일 · 산책 '+n(o.walkLog)+'일 · 수면 '+n(o.sleepLog)+'일 · 체중 '+n(o.weight)+'건 · 일정 '+n(o.events)+'건';
+}
+function ioDownload(obj, suffix){
+  const data=JSON.stringify({app:'cavalier-handbook', exported:new Date().toISOString(), data:obj}, null, 1);
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([data], {type:'application/json'}));
+  a.download='빼꼼기록_'+todayKey().replace(/-/g,'')+(suffix||'')+'.json';
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ try{ URL.revokeObjectURL(a.href); }catch(e){} a.remove(); }, 800);
+}
+async function ioImport(text){
+  const r=ioParse(text); if(r.err){ uiAlert(r.err); return; }
+  const when=r.at? r.at.slice(0, 16).replace('T', ' ') : '시각 정보 없음';
+  const pick=await uiSheetOpen({title:'백업 가져오기', msg:'백업('+when+'): '+ioCount(r.data)+'\n\n합치기 — 지금 기록은 그대로 두고 백업에만 있는 기록을 더합니다.\n되돌리기 — 백업 시점으로 돌아갑니다. 그 뒤에 남긴 기록은 두 폰 모두에서 지워집니다.',
+    actions:[{label:'합치기 (권장)'}, {label:'백업 시점으로 되돌리기', destr:true}], cancel:'취소'});
+  if(!pick || !pick.ok) return;
+  const before=sClone(S);
+  if(pick.idx===1){
+    if(!(await uiConfirm({title:'정말 되돌릴까요?', msg:'백업 이후의 기록이 두 폰 모두에서 지워집니다.\n지금 상태는 먼저 파일로 저장해 둡니다.', ok:'되돌리기', destr:true}))) return;
+    try{ ioDownload(before, '_되돌리기전'); }catch(e){ logErr('가져오기: 이전 상태 저장', e); }
+    S=Object.assign(sClone(DEFAULT_S), r.data);
+  }else{
+    S=Object.assign(sClone(DEFAULT_S), mergeStates(undefined, S, r.data));   /* 기준본 없이 합침 = 어느 쪽 기록도 지우지 않음 */
+  }
+  saveState(); renderAll();
+  uiToast(pick.idx===1? '백업 시점으로 되돌렸어요' : '백업을 합쳤어요', function(){ S=Object.assign(sClone(DEFAULT_S), before); saveState(); renderAll(); uiToast('가져오기 전으로 되돌렸어요'); });
+}
 function bindIO(){
   document.getElementById('expBtn').addEventListener('click',()=>{
     document.getElementById('ioArea').value=JSON.stringify(S);
     document.getElementById('ioArea').select();
   });
-  document.getElementById('impBtn').addEventListener('click',()=>{
-    try{
-      const p=JSON.parse(document.getElementById('ioArea').value);
-      S=Object.assign(JSON.parse(JSON.stringify(DEFAULT_S)), p);
-      saveState(); renderAll();
-      alert('가져오기 완료.');
-    }catch(e){ alert('형식이 올바르지 않습니다. 내보내기한 텍스트 전체를 붙여넣어 주세요.'); }
-  });
+  document.getElementById('impBtn').addEventListener('click',()=>{ ioImport(document.getElementById('ioArea').value); });
+  const fb=document.getElementById('impFileBtn'), fi=document.getElementById('impFile');
+  if(fb && fi){
+    fb.addEventListener('click', function(){ fi.value=''; fi.click(); });
+    fi.addEventListener('change', function(){
+      const f=fi.files && fi.files[0]; if(!f) return;
+      const rd=new FileReader();
+      rd.onload=function(){ ioImport(String(rd.result||'')); };
+      rd.onerror=function(){ uiAlert('파일을 읽지 못했습니다.'); };
+      rd.readAsText(f);
+    });
+  }
 }
 
 /* =============== Storage badge =============== */
@@ -4966,21 +5068,6 @@ const VAX_PLAN=[
 const HOME_EVENTS=[[15,'★ 분양 보상기간(15일) 만료 — 바크바크 계약']];
 const MILESTONES=[[98,'사회화 골든타임 마감 (14주)'],[183,'중성화 상담 권장 시점 (6개월)'],[304,'성견 사료 전환 검토 (10개월)']];
 function d2s(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
-function vaxDue(v,b){
-  /* V5.6: 실제 완료 접종일 우선 앵커 — 가장 최근 완료(날짜 입력됨) 차수의 날짜 + 2주×차수 차이.
-     완료 날짜가 없으면 계약서 앵커(2차 예정일 08.02), 그것도 없으면 주령 계산으로 폴백 */
-  if(v.seq && v.seq>=2){
-    let ak=0, ad=null;
-    VAX_PLAN.forEach(function(p){
-      if(!p.seq || p.seq>=v.seq) return;
-      const st=(S.vax||{})[p.id]||{};
-      if(st.done && st.date && p.seq>ak){ ak=p.seq; ad=st.date; }
-    });
-    if(ad) return addD(new Date(ad+'T00:00:00'), (v.seq-ak)*14);
-    if(VAX_ANCHOR) return addD(new Date(VAX_ANCHOR+'T00:00:00'), (v.seq-2)*14);
-  }
-  return addD(b, v.wk*7);
-}
 function addD(base,n){const d=new Date(base.getTime()); d.setDate(d.getDate()+n); return d;}
 function autoEventsRange(from,to){
   const out=[]; const tk=todayKey();
@@ -5079,10 +5166,10 @@ function renderSel(byDay){
     if(e.vid && (e.cls==='a'||e.cls==='l')) right='<button class="btn sm" data-vx="'+e.vid+'">✓ 완료</button>';
     return '<div class="ev-row"><span>'+left+'</span>'+right+'</div>';
   }).join('') : '<p class="muted small" style="margin:6px 0;">일정 없음 — 아래에서 추가.</p>';
-  box.querySelectorAll('.del').forEach(function(b){ b.addEventListener('click',function(){
+  box.querySelectorAll('.del').forEach(function(b){ b.addEventListener('click',async function(){
     const i=parseInt(this.dataset.i,10);
     const e=S.events[i];
-    if(e && e.rep && !confirm('반복 일정입니다. 전체 반복을 삭제할까요?')) return;
+    if(e && e.rep && !(await askConfirm('반복 일정입니다. 전체 반복을 삭제할까요?'))) return;
     S.events.splice(i,1); saveState(); renderCal();
   }); });
   box.querySelectorAll('[data-vx]').forEach(function(b){ b.addEventListener('click',function(){
@@ -5209,6 +5296,8 @@ function animCal(){
 /* =============== 15 성장 앨범 =============== */
 const ALB={meta:null, thumbs:new Map(), fulls:new Map(), shown:24, lastRev:null, busy:false, cur:null, filter:'all', store:null, repairing:false, repairTried:{}, likeBusy:false};
 function albPath(p){ return SYNC.url.replace(/\/+$/,'')+'/handbook/'+SYNC.code+'-album/'+p+'.json'; }
+/* V6.6: 앨범 항목 ID 한 곳(사진·영상·유튜브·산책 중 사진 — 예전엔 같은 식이 5곳에 따로) */
+function albNewId(){ return 'a'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
 async function albFetch(p, method, body){
   const ctl=new AbortController(); const to=setTimeout(function(){ ctl.abort(); }, 20000);
   try{
@@ -5250,7 +5339,7 @@ async function albumPull(force){
       try{ repOnMeta(); }catch(e){}   /* V6.0.6: 앨범 정보가 오면 대표사진 다시 */
       setTimeout(function(){ albRepairThumbs(); }, 300);   /* V5.9.3 */
     }
-  }catch(e){ albStat('불러오기 실패 — 인터넷 확인 후 "새로고침"을 눌러주세요.'); }
+  }catch(e){ logErr('앨범 불러오기', e); albStat('불러오기 실패 — 인터넷 확인 후 "새로고침"을 눌러주세요.'); }
   finally{ ALB.busy=false; }
 }
 const albThIO=('IntersectionObserver' in window)? new IntersectionObserver(function(es){
@@ -5345,7 +5434,7 @@ function bindAlbum(){
         let fu=await albCompress(files[i],1280,0.72);
         if(fu.length>1200000) fu=await albCompress(files[i],1280,0.55);
         const th=await albCompress(files[i],360,0.7);
-        const id='a'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+        const id=albNewId();
         let meta;
         if(albP2On()){
           /* V5.12: 두 폰 모두 신버전 → R2에 바이너리로. base64 33% 군살이 빠진다 */
@@ -5379,7 +5468,7 @@ function bindAlbum(){
     const u=(document.getElementById('albVidUrl').value||'').trim();
     const mm=(document.getElementById('albVidMemo').value||'').trim();
     if(!/^https?:\/\//.test(u)){ alert('링크는 https:// 로 시작해야 합니다. 유튜브 공유 버튼에서 복사한 주소를 붙여넣어 주세요.'); return; }
-    const id='a'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+    const id=albNewId();
     const meta={t:'v', d:todayKey(), m:mm, u:u, at:Date.now(), s:0};
     try{
       await albFetch('meta/'+id,'PUT',JSON.stringify(meta));
@@ -5456,7 +5545,7 @@ function bindAlbum(){
   });
   document.getElementById('albLbDel').addEventListener('click', async function(){
     if(!ALB.cur) return;
-    if(!confirm('이 항목을 앨범에서 삭제할까요? 두 폰 모두에서 사라지며 되돌릴 수 없습니다.')) return;
+    if(!(await askConfirm('이 항목을 앨범에서 삭제할까요? 두 폰 모두에서 사라지며 되돌릴 수 없습니다.'))) return;
     const id=ALB.cur;
     const mm=ALB.meta[id]||{};
     if(mm.t==='r'){
@@ -5510,7 +5599,7 @@ function bindAlbum(){
    meta[id].p2=1 이면 그 사진의 원본·썸네일이 R2에 있음. 없으면 기존 파이어베이스.
    화면 코드는 albImgSrc() 한 곳만 거치므로 표시·정렬·메모·좋아요는 전부 그대로다.
    상대 폰이 구버전이면 p2 를 모르기 때문에, 두 폰 모두 이 빌드일 때만 전환한다. */
-const PVER=522;   /* v5.15.1 — 배포마다 이 번호를 올린다 */
+const PVER=660;   /* V6.6: 빌드 번호 = VERSION에서 자동(6.6.0 → 660). 기기 보고(ver)·상대 폰 구버전 확인용 */
 const PMIG={run:false, stop:false, gate:null};
 const P2SCHEMES=[
   {id:'d', name:'영상과 같은 형식 (v/… .mp4)',  ct:'video/mp4',  f:function(k,id){ return 'v/'+id+(k==='th'?'t':'')+'.mp4'; }},
@@ -5546,7 +5635,7 @@ async function albMigTest(){
     out();
   }
   const probe=albDataBlob('data:image/jpeg;base64,'+P2PROBE);
-  const pid='a'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);   /* 실제 사진 ID와 같은 형식 — 밑줄 금지 */
+  const pid=albNewId();   /* 실제 사진 ID와 같은 형식 — 밑줄 금지 */
   let win=null;
   for(let i=0;i<P2SCHEMES.length;i++){
     const s=P2SCHEMES[i], key=s.f('full',pid);
@@ -5581,19 +5670,6 @@ function albIsP2(id){ const m=ALB.meta&&ALB.meta[id]; return !!(m&&m.p2); }
    크롬은 내용을 보고 사진으로 표시하지만 사파리(아이폰)는 형식만 보고 거부한다.
    → 파일을 받아 사진 형식으로 바꿔서 화면에 넣는다. 저장된 데이터는 그대로, 화면에서만 교정. */
 const P2BLOB=new Map(), P2BLOBMAX=320;
-function albP2NeedsFix(key){ return /\.(mp4|mov|m4v|webm|3gp)$/i.test(String(key)); }
-async function albP2Blob(key){
-  const hit=P2BLOB.get(key); if(hit) return hit;
-  const r=await fetch(mediaApi('/file/'+key));
-  if(!r.ok) throw new Error('HTTP '+r.status);
-  const url=URL.createObjectURL(new Blob([await r.blob()],{type:'image/jpeg'}));
-  if(P2BLOB.size>=P2BLOBMAX){
-    const old=P2BLOB.keys().next().value;
-    try{ URL.revokeObjectURL(P2BLOB.get(old)); }catch(e){}
-    P2BLOB.delete(old);
-  }
-  P2BLOB.set(key,url); return url;
-}
 function albImgSrc(kind,id){
   if(albIsP2(id)){
     if(!mediaConfigured()) return Promise.reject(new Error('저장소 미연결'));
@@ -5673,7 +5749,7 @@ async function albMigRun(){
   if(!mediaConfigured()){ alert('영상 저장소(R2)가 연결되어 있지 않습니다. 위 칸에서 먼저 연결해주세요.'); return; }
   const todo=albMigTodo();
   if(!todo.length){ p2Stat('옮길 사진이 없습니다.'); return; }
-  if(!confirm('사진 '+todo.length+'장을 R2로 옮깁니다.\n앨범 화면은 그대로이고, 원본은 아직 지우지 않습니다.\n도중에 끊겨도 다시 누르면 이어서 진행됩니다.\n\n시작할까요?')) return;
+  if(!(await askConfirm('사진 '+todo.length+'장을 R2로 옮깁니다.\n앨범 화면은 그대로이고, 원본은 아직 지우지 않습니다.\n도중에 끊겨도 다시 누르면 이어서 진행됩니다.\n\n시작할까요?'))) return;
   PMIG.run=true; PMIG.stop=false; renderMigPanel();
   let wl=null; try{ if(navigator.wakeLock) wl=await navigator.wakeLock.request('screen'); }catch(e){}
   let ok=0, fail=0, err='';
@@ -5716,7 +5792,7 @@ async function albMigClean(){
     try{ await p2Blob('full', pick[i]); }
     catch(e){ p2Stat('확인 실패 — 정리를 중단했습니다. ('+String(e&&e.message||e)+')'); return; }
   }
-  if(!confirm('R2 보관 확인됐습니다.\n파이어베이스에 남은 사본 '+ids.length+'장을 지웁니다. 앨범 화면은 그대로입니다.\n\n계속할까요?')) { p2Stat(''); return; }
+  if(!(await askConfirm('R2 보관 확인됐습니다.\n파이어베이스에 남은 사본 '+ids.length+'장을 지웁니다. 앨범 화면은 그대로입니다.\n\n계속할까요?'))) { p2Stat(''); return; }
   PMIG.run=true; PMIG.stop=false; renderMigPanel();
   let ok=0, fail=0;
   try{
@@ -6074,11 +6150,11 @@ async function albVideoUpload(file){
   if(!syncConfigured()){ alert('설정에서 동기화를 먼저 켜주세요.'); return; }
   if(!mediaConfigured()){ document.getElementById('mediaCfg').open=true; alert('영상 저장소가 아직 연결되지 않았습니다. 아래 "영상 저장소 연결"에 Worker 주소를 넣어주세요.'); return; }
   if(MEDIA.up){ alert('이미 올리는 중입니다. 끝난 뒤 다시 시도해주세요.'); return; }
-  if(file.size>MEDIA.WARN && !confirm('영상이 '+Math.round(file.size/1048576)+'MB로 큽니다. 와이파이에서 올리는 걸 권장합니다. 계속할까요?')) return;
+  if(file.size>MEDIA.WARN && !(await askConfirm('영상이 '+Math.round(file.size/1048576)+'MB로 큽니다. 와이파이에서 올리는 걸 권장합니다. 계속할까요?'))) return;
   MEDIA.up=true; let wl=null;
   try{ if(navigator.wakeLock) wl=await navigator.wakeLock.request('screen'); }catch(e){}
   const ext=mediaExt(file), ct=(file.type&&/^video\//.test(file.type))?file.type:'video/mp4';
-  const id='a'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  const id=albNewId();
   const key='v/'+id+'.'+ext;
   let th=null, dur=0;
   try{
@@ -6235,7 +6311,7 @@ async function albOpen(id){
   const m=ALB.meta[id]; if(!m) return;
   const lbWasOpen=document.getElementById('albLb').classList.contains('on');
   document.getElementById('albLb').classList.add('on');
-  if(!lbWasOpen){ try{ history.pushState({tab:'album', lb:1, d:((history.state && history.state.d)||0)+1}, '', '#album'); }catch(e){} }   /* V5.9.4: 뒤로가기로 닫히도록 */
+  if(!lbWasOpen) navOpen('albLb', function(){ albClose(true); });   /* V5.9.4 → V6.6: 화면 관리(NAV) 층 — 폰 뒤로가기 = 닫기 */
   const ids=albPhotoIds(), pos=ids.indexOf(id);
   document.getElementById('albLbCnt').textContent = pos>=0 ? (pos+1)+' / '+ids.length : '';
   document.getElementById('albLbPrev').disabled = pos<=0;
@@ -6275,19 +6351,19 @@ function albClose(fromBack){
   const vd=document.getElementById('albLbVid'); if(vd){ try{ vd.pause(); }catch(e){} vd.removeAttribute('src'); try{ vd.load(); }catch(e){} }
   ALB.cur=null;
   /* V5.9.4: 닫기 버튼·Esc·삭제로 닫은 경우 라이트박스용 history 항목을 되돌려 다음 뒤로가기가 정상 동작하게 */
-  if(wasOpen && fromBack!==true && history.state && history.state.lb){ LB_CLOSING=true; try{ history.back(); }catch(e){ LB_CLOSING=false; } }   /* 닫기 버튼은 click 이벤트가 인자로 들어오므로 === true 로 구분 */
+  if(wasOpen && fromBack!==true) navClosed('albLb');   /* 닫기 버튼은 click 이벤트가 인자로 들어오므로 === true 로 구분 */
 }
 
 /* =============== V6.5: 쇼츠 — 앨범 연결 (SH-00) ===============
    쇼츠 화면·영상 만들기는 shorts.js(별도 파일)에 있고, 앨범을 열 때 한 번 불러온다. 본체에는 입구·표시·촬영 시각만 둔다. */
-const SH_VER='6.5.2';
+const SH_VER=APP_VER;   /* V6.6: 버전은 VERSION 파일 한 곳 — index.html·shorts.js가 같은 값 */
 let SHL=null;
 function shLoad(){
   if(window.SHORTS) return Promise.resolve(window.SHORTS);
   if(SHL) return SHL;
   SHL=new Promise(function(res, rej){
     const sc=document.createElement('script'); sc.src='shorts.js?v='+SH_VER; sc.async=true;
-    sc.onload=function(){ if(window.SHORTS) res(window.SHORTS); else { SHL=null; rej(new Error('load')); } };
+    sc.onload=function(){ if(window.SHORTS){ try{ verCheckShorts(); }catch(e){} res(window.SHORTS); } else { SHL=null; rej(new Error('load')); } };   /* V6.6: 두 파일 버전 확인 */
     sc.onerror=function(){ SHL=null; try{ sc.remove(); }catch(e){} rej(new Error('load')); };
     document.head.appendChild(sc);
   });
@@ -6459,38 +6535,130 @@ function goTab(id, silent){
   if(id==='stats'){ try{ renderStats(); }catch(e){} }
   if(id==='record'){ try{ renderWeight(); }catch(e){} }   /* V6.1 */
   if(id==='notice'){ try{ chatTabOpen(); }catch(e){} }
+  if(id==='settings'){ try{ diagOnOpen(); }catch(e){} }   /* V6.6 진단 */
   if(!silent){
     if(NAV_HIST[NAV_HIST.length-1]!==id){ NAV_HIST.push(id); if(NAV_HIST.length>30) NAV_HIST.shift(); }
-    try{ history.pushState({tab:id, d:((history.state && history.state.d)||0)+1}, '', '#'+id); }catch(e){}
+    navHistPush(function(){ return {tab:id, d:((history.state && history.state.d)||0)+1, ly:NAV.layers.length}; }, '#'+id);
   }
 }
 function navBack(){
   /* V6.0.4: 앱이 쌓은 화면이 뒤에 있으면 폰 뒤로가기와 똑같이 되돌아간다(새 항목을 쌓지 않음) */
   const st=history.state;
-  if(st && st.d>0){ try{ history.back(); return; }catch(e){} }
+  if(st && st.d>0){ navHistBack(1, false); return; }
   /* 바로가기·새로고침으로 들어와 되돌아갈 화면이 없으면 상위 화면으로 — history는 늘리지 않는다 */
   const cur=document.querySelector('.tab-panel.on');
   const id=cur ? cur.id.replace('tab-','') : 'home';
   const up = id==='stats' ? 'record' : ((LIB_TABS.indexOf(id)>-1) ? 'lib' : 'home');
   NAV_HIST=['home']; if(up!=='home') NAV_HIST.push(up);
   goTab(up, true);
-  try{ history.replaceState({tab:up, d:0}, '', '#'+up); }catch(e){}
+  try{ history.replaceState({tab:up, d:0, ly:0}, '', '#'+up); }catch(e){}
 }
-let LB_CLOSING=false;   /* V5.9.4: 닫기 버튼으로 라이트박스를 닫으며 되돌린 history 항목 표시 */
+/* =============== V6.6: 화면 관리(NAV) — 폰 뒤로가기를 한 곳에서 처리 ===============
+   탭 = 기록(history) 1칸씩. 그 위에 겹치는 화면(시트·확인창·사진 확대·산책 화면)은 '층'으로 쌓는다.
+   - 층을 열면 기록 1칸(ly = 그때 층 수)을 더하고, 폰 뒤로가기는 맨 위 층부터 닫는다.
+   - 앱 안 닫기 버튼으로 닫으면 층을 내리고 기록 1칸을 되돌린다(그때 오는 popstate는 무시).
+   - 쇼츠는 자기 화면 순서를 직접 관리하고, 층이 없을 때만 넘겨받는다(window.SHORTS.onPop).
+   새 화면을 만들 때: 열 때 navOpen(id, 닫는함수), 앱 안에서 닫을 때 navClosed(id). class 'on'으로 열고 닫는 시트는
+   NAV_SHEETS에 id만 추가하면 자동으로 따라간다. (이전: 탭·사진 확대·산책·쇼츠가 각자 기록을 쌓고, 시트는 관리 없음)
+   기록 칸을 넣고 빼는 일은 앱·쇼츠 모두 navHistPush / navHistBack 두 함수로만 한다(아래 '문지기'). */
+const NAV={layers:[], closing:0, pend:0, afterQ:[], pushQ:[], dead:new Set(), seq:0, chk:null, needChk:false, wd:null};
+const NAV_SHEETS=['uiSheet', 'qeOvl', 'wtOvl', 'sosOvl', 'ntcOvl', 'repOvl', 'kgOvl', 'bathOvl'];
+function navTabNow(){ return document.body.getAttribute('data-tab') || 'home'; }
+function navIsOpen(id){ return NAV.layers.some(function(l){ return l.id===id; }); }
+
+/* ---- 문지기: history.back()/go()는 바로 끝나지 않고 잠시 뒤 popstate로 끝난다. 그 사이에 pushState를 하면
+   브라우저가 새 칸을 잃는다(실측: 쇼츠 시트를 닫자마자 앱 확인창을 열면 확인창이 곧바로 닫혀 링크 붙여넣기가 안 됨).
+   그래서 되돌리기가 진행 중(NAV.pend>0)일 때 들어온 칸 넣기는 popstate가 온 뒤 순서대로 넣는다.
+   state 자리에 함수를 주면 넣는 순간에 만들고, null을 돌려주면(그 사이 닫힌 화면) 넣지 않는다. ---- */
+function navHistPush(state, url){
+  if(NAV.pend>0 || NAV.pushQ.length){ NAV.pushQ.push([state, url]); return; }
+  navPushNow(state, url);
+}
+function navPushNow(state, url){
+  const s=(typeof state==='function')? state() : state; if(!s) return;
+  try{ history.pushState(s, '', url || location.hash || '#home'); }catch(e){ logErr('화면 기록 넣기', e); }
+}
+/* 기록 n칸 되돌리기. silent=true: 앱 안에서 이미 닫은 화면의 칸 — 그때 오는 popstate는 화면을 바꾸지 않는다 */
+function navHistBack(n, silent){
+  NAV.pend++; if(silent) NAV.closing++;
+  clearTimeout(NAV.wd); NAV.wd=setTimeout(navHistSettle, 1500);   /* popstate가 끝내 안 오면(더 되돌릴 칸 없음 등) 미뤄 둔 일을 마저 한다 */
+  try{ if((n||1)===1) history.back(); else history.go(-n); }
+  catch(e){ NAV.pend=Math.max(0, NAV.pend-1); if(silent) NAV.closing=Math.max(0, NAV.closing-1); navHistSettle(); }
+}
+function navHistSettle(){
+  clearTimeout(NAV.wd); NAV.wd=null; NAV.pend=0;
+  const q=NAV.pushQ.splice(0); q.forEach(function(p){ navPushNow(p[0], p[1]); });
+  if(NAV.needChk){ NAV.needChk=false; navCheckTop(); }
+}
+
+function navOpen(id, close){
+  if(navIsOpen(id)) return;
+  const nid='n'+(++NAV.seq)+'.'+Date.now().toString(36);
+  const l={id:id, close:close, nid:nid};
+  NAV.layers.push(l);
+  navHistPush(function(){ const i=NAV.layers.indexOf(l); if(i<0) return null; return {tab:navTabNow(), d:((history.state && history.state.d)||0)+1, ly:i+1, nid:nid}; });
+}
+/* 앱 안에서 닫힘 — 그 층의 기록 칸은 '지난 칸'으로 표시. 맨 위에 그대로 있으면 바로 1칸 되돌리고,
+   그 사이 다른 화면이 칸을 쌓았으면 남겨 두었다가 폰 뒤로가기 때 건너뛴다(순서가 꼬여 엉뚱한 칸을 지우지 않게). */
+function navClosed(id, after){
+  const i=NAV.layers.findIndex(function(l){ return l.id===id; }); if(i<0) return;
+  const l=NAV.layers.splice(i, 1)[0];
+  NAV.dead.add(l.nid);
+  if(after) NAV.afterQ.push(after);
+  if(NAV.chk) return;
+  NAV.chk=setTimeout(function(){ NAV.chk=null; navCheckTop(); }, 0);
+}
+/* 맨 위 칸이 지난 칸이면 1칸 되돌린다. 되돌리기가 진행 중이면 기록 위치가 아직 옛것이므로 끝난 뒤에 본다 */
+function navCheckTop(){
+  if(NAV.pend>0){ NAV.needChk=true; return; }
+  const st=history.state||{};
+  if(st.nid && NAV.dead.has(st.nid)) navHistBack(1, true);
+  else navRunAfter();
+}
+function navRunAfter(){ const q=NAV.afterQ.splice(0); q.forEach(function(f){ try{ f(); }catch(e){ logErr('화면 닫은 뒤', e); } }); }
+function navSwap(from, to, close){
+  const l=NAV.layers.find(function(x){ return x.id===from; });
+  if(!l){ navOpen(to, close); return; }
+  l.id=to; l.close=close;
+}
+function navHideSheet(id){
+  if(id==='uiSheet'){ try{ uiSheetClose({ok:false}); }catch(e){} return; }
+  const el=document.getElementById(id); if(el) el.classList.remove('on');
+}
+/* 시트(class 'on')를 지켜보다가 열리면 층 추가, 앱 안에서 닫히면 층 제거 */
+function navInit(){
+  if(typeof MutationObserver!=='function') return;
+  const ob=new MutationObserver(function(list){
+    const seen={};
+    list.forEach(function(m){
+      const el=m.target, id=el.id; if(seen[id]) return; seen[id]=1;
+      const on=el.classList.contains('on'), has=navIsOpen(id);
+      if(on && !has) navOpen(id, function(){ navHideSheet(id); });
+      else if(!on && has) navClosed(id);
+    });
+  });
+  NAV_SHEETS.forEach(function(id){ const el=document.getElementById(id); if(el) ob.observe(el, {attributes:true, attributeFilter:['class']}); });
+}
 window.addEventListener('popstate', function(e){
-  if(LB_CLOSING){ LB_CLOSING=false; return; }
-  try{ if(window.SHORTS && window.SHORTS.onPop(e)) return; }catch(er){}   /* V6.5: 쇼츠 화면 한 장씩 닫기 */
-  const lbEl=document.getElementById('albLb');
-  if(lbEl && lbEl.classList.contains('on')){   /* V5.9.4: 뒤로가기 = 사진·영상 닫기(앨범 탭이면 탭 이동 없음) */
-    albClose(true);
-    const ap=document.getElementById('tab-album'); if(ap && ap.classList.contains('on')) return;
+  if(NAV.pend>0) NAV.pend--;
+  try{ navOnPop(e); }catch(er){ logErr('뒤로가기', er); }
+  if(NAV.pend===0) navHistSettle();   /* 미뤄 둔 칸 넣기·맨 위 확인을 마저 한다 */
+});
+function navOnPop(e){
+  const st=e.state||{};
+  if(st.nid && NAV.dead.has(st.nid)){ navHistBack(1, false); return; }               /* 이미 닫힌 화면의 칸 = 건너뜀 */
+  if(NAV.closing>0){ NAV.closing--; navRunAfter(); return; }                          /* 앱이 스스로 되돌린 칸 */
+  const target=typeof st.ly==='number'? st.ly : 0;
+  if(NAV.layers.length>target){                                                       /* 맨 위 층부터 닫기 */
+    while(NAV.layers.length>target){ const l=NAV.layers.pop(); NAV.dead.add(l.nid); try{ l.close(true); }catch(er){ logErr('뒤로가기: '+l.id, er); } }
+    return;
   }
-  if(e.state && e.state.lb) return;
-  const t=(e.state && e.state.tab) || (location.hash||'').slice(1);
+  try{ if(window.SHORTS && window.SHORTS.onPop(e)) return; }catch(er){ logErr('뒤로가기: 쇼츠', er); }   /* V6.5: 쇼츠 화면 한 장씩 */
+  const t=st.tab || (location.hash||'').slice(1);
   if(!t || !document.getElementById('tab-'+t)) return; /* 장내 앵커 등 탭이 아닌 해시는 무시 */
   if(NAV_HIST.length>1) NAV_HIST.pop();
   goTab(t, true);
-});
+}
 function bindNav(){
   document.querySelectorAll('.bn-btn').forEach(function(b){ b.addEventListener('click', function(){ goTab(b.dataset.tab); }); });
   const bp=document.getElementById('abPhoto'); if(bp) bp.addEventListener('click', function(){ goTab('home'); });
@@ -6789,9 +6957,10 @@ function bindLib(){
 
 /* =============== V3: 공지 v2 헬퍼 + 달력 이동 =============== */
 function myName(){ return (lsGet('_ntc_by')||'').trim(); }
-function ntcRequireName(){
+/* V6.6: 이름 묻기도 앱 시트로(브라우저 기본 입력창 대신). 기다렸다가 이름을 돌려준다 — 부르는 곳은 await */
+async function ntcRequireName(){
   let n=myName();
-  if(!n){ n=(prompt('이름을 입력하세요 (예: 도우)')||'').trim(); if(n) lsSet('_ntc_by', n); }
+  if(!n){ n=String((await uiPrompt('이름을 입력하세요 (예: 도우)', ''))||'').trim(); if(n) lsSet('_ntc_by', n); }
   return n;
 }
 function ntcSeenGet(){ try{ return JSON.parse(lsGet('_ntc_seen')||'{}'); }catch(e){ return {}; } }
@@ -6805,8 +6974,8 @@ function ntcMigrate(){
   }
   S.ntcMig=1;
 }
-function ntcAck(id){
-  const me=ntcRequireName(); if(!me) return false;
+async function ntcAck(id){
+  const me=await ntcRequireName(); if(!me) return false;
   const n=(S.ntc||[]).find(function(x){ return x.id===id; }); if(!n) return false;
   n.ack=n.ack||{}; n.ack[me]=Date.now();
   ntcSeenSet(id);
@@ -6856,8 +7025,8 @@ function renderAway(){
     const f1=document.getElementById('awFixIn');
     if(f1) f1.addEventListener('click', function(){ document.getElementById('awIn').click(); });
     const f2=document.getElementById('awFixX');
-    if(f2) f2.addEventListener('click', function(){
-      if(!confirm('이 외출 기록을 취소할까요? 시간이 저장되지 않습니다.')) return;
+    if(f2) f2.addEventListener('click', async function(){
+      if(!(await askConfirm('이 외출 기록을 취소할까요? 시간이 저장되지 않습니다.'))) return;
       S.awayCur=0; saveState(); renderAway();
     });
   }else{
@@ -6879,7 +7048,7 @@ function bindAway(){
     S.awayLog=S.awayLog||{};
     (S.awayLog[key]=S.awayLog[key]||[]).push({o:S.awayCur, i:Date.now()});
     S.awayCur=0;
-    const ks=Object.keys(S.awayLog).sort(); while(ks.length>100){ delete S.awayLog[ks.shift()]; }
+    /* V6.6: 100일 지난 기록 자동 삭제 중지(기록 보존) */
     saveState(); renderAway();
   });
   /* V5.6b: 외출 칩 탭 → 수정 시트 (aw-fix 버튼은 자체 리스너라 간섭 없음) */
@@ -6895,13 +7064,12 @@ function bindAway(){
 /* =============== V4: 산책 토글 + 통합 취소 =============== */
 
 /* =============== V5: 수면 토글 — 취침 1탭, 기상 1탭. 자정 넘김은 기상일에 저장 =============== */
-function fmtHrs(ms){ const h=Math.round(ms/360000)/10; return (h%1===0? h.toFixed(0) : h.toFixed(1))+'시간'; }
 
 /* =============== V4.1: 스탬프 탭 → 확인 후 삭제 =============== */
 /* V5.5: 스탬프 펼침 상태 (세션 한정 — 새로고침 시 접힘) */
 const QL_OPEN={};
 /* ===== V5.6: 퀵액션 기록 수정 시트 ===== */
-const QE={mode:'', k:'', i:-1, amt:''};
+const QE={mode:'', k:'', i:-1, amt:'', day:''};
 /* V6.2.1: 진행 중 기록 — 시작 시각만 수정 · 진행 취소. 유치원(kcur)도 같은 시트로(하원은 하원 버튼). */
 const QE_CUR={
   wcur:{k:'walkCur',  t:'🐕 산책 진행 중',    l:'시작 시각', x:'진행 취소', q:'진행 중인 산책을 취소할까요? 이번 산책은 기록되지 않습니다.'},
@@ -6926,7 +7094,7 @@ function qeOpen(mode, k, i){
   if(!T) return;
   t2.style.display='none'; l2.style.display='none'; am.style.display='none';
   hint.textContent=''; del.textContent='삭제';
-  const key=todayKey();
+  const key=todayKey(); QE.day=key;   /* V6.6: 연 날짜를 기억 — 자정을 넘겨 저장·삭제해도 이 날 기록에 적용 */
   if(mode==='count'){
     const NM={poo:'💩 대변', pee:'💧 소변', diar:'💦 설사', meal:'🍚 식사'};
     T.textContent=(NM[k]||'')+' 기록 수정';
@@ -6955,7 +7123,7 @@ function qeOpen(mode, k, i){
   qeShow();
 }
 function qeSave(){
-  const key=todayKey(), now=Date.now();
+  const key=QE.day||todayKey(), now=Date.now();
   const v1=document.getElementById('qeT1').value, v2=document.getElementById('qeT2').value;
   if(QE.mode==='count'){
     const hm=qeTimeStr(v1); if(!hm){ alert('시각을 입력해주세요.'); return; }
@@ -6982,24 +7150,24 @@ function qeSave(){
   }
   saveState(); renderQlog(); if(typeof renderAway==='function') renderAway(); qeHide();
 }
-function qeDelete(){
-  const key=todayKey();
+async function qeDelete(){
+  const key=QE.day||todayKey();
   if(QE.mode==='count'){
     const NM={poo:'대변', pee:'소변', diar:'설사', meal:'식사'};
-    if(!confirm((NM[QE.k]||'')+' 기록을 삭제할까요?')) return;
+    if(!(await askConfirm((NM[QE.k]||'')+' 기록을 삭제할까요?'))) return;
     qlNorm(key)[QE.k].splice(QE.i,1);
   }else if(QE.mode==='walk'){
-    if(!confirm('산책 기록을 삭제할까요?')) return;
+    if(!(await askConfirm('산책 기록을 삭제할까요?'))) return;
     ((S.walkLog||{})[key]||[]).splice(QE.i,1);
   }else if(QE.mode==='sleep'){
-    if(!confirm('수면 기록을 삭제할까요?')) return;
+    if(!(await askConfirm('수면 기록을 삭제할까요?'))) return;
     ((S.sleepLog||{})[key]||[]).splice(QE.i,1);
   }else if(QE.mode==='away'){
-    if(!confirm('외출 기록을 삭제할까요?')) return;
+    if(!(await askConfirm('외출 기록을 삭제할까요?'))) return;
     ((S.awayLog||{})[key]||[]).splice(QE.i,1);
   }else if(QE_CUR[QE.mode]){
     const C=QE_CUR[QE.mode];
-    if(!confirm(C.q)) return;
+    if(!(await askConfirm(C.q))) return;
     S[C.k]=0;
   }
   saveState(); renderQlog(); if(typeof renderAway==='function') renderAway(); qeHide();
@@ -7163,10 +7331,10 @@ function chatBindBubbles(box){
     el.addEventListener('contextmenu', function(e){ e.preventDefault(); });
   });
 }
-function chatDelete(id){
+async function chatDelete(id){
   const m=CHAT.msgs[id];
   if(!m || m.by!==chatMe()) return;
-  if(!confirm('이 메시지를 삭제할까요? 두 폰 모두에서 사라집니다.')) return;
+  if(!(await askConfirm('이 메시지를 삭제할까요? 두 폰 모두에서 사라집니다.'))) return;
   if(CHAT.mode==='rt' && CHAT.db){ try{ CHAT.db.ref('chat/'+SYNC.code+'/msgs/'+id).remove(); }catch(e){} }
   else{
     fetch(chatPath('/msgs/'+id), {method:'DELETE'}).catch(function(){});
@@ -7179,12 +7347,12 @@ async function chatSend(){
   const t=(inp.value||'').trim();
   if(!t) return;
   if(!syncConfigured()){ alert('설정에서 동기화를 먼저 켜주세요.'); return; }
-  const me=ntcRequireName(); if(!me) return;
+  const me=await ntcRequireName(); if(!me) return;
   const msg={by:me, t:t.slice(0,1000), at:Date.now()};
   inp.value=''; chSendState();
   CHAT.atBottom=true;
   if(CHAT.mode==='rt' && CHAT.db){
-    try{ CHAT.db.ref('chat/'+SYNC.code+'/msgs').push(msg); }catch(e){ alert('전송 실패 — 잠시 후 다시 시도하세요.'); }
+    try{ CHAT.db.ref('chat/'+SYNC.code+'/msgs').push(msg); }catch(e){ logErr('채팅 보내기', e); alert('전송 실패 — 잠시 후 다시 시도하세요.'); }
   }else{
     try{
       const r=await fetch(chatPath('/msgs'), {method:'POST', body:JSON.stringify(msg)});
@@ -7712,15 +7880,7 @@ function ntcSmartTpl(k, fallback){
 function bindBackup(){
   const b=document.getElementById('bkupBtn'); if(!b) return;
   b.addEventListener('click', function(){
-    try{
-      const data=JSON.stringify({app:'cavalier-handbook', exported:new Date().toISOString(), data:S}, null, 1);
-      const blob=new Blob([data], {type:'application/json'});
-      const a=document.createElement('a');
-      a.href=URL.createObjectURL(blob);
-      a.download='빼꼼기록_'+todayKey().replace(/-/g,'')+'.json';
-      document.body.appendChild(a); a.click();
-      setTimeout(function(){ if(URL.revokeObjectURL) URL.revokeObjectURL(a.href); a.remove(); }, 800);
-    }catch(e){ alert('백업 생성에 실패했습니다: '+e.message); }
+    try{ ioDownload(S, ''); }catch(e){ logErr('파일 백업', e); alert('백업 생성에 실패했습니다: '+e.message); }
   });
 }
 /* 자정 리셋 */
@@ -8832,31 +8992,17 @@ function uiToast(msg, undoFn){
   el.classList.add('on'); clearTimeout(TOAST.t);
   TOAST.t=setTimeout(function(){ el.classList.remove('on'); TOAST.fn=null; }, undoFn? 5000 : 2600);
 }
-function v6SheetOpen(){ return !!document.querySelector('.sheet-ovl.on'); }
-
-/* 브라우저 기본 확인창 → 앱 안 시트.
-   confirm()은 동기 반환이라 그대로는 바꿀 수 없다 → 탭으로 시작된 확인은 시트를 띄우고 false를 돌려준 뒤,
-   '확인'을 누르면 같은 버튼 탭을 한 번 더 재생하면서 그때만 true를 돌려준다(호출부 코드 무변경).
-   탭이 아닌 경로(타이머·파일 선택 등)에서 부른 확인은 기본 창을 그대로 쓴다. */
-const CF={t:null, inClick:false, replay:0, used:0, replaying:false};
-document.addEventListener('click', function(e){ CF.t=e.target; CF.inClick=true; setTimeout(function(){ CF.inClick=false; }, 0); }, true);
-const NATIVE_CONFIRM=(typeof window.confirm==='function')? window.confirm.bind(window) : null;
-window.confirm=function(msg){
-  if(CF.replaying && CF.replay>0){ CF.replay--; CF.used++; return true; }
-  const t=CF.t;
-  if(!CF.inClick || !t || !document.getElementById('uiSheet')) return NATIVE_CONFIRM? NATIVE_CONFIRM(msg) : true;
-  const depth=CF.replaying? CF.used : 0;
+/* V6.6: 확인창 한 벌 — 예전 confirm() 문구 규칙 그대로(삭제 / 기록 취소 / 계속 · 닫기). 기다렸다가 true/false */
+function askConfirm(msg){
   const m=String(msg==null? '' : msg);
   const destr=/삭제|지웁|취소할까요/.test(m);
   const okL=/삭제/.test(m)? '삭제' : (/취소할까요/.test(m)? '기록 취소' : '계속');
-  uiSheetOpen({msg:m, actions:[{label:okL, destr:destr}], cancel:'닫기'}).then(function(r){
-    if(!r || !r.ok) return;
-    CF.replaying=true; CF.used=0; CF.replay=depth+1;
-    try{ t.click(); }catch(e){ console.error(e); }
-    finally{ CF.replaying=false; CF.replay=0; CF.used=0; }
-  });
-  return false;
-};
+  return uiSheetOpen({msg:m, actions:[{label:okL, destr:destr}], cancel:'닫기'}).then(function(r){ return !!(r && r.ok); });
+}
+function v6SheetOpen(){ return !!document.querySelector('.sheet-ovl.on, #qeOvl.on, #wtOvl.on'); }   /* V6.6: 빠른 수정·체중 시트가 열린 동안에도 다시 그리지 않음(고치던 줄이 밀리지 않게) */
+
+/* 브라우저 기본 알림창 → 앱 안 시트. 확인은 askConfirm, 입력은 uiPrompt만 쓴다(기본 confirm()·prompt()는 구조 검사가 0개로 지킴).
+   V6.6: 예전 confirm() 가로채기(탭을 한 번 더 재생하던 방식)는 호출이 0개가 되어 삭제 */
 window.alert=function(msg){ uiAlert(msg); };
 
 /* =============== V6: 시간 표기 =============== */
@@ -9036,7 +9182,7 @@ function awayEnd(silent){
   const seg={o:S.awayCur, i:Date.now()};
   (S.awayLog[key]=S.awayLog[key]||[]).push(seg);
   S.awayCur=0;
-  const ks=Object.keys(S.awayLog).sort(); while(ks.length>100){ delete S.awayLog[ks.shift()]; }
+  /* V6.6: 100일 지난 기록 자동 삭제 중지(기록 보존) */
   saveState(); renderQlog(); try{ renderAway(); }catch(e){}
   if(!silent) uiToast('귀가 · 혼자 '+fmtDur(seg.i-seg.o), function(){
     const a=(S.awayLog||{})[key]||[]; const ix=a.findIndex(function(x){ return x.o===seg.o && x.i===seg.i; });
@@ -9086,8 +9232,7 @@ function qlBump(k, delta){
   }else{
     q[k].pop();
   }
-  const keys=Object.keys(S.qlog).sort();
-  while(keys.length>100){ delete S.qlog[keys.shift()]; }
+  /* V6.6: 100일 지난 기록 자동 삭제 중지(기록 보존) */
   saveState(); renderQlog();
   if(delta>0){
     const el=document.getElementById({poo:'qlPooN', pee:'qlPeeN', diar:'qlDiarN', meal:'qlMealN'}[k]);
@@ -9108,7 +9253,7 @@ function walkToggle(){
     const key=todayKey(); S.walkLog=S.walkLog||{};
     const seg={o:S.walkCur, i:Date.now()};
     (S.walkLog[key]=S.walkLog[key]||[]).push(seg); S.walkCur=0;
-    const ks=Object.keys(S.walkLog).sort(); while(ks.length>100){ delete S.walkLog[ks.shift()]; }
+    /* V6.6: 100일 지난 기록 자동 삭제 중지(기록 보존) */
     saveState(); renderQlog();
     uiToast('산책 '+fmtDur(seg.i-seg.o)+' 기록', function(){
       const a=(S.walkLog||{})[key]||[]; const ix=a.findIndex(function(x){ return x.o===seg.o && x.i===seg.i; });
@@ -9119,14 +9264,14 @@ function walkToggle(){
     uiToast('산책 시작 '+fmtHM(st), function(){ if(S.walkCur===st){ S.walkCur=0; saveState(); renderQlog(); } });
   }
 }
-function sleepToggle(){
+async function sleepToggle(){
   if(S.sleepCur){
     const dur=Date.now()-S.sleepCur;
-    if(dur>16*3600000 && !confirm('수면이 '+fmtDur(dur)+'로 기록됩니다. 기상 버튼을 잊으셨다면 닫기를 누른 뒤 오늘 목록의 "자는 중" 줄에서 취소하세요. 그래도 저장할까요?')) return;
+    if(dur>16*3600000 && !(await askConfirm('수면이 '+fmtDur(dur)+'로 기록됩니다. 기상 버튼을 잊으셨다면 닫기를 누른 뒤 오늘 목록의 "자는 중" 줄에서 취소하세요. 그래도 저장할까요?'))) return;
     const key=todayKey(); S.sleepLog=S.sleepLog||{};
     const seg={o:S.sleepCur, i:Date.now()};
     (S.sleepLog[key]=S.sleepLog[key]||[]).push(seg); S.sleepCur=0;
-    const ks=Object.keys(S.sleepLog).sort(); while(ks.length>100){ delete S.sleepLog[ks.shift()]; }
+    /* V6.6: 100일 지난 기록 자동 삭제 중지(기록 보존) */
     saveState(); renderQlog();
     uiToast('기상 · 수면 '+fmtDur(seg.i-seg.o), function(){
       const a=(S.sleepLog||{})[key]||[]; const ix=a.findIndex(function(x){ return x.o===seg.o && x.i===seg.i; });
@@ -9266,10 +9411,10 @@ function bindQlog(){
   on('qlPoo', function(){ qlBump('poo',1); });
   on('qlPee', function(){ qlBump('pee',1); });
   on('qlDiar', function(){ qlBump('diar',1); });
-  on('qlMeal', function(){
+  on('qlMeal', async function(){
     const lm=lastMealTs();
     if(lm && (Date.now()-lm) < 2*3600000){
-      if(!confirm('마지막 식사가 '+fmtDur(Date.now()-lm)+' 전입니다. 중복 급여일 수 있어요. 그래도 기록할까요?')) return;
+      if(!(await askConfirm('마지막 식사가 '+fmtDur(Date.now()-lm)+' 전입니다. 중복 급여일 수 있어요. 그래도 기록할까요?'))) return;
     }
     qlBump('meal',1);
   });
@@ -9489,7 +9634,6 @@ function p2Order(id){
   add(m.ps); add(P2PREF); add(P2S); P2SCHEMES.forEach(function(x){ add(x.id); });
   return out;
 }
-function albP2KeyFor(kind,id){ const m=(ALB.meta||{})[id]||{}; const sc=(m.ps && p2SchemeById(m.ps)) || albP2Scheme(); return sc.f(kind,id); }
 async function p2Get(key, ms){
   const ctl=new AbortController(); const to=setTimeout(function(){ ctl.abort(); }, ms||15000);
   try{ return await fetch(mediaApi('/file/'+key), {signal:ctl.signal}); } finally{ clearTimeout(to); }
@@ -9556,9 +9700,123 @@ function albErrPaint(){
   el.textContent='사진 '+n+'장을 불러오지 못했어요'+(c404? ' — 저장소에 파일이 없음(404) '+c404+'장' : ' — '+Array.from(ALBERR.values())[0])+'. 인터넷 연결을 확인하고 앨범을 다시 열어 보세요.';
 }
 
+
+/* =============== V6.6: 오류 기록함 · 진단 화면 =============== */
+/* 오류 기록함 — 조용히 넘기던 실패 중 '데이터에 닿는 것'과 화면 오류를 이 폰에 최근 50건 남긴다(_errlog).
+   같은 곳·같은 내용이 이어지면 한 줄에 횟수만 올린다. 설정 > 진단에서 보고 복사할 수 있다. */
+const DIAG={log:null, max:50, syncOkAt:0, verWarned:false, peers:null, peersAt:0};
+function errLog(){
+  if(DIAG.log) return DIAG.log;
+  try{ const a=JSON.parse(lsGet('_errlog')||'[]'); DIAG.log=Array.isArray(a)? a : []; }catch(e){ DIAG.log=[]; }
+  return DIAG.log;
+}
+function logErr(where, e){
+  try{
+    const m=String((e && (e.message || (e.reason && e.reason.message) || e.reason)) || e || '').slice(0, 300);
+    const L=errLog(), last=L[L.length-1], now=Date.now();
+    if(last && last.w===where && last.m===m){ last.n=(last.n||1)+1; last.t=now; }
+    else{ L.push({t:now, w:String(where).slice(0, 60), m:m, v:APP_VER}); while(L.length>DIAG.max) L.shift(); }
+    try{ localStorage.setItem('_errlog', JSON.stringify(L)); }catch(x){}
+    try{ console.warn('[빼꼼] '+where+': '+m); }catch(x){}
+    if(document.getElementById('diagBody') && document.querySelector('#tab-settings.on')) renderDiag();
+  }catch(x){}
+}
+window.addEventListener('error', function(ev){ if(ev && (ev.error || ev.message)) logErr('화면 오류', ev.error || ev.message); });
+window.addEventListener('unhandledrejection', function(ev){ logErr('처리 안 된 오류', ev && ev.reason); });
+
+/* 단계별 보호 — 하나가 실패해도 다음 단계는 계속(시작 순서·화면 그리기) */
+function safely(where, fn){ try{ return fn(); }catch(e){ logErr(where, e); } }
+
+/* 이 폰 저장 실패 경고(R1) — 저장이 다시 되면 자동으로 사라짐 */
+function lsWarnPaint(bad){
+  const el=document.getElementById('lsWarn'); if(!el) return;
+  el.style.display=bad? 'block' : 'none';
+  if(bad) el.textContent='⚠ 이 폰 저장공간이 가득 차 기록을 이 폰에 저장하지 못했습니다. 동기화가 켜져 있으면 서버에는 올라갑니다. 설정 > 진단에서 저장공간을 확인해 주세요.';
+}
+
+/* 바이트·크기 표기 */
+function byteLen(s){ try{ return new Blob([s]).size; }catch(e){ return String(s).length; } }
+function diagBytes(n){ return n>=1048576? (n/1048576).toFixed(1)+'MB' : n>=1024? Math.round(n/1024)+'KB' : n+'B'; }
+function verOfBuild(n){ n=+n||0; if(n>=600) return 'V'+Math.floor(n/100)+'.'+(Math.floor(n/10)%10)+'.'+(n%10); return n? 'V5.15.1 이하' : '알 수 없음'; }
+function lsUsage(){
+  const cat={'기록 본문':0, '동기화 기준본':0, '산책 경로 캐시':0, '대표사진':0, '오류 기록':0, '그 밖':0}; let total=0;
+  try{
+    for(let i=0; i<localStorage.length; i++){
+      const k=localStorage.key(i), v=localStorage.getItem(k)||'', b=(k.length+v.length)*2;   /* 브라우저는 글자당 2바이트로 계산 */
+      total+=b;
+      const c= k==='ckcs-data'? '기록 본문' : k==='_sync_base'? '동기화 기준본' : /^_wg_/.test(k)? '산책 경로 캐시' : k===HERO_CK? '대표사진' : k==='_errlog'? '오류 기록' : '그 밖';
+      cat[c]+=b;
+    }
+  }catch(e){}
+  return {total:total, cat:cat};
+}
+async function diagPeers(force){
+  if(!syncConfigured()) return null;
+  if(!force && DIAG.peers && Date.now()-DIAG.peersAt<60000) return DIAG.peers;
+  try{ DIAG.peers=(await albFetch('ver'))||{}; DIAG.peersAt=Date.now(); }catch(e){ logErr('진단: 상대 폰 확인', e); }
+  return DIAG.peers;
+}
+function diagShortsLine(){
+  const sv=window.SHORTS && window.SHORTS.v;
+  if(!sv) return '아직 안 불러옴 — 앨범에서 쇼츠를 열면 확인됩니다';
+  return sv===APP_VER? 'V'+sv+' (같음)' : '⚠ V'+sv+' — index.html(V'+APP_VER+')과 다릅니다. GitHub에 두 파일을 모두 올렸는지 확인하세요';
+}
+/* index.html과 shorts.js 버전이 다르면 한 번 알림(R4) */
+function verCheckShorts(){
+  const sv=window.SHORTS && window.SHORTS.v; if(!sv || sv===APP_VER) return;
+  logErr('버전 불일치', 'index.html V'+APP_VER+' / shorts.js V'+sv);
+  if(DIAG.verWarned) return; DIAG.verWarned=true;
+  uiAlert('쇼츠 파일 버전이 다릅니다.\nindex.html V'+APP_VER+' · shorts.js V'+sv+'\nGitHub에 두 파일을 모두 올린 뒤 새로고침해 주세요.');
+}
+function diagText(){
+  const u=lsUsage(), raw=JSON.stringify(S), sz=byteLen(raw);
+  const lines=['빼꼼 핸드북 진단 · '+new Date().toLocaleString('ko-KR'),
+    '앱: V'+APP_VER+' · '+APP_DATE+' (빌드 '+PVER+')',
+    '쇼츠 파일: '+diagShortsLine(),
+    '이 폰: '+(myName()||'이름 없음')+' · 기기 '+DEV_ID,
+    '동기화: '+(syncConfigured()? '켜짐' : '꺼짐')+(DIAG.syncOkAt? ' · 마지막 성공 '+fmtHM(DIAG.syncOkAt) : '')+(SYNC.dirty? ' · 올릴 기록 대기 중' : ''),
+    '기록 문서: '+diagBytes(sz)+' — 20초마다 받으면 앱을 켜 둔 1시간에 약 '+diagBytes(sz*180),
+    '이 폰 저장공간: '+diagBytes(u.total)+' 사용 (브라우저 한도 약 5MB) — '+Object.keys(u.cat).filter(function(k){ return u.cat[k]; }).map(function(k){ return k+' '+diagBytes(u.cat[k]); }).join(' · ')];
+  const pv=DIAG.peers||{};
+  Object.keys(pv).filter(function(k){ return k!==DEV_ID && pv[k] && pv[k].at; }).sort(function(a,b){ return pv[b].at-pv[a].at; }).slice(0, 4).forEach(function(k){
+    const r=pv[k]; lines.push('다른 기기: '+(r.n||k)+' · '+verOfBuild(r.v)+' · '+new Date(r.at).toLocaleString('ko-KR', {month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit'})+' 접속');
+  });
+  const L=errLog();
+  lines.push('최근 오류: '+(L.length? L.length+'건' : '없음'));
+  L.slice().reverse().slice(0, 20).forEach(function(x){ lines.push('  '+new Date(x.t).toLocaleString('ko-KR', {month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit'})+' · '+x.w+' · '+x.m+(x.n>1? ' (×'+x.n+')' : '')+(x.v && x.v!==APP_VER? ' [V'+x.v+']' : '')); });
+  return lines.join('\n');
+}
+function renderDiag(){
+  const el=document.getElementById('diagBody'); if(!el) return;
+  const t=diagText().split('\n');
+  el.innerHTML=t.slice(1).map(function(l){ const i=l.indexOf(': '); return (l.indexOf('  ')===0)? '<li class="dg-err">'+esc(l.trim())+'</li>' : (i>0? '<div class="dg-row"><span>'+esc(l.slice(0, i))+'</span><b>'+esc(l.slice(i+2))+'</b></div>' : '<div class="dg-row">'+esc(l)+'</div>'); }).join('').replace(/(<li class="dg-err">[\s\S]*<\/li>)/, '<ul class="dg-errs">$1</ul>');
+  const n=document.getElementById('diagErrN'); if(n) n.textContent=errLog().length? errLog().length+'건' : '';
+}
+function bindDiag(){
+  const cp=document.getElementById('diagCopy'), cl=document.getElementById('diagClear');
+  if(cp) cp.addEventListener('click', function(){
+    const txt=diagText();
+    const done=function(){ uiToast('진단 내용을 복사했어요. 대화창에 붙여넣어 보내 주세요.'); };
+    try{ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done, function(){ diagCopyFallback(txt); done(); }); return; } }catch(e){}
+    diagCopyFallback(txt); done();
+  });
+  if(cl) cl.addEventListener('click', async function(){
+    if(!(await uiConfirm({msg:'오류 기록을 지울까요? 기록장 데이터는 그대로입니다.', ok:'지우기'}))) return;
+    DIAG.log=[]; try{ localStorage.removeItem('_errlog'); }catch(e){} renderDiag();
+  });
+}
+function diagCopyFallback(t){ try{ const ta=document.createElement('textarea'); ta.value=t; ta.setAttribute('readonly', ''); ta.style.cssText='position:fixed;top:-100px;opacity:0;'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }catch(e){} }
+function diagOnOpen(){ renderDiag(); diagPeers(false).then(function(){ renderDiag(); }); }
 /* =============== Init =============== */
-function renderAll(){ seedProfile(); renderHome(); renderDaily(); renderWeight(); renderVisits(); renderExpenses(); renderStorage(); renderCal(); renderNotice(); renderDash(); renderEChart(); renderLib(); renderAway(); renderFeed(); renderHomeChat(); try{ kgCfgPaint(); }catch(e){} try{ renderMediaCfg(); }catch(e){} try{ camCheck(); }catch(e){}
-  // re-sync inputs & checklists after import
+/* V6.6: 화면 그리기·시작 순서를 단계별로 보호 — 한 단계가 실패해도 오류 기록함에 남기고 다음 단계(동기화 시작 등)는 계속한다. */
+const RENDERS=[['프로필', function(){ seedProfile(); }], ['홈', function(){ renderHome(); }], ['오늘 루틴', function(){ renderDaily(); }], ['체중', function(){ renderWeight(); }],
+  ['병원', function(){ renderVisits(); }], ['지출', function(){ renderExpenses(); }], ['저장 상태', function(){ renderStorage(); }], ['달력', function(){ renderCal(); }],
+  ['공지', function(){ renderNotice(); }], ['대시보드', function(){ renderDash(); }], ['지출 그래프', function(){ renderEChart(); }], ['서재', function(){ renderLib(); }],
+  ['외출', function(){ renderAway(); }], ['급여', function(){ renderFeed(); }], ['홈 채팅', function(){ renderHomeChat(); }], ['유치원 설정', function(){ kgCfgPaint(); }],
+  ['영상 저장소', function(){ renderMediaCfg(); }], ['홈캠', function(){ camCheck(); }], ['입력칸', renderInputs]];
+function renderAll(){ RENDERS.forEach(function(r){ safely('화면: '+r[0], r[1]); }); }
+/* 가져오기·동기화 뒤 입력칸·체크리스트를 기록과 맞춘다 */
+function renderInputs(){
   const map={pfName:'name', pfBirth:'birth', pfHome:'home', pfReg:'reg'};
   Object.keys(map).forEach(id=>{ document.getElementById(id).value=S.profile[map[id]]||''; });
   document.getElementById('vetMain').value=S.vet.main||''; document.getElementById('vet24').value=S.vet.e24||'';
@@ -9574,22 +9832,29 @@ function renderAll(){ seedProfile(); renderHome(); renderDaily(); renderWeight()
     tr.querySelector('.vx-date').value=v.date||'';
   });
 }
+const BINDS=[['체크리스트', bindChecklists], ['접종', bindVax], ['프로필', bindProfile], ['체중', bindWeight], ['병원', bindVisits], ['지출', bindExpenses], ['백업 텍스트', bindIO],
+  ['달력', bindCal], ['장 이동', buildPagers], ['구매 링크', buildLinks], ['표', mobileTables], ['스크롤 효과', initReveal], ['맨 위로', initTopBtn], ['동기화 설정', loadSyncCfg],
+  ['동기화', bindSync], ['앨범', bindAlbum], ['홈캠', bindCam], ['공지', bindNotice], ['화면 이동', bindNav], ['응급', bindSOS], ['빠른 기록', bindQlog], ['서재', bindLib],
+  ['대표사진', bindRep], ['외출', bindAway], ['통계', bindStats], ['체중 시트', bindWt], ['급여', bindFeed], ['파일 백업', bindBackup], ['자정', bindMidnight], ['채팅', bindChat],
+  ['장 안 링크', bindAnchors], ['대변 양', bindPooAmt], ['빠른 수정', bindQe], ['사진 이관', bindMig], ['공지 정리', ntcMigrate], ['V6 화면', bindV6], ['앨범 백업', bindAlbBackup],
+  ['화면 관리', navInit], ['진단', bindDiag]];
 document.addEventListener('DOMContentLoaded', async ()=>{
-  await loadState();
-  bindChecklists(); bindVax(); bindProfile(); bindWeight(); bindVisits(); bindExpenses(); bindIO(); bindCal(); buildPagers(); buildLinks(); mobileTables(); initReveal(); initTopBtn(); loadSyncCfg(); bindSync(); bindAlbum(); try{ bindCam(); }catch(e){} bindNotice(); bindNav(); bindSOS(); bindQlog(); bindLib(); bindRep(); bindAway(); bindStats(); bindWt(); bindFeed(); bindBackup(); bindMidnight(); bindChat(); bindAnchors(); bindPooAmt(); bindQe(); try{ bindMig(); }catch(e){}
-  ntcMigrate();
-  try{ bindV6(); }catch(e){ console.error('v6 bind', e); }
-  try{ bindAlbBackup(); }catch(e){ console.error('alb backup bind', e); }
+  try{ await loadState(); }catch(e){ logErr('시작: 기록 읽기', e); }
+  BINDS.forEach(function(b){ safely('시작: '+b[0], b[1]); });
   ['vDate','eDate'].forEach(function(i){ const el=document.getElementById(i); if(el && !el.value) el.value=todayKey(); });
   renderAll();
-  const h0=(location.hash||'').slice(1);
-  if(h0 && h0!=='home' && document.getElementById('tab-'+h0)){ goTab(h0, true); NAV_HIST=['home', h0]; }
-  try{ history.replaceState({tab:(h0 && document.getElementById('tab-'+h0)) ? h0 : 'home', d:((history.state && history.state.d)||0)}, '', location.hash||'#home'); }catch(e){}
-  if(SYNC.on) startSync();
-  if(syncConfigured()) albumPull(true);
-  if(syncConfigured()) chatStart();
-  if(syncConfigured()){ albVerBeat(); albP2Load(); setTimeout(function(){ albMigRefresh(); }, 1500); }   /* V5.12 */
-  try{ walkInit(); }catch(e){ console.error('walk init', e); }   /* V6.3 */
+  safely('시작: 첫 화면', function(){
+    const h0=(location.hash||'').slice(1);
+    if(h0 && h0!=='home' && document.getElementById('tab-'+h0)){ goTab(h0, true); NAV_HIST=['home', h0]; }
+    history.replaceState({tab:(h0 && document.getElementById('tab-'+h0)) ? h0 : 'home', d:((history.state && history.state.d)||0), ly:0}, '', location.hash||'#home');
+  });
+  if(SYNC.on) safely('시작: 동기화', startSync);
+  if(syncConfigured()){
+    safely('시작: 앨범', function(){ albumPull(true); });
+    safely('시작: 채팅', chatStart);
+    safely('시작: 기기 보고', function(){ albVerBeat(); albP2Load(); setTimeout(function(){ safely('사진 이관 확인', albMigRefresh); }, 1500); });   /* V5.12 */
+  }
+  safely('시작: 산책 지도', walkInit);   /* V6.3 */
 });
 </script>
 
@@ -9604,7 +9869,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
    ⑤ 웹 제한: 화면이 꺼지거나 다른 앱이 앞에 오면 위치가 멈춤 → 30초 넘는 공백은 직선거리 추정·점선 표시.
    기존 저장 구조·동기화·병합 엔진 변경 없음(S.walkGps·S.walkCfg 키 추가만). */
 const WG={cur:null, watchId:null, wake:null, wakeFail:0, wakeNo:0, tick:null, persistAt:0, lm:null, follow:true, leaflet:null, ac:null,
-  hiddenAt:0, hist:[], histClosing:0, scrollY:0, hubTab:'list', det:null, ck:{}, sumId:null, maps:{}, banner:null, qBusy:false, wBusy:false, built:false, svgFb:false};
+  hiddenAt:0, hist:[], scrollY:0, hubTab:'list', det:null, ck:{}, sumId:null, maps:{}, banner:null, qBusy:false, wBusy:false, built:false, svgFb:false};
 const WG_K={cur:'_wg_cur', cache:'_wg_cache', q:'_wg_q', qdel:'_wg_qdel', tip:'_wg_tipwl'};
 const WG_DEF={heatWarn:26, heatDanger:29, coldWarn:0, runKmh:7, runSec:60, acc:35, homeR:200, homeRset:0, hideHome:false, home:null};
 const WG_STILL=15*60;   /* 15분 움직임 없음 → '끝났나요?' */
@@ -9724,13 +9989,13 @@ async function wgQFlush(){
   try{
     for(const id of wgQDel().slice()){
       try{ await wgFetchJ(wgPath('t/'+id), 12000, {method:'DELETE'}); lsSet(WG_K.qdel, JSON.stringify(wgQDel().filter(function(x){ return x!==id; }))); }
-      catch(e){ break; }
+      catch(e){ logErr('산책 경로 지우기', e); break; }
     }
     for(const id of wgQ().slice()){
       const p=wgCacheGet(id);
       if(!p){ wgQSet(wgQ().filter(function(x){ return x!==id; })); continue; }
       try{ await wgFetchJ(wgPath('t/'+id), 15000, {method:'PUT', body:JSON.stringify(p)}); wgQSet(wgQ().filter(function(x){ return x!==id; })); }
-      catch(e){ break; }
+      catch(e){ logErr('산책 경로 올리기', e); break; }
     }
   }finally{ WG.qBusy=false; }
 }
@@ -10127,7 +10392,7 @@ function wgCommit(seg, key, c){
   }
   (S.walkLog[key]=S.walkLog[key]||[]).push(seg);
   S.walkLog[key].sort(function(a,b){ return a.o-b.o; });
-  const ks=Object.keys(S.walkLog).sort(); while(ks.length>100){ delete S.walkLog[ks.shift()]; }
+  /* V6.6: 100일 지난 기록 자동 삭제 중지(기록 보존) */
   return seg;
 }
 function wgTrim(segs, home, R){
@@ -10277,29 +10542,31 @@ function wgEnsureDom(){
   wgSlideBind();
 }
 
-/* ---------- 뒤로가기 (폰 뒤로 = 맨 위 산책 화면 닫기) ---------- */
+/* ---------- 뒤로가기 (폰 뒤로 = 맨 위 산책 화면 닫기) ----------
+   V6.6: 기록 칸 관리는 본체 화면 관리(NAV)에 맡긴다. WG.hist는 산책 화면 순서만 기억(층 id = 'wg:'+종류). */
+function wgCloserFor(kind){
+  return function(){
+    const i=WG.hist.lastIndexOf(kind); if(i>-1) WG.hist.splice(i, 1);
+    if(kind==='scr') wgCloseScr(true); else if(kind==='hub') wgHubClose(true); else if(kind==='det') wgDetClose(true); else if(kind==='sum') wgSumClose(false, true);
+    wgRestoreScroll();
+  };
+}
 function wgHistPush(kind){
   WG.hist.push(kind);
-  try{ history.pushState({tab:(document.body.getAttribute('data-tab')||'home'), wg:kind, d:((history.state && history.state.d)||0)+1}, '', location.hash||'#home'); }catch(e){}
+  navOpen('wg:'+kind, wgCloserFor(kind));
 }
 function wgHistBack(kind){
   const i=WG.hist.lastIndexOf(kind); if(i<0) return;
   WG.hist.splice(i, 1);
-  if(history.state && history.state.wg===kind){ WG.histClosing++; try{ history.back(); }catch(e){ WG.histClosing--; } }
+  navClosed('wg:'+kind, wgRestoreScroll);
 }
 function wgHistSwap(from, to){
   const i=WG.hist.lastIndexOf(from);
   if(i<0){ wgHistPush(to); return; }
   WG.hist[i]=to;
-  if(history.state && history.state.wg===from){ try{ history.replaceState(Object.assign({}, history.state, {wg:to}), '', location.hash||'#home'); }catch(e){} }
+  navSwap('wg:'+from, 'wg:'+to, wgCloserFor(to));
 }
 function wgRestoreScroll(){ const y=WG.scrollY||0; try{ window.scrollTo(0, y); }catch(e){} setTimeout(function(){ try{ window.scrollTo(0, y); }catch(e){} }, 0); }
-window.addEventListener('popstate', function(){
-  if(WG.histClosing>0){ WG.histClosing--; wgRestoreScroll(); return; }
-  const top=WG.hist.pop(); if(!top) return;
-  if(top==='scr') wgCloseScr(true); else if(top==='hub') wgHubClose(true); else if(top==='det') wgDetClose(true); else if(top==='sum') wgSumClose(false, true);
-  wgRestoreScroll();
-});
 
 /* ---------- 산책 화면 ---------- */
 function wgBodyCls(){ try{ document.body.classList.toggle('wg-scr-on', !!(WG.scrOpen || WG.pocket)); }catch(e){} }   /* 토스트를 화면 위쪽으로 (산책 버튼 가림 방지) */
@@ -10583,7 +10850,7 @@ function wgPhoto(){
 async function wgAlbUpload(file, memo){           /* 15장 앨범 사진 올리기와 같은 경로·형식 */
   let fu=await albCompress(file, 1280, 0.72); if(fu.length>1200000) fu=await albCompress(file, 1280, 0.55);
   const th=await albCompress(file, 360, 0.7);
-  const id='a'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  const id=albNewId();
   let meta;
   if(albP2On()){
     const fb=albDataBlob(fu), tb=albDataBlob(th);
@@ -10968,7 +11235,7 @@ function wgAddSave(){
   const dup=Object.keys(S.walkLog).some(function(k){ return (S.walkLog[k]||[]).some(function(x){ return x && x.o<i && x.i>o; }); });
   (S.walkLog[key]=S.walkLog[key]||[]).push(seg);
   S.walkLog[key].sort(function(a, b){ return a.o-b.o; });
-  const ks=Object.keys(S.walkLog).sort(); while(ks.length>100){ delete S.walkLog[ks.shift()]; }
+  /* V6.6: 100일 지난 기록 자동 삭제 중지(기록 보존) */
   saveState(); try{ renderQlog(); }catch(e){} try{ renderCal(); }catch(e){}
   document.getElementById('wgAdd').classList.remove('on');
   const hub=document.getElementById('wgHub'); if(hub && hub.classList.contains('on')){ WG.hubTab='list'; wgHubPaint(); }
