@@ -1,11 +1,11 @@
-/* 빼꼼 핸드북 — 쇼츠 V6.5.0 (2026-10-28)
-   index.html(V6.5.0)이 앨범을 열 때 불러오는 별도 파일. 화면정의서 SH-01~SH-08 중 1단계(공통 화면 + 직접 올리기 A).
+/* 빼꼼 핸드북 — 쇼츠 V6.5.1 (2026-10-28)
+   index.html(V6.5.1)이 앨범을 열 때 불러오는 별도 파일. 화면정의서 SH-01~SH-08 중 1단계(공통 화면 + 직접 올리기 A).
    데이터: /handbook/{가족코드}-shorts/ (cfg · r 레시피 · fp 지문) + 앨범 meta 추가 항목(ts·tm·sd·su·sl·ih).
    완성 영상은 저장하지 않는다(폰 메모리에서만). */
 (function () {
 'use strict';
 if (window.SHORTS) return;
-const SXV = '6.5.0';
+const SXV = '6.5.1';
 /*! mp4-muxer 5.2.2 · MIT License · Copyright (c) 2023 Vanilagy · https://github.com/Vanilagy/mp4-muxer */
 const Mp4Muxer = (()=>{var we=Object.defineProperty,at=Object.getOwnPropertyDescriptor,nt=Object.getOwnPropertyNames,ot=Object.prototype.hasOwnProperty,ht=(e,t)=>{for(var r in t)we(e,r,{get:t[r],enumerable:!0})},lt=(e,t,r,s)=>{if(t&&typeof t=="object"||typeof t=="function")for(let a of nt(t))!ot.call(e,a)&&a!==r&&we(e,a,{get:()=>t[a],enumerable:!(s=at(t,a))||s.enumerable});return e},ft=e=>lt(we({},"__esModule",{value:!0}),e),ve=(e,t,r)=>{if(!t.has(e))throw TypeError("Cannot "+r)},i=(e,t,r)=>(ve(e,t,"read from private field"),r?r.call(e):t.get(e)),d=(e,t,r)=>{if(t.has(e))throw TypeError("Cannot add the same private member more than once");t instanceof WeakSet?t.add(e):t.set(e,r)},S=(e,t,r,s)=>(ve(e,t,"write to private field"),s?s.call(e,r):t.set(e,r),r),ut=(e,t,r,s)=>({set _(a){S(e,t,a,r)},get _(){return i(e,t,s)}}),m=(e,t,r)=>(ve(e,t,"access private method"),r),Re={};ht(Re,{ArrayBufferTarget:()=>qe,FileSystemWritableFileStreamTarget:()=>Xe,Muxer:()=>vi,StreamTarget:()=>Te});var p=new Uint8Array(8),A=new DataView(p.buffer),C=e=>[(e%256+256)%256],w=e=>(A.setUint16(0,e,!1),[p[0],p[1]]),dt=e=>(A.setInt16(0,e,!1),[p[0],p[1]]),Pe=e=>(A.setUint32(0,e,!1),[p[1],p[2],p[3]]),o=e=>(A.setUint32(0,e,!1),[p[0],p[1],p[2],p[3]]),mt=e=>(A.setInt32(0,e,!1),[p[0],p[1],p[2],p[3]]),x=e=>(A.setUint32(0,Math.floor(e/2**32),!1),A.setUint32(4,e,!1),[p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7]]),ge=e=>(A.setInt16(0,2**8*e,!1),[p[0],p[1]]),O=e=>(A.setInt32(0,2**16*e,!1),[p[0],p[1],p[2],p[3]]),ye=e=>(A.setInt32(0,2**30*e,!1),[p[0],p[1],p[2],p[3]]),z=(e,t=!1)=>{let r=Array(e.length).fill(null).map((s,a)=>e.charCodeAt(a));return t&&r.push(0),r},re=e=>e&&e[e.length-1],Ce=e=>{let t;for(let r of e)(!t||r.presentationTimestamp>t.presentationTimestamp)&&(t=r);return t},M=(e,t,r=!0)=>{let s=e*t;return r?Math.round(s):s},Le=e=>{let t=e*(Math.PI/180),r=Math.cos(t),s=Math.sin(t);return[r,s,0,-s,r,0,0,0,1]},Ve=Le(0),je=e=>[O(e[0]),O(e[1]),ye(e[2]),O(e[3]),O(e[4]),ye(e[5]),O(e[6]),O(e[7]),ye(e[8])],X=e=>!e||typeof e!="object"?e:Array.isArray(e)?e.map(X):Object.fromEntries(Object.entries(e).map(([t,r])=>[t,X(r)])),V=e=>e>=0&&e<2**32,y=(e,t,r)=>({type:e,contents:t&&new Uint8Array(t.flat(10)),children:r}),v=(e,t,r,s,a)=>y(e,[C(t),Pe(r),s!=null?s:[]],a),pt=e=>{let t=512;return e.fragmented?y("ftyp",[z("iso5"),o(t),z("iso5"),z("iso6"),z("mp41")]):y("ftyp",[z("isom"),o(t),z("isom"),e.holdsAvc?z("avc1"):[],z("mp41")])},Se=e=>({type:"mdat",largeSize:e}),ct=e=>({type:"free",size:e}),se=(e,t,r=!1)=>y("moov",null,[wt(t,e),...e.map(s=>vt(s,t)),r?Gt(e):null]),wt=(e,t)=>{let r=M(Math.max(0,...t.filter(h=>h.samples.length>0).map(h=>{const l=Ce(h.samples);return l.presentationTimestamp+l.duration})),Ae),s=Math.max(...t.map(h=>h.id))+1,a=!V(e)||!V(r),n=a?x:o;return v("mvhd",+a,0,[n(e),n(e),o(Ae),n(r),O(1),ge(1),Array(10).fill(0),je(Ve),Array(24).fill(0),o(s)])},vt=(e,t)=>y("trak",null,[gt(e,t),yt(e,t)]),gt=(e,t)=>{let r=Ce(e.samples),s=M(r?r.presentationTimestamp+r.duration:0,Ae),a=!V(t)||!V(s),n=a?x:o,h;return e.info.type==="video"?h=typeof e.info.rotation=="number"?Le(e.info.rotation):e.info.rotation:h=Ve,v("tkhd",+a,3,[n(t),n(t),o(e.id),o(0),n(s),Array(8).fill(0),w(0),w(0),ge(e.info.type==="audio"?1:0),w(0),je(h),O(e.info.type==="video"?e.info.width:0),O(e.info.type==="video"?e.info.height:0)])},yt=(e,t)=>y("mdia",null,[Ct(e,t),St(e.info.type==="video"?"vide":"soun"),Tt(e)]),Ct=(e,t)=>{let r=Ce(e.samples),s=M(r?r.presentationTimestamp+r.duration:0,e.timescale),a=!V(t)||!V(s),n=a?x:o;return v("mdhd",+a,0,[n(t),n(t),o(e.timescale),n(s),w(21956),w(0)])},St=e=>v("hdlr",0,0,[z("mhlr"),z(e),o(0),o(0),o(0),z("mp4-muxer-hdlr",!0)]),Tt=e=>y("minf",null,[e.info.type==="video"?bt():_t(),kt(),At(e)]),bt=()=>v("vmhd",0,1,[w(0),w(0),w(0),w(0)]),_t=()=>v("smhd",0,0,[w(0),w(0)]),kt=()=>y("dinf",null,[Et()]),Et=()=>v("dref",0,0,[o(1)],[zt()]),zt=()=>v("url ",0,1),At=e=>{const t=e.compositionTimeOffsetTable.length>1||e.compositionTimeOffsetTable.some(r=>r.sampleCompositionTimeOffset!==0);return y("stbl",null,[Ot(e),Vt(e),jt(e),$t(e),Ht(e),qt(e),t?Xt(e):null])},Ot=e=>v("stsd",0,0,[o(1)],[e.info.type==="video"?Mt(si[e.info.codec],e):Rt(ni[e.info.codec],e)]),Mt=(e,t)=>y(e,[Array(6).fill(0),w(1),w(0),w(0),Array(12).fill(0),w(t.info.width),w(t.info.height),o(4718592),o(4718592),o(0),w(1),Array(32).fill(0),w(24),dt(65535)],[ai[t.info.codec](t),t.info.decoderConfig.colorSpace?Ut(t):null]),Bt={bt709:1,bt470bg:5,smpte170m:6},It={bt709:1,smpte170m:6,"iec61966-2-1":13},Dt={rgb:0,bt709:1,bt470bg:5,smpte170m:6},Ut=e=>y("colr",[z("nclx"),w(Bt[e.info.decoderConfig.colorSpace.primaries]),w(It[e.info.decoderConfig.colorSpace.transfer]),w(Dt[e.info.decoderConfig.colorSpace.matrix]),C((e.info.decoderConfig.colorSpace.fullRange?1:0)<<7)]),xt=e=>e.info.decoderConfig&&y("avcC",[...new Uint8Array(e.info.decoderConfig.description)]),Wt=e=>e.info.decoderConfig&&y("hvcC",[...new Uint8Array(e.info.decoderConfig.description)]),Ft=e=>{if(!e.info.decoderConfig)return null;let t=e.info.decoderConfig;if(!t.colorSpace)throw new Error("'colorSpace' is required in the decoder config for VP9.");let r=t.codec.split("."),s=Number(r[1]),a=Number(r[2]),l=(Number(r[3])<<4)+(0<<1)+Number(t.colorSpace.fullRange);return v("vpcC",1,0,[C(s),C(a),C(l),C(2),C(2),C(2),w(0)])},Nt=()=>{let r=(1<<7)+1;return y("av1C",[r,0,0,0])},Rt=(e,t)=>y(e,[Array(6).fill(0),w(1),w(0),w(0),o(0),w(t.info.numberOfChannels),w(16),w(0),w(0),O(t.info.sampleRate)],[oi[t.info.codec](t)]),Pt=e=>{let t=new Uint8Array(e.info.decoderConfig.description);return v("esds",0,0,[o(58753152),C(32+t.byteLength),w(1),C(0),o(75530368),C(18+t.byteLength),C(64),C(21),Pe(0),o(130071),o(130071),o(92307584),C(t.byteLength),...t,o(109084800),C(1),C(2)])},Lt=e=>{var a;let t=3840,r=0;const s=(a=e.info.decoderConfig)==null?void 0:a.description;if(s){if(s.byteLength<18)throw new TypeError("Invalid decoder description provided for Opus; must be at least 18 bytes long.");const n=ArrayBuffer.isView(s)?new DataView(s.buffer,s.byteOffset,s.byteLength):new DataView(s);t=n.getUint16(10,!0),r=n.getInt16(14,!0)}return y("dOps",[C(0),C(e.info.numberOfChannels),w(t),o(e.info.sampleRate),ge(r),C(0)])},Vt=e=>v("stts",0,0,[o(e.timeToSampleTable.length),e.timeToSampleTable.map(t=>[o(t.sampleCount),o(t.sampleDelta)])]),jt=e=>{if(e.samples.every(r=>r.type==="key"))return null;let t=[...e.samples.entries()].filter(([,r])=>r.type==="key");return v("stss",0,0,[o(t.length),t.map(([r])=>o(r+1))])},$t=e=>v("stsc",0,0,[o(e.compactlyCodedChunkTable.length),e.compactlyCodedChunkTable.map(t=>[o(t.firstChunk),o(t.samplesPerChunk),o(1)])]),Ht=e=>v("stsz",0,0,[o(0),o(e.samples.length),e.samples.map(t=>o(t.size))]),qt=e=>e.finalizedChunks.length>0&&re(e.finalizedChunks).offset>=2**32?v("co64",0,0,[o(e.finalizedChunks.length),e.finalizedChunks.map(t=>x(t.offset))]):v("stco",0,0,[o(e.finalizedChunks.length),e.finalizedChunks.map(t=>o(t.offset))]),Xt=e=>v("ctts",0,0,[o(e.compositionTimeOffsetTable.length),e.compositionTimeOffsetTable.map(t=>[o(t.sampleCount),o(t.sampleCompositionTimeOffset)])]),Gt=e=>y("mvex",null,e.map(Zt)),Zt=e=>v("trex",0,0,[o(e.id),o(1),o(0),o(0),o(0)]),$e=(e,t)=>y("moof",null,[Kt(e),...t.map(Qt)]),Kt=e=>v("mfhd",0,0,[o(e)]),He=e=>{let t=0,r=0,s=0,a=0,n=e.type==="delta";return r|=+n,n?t|=1:t|=2,t<<24|r<<16|s<<8|a},Qt=e=>y("traf",null,[Jt(e),Yt(e),ei(e)]),Jt=e=>{var a;let t=0;t|=8,t|=16,t|=32,t|=131072;let r=(a=e.currentChunk.samples[1])!=null?a:e.currentChunk.samples[0],s={duration:r.timescaleUnitsToNextSample,size:r.size,flags:He(r)};return v("tfhd",0,t,[o(e.id),o(s.duration),o(s.size),o(s.flags)])},Yt=e=>v("tfdt",1,0,[x(M(e.currentChunk.startTimestamp,e.timescale))]),ei=e=>{let t=e.currentChunk.samples.map(U=>U.timescaleUnitsToNextSample),r=e.currentChunk.samples.map(U=>U.size),s=e.currentChunk.samples.map(He),a=e.currentChunk.samples.map(U=>M(U.presentationTimestamp-U.decodeTimestamp,e.timescale)),n=new Set(t),h=new Set(r),l=new Set(s),c=new Set(a),g=l.size===2&&s[0]!==s[1],E=n.size>1,ie=h.size>1,rt=!g&&l.size>1,st=c.size>1||[...c].some(U=>U!==0),L=0;return L|=1,L|=4*+g,L|=256*+E,L|=512*+ie,L|=1024*+rt,L|=2048*+st,v("trun",1,L,[o(e.currentChunk.samples.length),o(e.currentChunk.offset-e.currentChunk.moofOffset||0),g?o(s[0]):[],e.currentChunk.samples.map((U,ce)=>[E?o(t[ce]):[],ie?o(r[ce]):[],rt?o(s[ce]):[],st?mt(a[ce]):[]])])},ti=e=>y("mfra",null,[...e.map(ii),ri()]),ii=(e,t)=>v("tfra",1,0,[o(e.id),o(63),o(e.finalizedChunks.length),e.finalizedChunks.map(s=>[x(M(s.startTimestamp,e.timescale)),x(s.moofOffset),o(t+1),o(1),o(1)])]),ri=()=>v("mfro",0,0,[o(0)]),si={avc:"avc1",hevc:"hvc1",vp9:"vp09",av1:"av01"},ai={avc:xt,hevc:Wt,vp9:Ft,av1:Nt},ni={aac:"mp4a",opus:"Opus"},oi={aac:Pt,opus:Lt},hi=Symbol("isTarget"),ae=class{},qe=class extends ae{constructor(){super(...arguments),this.buffer=null}},Te=class extends ae{constructor(e){if(super(),this.options=e,typeof e!="object")throw new TypeError("StreamTarget requires an options object to be passed to its constructor.");if(e.onData){if(typeof e.onData!="function")throw new TypeError("options.onData, when provided, must be a function.");if(e.onData.length<2)throw new TypeError("options.onData, when provided, must be a function that takes in at least two arguments (data and position). Ignoring the position argument, which specifies the byte offset at which the data is to be written, can lead to broken outputs.")}if(e.chunked!==void 0&&typeof e.chunked!="boolean")throw new TypeError("options.chunked, when provided, must be a boolean.");if(e.chunkSize!==void 0&&(!Number.isInteger(e.chunkSize)||e.chunkSize<1024))throw new TypeError("options.chunkSize, when provided, must be an integer and not smaller than 1024.")}},Xe=class extends ae{constructor(e,t){if(super(),this.stream=e,this.options=t,!(e instanceof FileSystemWritableFileStream))throw new TypeError("FileSystemWritableFileStreamTarget requires a FileSystemWritableFileStream instance.");if(t!==void 0&&typeof t!="object")throw new TypeError("FileSystemWritableFileStreamTarget's options, when provided, must be an object.");if(t&&t.chunkSize!==void 0&&(!Number.isInteger(t.chunkSize)||t.chunkSize<=0))throw new TypeError("options.chunkSize, when provided, must be a positive integer")}},W,j,Ge=class{constructor(){this.pos=0,d(this,W,new Uint8Array(8)),d(this,j,new DataView(i(this,W).buffer)),this.offsets=new WeakMap}seek(e){this.pos=e}writeU32(e){i(this,j).setUint32(0,e,!1),this.write(i(this,W).subarray(0,4))}writeU64(e){i(this,j).setUint32(0,Math.floor(e/2**32),!1),i(this,j).setUint32(4,e,!1),this.write(i(this,W).subarray(0,8))}writeAscii(e){for(let t=0;t<e.length;t++)i(this,j).setUint8(t%8,e.charCodeAt(t)),t%8===7&&this.write(i(this,W));e.length%8!==0&&this.write(i(this,W).subarray(0,e.length%8))}writeBox(e){var t,r;if(this.offsets.set(e,this.pos),e.contents&&!e.children)this.writeBoxHeader(e,(t=e.size)!=null?t:e.contents.byteLength+8),this.write(e.contents);else{let s=this.pos;if(this.writeBoxHeader(e,0),e.contents&&this.write(e.contents),e.children)for(let h of e.children)h&&this.writeBox(h);let a=this.pos,n=(r=e.size)!=null?r:a-s;this.seek(s),this.writeBoxHeader(e,n),this.seek(a)}}writeBoxHeader(e,t){this.writeU32(e.largeSize?1:t),this.writeAscii(e.type),e.largeSize&&this.writeU64(t)}measureBoxHeader(e){return 8+(e.largeSize?8:0)}patchBox(e){let t=this.pos;this.seek(this.offsets.get(e)),this.writeBox(e),this.seek(t)}measureBox(e){if(e.contents&&!e.children)return this.measureBoxHeader(e)+e.contents.byteLength;{let t=this.measureBoxHeader(e);if(e.contents&&(t+=e.contents.byteLength),e.children)for(let r of e.children)r&&(t+=this.measureBox(r));return t}}};W=new WeakMap,j=new WeakMap;var ne,F,G,Z,oe,be,li=class extends Ge{constructor(e){super(),d(this,oe),d(this,ne,void 0),d(this,F,new ArrayBuffer(2**16)),d(this,G,new Uint8Array(i(this,F))),d(this,Z,0),S(this,ne,e)}write(e){m(this,oe,be).call(this,this.pos+e.byteLength),i(this,G).set(e,this.pos),this.pos+=e.byteLength,S(this,Z,Math.max(i(this,Z),this.pos))}finalize(){m(this,oe,be).call(this,this.pos),i(this,ne).buffer=i(this,F).slice(0,Math.max(i(this,Z),this.pos))}};ne=new WeakMap,F=new WeakMap,G=new WeakMap,Z=new WeakMap,oe=new WeakSet,be=function(e){let t=i(this,F).byteLength;for(;t<e;)t*=2;if(t===i(this,F).byteLength)return;let r=new ArrayBuffer(t),s=new Uint8Array(r);s.set(i(this,G),0),S(this,F,r),S(this,G,s)};var fi=2**24,ui=2,K,N,Q,I,_,he,_e,ke,Ze,Ee,Ke,J,le,ze=class extends Ge{constructor(e){var t,r,s,a;super(),d(this,he),d(this,ke),d(this,Ee),d(this,J),d(this,K,void 0),d(this,N,[]),d(this,Q,void 0),d(this,I,void 0),d(this,_,[]),S(this,K,e),S(this,Q,(r=(t=e.options)==null?void 0:t.chunked)!=null?r:!1),S(this,I,(a=(s=e.options)==null?void 0:s.chunkSize)!=null?a:fi)}write(e){i(this,N).push({data:e.slice(),start:this.pos}),this.pos+=e.byteLength}flush(){var r,s;if(i(this,N).length===0)return;let e=[],t=[...i(this,N)].sort((a,n)=>a.start-n.start);e.push({start:t[0].start,size:t[0].data.byteLength});for(let a=1;a<t.length;a++){let n=e[e.length-1],h=t[a];h.start<=n.start+n.size?n.size=Math.max(n.size,h.start+h.data.byteLength-n.start):e.push({start:h.start,size:h.data.byteLength})}for(let a of e){a.data=new Uint8Array(a.size);for(let n of i(this,N))a.start<=n.start&&n.start<a.start+a.size&&a.data.set(n.data,n.start-a.start);i(this,Q)?(m(this,he,_e).call(this,a.data,a.start),m(this,J,le).call(this)):(s=(r=i(this,K).options).onData)==null||s.call(r,a.data,a.start)}i(this,N).length=0}finalize(){i(this,Q)&&m(this,J,le).call(this,!0)}};K=new WeakMap,N=new WeakMap,Q=new WeakMap,I=new WeakMap,_=new WeakMap,he=new WeakSet,_e=function(e,t){let r=i(this,_).findIndex(l=>l.start<=t&&t<l.start+i(this,I));r===-1&&(r=m(this,Ee,Ke).call(this,t));let s=i(this,_)[r],a=t-s.start,n=e.subarray(0,Math.min(i(this,I)-a,e.byteLength));s.data.set(n,a);let h={start:a,end:a+n.byteLength};if(m(this,ke,Ze).call(this,s,h),s.written[0].start===0&&s.written[0].end===i(this,I)&&(s.shouldFlush=!0),i(this,_).length>ui){for(let l=0;l<i(this,_).length-1;l++)i(this,_)[l].shouldFlush=!0;m(this,J,le).call(this)}n.byteLength<e.byteLength&&m(this,he,_e).call(this,e.subarray(n.byteLength),t+n.byteLength)},ke=new WeakSet,Ze=function(e,t){let r=0,s=e.written.length-1,a=-1;for(;r<=s;){let n=Math.floor(r+(s-r+1)/2);e.written[n].start<=t.start?(r=n+1,a=n):s=n-1}for(e.written.splice(a+1,0,t),(a===-1||e.written[a].end<t.start)&&a++;a<e.written.length-1&&e.written[a].end>=e.written[a+1].start;)e.written[a].end=Math.max(e.written[a].end,e.written[a+1].end),e.written.splice(a+1,1)},Ee=new WeakSet,Ke=function(e){let r={start:Math.floor(e/i(this,I))*i(this,I),data:new Uint8Array(i(this,I)),written:[],shouldFlush:!1};return i(this,_).push(r),i(this,_).sort((s,a)=>s.start-a.start),i(this,_).indexOf(r)},J=new WeakSet,le=function(e=!1){var t,r;for(let s=0;s<i(this,_).length;s++){let a=i(this,_)[s];if(!(!a.shouldFlush&&!e)){for(let n of a.written)(r=(t=i(this,K).options).onData)==null||r.call(t,a.data.subarray(n.start,n.end),a.start+n.start);i(this,_).splice(s--,1)}}};var di=class extends ze{constructor(e){var t;super(new Te({onData:(r,s)=>e.stream.write({type:"write",data:r,position:s}),chunked:!0,chunkSize:(t=e.options)==null?void 0:t.chunkSize}))}},Ae=1e3,mi=["avc","hevc","vp9","av1"],pi=["aac","opus"],ci=2082844800,wi=["strict","offset","cross-track-offset"],f,u,fe,k,b,T,$,H,Oe,R,P,Y,Me,Qe,Be,Je,Ie,Ye,De,et,Ue,tt,ue,xe,B,D,We,it,ee,de,me,Fe,q,te,pe,Ne,vi=class{constructor(e){if(d(this,Me),d(this,Be),d(this,Ie),d(this,De),d(this,Ue),d(this,ue),d(this,B),d(this,We),d(this,ee),d(this,me),d(this,q),d(this,pe),d(this,f,void 0),d(this,u,void 0),d(this,fe,void 0),d(this,k,void 0),d(this,b,null),d(this,T,null),d(this,$,Math.floor(Date.now()/1e3)+ci),d(this,H,[]),d(this,Oe,1),d(this,R,[]),d(this,P,[]),d(this,Y,!1),m(this,Me,Qe).call(this,e),e.video=X(e.video),e.audio=X(e.audio),e.fastStart=X(e.fastStart),this.target=e.target,S(this,f,{firstTimestampBehavior:"strict",...e}),e.target instanceof qe)S(this,u,new li(e.target));else if(e.target instanceof Te)S(this,u,new ze(e.target));else if(e.target instanceof Xe)S(this,u,new di(e.target));else throw new Error(`Invalid target: ${e.target}`);m(this,De,et).call(this),m(this,Be,Je).call(this)}addVideoChunk(e,t,r,s){if(!(e instanceof EncodedVideoChunk))throw new TypeError("addVideoChunk's first argument (sample) must be of type EncodedVideoChunk.");if(t&&typeof t!="object")throw new TypeError("addVideoChunk's second argument (meta), when provided, must be an object.");if(r!==void 0&&(!Number.isFinite(r)||r<0))throw new TypeError("addVideoChunk's third argument (timestamp), when provided, must be a non-negative real number.");if(s!==void 0&&!Number.isFinite(s))throw new TypeError("addVideoChunk's fourth argument (compositionTimeOffset), when provided, must be a real number.");let a=new Uint8Array(e.byteLength);e.copyTo(a),this.addVideoChunkRaw(a,e.type,r!=null?r:e.timestamp,e.duration,t,s)}addVideoChunkRaw(e,t,r,s,a,n){if(!(e instanceof Uint8Array))throw new TypeError("addVideoChunkRaw's first argument (data) must be an instance of Uint8Array.");if(t!=="key"&&t!=="delta")throw new TypeError("addVideoChunkRaw's second argument (type) must be either 'key' or 'delta'.");if(!Number.isFinite(r)||r<0)throw new TypeError("addVideoChunkRaw's third argument (timestamp) must be a non-negative real number.");if(!Number.isFinite(s)||s<0)throw new TypeError("addVideoChunkRaw's fourth argument (duration) must be a non-negative real number.");if(a&&typeof a!="object")throw new TypeError("addVideoChunkRaw's fifth argument (meta), when provided, must be an object.");if(n!==void 0&&!Number.isFinite(n))throw new TypeError("addVideoChunkRaw's sixth argument (compositionTimeOffset), when provided, must be a real number.");if(m(this,pe,Ne).call(this),!i(this,f).video)throw new Error("No video track declared.");if(typeof i(this,f).fastStart=="object"&&i(this,b).samples.length===i(this,f).fastStart.expectedVideoChunks)throw new Error(`Cannot add more video chunks than specified in 'fastStart' (${i(this,f).fastStart.expectedVideoChunks}).`);let h=m(this,ue,xe).call(this,i(this,b),e,t,r,s,a,n);if(i(this,f).fastStart==="fragmented"&&i(this,T)){for(;i(this,P).length>0&&i(this,P)[0].decodeTimestamp<=h.decodeTimestamp;){let l=i(this,P).shift();m(this,B,D).call(this,i(this,T),l)}h.decodeTimestamp<=i(this,T).lastDecodeTimestamp?m(this,B,D).call(this,i(this,b),h):i(this,R).push(h)}else m(this,B,D).call(this,i(this,b),h)}addAudioChunk(e,t,r){if(!(e instanceof EncodedAudioChunk))throw new TypeError("addAudioChunk's first argument (sample) must be of type EncodedAudioChunk.");if(t&&typeof t!="object")throw new TypeError("addAudioChunk's second argument (meta), when provided, must be an object.");if(r!==void 0&&(!Number.isFinite(r)||r<0))throw new TypeError("addAudioChunk's third argument (timestamp), when provided, must be a non-negative real number.");let s=new Uint8Array(e.byteLength);e.copyTo(s),this.addAudioChunkRaw(s,e.type,r!=null?r:e.timestamp,e.duration,t)}addAudioChunkRaw(e,t,r,s,a){if(!(e instanceof Uint8Array))throw new TypeError("addAudioChunkRaw's first argument (data) must be an instance of Uint8Array.");if(t!=="key"&&t!=="delta")throw new TypeError("addAudioChunkRaw's second argument (type) must be either 'key' or 'delta'.");if(!Number.isFinite(r)||r<0)throw new TypeError("addAudioChunkRaw's third argument (timestamp) must be a non-negative real number.");if(!Number.isFinite(s)||s<0)throw new TypeError("addAudioChunkRaw's fourth argument (duration) must be a non-negative real number.");if(a&&typeof a!="object")throw new TypeError("addAudioChunkRaw's fifth argument (meta), when provided, must be an object.");if(m(this,pe,Ne).call(this),!i(this,f).audio)throw new Error("No audio track declared.");if(typeof i(this,f).fastStart=="object"&&i(this,T).samples.length===i(this,f).fastStart.expectedAudioChunks)throw new Error(`Cannot add more audio chunks than specified in 'fastStart' (${i(this,f).fastStart.expectedAudioChunks}).`);let n=m(this,ue,xe).call(this,i(this,T),e,t,r,s,a);if(i(this,f).fastStart==="fragmented"&&i(this,b)){for(;i(this,R).length>0&&i(this,R)[0].decodeTimestamp<=n.decodeTimestamp;){let h=i(this,R).shift();m(this,B,D).call(this,i(this,b),h)}n.decodeTimestamp<=i(this,b).lastDecodeTimestamp?m(this,B,D).call(this,i(this,T),n):i(this,P).push(n)}else m(this,B,D).call(this,i(this,T),n)}finalize(){if(i(this,Y))throw new Error("Cannot finalize a muxer more than once.");if(i(this,f).fastStart==="fragmented"){for(let t of i(this,R))m(this,B,D).call(this,i(this,b),t);for(let t of i(this,P))m(this,B,D).call(this,i(this,T),t);m(this,me,Fe).call(this,!1)}else i(this,b)&&m(this,ee,de).call(this,i(this,b)),i(this,T)&&m(this,ee,de).call(this,i(this,T));let e=[i(this,b),i(this,T)].filter(Boolean);if(i(this,f).fastStart==="in-memory"){let t;for(let s=0;s<2;s++){let a=se(e,i(this,$)),n=i(this,u).measureBox(a);t=i(this,u).measureBox(i(this,k));let h=i(this,u).pos+n+t;for(let l of i(this,H)){l.offset=h;for(let{data:c}of l.samples)h+=c.byteLength,t+=c.byteLength}if(h<2**32)break;t>=2**32&&(i(this,k).largeSize=!0)}let r=se(e,i(this,$));i(this,u).writeBox(r),i(this,k).size=t,i(this,u).writeBox(i(this,k));for(let s of i(this,H))for(let a of s.samples)i(this,u).write(a.data),a.data=null}else if(i(this,f).fastStart==="fragmented"){let t=i(this,u).pos,r=ti(e);i(this,u).writeBox(r);let s=i(this,u).pos-t;i(this,u).seek(i(this,u).pos-4),i(this,u).writeU32(s)}else{let t=i(this,u).offsets.get(i(this,k)),r=i(this,u).pos-t;i(this,k).size=r,i(this,k).largeSize=r>=2**32,i(this,u).patchBox(i(this,k));let s=se(e,i(this,$));if(typeof i(this,f).fastStart=="object"){i(this,u).seek(i(this,fe)),i(this,u).writeBox(s);let a=t-i(this,u).pos;i(this,u).writeBox(ct(a))}else i(this,u).writeBox(s)}m(this,q,te).call(this),i(this,u).finalize(),S(this,Y,!0)}};return f=new WeakMap,u=new WeakMap,fe=new WeakMap,k=new WeakMap,b=new WeakMap,T=new WeakMap,$=new WeakMap,H=new WeakMap,Oe=new WeakMap,R=new WeakMap,P=new WeakMap,Y=new WeakMap,Me=new WeakSet,Qe=function(e){if(typeof e!="object")throw new TypeError("The muxer requires an options object to be passed to its constructor.");if(!(e.target instanceof ae))throw new TypeError("The target must be provided and an instance of Target.");if(e.video){if(!mi.includes(e.video.codec))throw new TypeError(`Unsupported video codec: ${e.video.codec}`);if(!Number.isInteger(e.video.width)||e.video.width<=0)throw new TypeError(`Invalid video width: ${e.video.width}. Must be a positive integer.`);if(!Number.isInteger(e.video.height)||e.video.height<=0)throw new TypeError(`Invalid video height: ${e.video.height}. Must be a positive integer.`);const t=e.video.rotation;if(typeof t=="number"&&![0,90,180,270].includes(t))throw new TypeError(`Invalid video rotation: ${t}. Has to be 0, 90, 180 or 270.`);if(Array.isArray(t)&&(t.length!==9||t.some(r=>typeof r!="number")))throw new TypeError(`Invalid video transformation matrix: ${t.join()}`);if(e.video.frameRate!==void 0&&(!Number.isInteger(e.video.frameRate)||e.video.frameRate<=0))throw new TypeError(`Invalid video frame rate: ${e.video.frameRate}. Must be a positive integer.`)}if(e.audio){if(!pi.includes(e.audio.codec))throw new TypeError(`Unsupported audio codec: ${e.audio.codec}`);if(!Number.isInteger(e.audio.numberOfChannels)||e.audio.numberOfChannels<=0)throw new TypeError(`Invalid number of audio channels: ${e.audio.numberOfChannels}. Must be a positive integer.`);if(!Number.isInteger(e.audio.sampleRate)||e.audio.sampleRate<=0)throw new TypeError(`Invalid audio sample rate: ${e.audio.sampleRate}. Must be a positive integer.`)}if(e.firstTimestampBehavior&&!wi.includes(e.firstTimestampBehavior))throw new TypeError(`Invalid first timestamp behavior: ${e.firstTimestampBehavior}`);if(typeof e.fastStart=="object"){if(e.video){if(e.fastStart.expectedVideoChunks===void 0)throw new TypeError("'fastStart' is an object but is missing property 'expectedVideoChunks'.");if(!Number.isInteger(e.fastStart.expectedVideoChunks)||e.fastStart.expectedVideoChunks<0)throw new TypeError("'expectedVideoChunks' must be a non-negative integer.")}if(e.audio){if(e.fastStart.expectedAudioChunks===void 0)throw new TypeError("'fastStart' is an object but is missing property 'expectedAudioChunks'.");if(!Number.isInteger(e.fastStart.expectedAudioChunks)||e.fastStart.expectedAudioChunks<0)throw new TypeError("'expectedAudioChunks' must be a non-negative integer.")}}else if(![!1,"in-memory","fragmented"].includes(e.fastStart))throw new TypeError("'fastStart' option must be false, 'in-memory', 'fragmented' or an object.");if(e.minFragmentDuration!==void 0&&(!Number.isFinite(e.minFragmentDuration)||e.minFragmentDuration<0))throw new TypeError("'minFragmentDuration' must be a non-negative number.")},Be=new WeakSet,Je=function(){var e;if(i(this,u).writeBox(pt({holdsAvc:((e=i(this,f).video)==null?void 0:e.codec)==="avc",fragmented:i(this,f).fastStart==="fragmented"})),S(this,fe,i(this,u).pos),i(this,f).fastStart==="in-memory")S(this,k,Se(!1));else if(i(this,f).fastStart!=="fragmented"){if(typeof i(this,f).fastStart=="object"){let t=m(this,Ie,Ye).call(this);i(this,u).seek(i(this,u).pos+t)}S(this,k,Se(!0)),i(this,u).writeBox(i(this,k))}m(this,q,te).call(this)},Ie=new WeakSet,Ye=function(){if(typeof i(this,f).fastStart!="object")return;let e=0,t=[i(this,f).fastStart.expectedVideoChunks,i(this,f).fastStart.expectedAudioChunks];for(let r of t)r&&(e+=8*Math.ceil(.6666666666666666*r),e+=4*r,e+=12*Math.ceil(.6666666666666666*r),e+=4*r,e+=8*r);return e+=4096,e},De=new WeakSet,et=function(){var e,t;if(i(this,f).video&&S(this,b,{id:1,info:{type:"video",codec:i(this,f).video.codec,width:i(this,f).video.width,height:i(this,f).video.height,rotation:(e=i(this,f).video.rotation)!=null?e:0,decoderConfig:null},timescale:(t=i(this,f).video.frameRate)!=null?t:57600,samples:[],finalizedChunks:[],currentChunk:null,firstDecodeTimestamp:void 0,lastDecodeTimestamp:-1,timeToSampleTable:[],compositionTimeOffsetTable:[],lastTimescaleUnits:null,lastSample:null,compactlyCodedChunkTable:[]}),i(this,f).audio&&(S(this,T,{id:i(this,f).video?2:1,info:{type:"audio",codec:i(this,f).audio.codec,numberOfChannels:i(this,f).audio.numberOfChannels,sampleRate:i(this,f).audio.sampleRate,decoderConfig:null},timescale:i(this,f).audio.sampleRate,samples:[],finalizedChunks:[],currentChunk:null,firstDecodeTimestamp:void 0,lastDecodeTimestamp:-1,timeToSampleTable:[],compositionTimeOffsetTable:[],lastTimescaleUnits:null,lastSample:null,compactlyCodedChunkTable:[]}),i(this,f).audio.codec==="aac")){let r=m(this,Ue,tt).call(this,2,i(this,f).audio.sampleRate,i(this,f).audio.numberOfChannels);i(this,T).info.decoderConfig={codec:i(this,f).audio.codec,description:r,numberOfChannels:i(this,f).audio.numberOfChannels,sampleRate:i(this,f).audio.sampleRate}}},Ue=new WeakSet,tt=function(e,t,r){let a=[96e3,88200,64e3,48e3,44100,32e3,24e3,22050,16e3,12e3,11025,8e3,7350].indexOf(t),n=r,h="";h+=e.toString(2).padStart(5,"0"),h+=a.toString(2).padStart(4,"0"),a===15&&(h+=t.toString(2).padStart(24,"0")),h+=n.toString(2).padStart(4,"0");let l=Math.ceil(h.length/8)*8;h=h.padEnd(l,"0");let c=new Uint8Array(h.length/8);for(let g=0;g<h.length;g+=8)c[g/8]=parseInt(h.slice(g,g+8),2);return c},ue=new WeakSet,xe=function(e,t,r,s,a,n,h){let l=s/1e6,c=(s-(h!=null?h:0))/1e6,g=a/1e6,E=m(this,We,it).call(this,l,c,e);return l=E.presentationTimestamp,c=E.decodeTimestamp,n!=null&&n.decoderConfig&&(e.info.decoderConfig===null?e.info.decoderConfig=n.decoderConfig:Object.assign(e.info.decoderConfig,n.decoderConfig)),{presentationTimestamp:l,decodeTimestamp:c,duration:g,data:t,size:t.byteLength,type:r,timescaleUnitsToNextSample:M(g,e.timescale)}},B=new WeakSet,D=function(e,t){var a,n;i(this,f).fastStart!=="fragmented"&&e.samples.push(t);const r=M(t.presentationTimestamp-t.decodeTimestamp,e.timescale);if(e.lastTimescaleUnits!==null){let h=M(t.decodeTimestamp,e.timescale,!1),l=Math.round(h-e.lastTimescaleUnits);if(e.lastTimescaleUnits+=l,e.lastSample.timescaleUnitsToNextSample=l,i(this,f).fastStart!=="fragmented"){let c=re(e.timeToSampleTable);c.sampleCount===1?(c.sampleDelta=l,c.sampleCount++):c.sampleDelta===l?c.sampleCount++:(c.sampleCount--,e.timeToSampleTable.push({sampleCount:2,sampleDelta:l}));const g=re(e.compositionTimeOffsetTable);g.sampleCompositionTimeOffset===r?g.sampleCount++:e.compositionTimeOffsetTable.push({sampleCount:1,sampleCompositionTimeOffset:r})}}else e.lastTimescaleUnits=0,i(this,f).fastStart!=="fragmented"&&(e.timeToSampleTable.push({sampleCount:1,sampleDelta:M(t.duration,e.timescale)}),e.compositionTimeOffsetTable.push({sampleCount:1,sampleCompositionTimeOffset:r}));e.lastSample=t;let s=!1;if(!e.currentChunk)s=!0;else{let h=t.presentationTimestamp-e.currentChunk.startTimestamp;if(i(this,f).fastStart==="fragmented"){let l=(a=i(this,b))!=null?a:i(this,T);const c=(n=i(this,f).minFragmentDuration)!=null?n:1;e===l&&t.type==="key"&&h>=c&&(s=!0,m(this,me,Fe).call(this))}else s=h>=.5}s&&(e.currentChunk&&m(this,ee,de).call(this,e),e.currentChunk={startTimestamp:t.presentationTimestamp,samples:[]}),e.currentChunk.samples.push(t)},We=new WeakSet,it=function(e,t,r){var h,l,c,g;const s=i(this,f).firstTimestampBehavior==="strict",a=r.lastDecodeTimestamp===-1;if(s&&a&&t!==0)throw new Error(`The first chunk for your media track must have a timestamp of 0 (received DTS=${t}).Non-zero first timestamps are often caused by directly piping frames or audio data from a MediaStreamTrack into the encoder. Their timestamps are typically relative to the age of thedocument, which is probably what you want.
 
@@ -293,54 +293,62 @@ E.fitLength = function (it) {
 /* ---------- 제목·설명 틀 (12-4) — 영문, 감정·호기심형, 날짜형 금지. 포맷별 5개 ---------- */
 E.TPL = {
   TRUST: [
-    { t: 'She chose my lap on day {N}', h: 'She chose my lap', d: 'She found her spot.' },
-    { t: '{N} days home and still a lap dog', h: 'Still a lap dog', d: 'Some things never change.' },
-    { t: 'Her favorite spot in the whole world', h: 'Her favorite spot', d: 'Guess where she wants to be.' },
-    { t: 'This is how she says I love you', h: 'How she says I love you', d: 'No words needed.' },
-    { t: 'She trusts me with her whole heart', h: 'Full trust unlocked', d: 'Belly up means total trust.' }
+    { t: 'She chose my lap on day {N}', h: 'She chose my lap', d: 'She found her spot.', k: '{N}일째, 내 무릎을 골랐어요', kh: '내 무릎을 골랐어요', kd: '자기 자리를 찾았어요.' },
+    { t: '{N} days home and still a lap dog', h: 'Still a lap dog', d: 'Some things never change.', k: '집에 온 지 {N}일, 여전히 무릎 강아지', kh: '여전히 무릎 강아지', kd: '변하지 않는 것도 있죠.' },
+    { t: 'Her favorite spot in the whole world', h: 'Her favorite spot', d: 'Guess where she wants to be.', k: '세상에서 제일 좋아하는 자리', kh: '제일 좋아하는 자리', kd: '어디에 있고 싶은지 맞혀 보세요.' },
+    { t: 'This is how she says I love you', h: 'How she says I love you', d: 'No words needed.', k: '이게 사랑한다고 말하는 방법이에요', kh: '사랑한다고 말하는 방법', kd: '말이 필요 없어요.' },
+    { t: 'She trusts me with her whole heart', h: 'Full trust unlocked', d: 'Belly up means total trust.', k: '온 마음으로 나를 믿어요', kh: '완전한 신뢰 달성', kd: '배를 보이는 건 완전히 믿는다는 뜻이에요.' }
   ],
   ATTACK: [
-    { t: 'Tiny Cavalier in full attack mode', h: 'Full attack mode', d: 'Small but mighty.' },
-    { t: 'Who let the tiny shark out?', h: 'Tiny shark alert', d: 'Those puppy teeth though.' },
-    { t: 'She thinks she is a lion', h: 'She thinks she is a lion', d: 'Fearless, as always.' },
-    { t: 'Zoomies level: maximum', h: 'Zoomies: MAX', d: 'Nobody can stop her now.' },
-    { t: 'The cutest little troublemaker', h: 'Little troublemaker', d: 'Chaos, but make it cute.' }
+    { t: 'Tiny Cavalier in full attack mode', h: 'Full attack mode', d: 'Small but mighty.', k: '작은 카발리에, 전투 모드 돌입', kh: '전투 모드 돌입', kd: '작지만 강해요.' },
+    { t: 'Who let the tiny shark out?', h: 'Tiny shark alert', d: 'Those puppy teeth though.', k: '누가 이 아기 상어를 풀어놨어?', kh: '아기 상어 경보', kd: '저 강아지 이빨 좀 봐요.' },
+    { t: 'She thinks she is a lion', h: 'She thinks she is a lion', d: 'Fearless, as always.', k: '자기가 사자인 줄 알아요', kh: '자기가 사자인 줄 알아요', kd: '언제나처럼 겁이 없어요.' },
+    { t: 'Zoomies level: maximum', h: 'Zoomies: MAX', d: 'Nobody can stop her now.', k: '우다다 레벨: 최대', kh: '우다다: 최대', kd: '이제 아무도 못 말려요.' },
+    { t: 'The cutest little troublemaker', h: 'Little troublemaker', d: 'Chaos, but make it cute.', k: '세상에서 제일 귀여운 말썽꾸러기', kh: '작은 말썽꾸러기', kd: '난장판인데 귀여워요.' }
   ],
   SLEEP: [
-    { t: 'Puppy battery: 0%', h: 'Puppy battery: 0%', d: 'From full power to nap mode.' },
-    { t: 'From chaos to coma in seconds', h: 'Chaos to coma', d: 'She went all in, then crashed.' },
-    { t: 'She fought sleep and lost', h: 'She fought sleep', d: 'Sleep always wins.' },
-    { t: 'Energy saving mode: activated', h: 'Energy saving mode', d: 'Recharging for the next adventure.' },
-    { t: 'Play hard, nap harder', h: 'Play hard, nap harder', d: 'A puppy’s perfect day.' }
+    { t: 'Puppy battery: 0%', h: 'Puppy battery: 0%', d: 'From full power to nap mode.', k: '강아지 배터리: 0%', kh: '강아지 배터리: 0%', kd: '풀파워에서 낮잠 모드로.' },
+    { t: 'From chaos to coma in seconds', h: 'Chaos to coma', d: 'She went all in, then crashed.', k: '몇 초 만에 난리에서 기절까지', kh: '난리 → 기절', kd: '온 힘을 다해 놀고 뻗었어요.' },
+    { t: 'She fought sleep and lost', h: 'She fought sleep', d: 'Sleep always wins.', k: '잠이랑 싸우다 졌어요', kh: '잠이랑 싸우는 중', kd: '잠은 언제나 이겨요.' },
+    { t: 'Energy saving mode: activated', h: 'Energy saving mode', d: 'Recharging for the next adventure.', k: '절전 모드: 켜짐', kh: '절전 모드', kd: '다음 모험을 위해 충전 중이에요.' },
+    { t: 'Play hard, nap harder', h: 'Play hard, nap harder', d: 'A puppy’s perfect day.', k: '열심히 놀고, 더 열심히 자기', kh: '열심히 놀고, 더 열심히 자기', kd: '강아지의 완벽한 하루.' }
   ],
   GROWTH: [
-    { t: 'Day 1 vs day {N}', h: 'Day 1 vs day {N}', d: 'Look how much she has grown.' },
-    { t: 'She used to fit in one hand', h: 'She used to be this tiny', d: 'Time flies with a puppy.' },
-    { t: 'Watch her grow up in seconds', h: 'Watch her grow', d: 'Growing up way too fast.' },
-    { t: 'How it started vs how it’s going', h: 'How it started', d: 'Same puppy, new chapter.' },
-    { t: '{N} days of growing up', h: '{N} days of growing up', d: 'Every day a little bigger.' }
+    { t: 'Day 1 vs day {N}', h: 'Day 1 vs day {N}', d: 'Look how much she has grown.', k: '1일째 vs {N}일째', kh: '1일째 vs {N}일째', kd: '얼마나 컸는지 보세요.' },
+    { t: 'She used to fit in one hand', h: 'She used to be this tiny', d: 'Time flies with a puppy.', k: '한 손에 쏙 들어오던 아이였는데', kh: '이만큼 작았었는데', kd: '강아지와 있으면 시간이 정말 빨라요.' },
+    { t: 'Watch her grow up in seconds', h: 'Watch her grow', d: 'Growing up way too fast.', k: '몇 초 만에 크는 모습 보기', kh: '크는 모습 보기', kd: '너무 빨리 커요.' },
+    { t: 'How it started vs how it’s going', h: 'How it started', d: 'Same puppy, new chapter.', k: '처음 모습 vs 지금 모습', kh: '처음엔 이랬어요', kd: '같은 강아지, 새로운 이야기.' },
+    { t: '{N} days of growing up', h: '{N} days of growing up', d: 'Every day a little bigger.', k: '{N}일 동안 자란 기록', kh: '{N}일 동안 자란 기록', kd: '날마다 조금씩 커요.' }
   ],
   FAIL: [
-    { t: 'She tried. She really tried.', h: 'She really tried', d: 'Points for effort.' },
-    { t: 'Nobody tell her she missed', h: 'Nobody tell her', d: 'She thinks it went perfectly.' },
-    { t: 'Expectation vs reality: puppy edition', h: 'Expectation vs reality', d: 'It did not go as planned.' },
-    { t: 'Well… that didn’t go as planned', h: 'That didn’t go as planned', d: 'Oops.' },
-    { t: 'She has zero regrets', h: 'Zero regrets', d: 'Would do it again.' }
+    { t: 'She tried. She really tried.', h: 'She really tried', d: 'Points for effort.', k: '노력했어요. 정말 노력했어요.', kh: '정말 노력했어요', kd: '노력 점수는 만점.' },
+    { t: 'Nobody tell her she missed', h: 'Nobody tell her', d: 'She thinks it went perfectly.', k: '빗나간 거 아무도 말해주지 마세요', kh: '아무도 말하지 마세요', kd: '본인은 완벽했다고 생각해요.' },
+    { t: 'Expectation vs reality: puppy edition', h: 'Expectation vs reality', d: 'It did not go as planned.', k: '기대 vs 현실: 강아지 편', kh: '기대 vs 현실', kd: '계획대로 되지 않았어요.' },
+    { t: 'Well… that didn’t go as planned', h: 'That didn’t go as planned', d: 'Oops.', k: '음… 계획대로 안 됐네요', kh: '계획대로 안 됐어요', kd: '앗.' },
+    { t: 'She has zero regrets', h: 'Zero regrets', d: 'Would do it again.', k: '후회는 전혀 없대요', kh: '후회 없음', kd: '또 할 거래요.' }
   ],
   TRAIN: [
-    { t: 'Training diary #{k}: she did it', h: 'Training diary #{k}', d: 'Little steps, big progress.' },
-    { t: 'Puppy school progress report', h: 'Progress report', d: 'Getting better every day.' },
-    { t: 'Smarter than I thought', h: 'Smarter than I thought', d: 'She learns so fast.' },
-    { t: 'Day {N} of teaching a Cavalier', h: 'Teaching a Cavalier', d: 'Patience pays off.' },
-    { t: 'She actually listened this time', h: 'She actually listened', d: 'A proud puppy parent moment.' }
+    { t: 'Training diary #{k}: she did it', h: 'Training diary #{k}', d: 'Little steps, big progress.', k: '훈련 일기 #{k}: 해냈어요', kh: '훈련 일기 #{k}', kd: '작은 걸음, 큰 발전.' },
+    { t: 'Puppy school progress report', h: 'Progress report', d: 'Getting better every day.', k: '강아지 학교 성적표', kh: '성적표', kd: '날마다 나아지고 있어요.' },
+    { t: 'Smarter than I thought', h: 'Smarter than I thought', d: 'She learns so fast.', k: '생각보다 똑똑해요', kh: '생각보다 똑똑해요', kd: '정말 빨리 배워요.' },
+    { t: 'Day {N} of teaching a Cavalier', h: 'Teaching a Cavalier', d: 'Patience pays off.', k: '카발리에 가르치기 {N}일째', kh: '카발리에 가르치기', kd: '인내는 보답받아요.' },
+    { t: 'She actually listened this time', h: 'She actually listened', d: 'A proud puppy parent moment.', k: '이번엔 진짜 말을 들었어요', kh: '진짜 말을 들었어요', kd: '견주로서 뿌듯한 순간.' }
   ],
   PHOTOS: [
-    { t: 'Her first {season} {act}', h: 'Her first {season} {act}', d: 'Small moments, big love.', t0: 'Her first {season} with us', h0: 'Her first {season} with us' },
-    { t: 'A little {act} with my Cavalier', h: 'A little {act}', d: 'Just another happy day.', t0: 'A little moment with my Cavalier', h0: 'A little moment' },
-    { t: 'Every day with her is the best day', h: 'Every day is the best day', d: 'Life is better with her.' },
-    { t: 'Small moments, big love', h: 'Small moments, big love', d: 'These are the days.' },
-    { t: 'Just a puppy living her best life', h: 'Living her best life', d: 'Nothing but good vibes.' }
+    { t: 'Her first {season} {act}', h: 'Her first {season} {act}', d: 'Small moments, big love.', t0: 'Her first {season} with us', h0: 'Her first {season} with us',
+      k: '처음 맞는 {seasonKo} {actKo}', kh: '처음 맞는 {seasonKo} {actKo}', k0: '우리와 함께하는 첫 {seasonKo}', kh0: '우리와 함께하는 첫 {seasonKo}', kd: '작은 순간, 큰 사랑.' },
+    { t: 'A little {act} with my Cavalier', h: 'A little {act}', d: 'Just another happy day.', t0: 'A little moment with my Cavalier', h0: 'A little moment',
+      k: '우리 카발리에와 함께한 {actKo}', kh: '소소한 {actKo}', k0: '우리 카발리에와의 작은 순간', kh0: '작은 순간', kd: '또 하나의 행복한 하루.' },
+    { t: 'Every day with her is the best day', h: 'Every day is the best day', d: 'Life is better with her.', k: '함께하는 모든 날이 최고의 날', kh: '모든 날이 최고의 날', kd: '함께라서 더 좋은 하루하루.' },
+    { t: 'Small moments, big love', h: 'Small moments, big love', d: 'These are the days.', k: '작은 순간, 큰 사랑', kh: '작은 순간, 큰 사랑', kd: '바로 이런 날들.' },
+    { t: 'Just a puppy living her best life', h: 'Living her best life', d: 'Nothing but good vibes.', k: '최고의 삶을 사는 강아지', kh: '최고의 삶을 사는 중', kd: '좋은 기운만 가득.' }
   ]
+};
+E.SEASON_KO = { winter: '겨울', spring: '봄', summer: '여름', autumn: '가을' };
+E.ACT_KO = { '놀이': '놀이 시간', '교감': '포옹', '잠': '낮잠', '산책': '산책', '목욕': '목욕', '식사': '간식 시간', '유치원': '유치원', '훈련': '훈련', '사고': '말썽' };
+E.koFill = function (s, ctx) {
+  return String(s || '').replace(/\{N\}/g, ctx.N || '').replace(/\{k\}/g, ctx.k || 1)
+    .replace(/\{seasonKo\}/g, E.SEASON_KO[ctx.season] || '').replace(/\{actKo\}/g, E.ACT_KO[ctx.sit] || '하루').replace(/\s{2,}/g, ' ').trim();
 };
 E.fill = function (s, ctx) {
   return String(s || '').replace(/\{N\}/g, ctx.N || '').replace(/\{act\}/g, ctx.act || 'day').replace(/\{season\}/g, ctx.season || '').replace(/\{k\}/g, ctx.k || 1).replace(/\s{2,}/g, ' ').trim();
@@ -382,25 +390,41 @@ E.titles = function (fm, ctx, recipes) {
     const t = tpl[o.i];
     const noAct = !ctx.act && /\{act\}/.test(t.t);
     let ti = E.fill(noAct ? (t.t0 || t.t) : t.t, ctx), hk = E.fill(noAct ? (t.h0 || t.h) : t.h, ctx);
-    if (!ctx.N) { ti = ti.replace(/\s*on day\s*$/i, '').replace(/^\s*days? home and/i, 'Home and'); hk = hk.replace(/day\s*$/i, '').trim(); }
-    return { key: o.key, t: ti, h: hk, d: E.fill(t.d, ctx) };
+    let kt = E.koFill(noAct ? (t.k0 || t.k) : t.k, ctx), kh = E.koFill(noAct ? (t.kh0 || t.kh) : t.kh, ctx);
+    if (!ctx.N) { ti = ti.replace(/\s*on day\s*$/i, '').replace(/^\s*days? home and/i, 'Home and'); hk = hk.replace(/day\s*$/i, '').trim(); kt = kt.replace(/^일째, /, '').replace(/^집에 온 지 일, /, ''); }
+    return { key: o.key, t: ti, h: hk, d: E.fill(t.d, ctx), kt: kt, kh: kh, kd: t.kd || '' };
   });
 };
-E.koLine = function (sel, ctx) {
-  const memo = sel.slice().sort(function (a, b) { return E.likeCount(b.m) - E.likeCount(a.m); }).map(function (x) { return String(x.m.m || '').trim(); }).filter(Boolean)[0];
-  if (memo) return memo;
+/* 설명의 한글 한 줄 — 기본값은 상황·계절로 만든 짧은 문구(메모를 그대로 넣지 않음). 후보는 E.koLines */
+E.koLine = function (sel, ctx) { return E.koLines(sel, ctx).p[0] || '빼꼼이의 하루'; };
+E.koLines = function (sel, ctx) {
   const ss = ctx.last ? E.season(ctx.last)[0] : '';
-  if (ctx.sit) return '빼꼼이의 ' + (ss ? ss + ' ' : '') + ctx.sit;
-  return ctx.N ? '빼꼼이와 함께한 ' + ctx.N + '일째' : '빼꼼이의 하루';
+  const sit = ctx.sit, act = E.ACT_KO[sit] || '';
+  const p = [], st = [];
+  if (sit) { p.push('빼꼼이의 ' + (ss ? ss + ' ' : '') + act); p.push((ss ? ss + ' ' : '') + act + ' 기록'); }
+  else { p.push('빼꼼이의 ' + (ss ? ss + ' ' : '') + '하루'); }
+  if (ctx.N) p.push('빼꼼이와 함께한 ' + ctx.N + '일째');
+  const bank = E.KO_SUG[sit] || E.KO_SUG._;
+  bank.s.forEach(function (x) { st.push(x); });
+  E.KO_SUG._.s.forEach(function (x) { if (st.indexOf(x) < 0) st.push(x); });
+  const memos = [];
+  sel.slice().sort(function (a, b) { return E.likeCount(b.m) - E.likeCount(a.m); }).forEach(function (x) { const mm = String(x.m.m || '').trim(); if (mm && memos.indexOf(mm) < 0) memos.push(mm); });
+  return { p: p.slice(0, 3), s: st.slice(0, 3), memo: memos.slice(0, 2) };
 };
-/* 설명: 카탈로그 고정 템플릿(영문 훅 + 한글 한 줄 + 해시태그) + 상황 해시태그 1~2개 + 끝줄 시리즈 번호 */
-E.desc = function (title, sel, ctx, sn) {
-  const hook = (ctx.N ? 'Day ' + ctx.N + ' with our Cavalier King Charles Spaniel puppy' : 'Life with our Cavalier King Charles Spaniel puppy') + ' — ' + (title.d || title.t || '');
-  const tags = ['#cavalierkingcharlesspaniel', '#cavalier', '#puppy', '#shorts'];
-  const sitCnt = {};
+/* 설명: 카탈로그 고정 템플릿(화면정의서 12-4 코드 블록 그대로)
+   Day N with our Cavalier King Charles Spaniel puppy 🐾 / [영문 훅 한 줄] / (빈 줄) / [한글 한 줄] / (빈 줄) / 해시태그 8개 + 상황 태그 1~2개 / 빼꼼 #N */
+E.DESC_TAGS = '#cavalierkingcharlesspaniel #cavalier #puppy #cutepuppy #dogsofyoutube #puppylove #blenheim #shorts';
+E.desc = function (title, sel, ctx, sn, ko) {
+  const l1 = (ctx.N ? 'Day ' + ctx.N + ' with our Cavalier King Charles Spaniel puppy' : 'Life with our Cavalier King Charles Spaniel puppy') + ' 🐾';
+  const l2 = title.d || title.t || '';
+  const sitCnt = {}, extra = [];
   sel.forEach(function (x) { E.sits(x.m).forEach(function (s) { sitCnt[s] = (sitCnt[s] || 0) + 1; }); });
-  Object.keys(sitCnt).sort(function (a, b) { return sitCnt[b] - sitCnt[a]; }).slice(0, 2).forEach(function (s) { if (E.SIT_TAG[s]) tags.push(E.SIT_TAG[s]); });
-  return [hook, E.koLine(sel, ctx), tags.join(' '), '빼꼼 #' + (sn || '?')].join('\n');
+  Object.keys(sitCnt).sort(function (a, b) { return sitCnt[b] - sitCnt[a]; }).slice(0, 2).forEach(function (s) { if (E.SIT_TAG[s]) extra.push(E.SIT_TAG[s]); });
+  const k = (ko === undefined || ko === null) ? E.koLine(sel, ctx) : ko;
+  const out = [l1, l2, ''];
+  if (k) out.push(k, '');
+  out.push(E.DESC_TAGS + (extra.length ? ' ' + extra.join(' ') : ''), '빼꼼 #' + (sn || '?'));
+  return out.join('\n');
 };
 E.descSn = function (de, sn) {   /* 끝줄 시리즈 번호 갱신 */
   const lines = String(de || '').split('\n');
@@ -426,18 +450,71 @@ E.music = function (fm, mood) {
   return out.slice(0, 3);
 };
 
-/* ---------- 자막 기본값 ---------- */
-E.FAIL_LINES = ['Me: totally under control', 'The plan:', 'What actually happened:', 'No regrets.'];
-E.captions = function (it, sel, fm, ctx, home) {
-  const byId = {}; sel.forEach(function (x) { byId[x.id] = x; });
-  it.forEach(function (x, i) {
-    const s = byId[x.id]; const memo = s ? String(s.m.m || '').trim() : '';
-    if (fm === 'GROWTH') { const n = s ? E.dayN(E.dOf(s.m), home) : 0; x.c = n ? 'day ' + n : ''; return; }
-    if (fm === 'FAIL') { x.c = i >= 1 && i <= 4 ? (memo || E.FAIL_LINES[i - 1]) : ''; return; }
-    x.c = (i > 0 && i < it.length - 1 && memo && memo.length <= 24) ? memo : '';
-  });
-  return it;
+/* ---------- 장면 자막 — 자동으로 넣지 않는다 (V6.5.1). 영상에는 위쪽 영문 2줄(훅 · day N)만.
+   한글은 장면마다 추천 문구·문장을 보여 주고 사람이 고른 것만 붙인다. ---------- */
+E.captions = function (it) { it.forEach(function (x) { x.c = ''; }); return it; };
+E.KO_SUG = {
+  '산책': { p: ['산책 가자!', '킁킁 탐색 중', '낙엽 밟기'], s: ['오늘도 신나게 산책했어요', '밖에 나오면 세상이 다 신기해요'] },
+  '놀이': { p: ['우다다 타임', '장난감은 내 거야', '놀아 주세요!'], s: ['한 번 시작하면 멈출 수 없어요', '에너지 충전 완료, 이제 놀 시간!'] },
+  '교감': { p: ['품이 제일 좋아', '꼭 안아 줘', '눈 맞춤 중'], s: ['여기가 제일 편해요', '오늘도 사랑받는 중이에요'] },
+  '잠': { p: ['꿀잠 중', '배터리 0%', '쿨쿨'], s: ['놀다 지쳐서 잠들었어요', '깨우지 마세요, 꿈꾸는 중이에요'] },
+  '목욕': { p: ['목욕 싫어요', '뽀송뽀송', '젖은 빼꼼이'], s: ['목욕은 싫지만 끝나면 개운해요', '말리는 시간이 제일 길어요'] },
+  '식사': { p: ['냠냠', '간식 주세요', '밥 먹는 중'], s: ['밥그릇 앞에서는 진지해요', '간식 소리만 들어도 달려와요'] },
+  '유치원': { p: ['유치원 가는 날', '친구들 만나러', '하원했어요'], s: ['오늘도 유치원에서 신나게 놀았어요', '친구들이랑 노는 게 제일 좋아요'] },
+  '훈련': { p: ['앉아 성공!', '기다려…', '칭찬받는 중'], s: ['오늘은 앉아를 해냈어요', '간식 앞에서 꾹 참는 중이에요'] },
+  '사고': { p: ['제가 안 그랬어요', '범인은 나', '앗, 들켰다'], s: ['잠깐 혼자 뒀더니 이렇게 됐어요', '반성은 하는데 후회는 없어요'] },
+  _: { p: ['귀여움 주의', '빼꼼이 등장', '오늘의 빼꼼'], s: ['오늘도 귀여움 한도 초과', '빼꼼이의 하루를 소개합니다'] }
 };
+E.KO_MOOD = { '포근': '포근포근', '신남': '신난다!', '졸림': '졸려요…', '엉뚱': '이게 뭐지?', '의젓': '의젓한 빼꼼이' };
+/* 영어 장면 자막 후보 — 뜻과 함께 (FAIL 1인칭 문장, GROWTH 날짜 표시) */
+E.FAIL_LINES = [['Me: totally under control', '나: 완벽하게 통제 중'], ['The plan:', '계획:'], ['What actually happened:', '실제로 일어난 일:'], ['No regrets.', '후회 없음.']];
+E.sceneSug = function (m, i, fm, home) {   /* → {p:[], s:[], en:[[영문, 뜻]], memo:''} */
+  const ss = E.sits(m || {});
+  const p = [], st = [], en = [];
+  ss.forEach(function (sit) { const b = E.KO_SUG[sit]; if (!b) return; b.p.forEach(function (x) { if (p.indexOf(x) < 0) p.push(x); }); b.s.forEach(function (x) { if (st.indexOf(x) < 0) st.push(x); }); });
+  const md = E.mood(m || {}); if (md && E.KO_MOOD[md] && p.indexOf(E.KO_MOOD[md]) < 0) p.push(E.KO_MOOD[md]);
+  E.KO_SUG._.p.forEach(function (x) { if (p.length < 5 && p.indexOf(x) < 0) p.push(x); });
+  E.KO_SUG._.s.forEach(function (x) { if (st.length < 3 && st.indexOf(x) < 0) st.push(x); });
+  if (fm === 'FAIL') E.FAIL_LINES.forEach(function (x) { en.push(x); });
+  const n = E.dayN(E.dOf(m || {}), home);
+  if (n) en.push(['day ' + n, n + '일째']);
+  return { p: p.slice(0, 5), s: st.slice(0, 3), en: en, memo: String((m && m.m) || '').trim() };
+};
+
+/* ---------- 영어 문구 → 한글 뜻 (내장 문구만. 직접 쓴 문장은 파파고 링크) ---------- */
+E.DL_KO = function (N) { return N ? '우리 카발리에와 함께한 ' + N + '일째' : '우리 카발리에와 함께'; };
+E.MQ_KO = { 'cute piano': '귀여운 피아노', 'heartwarming': '마음이 따뜻해지는', 'Monkeys Spinning Monkeys': '곡명 — 경쾌하고 장난스러운 곡', 'Sneaky Snitch': '곡명 — 살금살금 장난스러운 곡',
+  'lullaby': '자장가', 'sleepy piano': '잔잔한 피아노', 'emotional piano': '감성 피아노', 'growing up': '성장', 'funny fail': '웃긴 실수', 'upbeat ukulele': '경쾌한 우쿨렐레',
+  'proud moment': '뿌듯한 순간', 'happy acoustic': '밝은 어쿠스틱', 'cute puppy': '귀여운 강아지', 'cozy piano': '포근한 피아노', 'upbeat funny': '신나고 웃긴',
+  'calm lullaby': '잔잔한 자장가', 'quirky funny': '엉뚱하고 웃긴', 'cinematic inspiring': '웅장하고 감동적인' };
+E.gloss = function (ctx) {
+  const g = {};
+  Object.keys(E.TPL).forEach(function (fm) {
+    E.TPL[fm].forEach(function (t) {
+      [[t.t, t.k], [t.h, t.kh], [t.t0, t.k0], [t.h0, t.kh0], [t.d, t.kd]].forEach(function (pr) {
+        if (!pr[0] || !pr[1]) return;
+        g[E.fill(pr[0], ctx)] = E.koFill(pr[1], ctx);
+      });
+    });
+  });
+  g['day ' + (ctx.N || '') + ' with my Cavalier'] = E.DL_KO(ctx.N);
+  g['with my Cavalier'] = E.DL_KO(0);
+  E.FAIL_LINES.forEach(function (x) { g[x[0]] = x[1]; });
+  Object.keys(E.MQ_KO).forEach(function (k) { g[k] = E.MQ_KO[k]; });
+  return g;
+};
+E.meaning = function (text, ctx) {
+  const t = String(text || '').trim(); if (!t) return '';
+  const g = E.gloss(ctx || {});
+  if (g[t]) return g[t];
+  const m = /^day (\d+)$/i.exec(t); if (m) return m[1] + '일째';
+  const m2 = /^day (\d+) with my Cavalier$/i.exec(t); if (m2) return E.DL_KO(m2[1]);
+  /* 설명 첫 줄: 'Day N with our Cavalier King Charles Spaniel puppy 🐾' (예전 형식 '— 문장'도 읽음) */
+  const m3 = /^(Day (\d+) with our|Life with our) Cavalier King Charles Spaniel puppy(?: 🐾)?(?: — (.+))?$/.exec(t);
+  if (m3) { const tail = m3[3] ? (g[m3[3].trim()] || '') : ''; return (m3[2] ? '카발리에 킹 찰스 스패니얼 강아지와 함께한 ' + m3[2] + '일째' : '카발리에 킹 찰스 스패니얼 강아지와 함께하는 삶') + (tail ? ' — ' + tail : ''); }
+  return '';
+};
+E.papago = function (text) { return 'https://papago.naver.com/?sk=en&tk=ko&st=' + encodeURIComponent(String(text || '')); };
 
 /* ---------- 레시피 초안 ---------- */
 E.draft = function (sel, fm, opt) {
@@ -450,7 +527,7 @@ E.draft = function (sel, fm, opt) {
   return {
     st: 'draft', mo: 'A', fm: fm, it: it, ti: t0.t, tt: t0.key, hk: t0.h,
     dl: ctx.N ? 'day ' + ctx.N + ' with my Cavalier' : 'with my Cavalier',
-    de: E.desc(t0, sel, ctx, opt.sn || 0), mq: E.music(fm, ctx.mood), dn: ctx.N || 0,
+    ko: E.koLine(sel, ctx), de: E.desc(t0, sel, ctx, opt.sn || 0), mq: E.music(fm, ctx.mood), dn: ctx.N || 0,
     ln: E.total(it), src: opt.src || 'rec'
   };
 };
@@ -510,6 +587,15 @@ R.loadFonts = function () {
   });
   return R.fontP;
 };
+/* 구글 폰트는 한글을 글자 묶음(조각)별로 나눠 받는다 → 실제로 쓸 글자를 미리 받아 둔다 */
+R.ensureGlyphs = function (texts) {
+  if (!document.fonts || !document.fonts.load) return Promise.resolve();
+  const jobs = [];
+  (texts || []).forEach(function (t) { t = String(t || '').trim(); if (!t) return; jobs.push(document.fonts.load(R.fontOf(t, 60), t).catch(function () { })); });
+  return Promise.race([Promise.all(jobs), new Promise(function (r) { setTimeout(r, 5000); })]);
+};
+R.textsOf = function (rcp) { return [rcp.hk, rcp.dl].concat((rcp.it || []).map(function (x) { return x.c; })); };
+R.fontsOK = function () { try { return document.fonts.check('800 40px Poppins') && document.fonts.check('40px Jua', '가') ? 1 : 0; } catch (e) { return 0; } };
 R.fontOf = function (txt, px) {
   return R.HANGUL.test(txt) ? (px + 'px Jua, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif') : ('800 ' + px + 'px Poppins, "Helvetica Neue", Arial, sans-serif');
 };
@@ -546,7 +632,8 @@ R.wrap = function (g, txt, maxW, maxLines) {
 /* 흰 글씨 + 검은 테두리 텍스트를 미리 그려 둔 레이어(캔버스) */
 R.TL = new Map();
 R.textLayer = function (blocks) {   /* 같은 글자·크기는 다시 그리지 않음 (최근 40개) */
-  const key = JSON.stringify(blocks);
+  let ok = 1; try { blocks.forEach(function (b) { if (b.t && !document.fonts.check(R.fontOf(b.t, b.px), b.t)) ok = 0; }); } catch (e) { ok = 0; }
+  const key = JSON.stringify(blocks) + '|' + ok;   /* 글자가 늦게 도착하면 다시 그림 */
   if (R.TL.has(key)) { const v = R.TL.get(key); R.TL.delete(key); R.TL.set(key, v); return v; }
   const v = R.textLayer0(blocks);
   R.TL.set(key, v);
@@ -570,7 +657,7 @@ R.textLayer0 = function (blocks) {   /* blocks: [{t, px, gap}] → {c, h} */
   g.textAlign = 'center'; g.textBaseline = 'alphabetic'; g.lineJoin = 'round'; g.miterLimit = 2;
   rows.forEach(function (r) {
     g.font = R.fontOf(r.t, r.px);
-    g.lineWidth = Math.max(6, r.px * 0.17); g.strokeStyle = '#000';
+    g.lineWidth = R.HANGUL.test(r.t) ? Math.max(5, r.px * 0.12) : Math.max(6, r.px * 0.17); g.strokeStyle = '#000';
     g.shadowColor = 'rgba(0,0,0,.35)'; g.shadowBlur = r.px * 0.12; g.shadowOffsetY = r.px * 0.04;
     g.strokeText(r.t, W / 2, r.y + 6);
     g.shadowColor = 'transparent'; g.fillStyle = '#fff';
@@ -870,6 +957,7 @@ R.make = async function (rcp, o) {
   const cfg = pk.cfg, FPS = pk.fps;
   const wantAudio = rcp.it.some(function (x) { return x.v && (+x.sp || 1) === 1; }) && await R.audioOk();
   await R.loadFonts();
+  await R.ensureGlyphs(R.textsOf(rcp));
   const tl = R.timeline(rcp.it), total = tl.length ? tl[tl.length - 1].e : 0;
   const srcs = [];
   let encV = null;
@@ -958,6 +1046,7 @@ R.Player.prototype.set = async function (rcp) {
   this.tl = R.timeline(this.rcp.it);
   this.t = Math.min(this.t, this.total());
   await R.loadFonts();
+  await R.ensureGlyphs(R.textsOf(this.rcp));
   if (gen !== this.gen) return;
   this.lay = R.layers(this.rcp);
   const self = this, need = {};
@@ -1075,6 +1164,7 @@ body.sx-open{overflow:hidden;}
 .sx-btn.soft{background:var(--tint-fill); color:var(--tint-ink);}
 .sx-btn.gray{background:var(--fill2); color:var(--label);}
 .sx-btn.sm{display:inline-block; width:auto; padding:9px 18px; font-size:15px; border-radius:999px;}
+.sx-edit .sx-foot, .sx-fin .sx-foot{position:static; background:none;}
 .sx-foot{position:sticky; bottom:0; padding:12px 16px calc(12px + env(safe-area-inset-bottom)); background:linear-gradient(transparent, var(--bg) 30%); max-width:640px; margin:0 auto; z-index:4;}
 .sx-chip{display:inline-flex; align-items:center; gap:4px; border:1px solid var(--sep); background:var(--card); color:var(--label); border-radius:999px; padding:7px 14px; font-family:inherit; font-size:15px; cursor:pointer; white-space:nowrap;}
 .sx-chip.on{background:var(--tint-btn,var(--tint)); border-color:transparent; color:#fff;}
@@ -1132,7 +1222,7 @@ body.sx-open{overflow:hidden;}
 .sx-step button{width:34px; height:30px; border:none; background:var(--fill2); color:var(--label); font-size:18px; border-radius:8px; cursor:pointer; font-family:inherit;}
 .sx-step b{min-width:52px; text-align:center; font-weight:600; font-size:15.5px;}
 /* 편집 */
-.sx-pv{position:relative; width:min(54vw, 236px); aspect-ratio:9/16; margin:4px auto 0; border-radius:22px; overflow:hidden; background:#111; cursor:pointer; box-shadow:0 8px 28px rgba(0,0,0,.18);}
+.sx-pv{position:relative; width:min(46vw, 212px); aspect-ratio:9/16; margin:4px auto 0; border-radius:22px; overflow:hidden; background:#111; cursor:pointer; box-shadow:0 8px 28px rgba(0,0,0,.18);}
 .sx-pv canvas{width:100%; height:100%; display:block;}
 .sx-pv .pl{position:absolute; left:50%; top:50%; width:64px; height:64px; margin:-32px 0 0 -32px; border-radius:50%; background:rgba(255,255,255,.88); display:flex; align-items:center; justify-content:center; transition:opacity .2s; pointer-events:none;}
 .sx-pv .pl svg{width:26px; height:26px; fill:#111; margin-left:4px;}
@@ -1230,6 +1320,27 @@ body.sx-open{overflow:hidden;}
 .sx-vstrip{position:relative; height:46px; border-radius:10px; background:var(--fill2); margin:8px 0 2px; overflow:hidden;}
 .sx-vstrip .sg{position:absolute; top:0; bottom:0; background:var(--tint-fill); border:2px solid var(--tint); border-radius:8px;}
 .sx-kv{display:flex; justify-content:space-between; font-size:14px; color:var(--label2); margin:4px 2px;}
+/* V6.5.1 — 뜻 · 추천 칩 · 영상 자막 카드 */
+.sx-mean{font-size:13.5px; color:var(--label2); margin-top:3px; line-height:1.4; font-weight:400;}
+.sx-pap{color:var(--tint); text-decoration:none;}
+.sx-opt .tx{display:flex; flex-direction:column; min-width:0;}
+.sx-sugs{margin-top:4px;}
+.sx-sg{margin-top:10px;}
+.sx-sg .t{display:block; font-size:12.5px; color:var(--label2); margin:0 2px 6px;}
+.sx-chip.sm{font-size:14px; padding:6px 12px;}
+.sx-chip .k{color:var(--label2); font-size:12px; margin-left:6px; font-weight:400;}
+.sx-chip.soft .k{color:var(--tint-ink); opacity:.7;}
+.sx-capc{background:var(--card); border-radius:16px; padding:11px 14px 12px; margin:12px 0 0; cursor:pointer;}
+.sx-capc .hd{display:flex; justify-content:space-between; font-size:12.5px; color:var(--label2); margin-bottom:3px;}
+.sx-capc .ed{color:var(--tint); font-size:14px;}
+.sx-capc .en{font-weight:700; font-size:15.5px; line-height:1.3;}
+.sx-capc .en2{font-weight:600; font-size:14px; margin-top:5px;}
+.sx-scap{padding:6px 0; border-bottom:.5px solid var(--sep);}
+.sx-scap:last-of-type{border-bottom:none;}
+.sx-scap .r1{display:flex; gap:10px; align-items:flex-start;}
+.sx-scap .th{flex:0 0 40px; height:56px; border-radius:8px; overflow:hidden; background:var(--fill2);}
+.sx-scap .in{flex:1; min-width:0;}
+.sx-scap .sg{padding-left:50px;}
 `;
 
 /* ---------- 데이터: /handbook/{가족코드}-shorts/ (cfg · r · fp) ---------- */
@@ -1335,10 +1446,33 @@ function copyFallback(t) {
   try { const ta = document.createElement('textarea'); ta.value = t; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:-100px;opacity:0;'; document.body.appendChild(ta); ta.select(); const ok = document.execCommand('copy'); ta.remove(); return ok; } catch (e) { return false; }
 }
 function toast(m) { try { uiToast(m); } catch (e) { } }
+/* 영어 문구의 한글 뜻 — 내장 문구는 뜻, 직접 쓴 문장은 파파고 링크. 한글 문구는 표시 안 함 */
+function meanHTML(text, ctx) {
+  const t = String(text || '').trim(); if (!t || R.HANGUL.test(t)) return '';
+  const m = E.meaning(t, ctx || {});
+  if (m) return '<div class="sx-mean">뜻 · ' + esc(m) + '</div>';
+  return '<div class="sx-mean"><a class="sx-pap" href="' + esc(E.papago(t)) + '" target="_blank" rel="noopener">파파고에서 뜻 보기</a></div>';
+}
+/* 장면 자막 추천 — 추천 문구 · 추천 문장 · 사진 메모 · 영문(뜻) · 자막 없음 */
+function sugHTML(sg) {
+  function chips(list, en) { return list.map(function (x) { const t = en ? x[0] : x, k = en ? x[1] : ''; return '<button type="button" class="sx-chip sm" data-sug="' + esc(t) + '">' + esc(t) + (k ? '<span class="k">' + esc(k) + '</span>' : '') + '</button>'; }).join(''); }
+  return '<div class="sx-sugs">' +
+    (sg.p.length ? '<div class="sx-sg"><span class="t">추천 문구</span><div class="sx-chips">' + chips(sg.p) + '</div></div>' : '') +
+    (sg.s.length ? '<div class="sx-sg"><span class="t">추천 문장</span><div class="sx-chips">' + chips(sg.s) + '</div></div>' : '') +
+    (sg.memo ? '<div class="sx-sg"><span class="t">사진 메모</span><div class="sx-chips">' + chips([sg.memo]) + '</div></div>' : '') +
+    (sg.en.length ? '<div class="sx-sg"><span class="t">영문</span><div class="sx-chips">' + chips(sg.en, true) + '</div></div>' : '') +
+    '<div class="sx-sg"><div class="sx-chips"><button type="button" class="sx-chip sm" data-sug="">자막 없음</button></div></div></div>';
+}
 function selOf(ids) { return ids.map(function (id) { return { id: id, m: (ALB.meta || {})[id], sc: E.score((ALB.meta || {})[id] || {}, today()) }; }).filter(function (x) { return x.m; }); }
 
-/* ---------- 화면 쌓기 + 뒤로가기 ---------- */
-const U = { stack: [], closing: 0 };
+/* ---------- 화면 쌓기 + 뒤로가기 (V6.5.1) ----------
+   기록(history) 한 칸 = 화면 한 장 또는 시트 한 장. 각 칸에 깊이(sx: 화면 수, sh: 시트 수)를 적어 두고,
+   폰 뒤로가기가 오면 그 깊이에 맞춰 '시트 → 화면' 순서로 닫는다 — 브라우저가 칸을 건너뛰어도 화면이 어긋나지 않게.
+   앱 안 버튼(뒤로·닫기)은 화면을 먼저 닫고 기록을 한 칸 되돌린다(그때 오는 popstate는 무시). */
+const U = { stack: [], sheets: [], closing: 0 };
+function hstate() { return { tab: 'album', sx: U.stack.length, sh: U.sheets.length, d: ((history.state && history.state.d) || 0) + 1 }; }
+function hpush() { try { history.pushState(hstate(), '', location.hash || '#album'); return true; } catch (e) { return false; } }
+function hback(n) { U.closing++; try { if ((n || 1) === 1) history.back(); else history.go(-n); } catch (e) { U.closing--; } }
 function root() {
   let r = document.getElementById('sxRoot');
   if (!r) {
@@ -1353,15 +1487,16 @@ function navBar(o) {
     (o.title ? '<div class="sx-ttl">' + esc(o.title) + '</div>' : '') +
     (o.right || '<span></span>') + '</div>';
 }
+function bindBack(scr) { scr.el.addEventListener('click', function (e) { const b = e.target.closest('[data-act="back"]'); if (b && scr.el.contains(b)) { e.preventDefault(); back(); } }); }
 function push(scr) {
   const r = root();
   const prev = U.stack[U.stack.length - 1];
   U.stack.push(scr);
   r.appendChild(scr.el);
   document.body.classList.add('sx-open');
-  scr.el.addEventListener('click', function (e) { const b = e.target.closest('[data-act="back"]'); if (b && scr.el.contains(b)) { e.preventDefault(); back(); } });
+  bindBack(scr);
   requestAnimationFrame(function () { requestAnimationFrame(function () { scr.el.classList.add('on'); if (prev) prev.el.classList.add('under'); }); });
-  try { history.pushState({ tab: 'album', sx: U.stack.length, d: ((history.state && history.state.d) || 0) + 1 }, '', location.hash || '#album'); } catch (e) { }
+  scr.h = hpush();
   return scr;
 }
 function dropTop(anim) {
@@ -1373,29 +1508,55 @@ function dropTop(anim) {
   else { s.el.classList.remove('on'); setTimeout(function () { s.el.remove(); }, 380); }
   if (!U.stack.length) document.body.classList.remove('sx-open');
 }
-function back() { if (!U.stack.length) return; try { history.back(); } catch (e) { dropTop(); } }
+/* 앱 안 '뒤로' 버튼 */
+function back() {
+  if (U.sheets.length) { U.sheets[U.sheets.length - 1].close(); return; }
+  if (!U.stack.length) return;
+  const top = U.stack[U.stack.length - 1];
+  if (top.onBack && top.onBack() === false) return;
+  const st = history.state || {};
+  const mine = top.h && st.sx === U.stack.length && !(st.sh > 0);
+  dropTop();
+  if (mine) hback(1);
+}
 /* 화면 여러 장을 한 번에 닫기(예: 올렸어요 → 쇼츠 홈) */
 function popTo(n) {
-  const k = U.stack.length - n; if (k <= 0) return;
-  for (let i = 0; i < k; i++) dropTop(i === k - 1);
-  U.closing++;
-  try { history.go(-k); } catch (e) { U.closing--; }
+  let hk = 0;
+  U.sheets.slice().reverse().forEach(function (sh) { if (sh.h) hk++; sh.close(true); });
+  const k = U.stack.length - n;
+  for (let i = 0; i < k; i++) { const s = U.stack[U.stack.length - 1]; if (s.h) hk++; dropTop(i === k - 1); }
+  if (hk) hback(hk);
 }
-function onPop() {
+function restoreEntry() { hpush(); }
+/* 폰 뒤로가기 (index.html의 popstate가 먼저 여기로 보낸다) */
+function onPop(e) {
   if (U.closing > 0) { U.closing--; return true; }
-  if (!U.stack.length) return false;
-  const top = U.stack[U.stack.length - 1];
-  if (top.onBack && top.onBack() === false) {   /* 만드는 중: 뒤로가기 막고 확인 */
-    try { history.pushState({ tab: 'album', sx: U.stack.length, d: ((history.state && history.state.d) || 0) + 1 }, '', location.hash || '#album'); } catch (e) { }
-    return true;
+  if (!U.stack.length && !U.sheets.length) return false;
+  const st = (e && e.state) || {};
+  const tS = typeof st.sh === 'number' ? st.sh : 0;
+  const tD = typeof st.sx === 'number' ? st.sx : 0;
+  /* 앱 확인창(시트)이 쇼츠 위에 떠 있으면 그것만 닫는다 */
+  const us = document.getElementById('uiSheet');
+  if (us && us.classList.contains('on')) { try { uiSheetClose({ ok: false }); } catch (er) { } restoreEntry(); return true; }
+  let did = false;
+  if (U.sheets.length > tS) {
+    const noHist = U.sheets.length && !U.sheets[U.sheets.length - 1].h;
+    while (U.sheets.length > tS) U.sheets[U.sheets.length - 1].close(true);
+    did = true;
+    if (noHist && tD >= U.stack.length) { restoreEntry(); return true; }   /* 기록 없이 뜬 시트: 닫기만 하고 칸 되살림 */
   }
-  dropTop();
-  return true;
+  if (U.stack.length > tD) {
+    const top = U.stack[U.stack.length - 1];
+    if (top.onBack && top.onBack() === false) { restoreEntry(); return true; }   /* 만드는 중: 확인 먼저 */
+    while (U.stack.length > tD) dropTop(U.stack.length - 1 === tD);
+    did = true;
+  }
+  return did || true;
 }
-function closeAll() { if (U.stack.length) popTo(0); }
+function closeAll() { popTo(0); }
 function scrEl(cls) { return h('<div class="sx-scr ' + (cls || '') + '" role="dialog" aria-modal="true"></div>'); }
 
-/* ---------- 시트 ---------- */
+/* ---------- 시트 — 열 때 기록 한 칸(폰 뒤로가기 = 시트 닫기) ---------- */
 function sheet(inner, o) {
   o = o || {};
   const ov = h('<div class="sx-ovl" role="dialog" aria-modal="true"><div class="sx-sheet"><div class="grab"></div></div></div>');
@@ -1404,9 +1565,18 @@ function sheet(inner, o) {
   document.body.appendChild(ov);
   requestAnimationFrame(function () { requestAnimationFrame(function () { ov.classList.add('on'); }); });
   const api = {
-    el: sh, ov: ov, closed: false,
-    close: function () { if (api.closed) return; api.closed = true; ov.classList.remove('on'); setTimeout(function () { ov.remove(); }, 320); if (o.onClose) o.onClose(); }
+    el: sh, ov: ov, closed: false, h: false,
+    close: function (fromPop) {
+      if (api.closed) return; api.closed = true;
+      const i = U.sheets.indexOf(api);
+      if (i > -1) U.sheets.splice(i, 1);
+      ov.classList.remove('on'); setTimeout(function () { ov.remove(); }, 320);
+      if (fromPop !== true && api.h && history.state && history.state.sh === i + 1) hback(1);
+      if (o.onClose) o.onClose();
+    }
   };
+  U.sheets.push(api);
+  if (!o.noHist) api.h = hpush();
   ov.addEventListener('click', function (e) { if (e.target === ov && !o.modal) api.close(); });
   return api;
 }
@@ -1492,7 +1662,7 @@ function paintRecs(pane, scr) {
       const nNew = g.sel.filter(function (x) { return E.isNew(x.m, today()); }).length;
       return '<div class="sx-rec" data-rec="' + i + '"><div class="cv"><img class="sx-ph" data-th="' + esc(d.it[0].id) + '" alt=""><span class="len">' + Math.round(E.total(d.it)) + '초</span></div>' +
         '<div class="bd"><div class="tg"><span class="sx-badge">' + g.fm + '</span><span>' + esc(fmtTags(g)) + '</span></div>' +
-        '<div class="tt">' + esc(d.ti) + '</div><div class="in">' + (nV ? '영상 ' + nV + ' · ' : '') + '사진 ' + nP + '장 · ' + Math.round(E.total(d.it)) + '초</div>' +
+        '<div class="tt">' + esc(d.ti) + '</div>' + meanHTML(d.ti, E.ctxOf(g.sel, g.fm, (S.profile || {}).home, D.rec)) + '<div class="in">' + (nV ? '영상 ' + nV + ' · ' : '') + '사진 ' + nP + '장 · ' + Math.round(E.total(d.it)) + '초</div>' +
         (nNew ? '<div class="sx-new">새 사진 ' + nNew + '장 포함</div>' : '') +
         '<button type="button" class="sx-btn sm soft go" data-rec="' + i + '">만들기</button></div></div>';
     }).join('');
@@ -1528,15 +1698,17 @@ function paintLog(pane) {
 function logSheet(rid, after) {
   const r = D.rec[rid]; if (!r) return;
   const ids = (r.it || []).map(function (x) { return x.id; });
-  const sh = sheet('<h3>' + esc(r.ti || '') + '</h3><div class="sx-sub">' + mdK(E.dkey(new Date(r.up || r.at || Date.now()))) + ' · 빼꼼 #' + esc(r.sn || '?') + ' · ' + esc(r.fm) + ' · ' + fmtSec(E.total(r.it || [])) + '</div>' +
+  const lctx = E.ctxOf(selOf(ids), r.fm, (S.profile || {}).home, D.rec);
+  const sh = sheet('<h3>' + esc(r.ti || '') + '</h3>' + meanHTML(r.ti, lctx) + '<div class="sx-sub">' + mdK(E.dkey(new Date(r.up || r.at || Date.now()))) + ' · 빼꼼 #' + esc(r.sn || '?') + ' · ' + esc(r.fm) + ' · ' + fmtSec(E.total(r.it || [])) + '</div>' +
     '<div class="lbl">사용한 사진 ' + ids.length + '장</div><div class="sx-hs">' + ids.map(function (id) { return '<div style="flex:0 0 54px;height:76px;border-radius:9px;overflow:hidden;background:var(--fill2);"><img class="sx-ph" data-th="' + esc(id) + '" alt=""></div>'; }).join('') + '</div>' +
-    '<div class="lbl">음악 검색어</div><div class="sx-chips">' + (r.mq || []).map(function (q) { return '<button type="button" class="sx-chip soft" data-copy="' + esc(q) + '">' + esc(q) + '</button>'; }).join('') + '</div>' +
+    '<div class="lbl">음악 검색어</div><div class="sx-chips">' + mqChips(r.mq, lctx) + '</div>' +
     '<div class="lbl">설명</div><div class="sx-card" style="background:var(--card);"><div class="sx-desc">' + esc(r.de || '') + '</div></div>' +
     '<div class="sx-btns"><button type="button" class="sx-btn gray" data-act="cpt">제목 복사</button><button type="button" class="sx-btn gray" data-act="cpd">설명 복사</button></div>' +
     (r.yu ? '<button type="button" class="sx-btn" style="margin-top:10px;" data-act="open">유튜브에서 열기</button>' : '<button type="button" class="sx-btn" style="margin-top:10px;" data-act="link">유튜브 링크 붙여넣기</button>') +
     '<button type="button" class="sx-btn gray" style="margin-top:10px;" data-act="x">닫기</button>');
   thumbsIn(sh.el);
   sh.el.addEventListener('click', async function (e) {
+    if (e.target.closest('.sx-pap')) return;
     const cp = e.target.closest('[data-copy]'); if (cp) { copyText(cp.dataset.copy); toast('복사했어요: ' + cp.dataset.copy); return; }
     const a = e.target.closest('[data-act]'); if (!a) return;
     if (a.dataset.act === 'x') sh.close();
@@ -1676,7 +1848,7 @@ function tagSheet(ids, o) {
       (sg.why.length ? '<div class="sx-note">' + sg.why.map(function (s) { return s + ' 기록'; }).join('·') + '과 시간이 겹쳐 ' + sg.why.map(function (s) { return '‘' + s + '’'; }).join('·') + '을 미리 골랐어요</div>' : '') +
       '<div class="lbl">분위기</div><div class="sx-chips" data-g="mood">' + E.MOODS.map(function (s) { return '<button type="button" class="sx-chip' + (mood === s ? ' on' : '') + '" data-v="' + s + '">' + s + '</button>'; }).join('') + '</div>' +
       '<div class="sx-btns"><button type="button" class="sx-btn gray" data-act="skip">' + (o.auto ? '건너뛰기' : '취소') + '</button><button type="button" class="sx-btn" data-act="save">저장</button></div>',
-      { onClose: function () { resolve(false); } });
+      { onClose: function () { resolve(false); }, noHist: !!o.auto && !(navigator.userActivation && navigator.userActivation.isActive) });
     thumbsIn(sh.el);
     sh.el.addEventListener('click', async function (e) {
       const c = e.target.closest('.sx-chip');
@@ -1737,12 +1909,11 @@ function applyFormat(rcp, fm) {
     if (x.v && !x.spm) x.sp = (fm === 'ATTACK' && i === 0) ? 0.5 : 1;
   });
   E.fitLength(rcp.it);
-  const tmp = rcp.it.map(function (x) { return { id: x.id }; });
-  E.captions(tmp, sel, fm, ctx, home);
-  rcp.it.forEach(function (x, i) { if (!x.ce) x.c = tmp[i].c; });
+  rcp.it.forEach(function (x) { if (!x.ce) x.c = ''; });   /* 장면 자막은 사람이 고른 것만 */
+  if (!rcp.koe) rcp.ko = E.koLine(sel, ctx);
   if (!rcp.tc) {
     const ts = E.titles(fm, ctx, D.rec); const t0 = ts[0];
-    if (t0) { rcp.ti = t0.t; rcp.tt = t0.key; if (!rcp.hke) rcp.hk = t0.h; if (!rcp.dee) rcp.de = E.desc(t0, sel, ctx, rcp.sn); }
+    if (t0) { rcp.ti = t0.t; rcp.tt = t0.key; if (!rcp.hke) rcp.hk = t0.h; if (!rcp.dee) rcp.de = E.desc(t0, sel, ctx, rcp.sn || nextSn(), rcp.ko); }
   }
   rcp.mq = E.music(fm, ctx.mood);
   rcp.dn = ctx.N || 0;
@@ -1758,9 +1929,10 @@ function openEdit(rcp, o) {
   el.innerHTML = navBar({ back: backLbl, title: '구성 편집' }) +
     '<div class="sx-body">' +
     '<div class="sx-pv"><canvas></canvas><div class="pl">' + ICO.play + '</div><div class="ld">불러오는 중…</div><div class="tm">0:00 / 0:00</div><div class="pb"><i></i></div></div>' +
+    '<div class="sx-capc" data-act="cap"><div class="hd"><span>영상 자막</span><span class="ed">수정</span></div><div class="cc"></div></div>' +
     '<div class="sx-len"><div class="hd"><b class="lt"></b><span>권장 15~20초</span></div><div class="bar"><div class="ok"></div><div class="kn"></div></div><div class="msg"></div></div>' +
     '<div class="sx-hs sx-fmts">' + E.FMTS.map(function (f) { return '<button type="button" class="sx-chip" data-fm="' + f + '">' + f + '</button>'; }).join('') + '</div>' +
-    '<div class="sx-row" style="margin-top:14px;"><span class="sx-h cnt"></span><button type="button" class="sx-lnk" data-act="cap">자막 수정</button></div>' +
+    '<div class="sx-row" style="margin-top:14px;"><span class="sx-h cnt"></span><span class="sx-sub">눌러서 장면 자막·길이</span></div>' +
     '<div class="sx-strip"></div>' +
     '<button type="button" class="sx-add" data-act="add">+ 사진 추가</button>' +
     '<div class="ovw"></div>' +
@@ -1785,6 +1957,13 @@ function openEdit(rcp, o) {
     const kn = $(el, '.sx-len .kn'); kn.style.left = pos(tot) + '%';
     const out = tot < 15 || tot > 20; kn.classList.toggle('out', out);
     $(el, '.sx-len .msg').textContent = out ? '추천 길이는 15~20초예요. 이대로도 만들 수 있어요.' : '';
+  }
+  function paintCap() {
+    const ctx = ctxFor(rcp);
+    $(el, '.sx-capc .cc').innerHTML =
+      '<div class="en">' + esc(rcp.hk || '') + '</div>' + meanHTML(rcp.hk, ctx) +
+      '<div class="en en2">' + esc(rcp.dl || '') + '</div>' + meanHTML(rcp.dl, ctx) +
+      (rcp.it.some(function (x) { return x.c; }) ? '<div class="sx-sub" style="margin-top:6px;">장면 자막 ' + rcp.it.filter(function (x) { return x.c; }).length + '개</div>' : '');
   }
   function paintFmts() {
     $$(el, '[data-fm]').forEach(function (b) { b.classList.toggle('on', b.dataset.fm === rcp.fm); });
@@ -1815,7 +1994,7 @@ function openEdit(rcp, o) {
   function refresh(noPlayer) {
     /* 빠른 줌인은 첫 장(사진)에만 — 순서를 바꿔도 첫 장이 이어받는다(직접 고른 확대 방향은 유지) */
     rcp.it.forEach(function (x, i) { if (i === 0 && !x.v && !x.zm) x.zf = 1; else if (!(i === 0 && x.zf && !x.zm)) delete x.zf; });
-    paintLen(); paintFmts(); paintStrip();
+    paintCap(); paintLen(); paintFmts(); paintStrip();
     if (!noPlayer && scr.player) { scr.player.set(rcp).then(function () { const ld = $(el, '.sx-pv .ld'); if (ld) ld.style.display = 'none'; }); }
   }
   scr.refresh = refresh;
@@ -1823,6 +2002,7 @@ function openEdit(rcp, o) {
   scr.resume = function () { refresh(true); };
   el.addEventListener('click', function (e) {
     if (scr.suppress) { scr.suppress = false; return; }
+    if (e.target.closest('.sx-pap')) return;
     if (e.target.closest('.sx-pv')) { if (scr.player) scr.player.toggle(); onTick(scr.player ? scr.player.t : 0, scr.player ? scr.player.total() : 0); return; }
     const f = e.target.closest('[data-fm]'); if (f) { if (f.dataset.fm !== rcp.fm) { applyFormat(rcp, f.dataset.fm); refresh(); } return; }
     const it = e.target.closest('.sx-it'); if (it) { itemSheet(scr, +it.dataset.i); return; }
@@ -1928,7 +2108,8 @@ function itemSheet(scr, i) {
   const vdur = Math.max(1, +m.dur || 8);
   const ZS = [['in', '확대'], ['out', '축소'], ['l', '왼쪽'], ['r', '오른쪽']];
   const sh = sheet('<h3>' + (i + 1) + '번째 · ' + (x.v ? '영상' : '사진') + '</h3><div class="sx-sub">' + esc(m.d || '') + (m.m ? ' · ' + esc(m.m) : '') + '</div>' +
-    '<div class="lbl">자막</div><input type="text" class="sx-in" data-k="c" maxlength="60" placeholder="없음 — 영문은 Poppins, 한글은 Jua 서체" value="' + esc(x.c || '') + '">' +
+    '<div class="lbl">장면 자막 — 비워 두면 위쪽 영문 2줄만 나와요</div><input type="text" class="sx-in" data-k="c" maxlength="40" placeholder="없음" value="' + esc(x.c || '') + '"><div class="cm"></div>' +
+    sugHTML(E.sceneSug(m, i, rcp.fm, (S.profile || {}).home)) +
     (x.v ?
       '<div class="lbl">쓸 구간 · <b class="vs"></b></div><div class="sx-vstrip"><div class="sg"></div></div>' +
       '<input type="range" class="sx-slider" data-k="ss" min="0" max="' + Math.max(0, vdur - 1).toFixed(1) + '" step="0.1" value="' + (+x.ss || 0) + '">' +
@@ -1974,9 +2155,18 @@ function itemSheet(scr, i) {
     fc.addEventListener('pointermove', function (e) { if (fd) setF(e.clientX); });
     fc.addEventListener('pointerup', function () { fd = false; });
   }
+  const ctx0 = ctxFor(rcp);
+  function paintCm() { const cm = $(sh.el, '.cm'); if (cm) cm.innerHTML = meanHTML(x.c, ctx0); }
+  paintCm();
+  sh.el.addEventListener('click', function (e) {
+    const sg = e.target.closest('[data-sug]'); if (!sg) return;
+    x.c = sg.getAttribute('data-sug'); x.ce = 1;
+    const inp = $(sh.el, '[data-k="c"]'); if (inp) inp.value = x.c;
+    paintCm();
+  });
   sh.el.addEventListener('input', function (e) {
     const k = e.target.dataset.k;
-    if (k === 'c') { x.c = e.target.value; x.ce = 1; }
+    if (k === 'c') { x.c = e.target.value; x.ce = 1; paintCm(); }
     else if (k === 'du') { x.du = Math.round(+e.target.value * 10) / 10; x.dm = 1; paintV(); }
     else if (k === 'ss') { x.ss = Math.round(+e.target.value * 10) / 10; paintV(); }
   });
@@ -1991,22 +2181,48 @@ function itemSheet(scr, i) {
   });
 }
 
-/* 자막 전체 수정 */
+/* 자막 전체 수정 — 위쪽 영문 2줄(뜻 표시) + 장면별 자막(추천 문구·문장에서 고르기) */
 function capSheet(scr) {
-  const rcp = scr.rcp;
-  const sh = sheet('<h3>자막 수정</h3><div class="sx-sub">위쪽 큰 자막과 장면별 자막이에요. 영문은 Poppins, 한글은 Jua 서체로 들어가요.</div>' +
-    '<div class="lbl">맨 위 큰 자막</div><input type="text" class="sx-in" data-k="hk" maxlength="60" value="' + esc(rcp.hk || '') + '">' +
-    '<div class="lbl">둘째 줄</div><input type="text" class="sx-in" data-k="dl" maxlength="60" value="' + esc(rcp.dl || '') + '">' +
-    '<div class="lbl">장면별 자막</div>' + rcp.it.map(function (x, i) { return '<div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;"><div style="flex:0 0 40px;height:56px;border-radius:8px;overflow:hidden;background:var(--fill2);"><img class="sx-ph" data-th="' + esc(x.id) + '" alt=""></div><input type="text" class="sx-in" data-i="' + i + '" maxlength="60" placeholder="' + (i + 1) + '번째 — 없음" value="' + esc(x.c || '') + '"></div>'; }).join('') +
+  const rcp = scr.rcp, ctx = ctxFor(rcp), home = (S.profile || {}).home;
+  const sh = sheet('<h3>영상 자막</h3><div class="sx-sub">위쪽 영문 2줄은 모든 장면에 나와요. 장면 자막은 고른 장면에만 들어가요(영문 Poppins · 한글 Jua).</div>' +
+    '<div class="lbl">맨 위 큰 자막</div><input type="text" class="sx-in" data-k="hk" maxlength="60" value="' + esc(rcp.hk || '') + '"><div class="m-hk"></div>' +
+    '<div class="lbl">둘째 줄</div><input type="text" class="sx-in" data-k="dl" maxlength="60" value="' + esc(rcp.dl || '') + '"><div class="m-dl"></div>' +
+    '<div class="lbl">장면 자막 — 비워 두면 없음</div>' + rcp.it.map(function (x, i) {
+      return '<div class="sx-scap" data-row="' + i + '"><div class="r1"><div class="th"><img class="sx-ph" data-th="' + esc(x.id) + '" alt=""></div>' +
+        '<div class="in"><input type="text" class="sx-in" data-i="' + i + '" maxlength="40" placeholder="' + (i + 1) + '번째 — 없음" value="' + esc(x.c || '') + '"><div class="m-c"></div></div>' +
+        '<button type="button" class="sx-lnk" data-tg="' + i + '">추천</button></div><div class="sg"></div></div>';
+    }).join('') +
     '<div class="sx-btns"><button type="button" class="sx-btn" data-act="ok">완료</button></div>', { onClose: function () { scr.refresh(); } });
   thumbsIn(sh.el);
+  function paintM() {
+    $(sh.el, '.m-hk').innerHTML = meanHTML(rcp.hk, ctx);
+    $(sh.el, '.m-dl').innerHTML = meanHTML(rcp.dl, ctx);
+    $$(sh.el, '.sx-scap').forEach(function (row) { const i = +row.dataset.row; $(row, '.m-c').innerHTML = meanHTML(rcp.it[i].c, ctx); });
+  }
+  paintM();
   sh.el.addEventListener('input', function (e) {
     const t = e.target;
     if (t.dataset.k === 'hk') { rcp.hk = t.value; rcp.hke = 1; }
     else if (t.dataset.k === 'dl') { rcp.dl = t.value; rcp.dle = 1; }
     else if (t.dataset.i !== undefined) { const x = rcp.it[+t.dataset.i]; x.c = t.value; x.ce = 1; }
+    paintM();
   });
-  sh.el.addEventListener('click', function (e) { if (e.target.closest('[data-act="ok"]')) sh.close(); });
+  sh.el.addEventListener('click', function (e) {
+    const tg = e.target.closest('[data-tg]');
+    if (tg) {
+      const i = +tg.dataset.tg, box = $(sh.el, '.sx-scap[data-row="' + i + '"] .sg');
+      if (box.innerHTML) { box.innerHTML = ''; tg.textContent = '추천'; return; }
+      box.innerHTML = sugHTML(E.sceneSug((ALB.meta || {})[rcp.it[i].id] || {}, i, rcp.fm, home)); tg.textContent = '닫기'; return;
+    }
+    const sg = e.target.closest('[data-sug]');
+    if (sg) {
+      const row = sg.closest('.sx-scap'); if (!row) return;
+      const i = +row.dataset.row, x = rcp.it[i];
+      x.c = sg.getAttribute('data-sug'); x.ce = 1;
+      $(row, '[data-i]').value = x.c; paintM(); return;
+    }
+    if (e.target.closest('[data-act="ok"]')) sh.close();
+  });
 }
 
 /* 사진 추가 — 앨범에서 고르기 (쿨다운 사진은 회색) */
@@ -2044,40 +2260,77 @@ function openPick(edit) {
 }
 
 /* ---------- SH-03 마무리 (A) ---------- */
+function setKo(rcp, v) {
+  const old = rcp.ko || '';
+  rcp.ko = v; rcp.koe = 1;
+  if (!rcp.dee) { const ctx = ctxFor(rcp); const t = E.titles(rcp.fm, ctx, D.rec).filter(function (x) { return x.t === rcp.ti; })[0] || { t: rcp.ti, d: '' }; rcp.de = E.desc(t, selOf(idsOf(rcp)), ctx, rcp.sn || nextSn(), v); return; }
+  const lines = String(rcp.de || '').split('\n');
+  const i = old ? lines.indexOf(old) : -1;
+  if (i > -1) { if (v) lines[i] = v; else { lines.splice(i, 1); if (lines[i] === '' && lines[i - 1] === '') lines.splice(i, 1); } }
+  else if (v) lines.splice(Math.min(3, lines.length), 0, v, '');   /* 템플릿 자리: 영문 두 줄 + 빈 줄 다음 */
+  rcp.de = lines.join('\n');
+}
+/* 설명의 영문 두 줄(첫 줄 · 영문 훅) 뜻 */
+function descMean(de, ctx) {
+  const ls = String(de || '').split('\n').slice(0, 2).map(function (x) { return x.trim(); }).filter(function (x) { return x && !R.HANGUL.test(x); });
+  if (!ls.length) return '';
+  return '<div class="sx-mean">영문 줄 뜻 · ' + ls.map(function (x) { const m = E.meaning(x, ctx); return m ? esc(m) : '<a class="sx-pap" href="' + esc(E.papago(x)) + '" target="_blank" rel="noopener">파파고</a>'; }).join(' / ') + '</div>';
+}
+function mqChips(list, ctx) {
+  return (list || []).map(function (q) { const k = E.meaning(q, ctx); return '<button type="button" class="sx-chip soft" data-copy="' + esc(q) + '">' + esc(q) + (k ? '<span class="k">' + esc(k) + '</span>' : '') + '</button>'; }).join('');
+}
+function nextSn() {
+  let sn = +C().nsn || 1;
+  Object.keys(D.rec).forEach(function (rid) { const x = D.rec[rid]; if (x && x.sn && x.sn >= sn) sn = x.sn + 1; });
+  return sn;
+}
 function openFin(edit) {
   const rcp = edit.rcp;
-  const el = scrEl();
-  const scr = { el: el, open: false };
+  if (!rcp.sn) rcp.de = E.descSn(rcp.de, nextSn());   /* 끝줄 번호는 미리 보여 주고, 확정은 '영상 만들기' 때 */
+  const el = scrEl('sx-fin');
+  const scr = { el: el, open: false, koOpen: false };
   function paint() {
     const ctx = ctxFor(rcp);
     const ts = E.titles(rcp.fm, ctx, D.rec);
     const custom = !ts.some(function (t) { return t.t === rcp.ti; });
+    const kl = E.koLines(selOf(idsOf(rcp)), ctx);
     el.innerHTML = navBar({ back: '편집', title: '마무리' }) + '<div class="sx-body">' +
       '<div class="sx-seg"><button type="button" class="on">직접 올리기</button><button type="button" data-act="auto">자동 올리기</button></div>' +
       '<div class="sx-row" style="margin-bottom:6px;"><span class="sx-sub" style="font-size:14px;">제목</span><button type="button" class="sx-lnk" data-act="own">직접 쓰기</button></div>' +
-      '<div class="sx-card" style="padding:0;">' + ts.map(function (t, i) { return '<div class="sx-opt' + (rcp.ti === t.t ? ' on' : '') + '" data-t="' + i + '"><span class="sx-rad"></span><span>' + esc(t.t) + '</span></div>'; }).join('') +
-      (custom ? '<div class="sx-opt on"><span class="sx-rad"></span><span>' + esc(rcp.ti) + '</span></div>' : '') + '</div>' +
-      '<p class="sx-sub" style="margin:-4px 6px 12px;">영상 맨 위 자막: ' + esc(rcp.hk || '') + '</p>' +
+      '<div class="sx-card" style="padding:0;">' + ts.map(function (t, i) { return '<div class="sx-opt' + (rcp.ti === t.t ? ' on' : '') + '" data-t="' + i + '"><span class="sx-rad"></span><span class="tx">' + esc(t.t) + '<span class="sx-mean">뜻 · ' + esc(t.kt) + '</span></span></div>'; }).join('') +
+      (custom ? '<div class="sx-opt on"><span class="sx-rad"></span><span class="tx">' + esc(rcp.ti) + meanHTML(rcp.ti, ctx) + '</span></div>' : '') + '</div>' +
+      '<div class="sx-card" style="padding:12px 14px;"><div class="sx-sub" style="font-size:13px;">영상 맨 위 자막</div><div style="font-weight:700;margin-top:2px;">' + esc(rcp.hk || '') + '</div>' + meanHTML(rcp.hk, ctx) +
+      '<div style="font-weight:600;margin-top:6px;font-size:14.5px;">' + esc(rcp.dl || '') + '</div>' + meanHTML(rcp.dl, ctx) + '</div>' +
+      '<div class="sx-row" style="margin-bottom:6px;"><span class="sx-sub" style="font-size:14px;">설명의 한글 한 줄</span><button type="button" class="sx-lnk" data-act="kotg">' + (scr.koOpen ? '닫기' : '바꾸기') + '</button></div>' +
+      '<div class="sx-card" style="padding:12px 14px;"><div style="font-size:15.5px;">' + (rcp.ko ? esc(rcp.ko) : '<span class="sx-sub">없음</span>') + '</div>' +
+      (scr.koOpen ? '<div class="sx-sg"><span class="t">추천 문구</span><div class="sx-chips">' + kl.p.map(function (x) { return '<button type="button" class="sx-chip sm" data-ko="' + esc(x) + '">' + esc(x) + '</button>'; }).join('') + '</div></div>' +
+        '<div class="sx-sg"><span class="t">추천 문장</span><div class="sx-chips">' + kl.s.map(function (x) { return '<button type="button" class="sx-chip sm" data-ko="' + esc(x) + '">' + esc(x) + '</button>'; }).join('') + '</div></div>' +
+        (kl.memo.length ? '<div class="sx-sg"><span class="t">사진 메모</span><div class="sx-chips">' + kl.memo.map(function (x) { return '<button type="button" class="sx-chip sm" data-ko="' + esc(x) + '">' + esc(x) + '</button>'; }).join('') + '</div></div>' : '') +
+        '<div class="sx-sg"><div class="sx-chips"><button type="button" class="sx-chip sm" data-act="kown">직접 쓰기</button><button type="button" class="sx-chip sm" data-ko="">없음</button></div></div>' : '') + '</div>' +
       '<div class="sx-row" style="margin-bottom:6px;"><span class="sx-sub" style="font-size:14px;">설명</span></div>' +
       '<div class="sx-card">' + (scr.open ? '<textarea class="sx-ta" rows="7" data-k="de">' + esc(rcp.de || '') + '</textarea>' : '<div class="sx-desc fold">' + esc(rcp.de || '') + '</div>') +
+      descMean(rcp.de, ctx) +
       '<div style="text-align:right;"><button type="button" class="sx-lnk" data-act="fold">' + (scr.open ? '접기' : '펼치기') + '</button></div></div>' +
       '<div class="sx-row" style="margin-bottom:6px;"><span class="sx-sub" style="font-size:14px;">음악</span></div>' +
-      '<div class="sx-card" style="padding:14px 16px;"><div style="font-size:17px;font-weight:700;">유튜브 앱에서 고를 곡</div><div class="sx-sub" style="margin:2px 0 10px;">누르면 검색어가 복사돼요</div><div class="sx-chips">' +
-      (rcp.mq || []).map(function (q) { return '<button type="button" class="sx-chip soft" data-copy="' + esc(q) + '">' + esc(q) + '</button>'; }).join('') + '</div></div>' +
+      '<div class="sx-card" style="padding:14px 16px;"><div style="font-size:17px;font-weight:700;">유튜브 앱에서 고를 곡</div><div class="sx-sub" style="margin:2px 0 10px;">누르면 검색어가 복사돼요</div><div class="sx-chips">' + mqChips(rcp.mq, ctx) + '</div></div>' +
       '<p class="sx-sub" style="margin:4px 6px 0;">음악은 유튜브 앱의 사운드에서 넣어요. 인기곡도 쓸 수 있어요.</p>' +
       '</div><div class="sx-foot"><button type="button" class="sx-btn" data-act="make">영상 만들기</button></div>';
   }
   el.addEventListener('input', function (e) { if (e.target.dataset.k === 'de') { rcp.de = e.target.value; rcp.dee = 1; } });
   el.addEventListener('click', async function (e) {
+    if (e.target.closest('.sx-pap')) return;
     const cp = e.target.closest('[data-copy]'); if (cp) { copyText(cp.dataset.copy); toast('복사했어요: ' + cp.dataset.copy); return; }
+    const ko = e.target.closest('[data-ko]'); if (ko) { setKo(rcp, ko.getAttribute('data-ko')); paint(); return; }
     const o = e.target.closest('[data-t]');
     if (o) {
       const ctx = ctxFor(rcp); const t = E.titles(rcp.fm, ctx, D.rec)[+o.dataset.t];
-      if (t) { rcp.ti = t.t; rcp.tt = t.key; rcp.tc = 0; if (!rcp.hke) rcp.hk = t.h; if (!rcp.dee) rcp.de = E.desc(t, selOf(idsOf(rcp)), ctx, rcp.sn); }
+      if (t) { rcp.ti = t.t; rcp.tt = t.key; rcp.tc = 0; if (!rcp.hke) rcp.hk = t.h; if (!rcp.dee) rcp.de = E.desc(t, selOf(idsOf(rcp)), ctx, rcp.sn || nextSn(), rcp.ko); }
       paint(); return;
     }
     const a = e.target.closest('[data-act]'); if (!a) return;
     if (a.dataset.act === 'auto') { uiAlert('자동 올리기는 첫 설정이 필요해요.\n다음 업데이트(V6.6)에서 열려요. 지금은 직접 올리기로 만들어요.'); return; }
+    if (a.dataset.act === 'kotg') { scr.koOpen = !scr.koOpen; paint(); return; }
+    if (a.dataset.act === 'kown') { const v = await uiPrompt('설명의 한글 한 줄', rcp.ko || ''); if (v !== null) { setKo(rcp, v.trim()); paint(); } return; }
     if (a.dataset.act === 'own') {
       const v = await uiPrompt('제목 (영문 권장)', rcp.ti || '');
       if (v === null || !v.trim()) return;
@@ -2152,10 +2405,11 @@ function openMake(rcp, edit) {
 function replaceTop(scr) {
   const old = U.stack.pop();
   if (old) { try { if (old.destroy) old.destroy(); } catch (e) { } old.el.remove(); }
+  scr.h = old ? old.h : false;
   U.stack.push(scr);
   root().appendChild(scr.el);
   scr.el.classList.add('noanim', 'on');
-  scr.el.addEventListener('click', function (e) { const b = e.target.closest('[data-act="back"]'); if (b && scr.el.contains(b)) { e.preventDefault(); back(); } });
+  bindBack(scr);
   setTimeout(function () { scr.el.classList.remove('noanim'); }, 50);
 }
 
@@ -2166,10 +2420,10 @@ function upScreen(rcp, out) {
   const url = URL.createObjectURL(out.blob);
   el.innerHTML = navBar({ title: '직접 올리기', right: '<button type="button" class="sx-nbtn mute" data-act="later">나중에</button>' }) +
     '<div class="sx-body"><div class="sx-done"><div class="th"><video src="' + url + '" muted playsinline loop autoplay></video></div><div><div style="font-size:21px;font-weight:800;">영상이 준비됐어요</div>' +
-    '<div class="sx-sub" style="font-size:15px;margin-top:3px;">' + esc(rcp.ti) + '</div><div class="sx-sub" style="margin-top:3px;">' + Math.round(out.dur) + '초 · ' + (out.hasAudio ? '영상 원본 소리 포함 · 음악은 유튜브 앱에서' : '음악 없음 (유튜브 앱에서 추가)') + ' · ' + (out.blob.size / 1048576).toFixed(1) + 'MB' + (out.fps && out.fps !== 60 ? ' · ' + out.fps + 'fps(이 폰 한계)' : '') + '</div></div></div>' +
+    '<div class="sx-sub" style="font-size:15px;margin-top:3px;">' + esc(rcp.ti) + '</div>' + meanHTML(rcp.ti, ctxFor(rcp)) + '<div class="sx-sub" style="margin-top:3px;">' + Math.round(out.dur) + '초 · ' + (out.hasAudio ? '영상 원본 소리 포함 · 음악은 유튜브 앱에서' : '음악 없음 (유튜브 앱에서 추가)') + ' · ' + (out.blob.size / 1048576).toFixed(1) + 'MB' + (out.fps && out.fps !== 60 ? ' · ' + out.fps + 'fps(이 폰 한계)' : '') + '</div></div></div>' +
     '<div class="sx-card" style="padding:4px 16px;">' +
     '<div class="sx-st"><span class="n">1</span><div class="b"><div class="h">유튜브로 보내기</div><div class="sx-sub">누르면 제목이 자동으로 복사돼요</div><button type="button" class="sx-btn" style="margin-top:10px;" data-act="share">유튜브로 보내기</button></div></div>' +
-    '<div class="sx-st"><span class="n">2</span><div class="b"><div class="h">유튜브에서 ‘사운드’를 눌러 검색</div><div class="sx-chips" style="margin-top:9px;">' + (rcp.mq || []).map(function (q) { return '<button type="button" class="sx-chip soft" data-copy="' + esc(q) + '">' + esc(q) + '</button>'; }).join('') + '</div><div class="sx-sub" style="margin-top:7px;">누르면 검색어가 복사돼요</div></div></div>' +
+    '<div class="sx-st"><span class="n">2</span><div class="b"><div class="h">유튜브에서 ‘사운드’를 눌러 검색</div><div class="sx-chips" style="margin-top:9px;">' + mqChips(rcp.mq, ctxFor(rcp)) + '</div><div class="sx-sub" style="margin-top:7px;">누르면 검색어가 복사돼요</div></div></div>' +
     '<div class="sx-st"><span class="n">3</span><div class="b"><div class="h">‘다음’ → 제목 붙여넣기 → 업로드</div><div class="sx-chips" style="margin-top:9px;"><button type="button" class="sx-chip soft" data-act="cpt">제목 다시 복사</button><button type="button" class="sx-chip soft" data-act="cpd">설명 복사</button></div></div></div>' +
     '</div><div style="text-align:center;"><button type="button" class="sx-lnk" data-act="save">유튜브가 안 보이면 사진에 저장</button></div></div>' +
     '<div class="sx-foot"><button type="button" class="sx-btn soft" data-act="done">올렸어요</button></div>';
@@ -2182,6 +2436,7 @@ function upScreen(rcp, out) {
     toast('사진 앱(다운로드)에 저장했어요. 유튜브 앱에서 이 영상을 골라 주세요.');
   }
   el.addEventListener('click', async function (e) {
+    if (e.target.closest('.sx-pap')) return;
     const cp = e.target.closest('[data-copy]'); if (cp) { copyText(cp.dataset.copy); toast('복사했어요: ' + cp.dataset.copy); return; }
     const a = e.target.closest('[data-act]'); if (!a) return;
     const act = a.dataset.act;

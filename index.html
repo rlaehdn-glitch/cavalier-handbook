@@ -2865,7 +2865,7 @@ body.alb-sel #bnav{display:none;}
       <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
       <li>의료 정보는 일반 정보입니다. 개별 판단은 수의사 진료가 우선입니다.</li>
     </ul>
-    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.5.0 · 2026-10-28</p>
+    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.5.1 · 2026-10-28</p>
   </div>
 </section>
 
@@ -4262,6 +4262,8 @@ class VideoRTC extends HTMLElement {
 if(window.customElements && !customElements.get('video-stream')){ customElements.define('video-stream', VideoRTC); }
 </script>
 <script>
+/* V6.5.1 (2026-10-28): 쇼츠 — 영상에 한글 자막을 자동으로 넣지 않음(위쪽 영문 2줄: 제목 훅 · day N만), 한글은 장면마다 추천 문구·문장에서 골라 붙임,
+   영어 문구마다 한글 뜻(직접 쓴 문장은 파파고 링크), 폰 뒤로가기 = 열린 시트부터 닫고 한 화면씩. 본체 변경은 버전 표기·shorts.js 버전뿐. */
 /* V6.5.0 (2026-10-28): 쇼츠 1단계 — 앨범에 '쇼츠' 타일(새 추천 수), 여러 장 선택 → '쇼츠로', 쇼츠에 쓴 사진 'N회' 표시,
    확대 화면 [쇼츠]·장면 태그(계절·상황·분위기, 태그 수정), 사진 올린 뒤 장면 태그 시트(산책·목욕·유치원·수면 기록과 시간이 겹치면 미리 선택),
    촬영 시각(sd) 자동 저장(사진 EXIF · 영상 mvhd — 압축 전에 읽음). 쇼츠 화면·영상 만들기는 별도 파일 shorts.js(앨범을 열 때 불러옴).
@@ -6276,7 +6278,7 @@ function albClose(fromBack){
 
 /* =============== V6.5: 쇼츠 — 앨범 연결 (SH-00) ===============
    쇼츠 화면·영상 만들기는 shorts.js(별도 파일)에 있고, 앨범을 열 때 한 번 불러온다. 본체에는 입구·표시·촬영 시각만 둔다. */
-const SH_VER='6.5.0';
+const SH_VER='6.5.1';
 let SHL=null;
 function shLoad(){
   if(window.SHORTS) return Promise.resolve(window.SHORTS);
