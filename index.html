@@ -1765,6 +1765,7 @@ body.alb-sel #bnav{display:none;}
     </div>
   </div>
 
+  <div id="sxHome"></div>   <!-- V6.7 이번 주 쇼츠 카드 (shorts.js가 그림) -->
   <div class="sec-h"><h3>최근 사진</h3><button class="lnk" type="button" onclick="goTab('album')">모두 보기<svg class="ico"><use href="#i-chev"/></svg></button></div>
   <div class="strip" id="photoStrip"><p class="muted small" style="margin:0;">동기화를 켜면 최근 사진이 여기에 표시됩니다.</p></div>
 </section>
@@ -2881,7 +2882,7 @@ body.alb-sel #bnav{display:none;}
       <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
       <li>의료 정보는 일반 정보입니다. 개별 판단은 수의사 진료가 우선입니다.</li>
     </ul>
-    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.6.0 · 2026-10-28</p>
+    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.7.0 · 2026-10-29</p>
   </div>
 
   <h3 class="sec">진단 <span class="muted small" id="diagErrN"></span></h3>
@@ -4287,7 +4288,19 @@ class VideoRTC extends HTMLElement {
 
 if(window.customElements && !customElements.get('video-stream')){ customElements.define('video-stream', VideoRTC); }
 </script>
-<script>
+<script>/* V6.7.0 (2026-10-29): 쇼츠 2단계 — 자동 올리기(B). 화면정의서 SH-03 B·SH-05B·SH-06·SH-08 B·SH-09·SH-00-4·12-7.
+   ① 마무리에서 '자동 올리기': 음원 보관함 곡 자동 선택(같은 분위기·최근 5편 제외)·곡 박자에 맞춘 사진 전환·설명에 저작자 표시 줄,
+      공개 시각(다음 자동 시각 / 지금 바로 / 직접 선택), Zapier 연결 상태 띠. 만들기 → 저장소(R2)로 임시 영상(3번 다시 시도, 안 되면 직접 올리기로 전환) → 예약 완료.
+   ② 예약 탭: 예약됨·올리는 중·확인 지연(+2시간)·실패(+24시간). 다시 확인·유튜브 링크 붙여넣기·직접 올리기로 전환(같은 영상)·예약 취소(Zapier가 가져가기 전까지).
+      게시 확인 = 채널 공개 목록에서 설명 끝줄 '빼꼼 #N'(예약 뒤 공개된 영상만) → 기록 탭·앨범 유튜브 카드, 임시 영상 삭제. 공개 시각이 지난 편은 시각을 못 바꿈(두 번 올라감 방지).
+   ③ 공개 주기 자동 조정: 재고(예약 + 추천 가능 편수)로 주 2회~하루 3회, 한도(하루 최대 1~3편 · Zapier 월 100건 · 어제 확인 지연 2편↑ → 한 단계 낮춤).
+      빈도는 하루 한 번(두 폰 공용 cfg.freq), 바뀌면 예약 편 시각을 다시 배정('시각 조정됨'). 직접 정한 시각은 그대로.
+   ④ 음원 보관함: 파일 넣기·빠르기(BPM) 자동 추정·20초 구간(파형)·미리 듣기·분위기·저작자 표시. 설정 B: 연결 주소·피드 주소 복사·하루 최대 편수·공개 주기·이번 달 사용·임시 영상.
+   ⑤ 홈 '이번 주 쇼츠' 카드: 새 후보·다음 자동 공개, [자동으로 올리기] 버튼 하나로 예약(첫 설정 전엔 [만들기] → 직접 올리기).
+   ⑥ 직접 올린 편도 채널 목록에서 링크 자동 연결(48시간). 앱을 열 때·켜 둔 동안 10분마다 점검(정리: 공개 +7일 임시 영상·끊긴 예약·주인 없는 대기열).
+   ⑦ 피드 Worker(새 Cloudflare Worker, 설정값 없음) — 기존 영상 저장소 Worker는 그대로. 저장소가 'shorts/' 이름을 안 받으면 앨범 영상과 같은 'v/' 이름으로 자동 전환(cfg.ks).
+   본체(index.html) 변경: 홈 쇼츠 카드 자리(#sxHome)·10분 점검 연결·버전. 데이터: …-shorts/q·mu·feed 추가, cfg에 fw·maxDay·freq·ks·chId·chT. 자동 테스트 32묶음(새 5: 계산·피드 Worker·B 흐름 2·실제 만들기). */
+
 /* V6.6.0 (2026-10-28): 안정화판 — 보이는 기능은 그대로, 숨은 결함 5건·위험 6건 수정(통신량 R5는 진단 화면에서 측정만) + 구조 정리. 점검 보고서: '빼꼼 핸드북 안정화 점검 보고서'.
    ① 두 폰이 거의 동시에 기록하면 한쪽 기록이 사라지던 문제(D1) — 업로드마다 기기별 번호(_seen)를 남겨, 상대가 내 업로드를 못 보고 덮어쓴 경우 내 기록을 지키고 다시 올림.
    ② 백업 가져오기(D2) — 파일 백업 형식도 인식, 기본 '합치기'(지금 기록 유지), '백업 시점으로 되돌리기'는 확인 후 지금 상태를 파일로 먼저 저장, 5초 되돌리기, '백업 파일에서 가져오기' 버튼.
@@ -4384,7 +4397,7 @@ if(window.customElements && !customElements.get('video-stream')){ customElements
 /* V5.8 (2026-08-21): 접종 실기록 반영(2차 08.07 종합+코로나1차, 3차 08.21 종합+코로나2차, 4차 09.04 예약, 넥스가드 스펙트라 매월 21일, 코로나 보강 2027.08.21),
    04장 미니 인도어 퍼피 체중별 급여표 추가, 급여 계산기 기본 ME 3735 + kcal 누락 NaN 가드. 저장 구조·동기화·달력 로직 변경 없음. */
 /* =============== State =============== */
-const APP_VER='6.6.0', APP_DATE='2026-10-28';   /* V6.6: 앱 버전 — dev/VERSION 한 곳에서 빌드할 때 채움 */
+const APP_VER='6.7.0', APP_DATE='2026-10-29';   /* V6.6: 앱 버전 — dev/VERSION 한 곳에서 빌드할 때 채움 */
 const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, sleepCur:0, sleepLog:{}, feed:{kcal:4000, meals:4, adult:0, adultMode:'auto', bcs:'ok', bcsAt:'', neut:0, treat:0, vetG:0, vetAt:''}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}, media:{url:''}, kgCur:0, kgLog:{}, kgCfg:{name:'도그스테이', pass:0, from:''}, marks:{}};
 let S = JSON.parse(JSON.stringify(DEFAULT_S));
 let storageOK = false, artOK = false, saveTimer = null, lastEditAt = 0;
@@ -5599,7 +5612,7 @@ function bindAlbum(){
    meta[id].p2=1 이면 그 사진의 원본·썸네일이 R2에 있음. 없으면 기존 파이어베이스.
    화면 코드는 albImgSrc() 한 곳만 거치므로 표시·정렬·메모·좋아요는 전부 그대로다.
    상대 폰이 구버전이면 p2 를 모르기 때문에, 두 폰 모두 이 빌드일 때만 전환한다. */
-const PVER=660;   /* V6.6: 빌드 번호 = VERSION에서 자동(6.6.0 → 660). 기기 보고(ver)·상대 폰 구버전 확인용 */
+const PVER=670;   /* V6.6: 빌드 번호 = VERSION에서 자동(6.6.0 → 660). 기기 보고(ver)·상대 폰 구버전 확인용 */
 const PMIG={run:false, stop:false, gate:null};
 const P2SCHEMES=[
   {id:'d', name:'영상과 같은 형식 (v/… .mp4)',  ct:'video/mp4',  f:function(k,id){ return 'v/'+id+(k==='th'?'t':'')+'.mp4'; }},
@@ -6370,16 +6383,29 @@ function shLoad(){
   return SHL;
 }
 function shCall(fn){ shLoad().then(fn, function(){ uiToast('쇼츠 기능을 불러오지 못했어요 — 인터넷 확인 후 다시 시도해 주세요'); }); }
-let SHB_T=null;
+let SHB_T=null, SHT_ON=false;
 function shBadge(){
   clearTimeout(SHB_T);
   SHB_T=setTimeout(function(){
     if(!syncConfigured() || !ALB.meta) return;
-    shLoad().then(function(sx){ return sx.badge(); }).then(function(n){
-      const e=document.getElementById('albSxN'); if(!e) return;
-      e.textContent = n? n+'편' : ''; e.classList.toggle('on', !!n);
-    }).catch(function(){});
+    shLoad().then(function(sx){
+      return Promise.resolve(sx.badge()).then(function(n){
+        const e=document.getElementById('albSxN');
+        if(e){ e.textContent = n? n+'편' : ''; e.classList.toggle('on', !!n); }
+        if(sx.home) safely('쇼츠: 홈 카드', function(){ sx.home(document.getElementById('sxHome')); });   /* V6.7 */
+        shTickStart(sx);
+      });
+    }).catch(function(e){ logErr('쇼츠: 불러오기', e); });
   }, 700);
+}
+/* V6.7 자동 올리기 점검 — 앱을 열 때와 켜 둔 동안 10분마다(정리·시각 배정·게시 확인). 실제 간격 조절은 shorts.js가 한다 */
+function shTickStart(sx){
+  if(SHT_ON || !sx || !sx.tick) return;
+  SHT_ON=true;
+  const go=function(){ if(document.visibilityState==='visible' && syncConfigured()) Promise.resolve(sx.tick()).catch(function(e){ logErr('쇼츠: 자동 올리기 점검', e); }); };
+  go();
+  setInterval(go, 10*60000);
+  document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='visible') setTimeout(go, 1500); });
 }
 function shCool(){ try{ const c=window.SHORTS && window.SHORTS._D && window.SHORTS._D.cfg; if(c && c.cool!=null) return +c.cool; }catch(e){} return 30; }
 function albDayDiff(a, b){ return Math.round((new Date(String(b).slice(0,10)+'T00:00:00')-new Date(String(a).slice(0,10)+'T00:00:00'))/86400000); }
