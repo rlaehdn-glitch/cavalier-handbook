@@ -1,11 +1,11 @@
-/* 빼꼼 핸드북 — 쇼츠 V6.7.0 (2026-10-29)
-   index.html(V6.7.0)이 앨범·홈을 열 때 불러오는 별도 파일. 화면정의서 SH-01~SH-09 — 직접 올리기(A)·자동 올리기(B).
+/* 빼꼼 핸드북 — 쇼츠 V6.8.0 (2026-10-29)
+   index.html(V6.8.0)이 앨범·홈을 열 때 불러오는 별도 파일. 화면정의서 SH-01~SH-09 — 직접 올리기(A)·자동 올리기(B).
    데이터: /handbook/{가족코드}-shorts/ (cfg · r 레시피 · fp 지문 · q 대기열 · mu 음원 · feed) + 앨범 meta 추가 항목(ts·tm·sd·su·sl·ih).
    완성 영상: A는 폰 메모리에서만, B는 게시 확인 때까지 저장소(R2) shorts/tmp/에 임시 보관. 피드 Worker: src/worker/feed-worker.mjs */
 (function () {
 'use strict';
 if (window.SHORTS) return;
-const SXV = '6.7.0';
+const SXV = '6.8.0';
 /*! mp4-muxer 5.2.2 · MIT License · Copyright (c) 2023 Vanilagy · https://github.com/Vanilagy/mp4-muxer */
 const Mp4Muxer = (()=>{var we=Object.defineProperty,at=Object.getOwnPropertyDescriptor,nt=Object.getOwnPropertyNames,ot=Object.prototype.hasOwnProperty,ht=(e,t)=>{for(var r in t)we(e,r,{get:t[r],enumerable:!0})},lt=(e,t,r,s)=>{if(t&&typeof t=="object"||typeof t=="function")for(let a of nt(t))!ot.call(e,a)&&a!==r&&we(e,a,{get:()=>t[a],enumerable:!(s=at(t,a))||s.enumerable});return e},ft=e=>lt(we({},"__esModule",{value:!0}),e),ve=(e,t,r)=>{if(!t.has(e))throw TypeError("Cannot "+r)},i=(e,t,r)=>(ve(e,t,"read from private field"),r?r.call(e):t.get(e)),d=(e,t,r)=>{if(t.has(e))throw TypeError("Cannot add the same private member more than once");t instanceof WeakSet?t.add(e):t.set(e,r)},S=(e,t,r,s)=>(ve(e,t,"write to private field"),s?s.call(e,r):t.set(e,r),r),ut=(e,t,r,s)=>({set _(a){S(e,t,a,r)},get _(){return i(e,t,s)}}),m=(e,t,r)=>(ve(e,t,"access private method"),r),Re={};ht(Re,{ArrayBufferTarget:()=>qe,FileSystemWritableFileStreamTarget:()=>Xe,Muxer:()=>vi,StreamTarget:()=>Te});var p=new Uint8Array(8),A=new DataView(p.buffer),C=e=>[(e%256+256)%256],w=e=>(A.setUint16(0,e,!1),[p[0],p[1]]),dt=e=>(A.setInt16(0,e,!1),[p[0],p[1]]),Pe=e=>(A.setUint32(0,e,!1),[p[1],p[2],p[3]]),o=e=>(A.setUint32(0,e,!1),[p[0],p[1],p[2],p[3]]),mt=e=>(A.setInt32(0,e,!1),[p[0],p[1],p[2],p[3]]),x=e=>(A.setUint32(0,Math.floor(e/2**32),!1),A.setUint32(4,e,!1),[p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7]]),ge=e=>(A.setInt16(0,2**8*e,!1),[p[0],p[1]]),O=e=>(A.setInt32(0,2**16*e,!1),[p[0],p[1],p[2],p[3]]),ye=e=>(A.setInt32(0,2**30*e,!1),[p[0],p[1],p[2],p[3]]),z=(e,t=!1)=>{let r=Array(e.length).fill(null).map((s,a)=>e.charCodeAt(a));return t&&r.push(0),r},re=e=>e&&e[e.length-1],Ce=e=>{let t;for(let r of e)(!t||r.presentationTimestamp>t.presentationTimestamp)&&(t=r);return t},M=(e,t,r=!0)=>{let s=e*t;return r?Math.round(s):s},Le=e=>{let t=e*(Math.PI/180),r=Math.cos(t),s=Math.sin(t);return[r,s,0,-s,r,0,0,0,1]},Ve=Le(0),je=e=>[O(e[0]),O(e[1]),ye(e[2]),O(e[3]),O(e[4]),ye(e[5]),O(e[6]),O(e[7]),ye(e[8])],X=e=>!e||typeof e!="object"?e:Array.isArray(e)?e.map(X):Object.fromEntries(Object.entries(e).map(([t,r])=>[t,X(r)])),V=e=>e>=0&&e<2**32,y=(e,t,r)=>({type:e,contents:t&&new Uint8Array(t.flat(10)),children:r}),v=(e,t,r,s,a)=>y(e,[C(t),Pe(r),s!=null?s:[]],a),pt=e=>{let t=512;return e.fragmented?y("ftyp",[z("iso5"),o(t),z("iso5"),z("iso6"),z("mp41")]):y("ftyp",[z("isom"),o(t),z("isom"),e.holdsAvc?z("avc1"):[],z("mp41")])},Se=e=>({type:"mdat",largeSize:e}),ct=e=>({type:"free",size:e}),se=(e,t,r=!1)=>y("moov",null,[wt(t,e),...e.map(s=>vt(s,t)),r?Gt(e):null]),wt=(e,t)=>{let r=M(Math.max(0,...t.filter(h=>h.samples.length>0).map(h=>{const l=Ce(h.samples);return l.presentationTimestamp+l.duration})),Ae),s=Math.max(...t.map(h=>h.id))+1,a=!V(e)||!V(r),n=a?x:o;return v("mvhd",+a,0,[n(e),n(e),o(Ae),n(r),O(1),ge(1),Array(10).fill(0),je(Ve),Array(24).fill(0),o(s)])},vt=(e,t)=>y("trak",null,[gt(e,t),yt(e,t)]),gt=(e,t)=>{let r=Ce(e.samples),s=M(r?r.presentationTimestamp+r.duration:0,Ae),a=!V(t)||!V(s),n=a?x:o,h;return e.info.type==="video"?h=typeof e.info.rotation=="number"?Le(e.info.rotation):e.info.rotation:h=Ve,v("tkhd",+a,3,[n(t),n(t),o(e.id),o(0),n(s),Array(8).fill(0),w(0),w(0),ge(e.info.type==="audio"?1:0),w(0),je(h),O(e.info.type==="video"?e.info.width:0),O(e.info.type==="video"?e.info.height:0)])},yt=(e,t)=>y("mdia",null,[Ct(e,t),St(e.info.type==="video"?"vide":"soun"),Tt(e)]),Ct=(e,t)=>{let r=Ce(e.samples),s=M(r?r.presentationTimestamp+r.duration:0,e.timescale),a=!V(t)||!V(s),n=a?x:o;return v("mdhd",+a,0,[n(t),n(t),o(e.timescale),n(s),w(21956),w(0)])},St=e=>v("hdlr",0,0,[z("mhlr"),z(e),o(0),o(0),o(0),z("mp4-muxer-hdlr",!0)]),Tt=e=>y("minf",null,[e.info.type==="video"?bt():_t(),kt(),At(e)]),bt=()=>v("vmhd",0,1,[w(0),w(0),w(0),w(0)]),_t=()=>v("smhd",0,0,[w(0),w(0)]),kt=()=>y("dinf",null,[Et()]),Et=()=>v("dref",0,0,[o(1)],[zt()]),zt=()=>v("url ",0,1),At=e=>{const t=e.compositionTimeOffsetTable.length>1||e.compositionTimeOffsetTable.some(r=>r.sampleCompositionTimeOffset!==0);return y("stbl",null,[Ot(e),Vt(e),jt(e),$t(e),Ht(e),qt(e),t?Xt(e):null])},Ot=e=>v("stsd",0,0,[o(1)],[e.info.type==="video"?Mt(si[e.info.codec],e):Rt(ni[e.info.codec],e)]),Mt=(e,t)=>y(e,[Array(6).fill(0),w(1),w(0),w(0),Array(12).fill(0),w(t.info.width),w(t.info.height),o(4718592),o(4718592),o(0),w(1),Array(32).fill(0),w(24),dt(65535)],[ai[t.info.codec](t),t.info.decoderConfig.colorSpace?Ut(t):null]),Bt={bt709:1,bt470bg:5,smpte170m:6},It={bt709:1,smpte170m:6,"iec61966-2-1":13},Dt={rgb:0,bt709:1,bt470bg:5,smpte170m:6},Ut=e=>y("colr",[z("nclx"),w(Bt[e.info.decoderConfig.colorSpace.primaries]),w(It[e.info.decoderConfig.colorSpace.transfer]),w(Dt[e.info.decoderConfig.colorSpace.matrix]),C((e.info.decoderConfig.colorSpace.fullRange?1:0)<<7)]),xt=e=>e.info.decoderConfig&&y("avcC",[...new Uint8Array(e.info.decoderConfig.description)]),Wt=e=>e.info.decoderConfig&&y("hvcC",[...new Uint8Array(e.info.decoderConfig.description)]),Ft=e=>{if(!e.info.decoderConfig)return null;let t=e.info.decoderConfig;if(!t.colorSpace)throw new Error("'colorSpace' is required in the decoder config for VP9.");let r=t.codec.split("."),s=Number(r[1]),a=Number(r[2]),l=(Number(r[3])<<4)+(0<<1)+Number(t.colorSpace.fullRange);return v("vpcC",1,0,[C(s),C(a),C(l),C(2),C(2),C(2),w(0)])},Nt=()=>{let r=(1<<7)+1;return y("av1C",[r,0,0,0])},Rt=(e,t)=>y(e,[Array(6).fill(0),w(1),w(0),w(0),o(0),w(t.info.numberOfChannels),w(16),w(0),w(0),O(t.info.sampleRate)],[oi[t.info.codec](t)]),Pt=e=>{let t=new Uint8Array(e.info.decoderConfig.description);return v("esds",0,0,[o(58753152),C(32+t.byteLength),w(1),C(0),o(75530368),C(18+t.byteLength),C(64),C(21),Pe(0),o(130071),o(130071),o(92307584),C(t.byteLength),...t,o(109084800),C(1),C(2)])},Lt=e=>{var a;let t=3840,r=0;const s=(a=e.info.decoderConfig)==null?void 0:a.description;if(s){if(s.byteLength<18)throw new TypeError("Invalid decoder description provided for Opus; must be at least 18 bytes long.");const n=ArrayBuffer.isView(s)?new DataView(s.buffer,s.byteOffset,s.byteLength):new DataView(s);t=n.getUint16(10,!0),r=n.getInt16(14,!0)}return y("dOps",[C(0),C(e.info.numberOfChannels),w(t),o(e.info.sampleRate),ge(r),C(0)])},Vt=e=>v("stts",0,0,[o(e.timeToSampleTable.length),e.timeToSampleTable.map(t=>[o(t.sampleCount),o(t.sampleDelta)])]),jt=e=>{if(e.samples.every(r=>r.type==="key"))return null;let t=[...e.samples.entries()].filter(([,r])=>r.type==="key");return v("stss",0,0,[o(t.length),t.map(([r])=>o(r+1))])},$t=e=>v("stsc",0,0,[o(e.compactlyCodedChunkTable.length),e.compactlyCodedChunkTable.map(t=>[o(t.firstChunk),o(t.samplesPerChunk),o(1)])]),Ht=e=>v("stsz",0,0,[o(0),o(e.samples.length),e.samples.map(t=>o(t.size))]),qt=e=>e.finalizedChunks.length>0&&re(e.finalizedChunks).offset>=2**32?v("co64",0,0,[o(e.finalizedChunks.length),e.finalizedChunks.map(t=>x(t.offset))]):v("stco",0,0,[o(e.finalizedChunks.length),e.finalizedChunks.map(t=>o(t.offset))]),Xt=e=>v("ctts",0,0,[o(e.compositionTimeOffsetTable.length),e.compositionTimeOffsetTable.map(t=>[o(t.sampleCount),o(t.sampleCompositionTimeOffset)])]),Gt=e=>y("mvex",null,e.map(Zt)),Zt=e=>v("trex",0,0,[o(e.id),o(1),o(0),o(0),o(0)]),$e=(e,t)=>y("moof",null,[Kt(e),...t.map(Qt)]),Kt=e=>v("mfhd",0,0,[o(e)]),He=e=>{let t=0,r=0,s=0,a=0,n=e.type==="delta";return r|=+n,n?t|=1:t|=2,t<<24|r<<16|s<<8|a},Qt=e=>y("traf",null,[Jt(e),Yt(e),ei(e)]),Jt=e=>{var a;let t=0;t|=8,t|=16,t|=32,t|=131072;let r=(a=e.currentChunk.samples[1])!=null?a:e.currentChunk.samples[0],s={duration:r.timescaleUnitsToNextSample,size:r.size,flags:He(r)};return v("tfhd",0,t,[o(e.id),o(s.duration),o(s.size),o(s.flags)])},Yt=e=>v("tfdt",1,0,[x(M(e.currentChunk.startTimestamp,e.timescale))]),ei=e=>{let t=e.currentChunk.samples.map(U=>U.timescaleUnitsToNextSample),r=e.currentChunk.samples.map(U=>U.size),s=e.currentChunk.samples.map(He),a=e.currentChunk.samples.map(U=>M(U.presentationTimestamp-U.decodeTimestamp,e.timescale)),n=new Set(t),h=new Set(r),l=new Set(s),c=new Set(a),g=l.size===2&&s[0]!==s[1],E=n.size>1,ie=h.size>1,rt=!g&&l.size>1,st=c.size>1||[...c].some(U=>U!==0),L=0;return L|=1,L|=4*+g,L|=256*+E,L|=512*+ie,L|=1024*+rt,L|=2048*+st,v("trun",1,L,[o(e.currentChunk.samples.length),o(e.currentChunk.offset-e.currentChunk.moofOffset||0),g?o(s[0]):[],e.currentChunk.samples.map((U,ce)=>[E?o(t[ce]):[],ie?o(r[ce]):[],rt?o(s[ce]):[],st?mt(a[ce]):[]])])},ti=e=>y("mfra",null,[...e.map(ii),ri()]),ii=(e,t)=>v("tfra",1,0,[o(e.id),o(63),o(e.finalizedChunks.length),e.finalizedChunks.map(s=>[x(M(s.startTimestamp,e.timescale)),x(s.moofOffset),o(t+1),o(1),o(1)])]),ri=()=>v("mfro",0,0,[o(0)]),si={avc:"avc1",hevc:"hvc1",vp9:"vp09",av1:"av01"},ai={avc:xt,hevc:Wt,vp9:Ft,av1:Nt},ni={aac:"mp4a",opus:"Opus"},oi={aac:Pt,opus:Lt},hi=Symbol("isTarget"),ae=class{},qe=class extends ae{constructor(){super(...arguments),this.buffer=null}},Te=class extends ae{constructor(e){if(super(),this.options=e,typeof e!="object")throw new TypeError("StreamTarget requires an options object to be passed to its constructor.");if(e.onData){if(typeof e.onData!="function")throw new TypeError("options.onData, when provided, must be a function.");if(e.onData.length<2)throw new TypeError("options.onData, when provided, must be a function that takes in at least two arguments (data and position). Ignoring the position argument, which specifies the byte offset at which the data is to be written, can lead to broken outputs.")}if(e.chunked!==void 0&&typeof e.chunked!="boolean")throw new TypeError("options.chunked, when provided, must be a boolean.");if(e.chunkSize!==void 0&&(!Number.isInteger(e.chunkSize)||e.chunkSize<1024))throw new TypeError("options.chunkSize, when provided, must be an integer and not smaller than 1024.")}},Xe=class extends ae{constructor(e,t){if(super(),this.stream=e,this.options=t,!(e instanceof FileSystemWritableFileStream))throw new TypeError("FileSystemWritableFileStreamTarget requires a FileSystemWritableFileStream instance.");if(t!==void 0&&typeof t!="object")throw new TypeError("FileSystemWritableFileStreamTarget's options, when provided, must be an object.");if(t&&t.chunkSize!==void 0&&(!Number.isInteger(t.chunkSize)||t.chunkSize<=0))throw new TypeError("options.chunkSize, when provided, must be a positive integer")}},W,j,Ge=class{constructor(){this.pos=0,d(this,W,new Uint8Array(8)),d(this,j,new DataView(i(this,W).buffer)),this.offsets=new WeakMap}seek(e){this.pos=e}writeU32(e){i(this,j).setUint32(0,e,!1),this.write(i(this,W).subarray(0,4))}writeU64(e){i(this,j).setUint32(0,Math.floor(e/2**32),!1),i(this,j).setUint32(4,e,!1),this.write(i(this,W).subarray(0,8))}writeAscii(e){for(let t=0;t<e.length;t++)i(this,j).setUint8(t%8,e.charCodeAt(t)),t%8===7&&this.write(i(this,W));e.length%8!==0&&this.write(i(this,W).subarray(0,e.length%8))}writeBox(e){var t,r;if(this.offsets.set(e,this.pos),e.contents&&!e.children)this.writeBoxHeader(e,(t=e.size)!=null?t:e.contents.byteLength+8),this.write(e.contents);else{let s=this.pos;if(this.writeBoxHeader(e,0),e.contents&&this.write(e.contents),e.children)for(let h of e.children)h&&this.writeBox(h);let a=this.pos,n=(r=e.size)!=null?r:a-s;this.seek(s),this.writeBoxHeader(e,n),this.seek(a)}}writeBoxHeader(e,t){this.writeU32(e.largeSize?1:t),this.writeAscii(e.type),e.largeSize&&this.writeU64(t)}measureBoxHeader(e){return 8+(e.largeSize?8:0)}patchBox(e){let t=this.pos;this.seek(this.offsets.get(e)),this.writeBox(e),this.seek(t)}measureBox(e){if(e.contents&&!e.children)return this.measureBoxHeader(e)+e.contents.byteLength;{let t=this.measureBoxHeader(e);if(e.contents&&(t+=e.contents.byteLength),e.children)for(let r of e.children)r&&(t+=this.measureBox(r));return t}}};W=new WeakMap,j=new WeakMap;var ne,F,G,Z,oe,be,li=class extends Ge{constructor(e){super(),d(this,oe),d(this,ne,void 0),d(this,F,new ArrayBuffer(2**16)),d(this,G,new Uint8Array(i(this,F))),d(this,Z,0),S(this,ne,e)}write(e){m(this,oe,be).call(this,this.pos+e.byteLength),i(this,G).set(e,this.pos),this.pos+=e.byteLength,S(this,Z,Math.max(i(this,Z),this.pos))}finalize(){m(this,oe,be).call(this,this.pos),i(this,ne).buffer=i(this,F).slice(0,Math.max(i(this,Z),this.pos))}};ne=new WeakMap,F=new WeakMap,G=new WeakMap,Z=new WeakMap,oe=new WeakSet,be=function(e){let t=i(this,F).byteLength;for(;t<e;)t*=2;if(t===i(this,F).byteLength)return;let r=new ArrayBuffer(t),s=new Uint8Array(r);s.set(i(this,G),0),S(this,F,r),S(this,G,s)};var fi=2**24,ui=2,K,N,Q,I,_,he,_e,ke,Ze,Ee,Ke,J,le,ze=class extends Ge{constructor(e){var t,r,s,a;super(),d(this,he),d(this,ke),d(this,Ee),d(this,J),d(this,K,void 0),d(this,N,[]),d(this,Q,void 0),d(this,I,void 0),d(this,_,[]),S(this,K,e),S(this,Q,(r=(t=e.options)==null?void 0:t.chunked)!=null?r:!1),S(this,I,(a=(s=e.options)==null?void 0:s.chunkSize)!=null?a:fi)}write(e){i(this,N).push({data:e.slice(),start:this.pos}),this.pos+=e.byteLength}flush(){var r,s;if(i(this,N).length===0)return;let e=[],t=[...i(this,N)].sort((a,n)=>a.start-n.start);e.push({start:t[0].start,size:t[0].data.byteLength});for(let a=1;a<t.length;a++){let n=e[e.length-1],h=t[a];h.start<=n.start+n.size?n.size=Math.max(n.size,h.start+h.data.byteLength-n.start):e.push({start:h.start,size:h.data.byteLength})}for(let a of e){a.data=new Uint8Array(a.size);for(let n of i(this,N))a.start<=n.start&&n.start<a.start+a.size&&a.data.set(n.data,n.start-a.start);i(this,Q)?(m(this,he,_e).call(this,a.data,a.start),m(this,J,le).call(this)):(s=(r=i(this,K).options).onData)==null||s.call(r,a.data,a.start)}i(this,N).length=0}finalize(){i(this,Q)&&m(this,J,le).call(this,!0)}};K=new WeakMap,N=new WeakMap,Q=new WeakMap,I=new WeakMap,_=new WeakMap,he=new WeakSet,_e=function(e,t){let r=i(this,_).findIndex(l=>l.start<=t&&t<l.start+i(this,I));r===-1&&(r=m(this,Ee,Ke).call(this,t));let s=i(this,_)[r],a=t-s.start,n=e.subarray(0,Math.min(i(this,I)-a,e.byteLength));s.data.set(n,a);let h={start:a,end:a+n.byteLength};if(m(this,ke,Ze).call(this,s,h),s.written[0].start===0&&s.written[0].end===i(this,I)&&(s.shouldFlush=!0),i(this,_).length>ui){for(let l=0;l<i(this,_).length-1;l++)i(this,_)[l].shouldFlush=!0;m(this,J,le).call(this)}n.byteLength<e.byteLength&&m(this,he,_e).call(this,e.subarray(n.byteLength),t+n.byteLength)},ke=new WeakSet,Ze=function(e,t){let r=0,s=e.written.length-1,a=-1;for(;r<=s;){let n=Math.floor(r+(s-r+1)/2);e.written[n].start<=t.start?(r=n+1,a=n):s=n-1}for(e.written.splice(a+1,0,t),(a===-1||e.written[a].end<t.start)&&a++;a<e.written.length-1&&e.written[a].end>=e.written[a+1].start;)e.written[a].end=Math.max(e.written[a].end,e.written[a+1].end),e.written.splice(a+1,1)},Ee=new WeakSet,Ke=function(e){let r={start:Math.floor(e/i(this,I))*i(this,I),data:new Uint8Array(i(this,I)),written:[],shouldFlush:!1};return i(this,_).push(r),i(this,_).sort((s,a)=>s.start-a.start),i(this,_).indexOf(r)},J=new WeakSet,le=function(e=!1){var t,r;for(let s=0;s<i(this,_).length;s++){let a=i(this,_)[s];if(!(!a.shouldFlush&&!e)){for(let n of a.written)(r=(t=i(this,K).options).onData)==null||r.call(t,a.data.subarray(n.start,n.end),a.start+n.start);i(this,_).splice(s--,1)}}};var di=class extends ze{constructor(e){var t;super(new Te({onData:(r,s)=>e.stream.write({type:"write",data:r,position:s}),chunked:!0,chunkSize:(t=e.options)==null?void 0:t.chunkSize}))}},Ae=1e3,mi=["avc","hevc","vp9","av1"],pi=["aac","opus"],ci=2082844800,wi=["strict","offset","cross-track-offset"],f,u,fe,k,b,T,$,H,Oe,R,P,Y,Me,Qe,Be,Je,Ie,Ye,De,et,Ue,tt,ue,xe,B,D,We,it,ee,de,me,Fe,q,te,pe,Ne,vi=class{constructor(e){if(d(this,Me),d(this,Be),d(this,Ie),d(this,De),d(this,Ue),d(this,ue),d(this,B),d(this,We),d(this,ee),d(this,me),d(this,q),d(this,pe),d(this,f,void 0),d(this,u,void 0),d(this,fe,void 0),d(this,k,void 0),d(this,b,null),d(this,T,null),d(this,$,Math.floor(Date.now()/1e3)+ci),d(this,H,[]),d(this,Oe,1),d(this,R,[]),d(this,P,[]),d(this,Y,!1),m(this,Me,Qe).call(this,e),e.video=X(e.video),e.audio=X(e.audio),e.fastStart=X(e.fastStart),this.target=e.target,S(this,f,{firstTimestampBehavior:"strict",...e}),e.target instanceof qe)S(this,u,new li(e.target));else if(e.target instanceof Te)S(this,u,new ze(e.target));else if(e.target instanceof Xe)S(this,u,new di(e.target));else throw new Error(`Invalid target: ${e.target}`);m(this,De,et).call(this),m(this,Be,Je).call(this)}addVideoChunk(e,t,r,s){if(!(e instanceof EncodedVideoChunk))throw new TypeError("addVideoChunk's first argument (sample) must be of type EncodedVideoChunk.");if(t&&typeof t!="object")throw new TypeError("addVideoChunk's second argument (meta), when provided, must be an object.");if(r!==void 0&&(!Number.isFinite(r)||r<0))throw new TypeError("addVideoChunk's third argument (timestamp), when provided, must be a non-negative real number.");if(s!==void 0&&!Number.isFinite(s))throw new TypeError("addVideoChunk's fourth argument (compositionTimeOffset), when provided, must be a real number.");let a=new Uint8Array(e.byteLength);e.copyTo(a),this.addVideoChunkRaw(a,e.type,r!=null?r:e.timestamp,e.duration,t,s)}addVideoChunkRaw(e,t,r,s,a,n){if(!(e instanceof Uint8Array))throw new TypeError("addVideoChunkRaw's first argument (data) must be an instance of Uint8Array.");if(t!=="key"&&t!=="delta")throw new TypeError("addVideoChunkRaw's second argument (type) must be either 'key' or 'delta'.");if(!Number.isFinite(r)||r<0)throw new TypeError("addVideoChunkRaw's third argument (timestamp) must be a non-negative real number.");if(!Number.isFinite(s)||s<0)throw new TypeError("addVideoChunkRaw's fourth argument (duration) must be a non-negative real number.");if(a&&typeof a!="object")throw new TypeError("addVideoChunkRaw's fifth argument (meta), when provided, must be an object.");if(n!==void 0&&!Number.isFinite(n))throw new TypeError("addVideoChunkRaw's sixth argument (compositionTimeOffset), when provided, must be a real number.");if(m(this,pe,Ne).call(this),!i(this,f).video)throw new Error("No video track declared.");if(typeof i(this,f).fastStart=="object"&&i(this,b).samples.length===i(this,f).fastStart.expectedVideoChunks)throw new Error(`Cannot add more video chunks than specified in 'fastStart' (${i(this,f).fastStart.expectedVideoChunks}).`);let h=m(this,ue,xe).call(this,i(this,b),e,t,r,s,a,n);if(i(this,f).fastStart==="fragmented"&&i(this,T)){for(;i(this,P).length>0&&i(this,P)[0].decodeTimestamp<=h.decodeTimestamp;){let l=i(this,P).shift();m(this,B,D).call(this,i(this,T),l)}h.decodeTimestamp<=i(this,T).lastDecodeTimestamp?m(this,B,D).call(this,i(this,b),h):i(this,R).push(h)}else m(this,B,D).call(this,i(this,b),h)}addAudioChunk(e,t,r){if(!(e instanceof EncodedAudioChunk))throw new TypeError("addAudioChunk's first argument (sample) must be of type EncodedAudioChunk.");if(t&&typeof t!="object")throw new TypeError("addAudioChunk's second argument (meta), when provided, must be an object.");if(r!==void 0&&(!Number.isFinite(r)||r<0))throw new TypeError("addAudioChunk's third argument (timestamp), when provided, must be a non-negative real number.");let s=new Uint8Array(e.byteLength);e.copyTo(s),this.addAudioChunkRaw(s,e.type,r!=null?r:e.timestamp,e.duration,t)}addAudioChunkRaw(e,t,r,s,a){if(!(e instanceof Uint8Array))throw new TypeError("addAudioChunkRaw's first argument (data) must be an instance of Uint8Array.");if(t!=="key"&&t!=="delta")throw new TypeError("addAudioChunkRaw's second argument (type) must be either 'key' or 'delta'.");if(!Number.isFinite(r)||r<0)throw new TypeError("addAudioChunkRaw's third argument (timestamp) must be a non-negative real number.");if(!Number.isFinite(s)||s<0)throw new TypeError("addAudioChunkRaw's fourth argument (duration) must be a non-negative real number.");if(a&&typeof a!="object")throw new TypeError("addAudioChunkRaw's fifth argument (meta), when provided, must be an object.");if(m(this,pe,Ne).call(this),!i(this,f).audio)throw new Error("No audio track declared.");if(typeof i(this,f).fastStart=="object"&&i(this,T).samples.length===i(this,f).fastStart.expectedAudioChunks)throw new Error(`Cannot add more audio chunks than specified in 'fastStart' (${i(this,f).fastStart.expectedAudioChunks}).`);let n=m(this,ue,xe).call(this,i(this,T),e,t,r,s,a);if(i(this,f).fastStart==="fragmented"&&i(this,b)){for(;i(this,R).length>0&&i(this,R)[0].decodeTimestamp<=n.decodeTimestamp;){let h=i(this,R).shift();m(this,B,D).call(this,i(this,b),h)}n.decodeTimestamp<=i(this,b).lastDecodeTimestamp?m(this,B,D).call(this,i(this,T),n):i(this,P).push(n)}else m(this,B,D).call(this,i(this,T),n)}finalize(){if(i(this,Y))throw new Error("Cannot finalize a muxer more than once.");if(i(this,f).fastStart==="fragmented"){for(let t of i(this,R))m(this,B,D).call(this,i(this,b),t);for(let t of i(this,P))m(this,B,D).call(this,i(this,T),t);m(this,me,Fe).call(this,!1)}else i(this,b)&&m(this,ee,de).call(this,i(this,b)),i(this,T)&&m(this,ee,de).call(this,i(this,T));let e=[i(this,b),i(this,T)].filter(Boolean);if(i(this,f).fastStart==="in-memory"){let t;for(let s=0;s<2;s++){let a=se(e,i(this,$)),n=i(this,u).measureBox(a);t=i(this,u).measureBox(i(this,k));let h=i(this,u).pos+n+t;for(let l of i(this,H)){l.offset=h;for(let{data:c}of l.samples)h+=c.byteLength,t+=c.byteLength}if(h<2**32)break;t>=2**32&&(i(this,k).largeSize=!0)}let r=se(e,i(this,$));i(this,u).writeBox(r),i(this,k).size=t,i(this,u).writeBox(i(this,k));for(let s of i(this,H))for(let a of s.samples)i(this,u).write(a.data),a.data=null}else if(i(this,f).fastStart==="fragmented"){let t=i(this,u).pos,r=ti(e);i(this,u).writeBox(r);let s=i(this,u).pos-t;i(this,u).seek(i(this,u).pos-4),i(this,u).writeU32(s)}else{let t=i(this,u).offsets.get(i(this,k)),r=i(this,u).pos-t;i(this,k).size=r,i(this,k).largeSize=r>=2**32,i(this,u).patchBox(i(this,k));let s=se(e,i(this,$));if(typeof i(this,f).fastStart=="object"){i(this,u).seek(i(this,fe)),i(this,u).writeBox(s);let a=t-i(this,u).pos;i(this,u).writeBox(ct(a))}else i(this,u).writeBox(s)}m(this,q,te).call(this),i(this,u).finalize(),S(this,Y,!0)}};return f=new WeakMap,u=new WeakMap,fe=new WeakMap,k=new WeakMap,b=new WeakMap,T=new WeakMap,$=new WeakMap,H=new WeakMap,Oe=new WeakMap,R=new WeakMap,P=new WeakMap,Y=new WeakMap,Me=new WeakSet,Qe=function(e){if(typeof e!="object")throw new TypeError("The muxer requires an options object to be passed to its constructor.");if(!(e.target instanceof ae))throw new TypeError("The target must be provided and an instance of Target.");if(e.video){if(!mi.includes(e.video.codec))throw new TypeError(`Unsupported video codec: ${e.video.codec}`);if(!Number.isInteger(e.video.width)||e.video.width<=0)throw new TypeError(`Invalid video width: ${e.video.width}. Must be a positive integer.`);if(!Number.isInteger(e.video.height)||e.video.height<=0)throw new TypeError(`Invalid video height: ${e.video.height}. Must be a positive integer.`);const t=e.video.rotation;if(typeof t=="number"&&![0,90,180,270].includes(t))throw new TypeError(`Invalid video rotation: ${t}. Has to be 0, 90, 180 or 270.`);if(Array.isArray(t)&&(t.length!==9||t.some(r=>typeof r!="number")))throw new TypeError(`Invalid video transformation matrix: ${t.join()}`);if(e.video.frameRate!==void 0&&(!Number.isInteger(e.video.frameRate)||e.video.frameRate<=0))throw new TypeError(`Invalid video frame rate: ${e.video.frameRate}. Must be a positive integer.`)}if(e.audio){if(!pi.includes(e.audio.codec))throw new TypeError(`Unsupported audio codec: ${e.audio.codec}`);if(!Number.isInteger(e.audio.numberOfChannels)||e.audio.numberOfChannels<=0)throw new TypeError(`Invalid number of audio channels: ${e.audio.numberOfChannels}. Must be a positive integer.`);if(!Number.isInteger(e.audio.sampleRate)||e.audio.sampleRate<=0)throw new TypeError(`Invalid audio sample rate: ${e.audio.sampleRate}. Must be a positive integer.`)}if(e.firstTimestampBehavior&&!wi.includes(e.firstTimestampBehavior))throw new TypeError(`Invalid first timestamp behavior: ${e.firstTimestampBehavior}`);if(typeof e.fastStart=="object"){if(e.video){if(e.fastStart.expectedVideoChunks===void 0)throw new TypeError("'fastStart' is an object but is missing property 'expectedVideoChunks'.");if(!Number.isInteger(e.fastStart.expectedVideoChunks)||e.fastStart.expectedVideoChunks<0)throw new TypeError("'expectedVideoChunks' must be a non-negative integer.")}if(e.audio){if(e.fastStart.expectedAudioChunks===void 0)throw new TypeError("'fastStart' is an object but is missing property 'expectedAudioChunks'.");if(!Number.isInteger(e.fastStart.expectedAudioChunks)||e.fastStart.expectedAudioChunks<0)throw new TypeError("'expectedAudioChunks' must be a non-negative integer.")}}else if(![!1,"in-memory","fragmented"].includes(e.fastStart))throw new TypeError("'fastStart' option must be false, 'in-memory', 'fragmented' or an object.");if(e.minFragmentDuration!==void 0&&(!Number.isFinite(e.minFragmentDuration)||e.minFragmentDuration<0))throw new TypeError("'minFragmentDuration' must be a non-negative number.")},Be=new WeakSet,Je=function(){var e;if(i(this,u).writeBox(pt({holdsAvc:((e=i(this,f).video)==null?void 0:e.codec)==="avc",fragmented:i(this,f).fastStart==="fragmented"})),S(this,fe,i(this,u).pos),i(this,f).fastStart==="in-memory")S(this,k,Se(!1));else if(i(this,f).fastStart!=="fragmented"){if(typeof i(this,f).fastStart=="object"){let t=m(this,Ie,Ye).call(this);i(this,u).seek(i(this,u).pos+t)}S(this,k,Se(!0)),i(this,u).writeBox(i(this,k))}m(this,q,te).call(this)},Ie=new WeakSet,Ye=function(){if(typeof i(this,f).fastStart!="object")return;let e=0,t=[i(this,f).fastStart.expectedVideoChunks,i(this,f).fastStart.expectedAudioChunks];for(let r of t)r&&(e+=8*Math.ceil(.6666666666666666*r),e+=4*r,e+=12*Math.ceil(.6666666666666666*r),e+=4*r,e+=8*r);return e+=4096,e},De=new WeakSet,et=function(){var e,t;if(i(this,f).video&&S(this,b,{id:1,info:{type:"video",codec:i(this,f).video.codec,width:i(this,f).video.width,height:i(this,f).video.height,rotation:(e=i(this,f).video.rotation)!=null?e:0,decoderConfig:null},timescale:(t=i(this,f).video.frameRate)!=null?t:57600,samples:[],finalizedChunks:[],currentChunk:null,firstDecodeTimestamp:void 0,lastDecodeTimestamp:-1,timeToSampleTable:[],compositionTimeOffsetTable:[],lastTimescaleUnits:null,lastSample:null,compactlyCodedChunkTable:[]}),i(this,f).audio&&(S(this,T,{id:i(this,f).video?2:1,info:{type:"audio",codec:i(this,f).audio.codec,numberOfChannels:i(this,f).audio.numberOfChannels,sampleRate:i(this,f).audio.sampleRate,decoderConfig:null},timescale:i(this,f).audio.sampleRate,samples:[],finalizedChunks:[],currentChunk:null,firstDecodeTimestamp:void 0,lastDecodeTimestamp:-1,timeToSampleTable:[],compositionTimeOffsetTable:[],lastTimescaleUnits:null,lastSample:null,compactlyCodedChunkTable:[]}),i(this,f).audio.codec==="aac")){let r=m(this,Ue,tt).call(this,2,i(this,f).audio.sampleRate,i(this,f).audio.numberOfChannels);i(this,T).info.decoderConfig={codec:i(this,f).audio.codec,description:r,numberOfChannels:i(this,f).audio.numberOfChannels,sampleRate:i(this,f).audio.sampleRate}}},Ue=new WeakSet,tt=function(e,t,r){let a=[96e3,88200,64e3,48e3,44100,32e3,24e3,22050,16e3,12e3,11025,8e3,7350].indexOf(t),n=r,h="";h+=e.toString(2).padStart(5,"0"),h+=a.toString(2).padStart(4,"0"),a===15&&(h+=t.toString(2).padStart(24,"0")),h+=n.toString(2).padStart(4,"0");let l=Math.ceil(h.length/8)*8;h=h.padEnd(l,"0");let c=new Uint8Array(h.length/8);for(let g=0;g<h.length;g+=8)c[g/8]=parseInt(h.slice(g,g+8),2);return c},ue=new WeakSet,xe=function(e,t,r,s,a,n,h){let l=s/1e6,c=(s-(h!=null?h:0))/1e6,g=a/1e6,E=m(this,We,it).call(this,l,c,e);return l=E.presentationTimestamp,c=E.decodeTimestamp,n!=null&&n.decoderConfig&&(e.info.decoderConfig===null?e.info.decoderConfig=n.decoderConfig:Object.assign(e.info.decoderConfig,n.decoderConfig)),{presentationTimestamp:l,decodeTimestamp:c,duration:g,data:t,size:t.byteLength,type:r,timescaleUnitsToNextSample:M(g,e.timescale)}},B=new WeakSet,D=function(e,t){var a,n;i(this,f).fastStart!=="fragmented"&&e.samples.push(t);const r=M(t.presentationTimestamp-t.decodeTimestamp,e.timescale);if(e.lastTimescaleUnits!==null){let h=M(t.decodeTimestamp,e.timescale,!1),l=Math.round(h-e.lastTimescaleUnits);if(e.lastTimescaleUnits+=l,e.lastSample.timescaleUnitsToNextSample=l,i(this,f).fastStart!=="fragmented"){let c=re(e.timeToSampleTable);c.sampleCount===1?(c.sampleDelta=l,c.sampleCount++):c.sampleDelta===l?c.sampleCount++:(c.sampleCount--,e.timeToSampleTable.push({sampleCount:2,sampleDelta:l}));const g=re(e.compositionTimeOffsetTable);g.sampleCompositionTimeOffset===r?g.sampleCount++:e.compositionTimeOffsetTable.push({sampleCount:1,sampleCompositionTimeOffset:r})}}else e.lastTimescaleUnits=0,i(this,f).fastStart!=="fragmented"&&(e.timeToSampleTable.push({sampleCount:1,sampleDelta:M(t.duration,e.timescale)}),e.compositionTimeOffsetTable.push({sampleCount:1,sampleCompositionTimeOffset:r}));e.lastSample=t;let s=!1;if(!e.currentChunk)s=!0;else{let h=t.presentationTimestamp-e.currentChunk.startTimestamp;if(i(this,f).fastStart==="fragmented"){let l=(a=i(this,b))!=null?a:i(this,T);const c=(n=i(this,f).minFragmentDuration)!=null?n:1;e===l&&t.type==="key"&&h>=c&&(s=!0,m(this,me,Fe).call(this))}else s=h>=.5}s&&(e.currentChunk&&m(this,ee,de).call(this,e),e.currentChunk={startTimestamp:t.presentationTimestamp,samples:[]}),e.currentChunk.samples.push(t)},We=new WeakSet,it=function(e,t,r){var h,l,c,g;const s=i(this,f).firstTimestampBehavior==="strict",a=r.lastDecodeTimestamp===-1;if(s&&a&&t!==0)throw new Error(`The first chunk for your media track must have a timestamp of 0 (received DTS=${t}).Non-zero first timestamps are often caused by directly piping frames or audio data from a MediaStreamTrack into the encoder. Their timestamps are typically relative to the age of thedocument, which is probably what you want.
 
@@ -598,7 +598,8 @@ AU.LATE = 2 * 3600000;         /* 공개 시각 + 2시간 미확인 → 확인 �
 AU.FAIL = 24 * 3600000;        /* 공개 시각 + 24시간 미확인 → 실패 */
 AU.KEEP = 7 * 86400000;        /* 공개 시각 + 7일 → 임시 영상 자동 정리 */
 AU.LINK_WAIT = 48 * 3600000;   /* 직접 올린 편: 48시간 안에 못 찾으면 '링크 붙여넣기' */
-AU.ZAP_MAX = 100;              /* Zapier 무료 플랜 월 한도 */
+AU.ZAP_MAX = 100;              /* Zapier 무료 플랜 월 한도(유튜브·인스타 Zap이 함께 씀) */
+AU.IG_HOLD = 3600000;          /* 인스타 Zap이 가져간 뒤 1시간 — 인스타가 영상 주소에서 받아 갈 시간. 그 뒤 임시 영상을 지운다(V6.8) */
 /* 12-7 재고별 공개 빈도 — per: 하루 평균 편수 */
 AU.LEVELS = [
   { n: '멈춤', min: 0, kind: 'stop', times: [], per: 0 },
@@ -630,7 +631,7 @@ AU.recommendable = function (meta, cfg, today) { return Math.floor(AU.candN(meta
 /* 멈춤(재고 0)에서 다시 시작하려면 더 올려야 할 사진 수 — 한 편 = 6장 */
 AU.needPhotos = function (candN) { return Math.max(1, 6 - (candN % 6)); };
 AU.baseLevel = function (stock) { let lv = 0; AU.LEVELS.forEach(function (L, i) { if (stock >= L.min) lv = i; }); return lv; };
-/* o: {maxDay 1~3, zapUsed 이번 달 사용 건수, zapMax, now, late 어제 확인 지연 편수} → 단계 번호 */
+/* o: {maxDay 1~3, zapUsed 이번 달 사용 건수, zapMax, perPost 한 편에 쓰는 건수(인스타도 올리면 2), now, late 어제 확인 지연 편수} → 단계 번호 */
 AU.level = function (stock, o) {
   o = o || {};
   let lv = AU.baseLevel(stock);
@@ -641,9 +642,9 @@ AU.level = function (stock, o) {
   const now = o.now || Date.now();
   const d = new Date(now), last = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
   const daysLeft = last - d.getDate() + 1;
-  const left = (o.zapMax || AU.ZAP_MAX) - (o.zapUsed || 0);
-  if (left <= 0) return 0;
-  while (lv > 1 && AU.LEVELS[lv].per > left / daysLeft) lv--;              /* 한도 2: Zapier 월 한도 */
+  const left = (o.zapMax || AU.ZAP_MAX) - (o.zapUsed || 0), pp = Math.max(1, +o.perPost || 1);
+  if (left < pp) return 0;
+  while (lv > 1 && AU.LEVELS[lv].per * pp > left / daysLeft) lv--;         /* 한도 2: Zapier 월 한도(한 편 = 유튜브 1건 + 인스타 1건) */
   return lv;
 };
 /* 하루에 한 번만 정한다 — cfg.freq = {d: 날짜, lv} (두 폰 공용). 같은 날이면 저장값 */
@@ -786,6 +787,163 @@ AU.creditDesc = function (de, oldCr, newCr) {
   return lines.join('\n');
 };
 
+/* 인스타 캡션(V6.8) — 제목 + 빈 줄 + 유튜브 설명. 유튜브 전용 태그는 인스타 태그로 바꾸고(#shorts → #reels, #dogsofyoutube → #dogsofinstagram)
+   인스타 한도(해시태그 30개 · 2,200자)를 넘으면 뒤에서 자른다. 끝줄 '빼꼼 #N'은 그대로(태그로 세지 않음) */
+AU.IG_TAG = { '#shorts': '#reels', '#dogsofyoutube': '#dogsofinstagram' };
+AU.igCaption = function (ti, de) {
+  let tags = 0;
+  const body = String(de || '').split('\n').map(function (ln) {
+    if (/^빼꼼 #\d+$/.test(ln.trim())) return ln;
+    return ln.split(' ').map(function (w) {
+      if (!/^#[^\s#]+/.test(w)) return w;
+      tags++;
+      return tags > 30 ? null : (AU.IG_TAG[w.toLowerCase()] || w);
+    }).filter(function (w) { return w !== null; }).join(' ').replace(/\s+$/, '');
+  }).join('\n');
+  const t = String(ti || '').trim();
+  const s = (t ? t + '\n\n' : '') + body.trim();
+  return s.length > 2200 ? s.slice(0, 2200) : s;
+};
+
+/* ---------- 곡 분석 (V6.8) — 20초 구간 자동 선택 · 분위기 추천 ----------
+   입력: 소리 채널(Float32Array 1~2개, 보통 22050Hz로 푼 것). 50ms마다 세기(dB)와 2kHz 위 고음 세기를 재고,
+   빠르기는 10ms마다 '소리가 갑자기 커지는 순간'의 반복 주기로 잰다. 결과는 추천일 뿐이라 화면에서 고칠 수 있다.
+   기준값은 합성 곡 5종(tests/lib/synth.js)으로 맞췄다 — 실제 곡에서는 틀릴 수 있어 이유를 같이 보여 준다 */
+AU.FR = 0.05;
+AU.p10 = function (d) { return Math.pow(10, d / 10); };
+AU.db = function (p) { return 10 * Math.log10(p + 1e-10); };
+AU.ramp = function (v, a, b) { const t = (v - a) / (b - a); return Math.max(0, Math.min(1, t)); };   /* a에서 0, b에서 1 (a > b면 내려가는 쪽) */
+/* 50ms 칸마다 L: 세기(dB, -80 바닥) · H: 2kHz 고역 통과 소리의 평균 세기(밝기) */
+AU.trackFeat = function (a, b, sr) {
+  const hop = Math.max(1, Math.round(sr * AU.FR)), n = Math.floor(a.length / hop);
+  const L = new Float32Array(n), H = new Float32Array(n);
+  const w0 = 2 * Math.PI * Math.min(2000, sr * 0.45) / sr, al = Math.sin(w0) / (2 * 0.7071), cw = Math.cos(w0), a0 = 1 + al;   /* RBJ 고역 통과, Q 0.707 */
+  const b0 = (1 + cw) / 2 / a0, b1 = -(1 + cw) / a0, a1 = -2 * cw / a0, a2 = (1 - al) / a0;
+  let x1 = 0, x2 = 0, y1 = 0, y2 = 0;
+  for (let f = 0; f < n; f++) {
+    let e = 0, eh = 0;
+    for (let i = f * hop, end = i + hop; i < end; i++) {
+      const v = b ? (a[i] + b[i]) * 0.5 : a[i];
+      const y = b0 * v + b1 * x1 + b0 * x2 - a1 * y1 - a2 * y2; x2 = x1; x1 = v; y2 = y1; y1 = y;
+      e += v * v; eh += y * y;
+    }
+    L[f] = Math.max(-80, AU.db(e / hop));
+    H[f] = eh / hop;
+  }
+  return { sr: sr, n: n, L: L, H: H, fr: hop / sr, dur: a.length / sr };   /* fr: 칸 하나의 실제 길이(초) — 22050Hz면 1103표본이라 50.02ms */
+};
+/* 빠르기 — 10ms 에너지 변화(onset)의 자기상관에서 60~180 BPM 중 가장 뚜렷한 주기. conf: 그 주기의 뚜렷함(0~1, 0.15 미만이면 박자 약함) */
+AU.bpmOf = function (a, sr, from, len, b) {
+  const s0 = Math.max(0, Math.floor((from || 0) * sr)), s1 = Math.min(a.length, s0 + Math.floor((len || 60) * sr));
+  const hop = Math.max(1, Math.round(sr * 0.01)), win = hop * 2, env = [];
+  for (let i = s0; i + win < s1; i += hop) {
+    let e = 0;
+    for (let j = i; j < i + win; j += 2) { const v = b ? (a[j] + b[j]) * 0.5 : a[j]; e += v * v; }
+    env.push(Math.log(1e-9 + e));
+  }
+  if (env.length < 300) return { bpm: 0, conf: 0 };
+  const on = [];
+  for (let i = 1; i < env.length; i++) on.push(Math.max(0, env[i] - env[i - 1]));
+  const mean = on.reduce(function (x, y) { return x + y; }, 0) / on.length;
+  let r0 = 0;
+  for (let i = 0; i < on.length; i++) { on[i] -= mean; r0 += on[i] * on[i]; }
+  let best = 0, lag0 = 0, raw0 = 0;
+  for (let lag = 33; lag <= 100; lag++) {
+    let sc = 0;
+    for (let i = 0; i + lag < on.length; i++) sc += on[i] * on[i + lag];
+    const raw = sc, bpm = 6000 / lag;
+    sc *= 1 - 0.25 * Math.abs(Math.log2(bpm / 115));   /* 흔한 빠르기(약 115) 쪽을 조금 더 믿는다 */
+    if (sc > best) { best = sc; lag0 = lag; raw0 = raw; }
+  }
+  return { bpm: lag0 ? Math.round(6000 / lag0) : 0, conf: r0 > 0 ? Math.max(0, raw0 / r0) : 0 };
+};
+/* 0.5초 칸의 평균 세기(선형) */
+AU.blocks = function (F, sec) {
+  const per = Math.max(1, Math.round((sec || 0.5) / F.fr)), nb = Math.floor(F.n / per), P = new Float64Array(nb);
+  for (let k = 0; k < nb; k++) { let s = 0; for (let f = k * per; f < (k + 1) * per; f++) s += AU.p10(F.L[f]); P[k] = s / per; }
+  return P;
+};
+/* 쓸 구간 시작점 — 20초 평균 세기가 가장 큰 곳(처음 2초가 조용하면 감점), 거의 같으면 앞쪽(첫 후렴).
+   끝 1초는 남기고, ±0.5초 안에서 소리가 확 커지는 곳(3dB 이상) 바로 앞에 맞춘다 — 음악이 박자에 맞춰 시작하게 */
+AU.bestOff = function (F, len) {
+  len = len || 20;
+  const per = Math.max(1, Math.round(0.5 / F.fr)), bs = per * F.fr;   /* 0.5초 칸(실제 길이 bs) */
+  const P = AU.blocks(F, 0.5), nb = P.length, wb = Math.round(len / bs), last = nb - wb - Math.ceil(1 / bs);
+  if (F.dur <= len + 1 || last < 0) return 0;
+  const cs = new Float64Array(nb + 1);
+  for (let k = 0; k < nb; k++) cs[k + 1] = cs[k] + P[k];
+  const sc = []; let best = -1e9;
+  for (let s = 0; s <= last; s++) {
+    const w = AU.db((cs[s + wb] - cs[s]) / wb), hd = AU.db((cs[s + 4] - cs[s]) / 4), v = w + 0.5 * Math.min(0, hd - w);
+    sc.push(v); if (v > best) best = v;
+  }
+  let s0 = 0;
+  for (let s = 0; s < sc.length; s++) { if (sc[s] >= best - 0.5) { s0 = s; break; } }
+  const c = s0 * per, w = Math.round(0.5 / F.fr);
+  let bf = -1, bo = 3;
+  for (let f = Math.max(1, c - w); f <= Math.min(F.n - 1, c + w); f++) { const o = F.L[f] - F.L[f - 1]; if (o > bo) { bo = o; bf = f; } }
+  const off = bf > 0 ? Math.max(0, bf * F.fr - 0.03) : s0 * bs;
+  return Math.round(Math.min(off, Math.max(0, F.dur - len - 1)) * 100) / 100;
+};
+/* 쓸 구간의 성격 — lv 세기(dB) · br 밝기(2kHz 위 비중, dB) · on 소리가 커지는 정도(dB/50ms) · gp 끊김(주변 최대보다 12dB 넘게 작은 칸 비율) */
+AU.secStats = function (F, off, len) {
+  const f0 = Math.max(0, Math.floor(off / F.fr)), f1 = Math.min(F.n, f0 + Math.round((len || 20) / F.fr));
+  let pw = 0, hw = 0, cnt = 0, on = 0, onN = 0, gaps = 0, gN = 0;
+  for (let f = f0; f < f1; f++) {
+    pw += AU.p10(F.L[f]); hw += F.H[f]; cnt++;
+    if (f > f0 && F.L[f] > -60) { on += Math.max(0, F.L[f] - Math.max(-60, F.L[f - 1])); onN++; }
+    let mx = -200;
+    for (let k = Math.max(f0, f - 5); k <= Math.min(f1 - 1, f + 5); k++) if (F.L[k] > mx) mx = F.L[k];
+    if (mx > -60) { gN++; if (F.L[f] < mx - 12) gaps++; }
+  }
+  return { lv: AU.db(pw / Math.max(1, cnt)), br: pw > 0 ? AU.db(hw / pw) : -60, on: onN ? on / onN : 0, gp: gN ? gaps / gN : 0 };
+};
+/* 곡 전체의 세기 변화 — dy: 크고 작은 차(2초 칸 P90-P10, dB) · up: 시간이 갈수록 커지는 정도(시간과 세기의 상관 -1~1) */
+AU.dyn = function (F) {
+  const pts = [];
+  AU.blocks(F, 2).forEach(function (p, k) { const d = AU.db(p); if (d > -50) pts.push([k, d]); });
+  if (pts.length < 4) return { dy: 0, up: 0 };
+  const v = pts.map(function (p) { return p[1]; }).sort(function (x, y) { return x - y; });
+  const dy = v[Math.floor(v.length * 0.9)] - v[Math.floor(v.length * 0.1)];
+  let mx = 0, my = 0;
+  pts.forEach(function (p) { mx += p[0]; my += p[1]; }); mx /= pts.length; my /= pts.length;
+  let sxy = 0, sxx = 0, syy = 0;
+  pts.forEach(function (p) { sxy += (p[0] - mx) * (p[1] - my); sxx += (p[0] - mx) * (p[0] - mx); syy += (p[1] - my) * (p[1] - my); });
+  return { dy: dy, up: sxx > 0 && syy > 0 ? sxy / Math.sqrt(sxx * syy) : 0 };
+};
+/* 분위기 점수 — 성격 0~1 값을 더해 가장 높은 분위기. why: 화면에 보여 줄 이유(빠르기·세기·밝기·리듬) */
+AU.moodOf = function (s, bp, d) {
+  const R = AU.ramp, T = bp.conf >= 0.15 ? bp.bpm : 0, clear = R(bp.conf, 0.15, 0.45);
+  const slow = T ? R(T, 100, 72) : 0.6, fast = T ? R(T, 104, 128) : 0;
+  const mid = function (lo, hi) { return T ? Math.min(R(T, lo - 12, lo), R(T, hi + 12, hi)) : 0; };
+  const soft = R(s.lv, -20, -30), strong = R(s.lv, -17, -11), dark = R(s.br, -16, -24), vdark = R(s.br, -20, -26), bright = R(s.br, -16, -9);
+  const punch = R(s.on, 0.6, 1.6), choppy = R(s.gp, 0.12, 0.32), build = R(d.dy, 8, 14) * R(d.up, 0.4, 0.75);
+  const proud = strong * (1 - bright) * clear * mid(80, 115) * (1 - choppy);
+  const sc = {
+    '졸림': 1.8 * slow + 0.8 * soft + 0.6 * dark + 0.6 * vdark + 0.6 * (1 - punch) - 0.8 * fast - 0.8 * choppy - 1.0 * build - 0.6 * clear * (1 - slow),
+    '포근': 1.0 * mid(70, 110) + 0.7 * dark + 0.6 * (1 - strong) + 0.4 * clear - 1.0 * choppy - 0.6 * soft * slow - 0.5 * build - 0.8 * strong,
+    '신남': 1.3 * fast + 1.0 * strong + 0.9 * bright + 0.8 * punch + 0.4 * clear - 0.8 * choppy - 0.4 * build,
+    '엉뚱': 1.8 * choppy + 0.5 * bright + 0.4 * clear + 0.3 * mid(90, 140) - 0.4 * soft - 0.6 * build,
+    '의젓': 1.8 * build + 1.2 * proud + 0.6 * strong + 0.4 * (1 - choppy) + 0.3 * mid(66, 122) - 0.5 * bright - 0.3 * fast
+  };
+  let md = '', bs = -1e9;
+  E.MOODS.forEach(function (k) { if (sc[k] > bs) { bs = sc[k]; md = k; } });
+  const why = [T ? (T >= 115 ? '빠름 ' : T >= 90 ? '보통 빠르기 ' : '느림 ') + T + ' BPM' : '박자 약함'];
+  if (strong > 0.5) why.push('힘참'); else if (soft > 0.5) why.push('잔잔함');
+  if (bright > 0.5) why.push('밝은 소리'); else if (dark > 0.5) why.push('부드러운 소리');
+  if (choppy > 0.5) why.push('통통 튀는 리듬'); else if (build > 0.5) why.push('점점 커짐'); else if (punch > 0.6) why.push('박자 뚜렷');
+  return { md: md, why: why.join(' · '), sc: sc };
+};
+/* 한 번에: 소리 채널 → {dur, off(쓸 구간 시작), bpm, conf, md(추천 분위기), why(이유)} */
+AU.analyze = function (a, b, sr, len) {
+  len = len || 20;
+  const F = AU.trackFeat(a, b, sr);
+  const off = AU.bestOff(F, len);
+  const bp = AU.bpmOf(a, sr, F.dur > len + 20 ? off : 0, Math.max(30, len), b);   /* 쓸 구간에서 빠르기를 잰다(조용한 도입은 박자가 약함) */
+  const m = AU.moodOf(AU.secStats(F, off, len), bp, AU.dyn(F));
+  return { dur: Math.round(F.dur * 10) / 10, off: off, bpm: bp.bpm, conf: Math.round(bp.conf * 100) / 100, md: m.md, why: m.why };
+};
+
 /* ---------- 피드 주소 — Worker 주소 + (데이터베이스 주소·가족 코드)를 묶은 토큰 ---------- */
 AU.b64u = function (s) {
   const b = (typeof btoa === 'function') ? btoa(unescape(encodeURIComponent(s))) : Buffer.from(s, 'utf8').toString('base64');
@@ -793,14 +951,14 @@ AU.b64u = function (s) {
 };
 AU.token = function (db, fam) { return AU.b64u(JSON.stringify({ d: String(db || '').replace(/\/+$/, ''), f: String(fam || '') })); };
 AU.feedUrl = function (fw, db, fam) { return String(fw || '').replace(/\/+$/, '') + '/feed/' + AU.token(db, fam); };
-/* 이번 달 Zapier 사용 건수(추정) — 이번 달에 공개 시각이 지난 자동 편(올림·올리는 중·지연·실패) */
+/* 이번 달 Zapier 사용 건수(추정) — 이번 달에 공개 시각이 지난 자동 편(올림·올리는 중·지연·실패). 인스타도 올린 편은 2건 */
 AU.monthUsed = function (recipes, q, now) {
   const d = new Date(now), m0 = new Date(d.getFullYear(), d.getMonth(), 1).getTime();
   let n = 0;
   Object.keys(recipes || {}).forEach(function (rid) {
     const r = recipes[rid]; if (!r || r.mo !== 'B') return;
     const at = (q && q[rid] && q[rid].at) || r.pa || 0;
-    if (at >= m0 && at <= now && (r.st === 'up' || r.st === 'sched')) n++;
+    if (at >= m0 && at <= now && (r.st === 'up' || r.st === 'sched')) n += r.ig ? 2 : 1;
   });
   return n;
 };
@@ -1156,31 +1314,8 @@ R.loadMusic = async function (mu, signal) {
   const buf = await R.decode(await r.arrayBuffer(), 48000);
   return { buf: buf, off: +mu.off || 0 };
 };
-/* 빠르기 추정 — 10ms 단위 에너지 변화(onset)의 자기상관에서 60~180 BPM 중 가장 뚜렷한 주기. 틀리면 화면에서 고친다 */
-R.bpmOf = function (buf, from, len) {
-  const sr = buf.sampleRate, a = buf.getChannelData(0), b = buf.numberOfChannels > 1 ? buf.getChannelData(1) : null;
-  const s0 = Math.max(0, Math.floor((from || 0) * sr)), s1 = Math.min(buf.length, s0 + Math.floor((len || 60) * sr));
-  const hop = Math.max(1, Math.round(sr * 0.01)), win = hop * 2, env = [];
-  for (let i = s0; i + win < s1; i += hop) {
-    let e = 0;
-    for (let j = i; j < i + win; j += 2) { const v = b ? (a[j] + b[j]) * 0.5 : a[j]; e += v * v; }
-    env.push(Math.log(1e-9 + e));
-  }
-  if (env.length < 300) return 0;
-  const on = [];
-  for (let i = 1; i < env.length; i++) on.push(Math.max(0, env[i] - env[i - 1]));
-  const mean = on.reduce(function (x, y) { return x + y; }, 0) / on.length;
-  for (let i = 0; i < on.length; i++) on[i] -= mean;
-  let best = 0, lag0 = 0;
-  for (let lag = 33; lag <= 100; lag++) {
-    let sc = 0;
-    for (let i = 0; i + lag < on.length; i++) sc += on[i] * on[i + lag];
-    const bpm = 6000 / lag;
-    sc *= 1 - 0.25 * Math.abs(Math.log2(bpm / 115));   /* 흔한 빠르기(약 115) 쪽을 조금 더 믿는다 */
-    if (sc > best) { best = sc; lag0 = lag; }
-  }
-  return lag0 ? Math.round(6000 / lag0) : 0;
-};
+/* 곡 분석(V6.8) — 빠르기·쓸 20초 구간·추천 분위기. 계산은 auto.js(AU.analyze, 단위 시험 tests/unit/music.test.js) */
+R.analyze = function (buf) { return AU.analyze(buf.getChannelData(0), buf.numberOfChannels > 1 ? buf.getChannelData(1) : null, buf.sampleRate); };
 R.peaks = function (buf, n) {
   const a = buf.getChannelData(0), per = Math.max(1, Math.floor(buf.length / n)), out = [];
   for (let i = 0; i < n; i++) { let m = 0; const s = i * per; for (let j = s; j < s + per && j < a.length; j += 16) { const v = Math.abs(a[j]); if (v > m) m = v; } out.push(m); }
@@ -1639,6 +1774,7 @@ body.sx-open{overflow:hidden;}
 .sx-chip.sm{font-size:14px; padding:6px 12px;}
 .sx-chip .k{color:var(--label2); font-size:12px; margin-left:6px; font-weight:400;}
 .sx-chip.soft .k{color:var(--tint-ink); opacity:.7;}
+.sx-chip.on .k{color:#fff; opacity:.8;}
 .sx-capc{background:var(--card); border-radius:16px; padding:11px 14px 12px; margin:12px 0 0; cursor:pointer;}
 .sx-capc .hd{display:flex; justify-content:space-between; font-size:12.5px; color:var(--label2); margin-bottom:3px;}
 .sx-capc .ed{color:var(--tint); font-size:14px;}
@@ -1679,6 +1815,24 @@ body.sx-open{overflow:hidden;}
 .sxh .sxh-t{font-size:17px; font-weight:700; letter-spacing:-.01em;}
 .sxh .sxh-s{font-size:13.5px; color:var(--label2); margin-top:3px; line-height:1.4;}
 .sxh .sxh-b{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;}
+/* V6.8 여러 곡 넣기 — 줄마다 체크 · 곡 이름(누르면 고치기) · 미리 듣기 · 분위기 칩 · 추천 이유 */
+.sx-bk{padding:12px 14px 13px; position:relative;}
+.sx-bk + .sx-bk{border-top:.5px solid var(--sep);}
+.sx-bk .r1{display:flex; align-items:center; gap:12px;}
+.sx-bk .ck{flex:0 0 28px; height:28px; border-radius:50%; border:2px solid var(--label3); background:none; color:transparent; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; cursor:pointer; padding:0; font-family:inherit;}
+.sx-bk .ck.on{background:var(--tint); border-color:var(--tint); color:#fff;}
+.sx-bk .ck:disabled{opacity:.35; cursor:default;}
+.sx-bk .tx{flex:1; min-width:0; cursor:pointer;}
+.sx-bk .t1{font-size:16px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.sx-bk .t1 .ed{font-size:13px; font-weight:400; color:var(--tint); margin-left:4px;}
+.sx-bk .t2{font-size:13.5px; color:var(--label2); margin-top:2px;}
+.sx-bk .pl{flex:0 0 auto; border:none; background:var(--fill2); color:var(--label); border-radius:999px; min-width:40px; height:34px; font-size:14px; cursor:pointer; font-family:inherit;}
+.sx-bk .mo{margin:10px 0 0; gap:6px;}
+.sx-bk .mo .sx-chip{padding:5px 11px; font-size:14px;}
+.sx-bk .why{font-size:13px; color:var(--label2); margin:6px 2px 0; line-height:1.4;}
+.sx-bk .t3{font-size:13px; margin:6px 2px 0; color:var(--warn-ink);}
+.sx-bk .t3.ok{color:var(--green);}
+.sx-bk.off .tx, .sx-bk.off .mo, .sx-bk.off .why{opacity:.45;}
 `;
 
 /* ---------- 데이터: /handbook/{가족코드}-shorts/ (cfg · r 레시피 · fp 지문 · q 대기열 · mu 음원 · feed) ---------- */
@@ -2125,7 +2279,7 @@ function paintLog(pane) {
   if (list.length) {
     html += '<div class="sx-list">' + list.map(function (r) {
       /* 직접 올린 편: 48시간 동안은 채널 공개 목록에서 자동으로 찾고(V6.7), 못 찾으면 붙여넣기 */
-      const link = r.yu ? '' : (fw && now - (r.up || 0) < AU.LINK_WAIT ? '<div class="t3 ok">채널에서 링크 찾는 중</div>' : '<div class="t3">유튜브 링크 붙여넣기</div>');
+      const link = (r.yu ? '' : (fw && now - (r.up || 0) < AU.LINK_WAIT ? '<div class="t3 ok">채널에서 링크 찾는 중</div>' : '<div class="t3">유튜브 링크 붙여넣기</div>')) + igLine(r);
       return '<div class="sx-li" data-log="' + esc(r.rid) + '"><div class="th"><img class="sx-ph" data-th="' + esc((r.it[0] || {}).id || '') + '" alt=""></div><div class="tx"><div class="t1">' + esc(r.ti || '') + '</div><div class="t2">' + mdK(E.dkey(new Date(r.up || r.at || Date.now()))) + ' · 빼꼼 #' + esc(r.sn || '?') + '</div>' + link + '</div><span class="bg sx-badge ' + (r.mo === 'B' ? '' : 'gray') + '">' + (r.mo === 'B' ? '자동' : '직접') + '</span></div>';
     }).join('') + '</div>';
   } else html += '<div class="sx-empty">아직 올린 쇼츠가 없어요.<br>추천 탭에서 첫 편을 만들어 보세요.</div>';
@@ -2133,6 +2287,14 @@ function paintLog(pane) {
   pane.innerHTML = html;
   thumbsIn(pane);
   pane.onclick = function (e) { const li = e.target.closest('[data-log]'); if (li) logSheet(li.dataset.log, function () { paintLog(pane); }); };
+}
+/* V6.8 인스타 릴스 상태 — 인스타는 게시를 확인할 방법이 없어 'Zap이 가져감'까지만 안다 */
+function igLine(r) {
+  if (!r || !r.ig || r.mo !== 'B') return '';
+  if (r.ia) return '<div class="t3 ok">인스타 Zap이 가져감 · ' + mdK(E.dkey(new Date(r.ia))) + '</div>';
+  if (r.ix) return '<div class="t3">인스타 Zap이 가져가지 않았어요(7일 지남)</div>';
+  if (D.q[r.rid]) return '<div class="t3 ok">인스타로 보내는 중</div>';
+  return '';
 }
 /* 기록 상세 시트 */
 function logSheet(rid, after) {
@@ -2142,6 +2304,7 @@ function logSheet(rid, after) {
   const sh = sheet('<h3>' + esc(r.ti || '') + '</h3>' + meanHTML(r.ti, lctx) + '<div class="sx-sub">' + mdK(E.dkey(new Date(r.up || r.at || Date.now()))) + ' · 빼꼼 #' + esc(r.sn || '?') + ' · ' + esc(r.fm) + ' · ' + fmtSec(E.total(r.it || [])) + '</div>' +
     '<div class="lbl">사용한 사진 ' + ids.length + '장</div><div class="sx-hs">' + ids.map(function (id) { return '<div style="flex:0 0 54px;height:76px;border-radius:9px;overflow:hidden;background:var(--fill2);"><img class="sx-ph" data-th="' + esc(id) + '" alt=""></div>'; }).join('') + '</div>' +
     (r.mo === 'B' && r.mu ? '<div class="lbl">음악 · 자동 올리기</div><div class="sx-sub" style="font-size:15px;">' + esc(muName(r.mu)) + '</div>' : '<div class="lbl">음악 검색어</div><div class="sx-chips">' + mqChips(r.mq, lctx) + '</div>') +
+    (r.ig && r.mo === 'B' ? '<div class="lbl">인스타 릴스</div><div class="sx-sub" style="font-size:15px;">' + (r.ia ? 'Zap이 가져감 — 올라갔는지는 인스타 앱에서 확인' : (r.ix ? 'Zap이 가져가지 않았어요 — 인스타 Zap이 켜져 있는지 확인' : '보내는 중(유튜브 확인 뒤 인스타를 기다려요)')) + '</div>' : '') +
     '<div class="lbl">설명</div><div class="sx-card" style="background:var(--card);"><div class="sx-desc">' + esc(r.de || '') + '</div></div>' +
     '<div class="sx-btns"><button type="button" class="sx-btn gray" data-act="cpt">제목 복사</button><button type="button" class="sx-btn gray" data-act="cpd">설명 복사</button></div>' +
     (r.yu ? '<button type="button" class="sx-btn" style="margin-top:10px;" data-act="open">유튜브에서 열기</button>' : '<button type="button" class="sx-btn" style="margin-top:10px;" data-act="link">유튜브 링크 붙여넣기</button>') +
@@ -2220,6 +2383,8 @@ function openSettings() {
       } catch (er) { toast('저장 실패 — 인터넷 확인'); }
       paint(); return;
     }
+    const ig = e.target.closest('[data-ig]');
+    if (ig) { await igSet(ig.dataset.ig === '1', paint); return; }
     const md = e.target.closest('[data-mode]');
     if (md) {
       if (md.dataset.mode === 'B' && !bState().ready) { uiAlert('자동 올리기는 첫 설정이 필요해요.\n아래 ‘자동 올리기’에서 연결 주소와 음원부터 넣어 주세요.'); return; }
@@ -2228,7 +2393,7 @@ function openSettings() {
     }
     const a = e.target.closest('[data-act]'); if (!a) return;
     const act = a.dataset.act;
-    if (act === 'fw' || act === 'feed' || act === 'mu') { await setBAct(act, paint); return; }
+    if (act === 'fw' || act === 'feed' || act === 'igfeed' || act === 'mu') { await setBAct(act, paint); return; }
     if (act === 'ch') { const v = await uiPrompt('내 채널 (예: @DWKIM_CA)', C().ch || ''); if (v !== null) { try { await cfgSet('ch', v.trim()); } catch (er) { } paint(); } return; }
     if (act === 'sn') {
       const v = await uiPrompt('다음 시리즈 번호 (채널에 올린 쇼츠 편수 + 1)', String(C().nsn || 1));
@@ -3027,7 +3192,9 @@ async function badge() {
 /* ================= 자동 올리기(B) — 예약·대기열·게시 확인·음원 보관함·홈 카드 (V6.7) =================
    흐름: 마무리(B) → 만들기 → 저장소(R2)에 임시 영상 → 대기열 q/{rid} → 피드 Worker가 공개 시각 지난 편을 RSS로 →
          Zapier(RSS → YouTube 'Upload Video')가 올림 → 앱이 채널 공개 목록(Worker /yt)에서 '빼꼼 #N'을 찾아 게시 확인 → 기록 탭.
-   데이터: …-shorts/q(대기열) · mu(음원) · feed(Worker가 쓰는 Zapier 읽은 기록 {at, tk:{rid:시각}, pv}) · cfg(fw, ch, chId, maxDay, freq) */
+   데이터: …-shorts/q(대기열) · mu(음원) · feed(Worker가 쓰는 Zapier 읽은 기록 {at, tk:{rid:시각}, pv, ig:{at, tk, pv}}) · cfg(fw, fwv, ig, ch, chId, maxDay, freq)
+   V6.8 인스타 릴스: cfg.ig가 켜져 있으면 예약 때 q에 ig·ic(캡션)를 넣고, Worker의 인스타 피드(?ch=ig)를 두 번째 Zap(RSS → Instagram for Business)이 가져간다.
+         유튜브 게시가 확인돼도 인스타 Zap이 가져간 뒤 1시간(AU.IG_HOLD)까지는 대기열·임시 영상을 남긴다(q.yd = 유튜브 확인 시각) */
 const BQ = { tick: 0, run: null, last: 0 };
 function bAudio(cp) { return cp && cp.audio; }
 
@@ -3037,7 +3204,11 @@ async function qPatch(rid, x) { D.q[rid] = Object.assign({}, D.q[rid] || {}, x);
 async function qDel(rid) {
   delete D.q[rid]; await shFetch('q/' + rid, 'DELETE');
   if (D.feed && D.feed.tk && D.feed.tk[rid]) { delete D.feed.tk[rid]; try { await shFetch('feed/tk/' + rid, 'DELETE'); } catch (e) { } }
+  const it = ((D.feed || {}).ig || {}).tk;
+  if (it && it[rid]) { delete it[rid]; try { await shFetch('feed/ig/tk/' + rid, 'DELETE'); } catch (e) { } }
 }
+/* 인스타 Zap이 이 편을 가져간 시각(Worker가 feed/ig/tk에 남김) */
+function igTk(rid) { return (((D.feed || {}).ig || {}).tk || {})[rid] || 0; }
 /* 저장소 파일 이름 — 기본 'shorts/…'. 저장소 Worker가 이 이름을 받지 않으면(예전 Worker 규칙) 앨범 영상과 같은 'v/….mp4'로 올리고,
    그 방식을 cfg.ks에 기억해 두 폰이 다음부터 바로 쓴다. 'v/'는 앨범 영상이 늘 쓰는 이름이라 반드시 통한다 */
 const KS = {
@@ -3068,6 +3239,7 @@ function bState() {
   return { fw: !!c.fw, mu: n, ready: !!c.fw && n > 0, feedAt: (D.feed && D.feed.at) || 0, ok: !!c.fw && n > 0 };
 }
 function feedUrl() { return AU.feedUrl(C().fw, SYNC.url, SYNC.code); }
+function igFeedUrl() { return feedUrl() + '?ch=ig'; }
 function fwUrl(p) { return String(C().fw || '').replace(/\/+$/, '') + p; }
 async function fwFetch(p, ms) {
   const ctl = new AbortController(); const to = setTimeout(function () { ctl.abort(); }, ms || 20000);
@@ -3078,7 +3250,7 @@ async function fwFetch(p, ms) {
 /* ---------- 공개 주기 (12-7) ---------- */
 function bStock() { return scheds().length + AU.recommendable(ALB.meta || {}, C(), today()); }
 function lateYesterday(now) { const y = AU.dkey(now - 86400000); return scheds().filter(function (r) { return r.q.at && AU.dkey(r.q.at) === y && now - r.q.at >= AU.LATE; }).length; }
-function bLevelNow(now) { const c = C(); return AU.level(bStock(), { maxDay: c.maxDay || 3, zapUsed: AU.monthUsed(D.rec, D.q, now), now: now, late: lateYesterday(now) }); }
+function bLevelNow(now) { const c = C(); return AU.level(bStock(), { maxDay: c.maxDay || 3, zapUsed: AU.monthUsed(D.rec, D.q, now), perPost: c.ig ? 2 : 1, now: now, late: lateYesterday(now) }); }
 /* 빈도는 하루 한 번(00시 이후 처음 연 폰이 정함). 단, 멈춤(재고 0)이었는데 재고가 생기면 바로 다시 정한다 */
 async function bLevel() {
   const c = C(), now = Date.now(), td = today();
@@ -3110,6 +3282,12 @@ async function bSweep() {
   }
   for (const rid of Object.keys(D.q)) {
     const x = D.q[rid], r = D.rec[rid];
+    if (r && r.st === 'up' && x && x.ig) {   /* 유튜브는 확인됐고 인스타를 기다리는 편 — 가져간 뒤 1시간, 또는 공개 + 7일에 정리 */
+      const t = igTk(rid);
+      if (t && now - t >= AU.IG_HOLD) { try { r.ia = t; await recPut(rid, r); await qDel(rid); await delTmp(x.k); } catch (e) { } }
+      else if (x.at && now - x.at > AU.KEEP) { try { r.ix = 1; await recPut(rid, r); await qDel(rid); await delTmp(x.k); } catch (e) { } }
+      continue;
+    }
     if (!r || r.st === 'up' || r.st === 'draft') { if (x && now - (x.rs || 0) > 10 * 60000) { try { await qDel(rid); await delTmp(x.k); } catch (e) { } } continue; }
     if (x.at && now - x.at > AU.KEEP) {   /* 공개 시각 + 7일: 임시 영상 정리, 초안으로 되돌림(실패 편) */
       try { await delTmp(x.k); await qDel(rid); await bRestoreUse(r); r.st = 'draft'; r.tv = 0; r.mk = r.mk || now; delete r.pa; delete r.qk; await recPut(rid, r); } catch (e) { }
@@ -3117,6 +3295,8 @@ async function bSweep() {
   }
   const tk = (D.feed && D.feed.tk) || {};
   for (const rid of Object.keys(tk)) { if (!D.q[rid]) { try { delete tk[rid]; await shFetch('feed/tk/' + rid, 'DELETE'); } catch (e) { } } }
+  const itk = ((D.feed || {}).ig || {}).tk || {};
+  for (const rid of Object.keys(itk)) { if (!D.q[rid]) { try { delete itk[rid]; await shFetch('feed/ig/tk/' + rid, 'DELETE'); } catch (e) { } } }
 }
 
 /* ---------- 예약 · 시각 변경 · 취소 ---------- */
@@ -3159,9 +3339,12 @@ async function bReserve(rcp, blob, when, onProg) {
   r.ti = String(r.ti || '').replace(/[<>]/g, ''); r.de = String(r.de || '').replace(/[<>]/g, ''); rcp.ti = r.ti; rcp.de = r.de;
   r.st = 'sched'; r.mo = 'B'; r.rs = now; r.pa = t.at; r.mk = r.mk || now; r.tv = 1; r.by = myName() || ''; r.qk = k;
   r.fp = E.fpOf(idsOf(rcp));
+  const ig = !!C().ig;   /* V6.8: 인스타 릴스도 — 캡션은 예약할 때 만들어 둔다 */
+  if (ig) r.ig = 1; else delete r.ig;
   await recPut(rid, r);
   const x = { at: t.at, rs: now, ti: r.ti || '', de: r.de || '', u: mediaApi('/file/' + k), k: k, sz: blob.size, sn: r.sn || 0, by: r.by };
   if (t.fx) x.fx = 1;
+  if (ig) { x.ig = 1; x.ic = AU.igCaption(x.ti, x.de); }
   await qPut(rid, x);
   try {
     await shFetch('fp/' + r.fp, 'PUT', r.sn || 0); D.fp[r.fp] = r.sn || 0;
@@ -3169,7 +3352,7 @@ async function bReserve(rcp, blob, when, onProg) {
   } catch (e) { logErr('자동 올리기: 지문·사진 사용 기록', e); }
   RC.recs = null;
   try { renderAlbum(); } catch (e) { }
-  rcp.st = 'sched'; rcp.pa = t.at;
+  rcp.st = 'sched'; rcp.pa = t.at; if (ig) rcp.ig = 1;
   return t.at;
 }
 async function bSetTime(rid, t) {
@@ -3197,7 +3380,7 @@ async function bTryTime(rid, after) {
   try { await bSetTime(rid, { at: w.at, fx: w.mode !== 'auto' }); toast('공개 시각을 바꿨어요 — ' + AU.fmtShort(w.at)); if (after) after(w); return true; }
   catch (er) { uiAlert('바꾸지 못했어요 — 인터넷 확인 후 다시 시도해 주세요.'); return false; }
 }
-async function bTaken(rid) { return await shFetch('feed/tk/' + rid); }
+async function bTaken(rid) { return (await shFetch('feed/tk/' + rid)) || (D.q[rid] && D.q[rid].ig ? await shFetch('feed/ig/tk/' + rid) : null); }   /* 유튜브·인스타 Zap 중 하나라도 가져갔으면 */
 async function bTryCancel(rid) {
   const x = D.q[rid]; if (!x) return false;
   const due = function () { return !!(D.q[rid] && D.q[rid].at && D.q[rid].at <= Date.now()); };
@@ -3254,12 +3437,14 @@ async function addYtCard(rid, r) {
   try { renderAlbum(); } catch (e) { }
 }
 async function bPosted(rid, v) {
-  const r = D.rec[rid], x = D.q[rid] || {};
-  r.st = 'up'; r.mo = 'B'; r.up = Date.parse(v.p) || Date.now(); r.yi = v.v; r.yu = 'https://youtube.com/shorts/' + v.v; r.pa = x.at || r.pa;
+  const r = D.rec[rid], x = D.q[rid] || {}, now = Date.now();
+  const igWait = !!x.ig && !(igTk(rid) && now - igTk(rid) >= AU.IG_HOLD);   /* 인스타 Zap이 아직 영상을 받아 가는 중일 수 있음 */
+  r.st = 'up'; r.mo = 'B'; r.up = Date.parse(v.p) || now; r.yi = v.v; r.yu = 'https://youtube.com/shorts/' + v.v; r.pa = x.at || r.pa;
   delete r.tv; delete r.qk;
+  if (x.ig && !igWait) r.ia = igTk(rid);
   await recPut(rid, r);
-  await qDel(rid);
-  await delTmp(x.k);
+  if (igWait) await qPatch(rid, { yd: now });   /* 유튜브 피드에서는 빠지고, 정리는 bSweep이 인스타를 기다렸다가 */
+  else { await qDel(rid); await delTmp(x.k); }
   try { await addYtCard(rid, r); } catch (e) { logErr('자동 올리기: 앨범 카드', e); }
   if ((+C().nsn || 1) <= (r.sn || 0)) { try { await cfgSet('nsn', r.sn + 1); } catch (e) { } }
 }
@@ -3362,9 +3547,16 @@ function whenText(w, nxAt) {
 function bConnHTML(small) {
   const st = bState(), now = Date.now();
   if (!st.fw) return '<div class="sx-conn bad">자동 올리기 연결 주소가 없어요 · 설정에서 넣어 주세요</div>';
-  if (!st.feedAt) return '<div class="sx-conn warn">Zapier가 아직 피드를 읽지 않았어요' + (small ? '' : ' · Zap을 켜면 15분 안에 바뀌어요') + '</div>';
-  if (AU.connOk(st.feedAt, now)) return '<div class="sx-conn ok">Zapier 연결됨 · ' + AU.ago(st.feedAt, now) + ' 확인</div>';
-  return '<div class="sx-conn bad">자동 올리기 연결이 끊겼어요 · 마지막 확인 ' + AU.ago(st.feedAt, now) + '</div>';
+  const ig = !!C().ig;   /* 인스타도 쓰면 두 Zap을 '유튜브 Zap' · '인스타 Zap'으로 나눠 부른다 */
+  let h;
+  if (!st.feedAt) h = '<div class="sx-conn warn">' + (ig ? '유튜브 Zap이' : 'Zapier가') + ' 아직 피드를 읽지 않았어요' + (small ? '' : ' · Zap을 켜면 15분 안에 바뀌어요') + '</div>';
+  else if (AU.connOk(st.feedAt, now)) h = '<div class="sx-conn ok">' + (ig ? '유튜브 Zap' : 'Zapier') + ' 연결됨 · ' + AU.ago(st.feedAt, now) + ' 확인</div>';
+  else h = '<div class="sx-conn bad">' + (ig ? '유튜브 Zap 연결이' : '자동 올리기 연결이') + ' 끊겼어요 · 마지막 확인 ' + AU.ago(st.feedAt, now) + '</div>';
+  if (!ig) return h;
+  const ia = ((D.feed || {}).ig || {}).at || 0;   /* V6.8 인스타 Zap */
+  if (!ia) return h + '<div class="sx-conn warn">인스타 Zap이 아직 피드를 읽지 않았어요' + (small ? '' : ' · 인스타 Zap을 켜면 15분 안에 바뀌어요') + '</div>';
+  if (AU.connOk(ia, now)) return h + '<div class="sx-conn ok">인스타 Zap 연결됨 · ' + AU.ago(ia, now) + ' 확인</div>';
+  return h + '<div class="sx-conn bad">인스타 Zap 연결이 끊겼어요 · 마지막 확인 ' + AU.ago(ia, now) + '</div>';
 }
 function muName(mu) { const t = mu && D.mu[mu.id]; return t ? (t.n || '이름 없는 곡') : '음악 없음'; }
 /* 자동 올리기용 준비: 곡 고르기 → 박자 맞춤 → 설명에 저작자 표시 */
@@ -3398,7 +3590,7 @@ function finBRest(rcp, scr) {
   return '<div class="sx-row" style="margin-bottom:6px;"><span class="sx-sub" style="font-size:14px;">음악 · 음원 보관함</span>' + (musics().length > 1 ? '<button type="button" class="sx-lnk" data-act="munext">다른 곡</button>' : '') + '</div>' +
     '<div class="sx-card" style="padding:14px 16px;">' + (t ? '<div style="font-size:17px;font-weight:700;">' + esc(t.n || '이름 없는 곡') + '</div><div class="sx-sub">' + esc(t.md || '분위기 없음') + (t.bpm ? ' · ' + t.bpm + ' BPM · 박자에 맞춰 전환' : '') + ' · ' + mmss(+t.off || 0) + '부터</div>' + (t.cr ? '<div class="sx-sub" style="margin-top:4px;">설명에 저작자 표시를 넣었어요</div>' : '')
       : '<div class="sx-sub">음원 보관함에 곡이 없어요.</div><button type="button" class="sx-btn sm soft" style="margin-top:8px;" data-act="mulib">곡 넣으러 가기</button>') + '</div>' +
-    '<p class="sx-sub" style="margin:4px 6px 0;">자동 올리기는 넣어 둔 무료 곡만 써요. 인기곡을 쓰려면 직접 올리기로 바꾸세요.</p>' +
+    '<p class="sx-sub" style="margin:4px 6px 0;">자동 올리기는 넣어 둔 무료 곡만 써요. 인기곡을 쓰려면 직접 올리기로 바꾸세요.' + (C().ig ? ' 인스타 릴스에도 같은 영상이 올라가요(캡션 = 제목 + 설명).' : '') + '</p>' +
     '<div class="sx-row" style="margin:14px 2px 6px;"><span class="sx-sub" style="font-size:14px;">공개 시각</span></div>' +
     '<div class="sx-grp"><div class="sx-set tap" data-act="when"><span>' + esc(whenText(scr.when, scr.nxAt)) + '</span><span class="v">' + ICO.chev + '</span></div></div>' +
     bConnHTML(false);
@@ -3414,7 +3606,7 @@ function bDoneScreen(rcp, out) {
     const t = rcp.mu && D.mu[rcp.mu.id];
     el.innerHTML = navBar({ title: '예약 완료', right: '<button type="button" class="sx-nbtn mute" data-act="home">완료</button>' }) +
       '<div class="sx-body"><div style="font-size:24px;font-weight:800;letter-spacing:-.02em;margin:6px 2px 4px;">' + (x.at ? esc(AU.fmt(x.at)) + '에<br>올라가요' : '공개 시각이 아직 없어요') + '</div>' +
-      '<div class="sx-sub" style="font-size:15px;margin:0 2px 14px;">' + (x.at ? '정한 시각 후 15분 안에 자동으로 올라가요. 폰을 꺼 두어도 돼요.' : '재고가 생기면 자동으로 시각이 정해져요.') + '</div>' +
+      '<div class="sx-sub" style="font-size:15px;margin:0 2px 14px;">' + (x.at ? '정한 시각 후 15분 안에 자동으로 올라가요' + (x.ig ? '(유튜브 · 인스타 릴스)' : '') + '. 폰을 꺼 두어도 돼요.' : '재고가 생기면 자동으로 시각이 정해져요.') + '</div>' +
       '<div class="sx-done"><div class="th">' + (url ? '<video src="' + url + '" muted playsinline loop autoplay></video>' : '<img class="sx-ph" data-th="' + esc(((rcp.it || [])[0] || {}).id || '') + '" alt="">') + '</div><div style="min-width:0;"><div style="font-size:17px;font-weight:700;">' + esc(rcp.ti || '') + '</div>' + meanHTML(rcp.ti, ctxFor(rcp)) +
       '<div class="sx-sub" style="margin-top:4px;">빼꼼 #' + esc(rcp.sn || '?') + ' · ' + esc(rcp.fm) + ' · ' + Math.round(E.total(rcp.it || [])) + '초</div><div class="sx-sub">음악: ' + esc(t ? t.n : '없음') + '</div></div></div>' +
       '<div class="sx-grp"><div class="sx-set tap" data-act="when"><span>공개 시각</span><span class="v">' + (x.at ? esc(AU.fmtShort(x.at)) : '미정') + ICO.chev + '</span></div>' +
@@ -3442,12 +3634,13 @@ const ST_CLS = { sched: 'gray', wait: 'blue', taking: 'blue', late: 'amber', fai
 function qStatus(r, now) { return AU.status(r.q, ((D.feed || {}).tk || {})[r.rid], (D.feed || {}).at, now); }
 function qSub(r, st, now) {
   const x = r.q, tk = ((D.feed || {}).tk || {})[r.rid];
+  const ig = x.ig ? (st === 'sched' ? ' · 인스타도' : (igTk(r.rid) ? ' · 인스타 Zap 가져감' : ' · 인스타 대기')) : '';
   if (!x.at) return '시각 미정 — 재고가 생기면 정해져요';
-  if (st === 'sched') return (x.fx ? '직접 정한 시각' : '자동 시각') + (x.adj ? ' · 시각 조정됨' : '');
-  if (st === 'wait') return 'Zapier가 가져가기를 기다리는 중 (15분 안)';
-  if (st === 'taking') return 'Zapier가 가져감' + (tk ? ' · ' + AU.ago(tk, now) : '') + ' · 게시 확인 대기';
-  if (st === 'late') return '공개 시각 + 2시간 확인 안 됨 · 앱을 열 때마다 다시 확인';
-  return '공개 시각 + 24시간 확인 안 됨';
+  if (st === 'sched') return (x.fx ? '직접 정한 시각' : '자동 시각') + (x.adj ? ' · 시각 조정됨' : '') + ig;
+  if (st === 'wait') return 'Zapier가 가져가기를 기다리는 중 (15분 안)' + ig;
+  if (st === 'taking') return 'Zapier가 가져감' + (tk ? ' · ' + AU.ago(tk, now) : '') + ' · 게시 확인 대기' + ig;
+  if (st === 'late') return '공개 시각 + 2시간 확인 안 됨 · 앱을 열 때마다 다시 확인' + ig;
+  return '공개 시각 + 24시간 확인 안 됨' + ig;
 }
 function paintQueue(pane, scr) {
   if (!D.ok) { pane.innerHTML = '<div class="sx-empty">불러오는 중…</div>'; return; }
@@ -3514,7 +3707,7 @@ function openMusic() {
     const used = {}; Object.keys(D.rec).forEach(function (k) { const r = D.rec[k]; if (r && r.mu && r.mu.id && (r.st === 'up' || r.st === 'sched')) used[r.mu.id] = (used[r.mu.id] || 0) + 1; });
     const recent = AU.recentMusic(D.rec, 5);
     el.innerHTML = navBar({ back: '설정', title: '음원 보관함', right: '<button type="button" class="sx-nbtn" data-act="add" style="font-weight:600;">추가</button>' }) +
-      '<div class="sx-body"><p class="sx-sub" style="margin:2px 4px 12px;">자동 올리기에 쓰는 곡이에요. 유튜브 스튜디오 → 오디오 보관함에서 받은 곡만 넣어 주세요(‘저작자 표시 필요 없음’ 권장). 곡마다 20초 구간만 써요.</p>' +
+      '<div class="sx-body"><p class="sx-sub" style="margin:2px 4px 12px;">자동 올리기에 쓰는 곡이에요. 유튜브 스튜디오 → 오디오 보관함에서 받은 곡만 넣어 주세요(‘저작자 표시 필요 없음’ 권장). ‘추가’에서 파일을 여러 개 고르면 한 번에 넣어요 — 곡마다 20초 구간·분위기를 자동으로 골라요.</p>' +
       '<div class="sx-hs" style="margin-bottom:12px;">' + [''].concat(E.MOODS).map(function (m) { return '<button type="button" class="sx-chip' + (scr.f === m ? ' on' : '') + '" data-f="' + m + '">' + (m || '전체 ' + all.length) + '</button>'; }).join('') + '</div>' +
       (list.length ? '<div class="sx-list">' + list.map(function (t) {
         return '<div class="sx-li" data-mu="' + esc(t.id) + '" style="min-height:64px;"><div class="tx"><div class="t1">' + esc(t.n || '이름 없는 곡') + '</div><div class="t2">' + esc(t.md || '분위기 없음') + (t.bpm ? ' · ' + t.bpm + ' BPM' : '') + ' · ' + mmss(+t.off || 0) + '~' + mmss((+t.off || 0) + 20) + ' · 사용 ' + (used[t.id] || 0) + '회' + (recent.indexOf(t.id) > -1 ? ' · 최근 사용' : '') + '</div></div>' +
@@ -3530,85 +3723,135 @@ function openMusic() {
   });
   push(scr); paint();
 }
-/* 곡 추가·수정 — 파일 · 파형에서 20초 구간 · 미리 듣기 · 분위기 · 빠르기 · 저작자 표시 */
-function musicSheet(id, after) {
-  const old = id ? Object.assign({ id: id }, D.mu[id]) : null;
-  const st = { file: null, buf: null, peaks: null, dur: old ? (+old.dur || 0) : 0, off: old ? (+old.off || 0) : 0, md: old ? (old.md || '') : '', bpm: old ? (+old.bpm || 0) : 0, est: 0, cr: old ? (old.cr || '') : '', need: !!(old && old.cr), n: old ? (old.n || '') : '', aud: null, au: '', playing: false, busy: false };
-  const sh = sheet('<h3>' + (old ? '곡 수정' : '곡 추가') + '</h3><div class="sx-sub">유튜브 스튜디오 오디오 보관함에서 받은 파일(mp3·m4a·wav)</div>' +
-    (old ? '' : '<button type="button" class="sx-btn soft" data-act="pick" style="margin-top:12px;">파일 고르기</button><input type="file" accept="audio/*,.mp3,.m4a,.wav,.aac,.ogg" data-k="file" hidden>') +
+/* 곡 미리 듣기 — 재생은 누른 순간에 시작하고(아이폰은 누른 순간에만 소리를 낸다) 곡 정보가 읽히면 시작점으로 옮긴다. 20초 뒤 멈춤 */
+function muPlay(aud, src, off, onEnd) {
+  if (aud.src !== src) aud.src = src;
+  const seek = function () { try { if (Math.abs(aud.currentTime - off) > 0.3) aud.currentTime = off; } catch (e) { } };
+  if (aud.readyState >= 1) seek(); else aud.addEventListener('loadedmetadata', seek, { once: true });
+  const tok = {};
+  aud.__tok = tok;
+  const end = function () { if (aud.__tok !== tok) return; aud.__tok = null; try { aud.pause(); } catch (e) { } onEnd(); };
+  const p = aud.play(); if (p && p.catch) p.catch(end);   /* 재생을 막으면(무음 모드 등) 버튼을 되돌린다 */
+  const chk = function () { if (aud.__tok !== tok) return; if (aud.ended || aud.currentTime >= off + 20) { end(); return; } setTimeout(chk, 200); };
+  setTimeout(chk, 400);
+}
+function muStop(aud) { if (!aud) return; aud.__tok = null; try { aud.pause(); } catch (e) { } }
+function muChips(md, am) {
+  return E.MOODS.map(function (m) { return '<button type="button" class="sx-chip' + (md === m ? ' on' : '') + '" data-v="' + m + '">' + m + (am === m ? '<span class="k">추천</span>' : '') + '</button>'; }).join('');
+}
+function muFileName(f) { return String((f && f.name) || '').replace(/\.[a-z0-9]{2,4}$/i, '').replace(/[_]+/g, ' ').trim(); }
+function muExt(f) { return (String((f && f.name) || '').match(/\.([a-z0-9]{2,4})$/i) || [0, 'mp3'])[1].toLowerCase(); }
+function muNewId() { return 'm' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
+/* 파일 → 곡 분석(V6.8): 쓸 20초 구간 · 빠르기 · 추천 분위기 · 이유 · 파형. 22050Hz로 풀어 폰 메모리를 아낀다 */
+async function muAnalyze(blob) {
+  const buf = await R.decode((await blob.arrayBuffer()).slice(0), 22050);
+  const an = R.analyze(buf);
+  an.pk = R.peaks(buf, 120);
+  return an;
+}
+/* 곡 추가·수정 — 파일(여러 개 고르면 일괄 화면으로) · 자동 추천(20초 구간·분위기·빠르기) · 파형에서 구간 옮기기 · 미리 듣기 · 저작자 표시.
+   o.row: 일괄 화면의 한 줄을 고칠 때 — 저장소에 보내지 않고 그 줄만 바꾼다 */
+function musicSheet(id, after, o) {
+  o = o || {};
+  const row = o.row || null, old = id ? Object.assign({ id: id }, D.mu[id]) : null, src = row || old || {};
+  const st = { file: row ? row.file : null, peaks: src.pk || null, dur: +src.dur || 0, off: +src.off || 0, md: src.md || '', bpm: +src.bpm || 0, est: row ? (+row.bpm || 0) : 0, conf: row ? row.conf : -1, am: src.am || '', why: src.why || '', cr: src.cr || '', need: !!src.cr, n: src.n || '', aud: null, au: row ? (row.au || '') : '', own: !row, playing: false, busy: false, auto: !!row };
+  const title = row ? '곡 확인' : (old ? '곡 수정' : '곡 추가');
+  const sh = sheet('<h3>' + title + '</h3><div class="sx-sub">유튜브 스튜디오 오디오 보관함에서 받은 파일(mp3·m4a·wav)</div>' +
+    (old || row ? '' : '<button type="button" class="sx-btn soft" data-act="pick" style="margin-top:12px;">파일 고르기 · 여러 개 가능</button><input type="file" accept="audio/*,.mp3,.m4a,.wav,.aac,.ogg" data-k="file" multiple hidden>') +
+    (old ? '<button type="button" class="sx-btn soft" data-act="auto" style="margin-top:12px;">자동 추천 다시 받기 · 구간·분위기·빠르기</button>' : '') +
     '<div class="lbl">곡 이름</div><input type="text" class="sx-in" data-k="n" maxlength="60" value="' + esc(st.n) + '" placeholder="예: Sunny Walk — Artist">' +
-    '<div class="lbl">쓸 20초 구간 — 파형을 눌러 옮기기 · <b class="rg"></b></div><div class="sx-wave"><canvas></canvas><div class="win"></div><div class="ld sx-sub"></div></div>' +
+    '<div class="lbl">쓸 20초 구간 — <span class="rgw">파형을 눌러 옮기기</span> · <b class="rg"></b></div><div class="sx-wave"><canvas></canvas><div class="win"></div><div class="ld sx-sub"></div></div>' +
     '<div class="sx-btns" style="margin-top:8px;"><button type="button" class="sx-btn gray" data-act="play">▶ 미리 듣기</button></div>' +
-    '<div class="lbl">분위기 — 하나</div><div class="sx-chips" data-g="md">' + E.MOODS.map(function (m) { return '<button type="button" class="sx-chip' + (st.md === m ? ' on' : '') + '" data-v="' + m + '">' + m + '</button>'; }).join('') + '</div>' +
+    '<div class="lbl">분위기 — 하나</div><div class="sx-chips" data-g="md"></div><div class="sx-sub why" style="margin-top:6px;"></div>' +
     '<div class="lbl">빠르기 · <span class="est"></span></div><div class="sx-step" style="justify-content:flex-start;"><button type="button" data-b="-1">−</button><b class="bpm"></b><button type="button" data-b="1">+</button></div>' +
     '<div class="lbl">저작자 표시</div><div class="sx-mini" style="display:flex;"><button type="button" style="flex:1;" data-cr="0">필요 없음</button><button type="button" style="flex:1;" data-cr="1">필요(CC)</button></div>' +
     '<textarea class="sx-ta" rows="3" data-k="cr" placeholder="오디오 보관함의 저작자 표시 문구를 붙여넣기" style="margin-top:8px;">' + esc(st.cr) + '</textarea>' +
     '<div class="msg sx-sub" style="color:var(--warn-ink);min-height:1em;margin-top:6px;"></div>' +
-    '<div class="sx-btns">' + (old ? '<button type="button" class="sx-btn gray" style="color:var(--red-sys);" data-act="del">삭제</button>' : '<button type="button" class="sx-btn gray" data-act="x">취소</button>') + '<button type="button" class="sx-btn" data-act="save">' + (old ? '저장' : '넣기') + '</button></div>',
-    { onClose: function () { stop(); if (st.au) { try { URL.revokeObjectURL(st.au); } catch (e) { } } } });
+    '<div class="sx-btns">' + (old ? '<button type="button" class="sx-btn gray" style="color:var(--red-sys);" data-act="del">삭제</button>' : '<button type="button" class="sx-btn gray" data-act="x">취소</button>') + '<button type="button" class="sx-btn" data-act="save">' + (row ? '확인' : (old ? '저장' : '넣기')) + '</button></div>',
+    { onClose: function () { stop(); if (st.own && st.au) { try { URL.revokeObjectURL(st.au); } catch (e) { } } } });
   const cv = $(sh.el, '.sx-wave canvas'), win = $(sh.el, '.sx-wave .win');
-  function stop() { if (st.aud) { try { st.aud.pause(); } catch (e) { } } st.playing = false; const b = $(sh.el, '[data-act="play"]'); if (b) b.textContent = '▶ 미리 듣기'; }
+  const msg = function (t) { $(sh.el, '.msg').textContent = t || ''; };
+  function stop() { muStop(st.aud); st.playing = false; const b = $(sh.el, '[data-act="play"]'); if (b) b.textContent = '▶ 미리 듣기'; }
+  function paintMood() {
+    $(sh.el, '[data-g="md"]').innerHTML = muChips(st.md, st.am);
+    $(sh.el, '.why').textContent = st.am ? '추천 ‘' + st.am + '’ — ' + st.why + (st.md && st.md !== st.am ? ' · 직접 고름' : '') : '';
+  }
   function paint() {
+    $(sh.el, '.rgw').textContent = st.auto ? '가장 힘 있는 구간을 자동으로 골랐어요 · 파형을 눌러 옮기기' : '파형을 눌러 옮기기';
     $(sh.el, '.rg').textContent = st.dur ? mmss(st.off) + ' ~ ' + mmss(Math.min(st.dur, st.off + 20)) + ' (곡 ' + mmss(st.dur) + ')' : '파일을 고르면 보여요';
     $(sh.el, '.bpm').textContent = st.bpm ? st.bpm + ' BPM' : '모름';
-    $(sh.el, '.est').textContent = st.est ? '자동 추정 ' + st.est + ' BPM — 틀리면 고치세요' : (old ? '저장된 값' : '파일을 고르면 추정해요');
+    $(sh.el, '.est').textContent = st.est ? (st.conf >= 0 && st.conf < 0.15 ? '박자가 뚜렷하지 않아요 · 추정 ' + st.est + ' BPM' : '자동 추정 ' + st.est + ' BPM — 틀리면 고치세요') : (old ? '저장된 값' : '파일을 고르면 추정해요');
     $$(sh.el, '[data-cr]').forEach(function (b) { b.classList.toggle('on', (b.dataset.cr === '1') === st.need); });
     $(sh.el, '[data-k="cr"]').style.display = st.need ? '' : 'none';
+    paintMood();
     const W = cv.clientWidth || 300, H = 64, dpr = Math.min(2, window.devicePixelRatio || 1);
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
     const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
-    const pk = st.peaks || (old && old.pk) || null;
+    const pk = st.peaks;
     if (pk) { g.fillStyle = 'rgba(120,120,128,.55)'; const bw = W / pk.length; pk.forEach(function (v, i) { const h2 = Math.max(1, v * (H - 6)); g.fillRect(i * bw, (H - h2) / 2, Math.max(1, bw - 1), h2); }); }
     if (st.dur) { win.style.display = ''; win.style.left = (st.off / st.dur * 100) + '%'; win.style.width = Math.min(100, 20 / st.dur * 100) + '%'; } else win.style.display = 'none';
   }
+  /* 분석 결과 넣기 — 새 파일·다시 받기: 구간·빠르기·추천 분위기를 모두 자동 값으로 */
+  function useAna(an) {
+    st.dur = an.dur; st.peaks = an.pk; st.off = an.off; st.est = an.bpm; st.bpm = an.bpm; st.conf = an.conf; st.am = an.md; st.md = an.md; st.why = an.why; st.auto = true;
+  }
   async function load(file) {
-    st.file = file; st.busy = true;
-    $(sh.el, '.ld').textContent = '파일 읽는 중…';
+    st.file = file; st.busy = true; msg('');
+    $(sh.el, '.ld').textContent = '곡을 살펴보는 중…';
     try {
-      const ab = await file.arrayBuffer();
-      st.buf = await R.decode(ab.slice(0), 22050);
-      st.dur = Math.round(st.buf.duration * 10) / 10;
-      st.peaks = R.peaks(st.buf, 120);
-      st.off = Math.min(st.off, Math.max(0, st.dur - 20));
-      st.est = R.bpmOf(st.buf, 0, 60); if (!st.bpm) st.bpm = st.est;
-      if (!st.n) { st.n = String(file.name || '').replace(/\.[a-z0-9]{2,4}$/i, '').replace(/[_]+/g, ' ').trim(); $(sh.el, '[data-k="n"]').value = st.n; }
+      useAna(await muAnalyze(file));
+      if (!st.n) { st.n = muFileName(file); $(sh.el, '[data-k="n"]').value = st.n; }
       if (st.au) { try { URL.revokeObjectURL(st.au); } catch (e) { } }
       st.au = URL.createObjectURL(file);
       $(sh.el, '.ld').textContent = '';
-    } catch (e) { $(sh.el, '.ld').textContent = ''; $(sh.el, '.msg').textContent = '이 파일은 열 수 없어요 — mp3·m4a·wav 파일을 골라 주세요.'; st.file = null; st.buf = null; }
+    } catch (e) { $(sh.el, '.ld').textContent = ''; msg('이 파일은 열 수 없어요 — mp3·m4a·wav 파일을 골라 주세요.'); st.file = null; }
     st.busy = false; paint();
   }
-  if (old && old.k) { st.au = ''; }
-  function setOff(clientX) { if (!st.dur) return; const r = cv.getBoundingClientRect(); const p = Math.max(0, Math.min(1, (clientX - r.left) / r.width)); st.off = Math.round(Math.max(0, Math.min(st.dur - 20, p * st.dur - 10)) * 10) / 10; if (st.off < 0) st.off = 0; stop(); paint(); }
+  /* 저장된 곡 받기(미리 듣기·다시 분석) — 저장소가 영상 형식으로 내려줘도 아이폰이 재생하게 원래 형식으로 */
+  async function fetchOld() {
+    const res = await fetch(mediaApi('/file/' + old.k)); if (!res.ok) throw new Error('HTTP ' + res.status);
+    const bl = new Blob([await res.blob()], { type: old.ct || 'audio/mpeg' });
+    if (!st.au) st.au = URL.createObjectURL(bl);
+    return bl;
+  }
+  function setOff(clientX) { if (!st.dur) return; const r = cv.getBoundingClientRect(); const p = Math.max(0, Math.min(1, (clientX - r.left) / r.width)); st.off = Math.round(Math.max(0, Math.min(st.dur - 20, p * st.dur - 10)) * 10) / 10; if (st.off < 0) st.off = 0; st.auto = false; stop(); paint(); }
   let drag = false;
   $(sh.el, '.sx-wave').addEventListener('pointerdown', function (e) { drag = true; setOff(e.clientX); try { e.target.setPointerCapture(e.pointerId); } catch (er) { } });
   $(sh.el, '.sx-wave').addEventListener('pointermove', function (e) { if (drag) setOff(e.clientX); });
   $(sh.el, '.sx-wave').addEventListener('pointerup', function () { drag = false; });
-  sh.el.addEventListener('change', function (e) { if (e.target.dataset.k === 'file' && e.target.files && e.target.files[0]) load(e.target.files[0]); });
+  sh.el.addEventListener('change', function (e) {
+    if (e.target.dataset.k !== 'file' || !e.target.files || !e.target.files.length) return;
+    const fl = Array.prototype.slice.call(e.target.files);
+    if (fl.length > 1) { sh.close(); openMusicBulk(fl, after); return; }   /* 여러 개 → 일괄 화면 */
+    load(fl[0]);
+  });
   sh.el.addEventListener('input', function (e) { const k = e.target.dataset.k; if (k === 'n') st.n = e.target.value; else if (k === 'cr') st.cr = e.target.value; });
   sh.el.addEventListener('click', async function (e) {
-    const c = e.target.closest('[data-g="md"] .sx-chip'); if (c) { st.md = st.md === c.dataset.v ? '' : c.dataset.v; $$(sh.el, '[data-g="md"] .sx-chip').forEach(function (b) { b.classList.toggle('on', b.dataset.v === st.md); }); return; }
+    const c = e.target.closest('[data-g="md"] .sx-chip'); if (c) { st.md = c.dataset.v; paintMood(); return; }   /* 고르기만(다시 눌러도 그대로) */
     const b = e.target.closest('[data-b]'); if (b) { st.bpm = Math.max(50, Math.min(220, (st.bpm || st.est || 100) + (+b.dataset.b))); paint(); return; }
     const cr = e.target.closest('[data-cr]'); if (cr) { st.need = cr.dataset.cr === '1'; paint(); return; }
     const a = e.target.closest('[data-act]'); if (!a) return;
     const act = a.dataset.act;
     if (act === 'x') { sh.close(); return; }
     if (act === 'pick') { $(sh.el, '[data-k="file"]').click(); return; }
+    if (act === 'auto') {
+      if (st.busy) return;
+      st.busy = true; stop(); msg('곡을 받아 살펴보는 중…'); a.disabled = true;
+      try { useAna(await muAnalyze(await fetchOld())); msg('자동 추천을 받았어요 — ‘저장’을 눌러야 바뀌어요.'); }
+      catch (er) { msg('곡을 받지 못했어요 — 인터넷을 확인해 주세요.'); }
+      st.busy = false; a.disabled = false; paint(); return;
+    }
     if (act === 'play') {
       if (st.playing) { stop(); return; }
-      let src = st.au;
-      if (!src && old && old.k) {   /* 저장된 곡은 받아서 원래 형식으로 재생(저장소가 영상 형식으로 내려줘도 아이폰이 재생하게) */
-        $(sh.el, '.msg').textContent = '곡을 받는 중…';
-        try { const res = await fetch(mediaApi('/file/' + old.k)); if (!res.ok) throw new Error('HTTP ' + res.status); const bl = await res.blob(); st.au = URL.createObjectURL(new Blob([bl], { type: old.ct || 'audio/mpeg' })); src = st.au; $(sh.el, '.msg').textContent = ''; }
-        catch (er) { $(sh.el, '.msg').textContent = '곡을 받지 못했어요 — 인터넷을 확인해 주세요.'; return; }
+      if (!st.au && old && old.k) {
+        msg('곡을 받는 중…');
+        try { await fetchOld(); msg(''); } catch (er) { msg('곡을 받지 못했어요 — 인터넷을 확인해 주세요.'); return; }
       }
-      if (!src) { $(sh.el, '.msg').textContent = '파일을 먼저 골라 주세요.'; return; }
+      if (!st.au && row) { st.au = row.au = URL.createObjectURL(row.file); }
+      if (!st.au) { msg('파일을 먼저 골라 주세요.'); return; }
       if (!st.aud) { st.aud = new Audio(); st.aud.preload = 'auto'; }
-      if (st.aud.src !== src) st.aud.src = src;
-      try { st.aud.currentTime = st.off; } catch (er) { }
-      const p = st.aud.play(); if (p && p.catch) p.catch(function () { });
       st.playing = true; a.textContent = '■ 멈춤';
-      const t0 = st.off; const chk = function () { if (!st.playing) return; if (st.aud.currentTime >= t0 + 20 || st.aud.ended) { stop(); return; } setTimeout(chk, 200); }; setTimeout(chk, 300);
+      muPlay(st.aud, st.au, st.off, function () { st.playing = false; a.textContent = '▶ 미리 듣기'; });
       return;
     }
     if (act === 'del') {
@@ -3619,31 +3862,147 @@ function musicSheet(id, after) {
       return;
     }
     if (act === 'save') {
-      const msg = $(sh.el, '.msg');
-      if (!old && !st.file) { msg.textContent = '파일을 골라 주세요.'; return; }
-      if (st.busy) { msg.textContent = '파일을 읽는 중이에요.'; return; }
-      if (!st.md) { msg.textContent = '분위기를 하나 골라 주세요.'; return; }
-      if (st.need && !String(st.cr || '').trim()) { msg.textContent = '저작자 표시 문구를 붙여넣어 주세요.'; return; }
-      if (st.dur && st.dur < 8) { msg.textContent = '너무 짧은 곡이에요(8초 이상).'; return; }
+      if (!old && !row && !st.file) { msg('파일을 골라 주세요.'); return; }
+      if (st.busy) { msg('곡을 살펴보는 중이에요.'); return; }
+      if (!st.md) { msg('분위기를 하나 골라 주세요.'); return; }
+      if (st.need && !String(st.cr || '').trim()) { msg('저작자 표시 문구를 붙여넣어 주세요.'); return; }
+      if (st.dur && st.dur < 8) { msg('너무 짧은 곡이에요(8초 이상).'); return; }
+      const name = String(st.n || '').trim() || '이름 없는 곡', crx = st.need ? String(st.cr).trim() : '';
+      if (row) {   /* 일괄 화면의 한 줄만 바꾼다 */
+        Object.assign(row, { n: name, md: st.md, bpm: st.bpm || 0, cr: crx, off: st.off });
+        sh.close(); if (after) after(); return;
+      }
       a.disabled = true;
       try {
-        const mid = id || ('m' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5));
-        const rec = Object.assign({}, old || {}, { n: String(st.n || '').trim() || '이름 없는 곡', md: st.md, bpm: st.bpm || 0, cr: st.need ? String(st.cr).trim() : '', off: st.off, dur: st.dur, at: (old && old.at) || Date.now(), by: myName() || '' });
+        const mid = id || muNewId();
+        const rec = Object.assign({}, old || {}, { n: name, md: st.md, bpm: st.bpm || 0, cr: crx, off: st.off, dur: st.dur, am: st.am || '', why: st.why || '', at: (old && old.at) || Date.now(), by: myName() || '' });
         delete rec.id;
+        if (st.peaks) rec.pk = st.peaks;
         if (st.file) {
-          const ext = (String(st.file.name || '').match(/\.([a-z0-9]{2,4})$/i) || [0, 'mp3'])[1].toLowerCase();
-          msg.textContent = '저장소로 보내는 중…';
-          const k = await mediaPut(st.file, 'mu', mid, ext, st.file.type || 'audio/mpeg', function (p) { msg.textContent = '저장소로 보내는 중… ' + Math.round(p * 100) + '%'; });
+          msg('저장소로 보내는 중…');
+          const k = await mediaPut(st.file, 'mu', mid, muExt(st.file), st.file.type || 'audio/mpeg', function (p) { msg('저장소로 보내는 중… ' + Math.round(p * 100) + '%'); });
           if (old && old.k && old.k !== k) { try { await mediaFetch(mediaApi('/file/' + old.k), { method: 'DELETE' }, 20000); } catch (er) { } }
-          rec.k = k; rec.ct = st.file.type || 'audio/mpeg'; rec.sz = st.file.size; rec.pk = st.peaks;
+          rec.k = k; rec.ct = st.file.type || 'audio/mpeg'; rec.sz = st.file.size;
         }
         await shFetch('mu/' + mid, 'PUT', rec); D.mu[mid] = rec;
         sh.close(); toast(old ? '곡을 저장했어요' : '음원 보관함에 넣었어요'); if (after) after();
-      } catch (er) { a.disabled = false; msg.textContent = '저장하지 못했어요 — 인터넷 확인 후 다시 시도해 주세요.'; }
+      } catch (er) { a.disabled = false; msg('저장하지 못했어요 — 인터넷 확인 후 다시 시도해 주세요.'); }
     }
   });
   requestAnimationFrame(paint);
   return sh;
+}
+
+/* ---------- SH-09B 여러 곡 한 번에 넣기 (V6.8) ----------
+   고른 파일을 차례로 살펴(구간·빠르기·추천 분위기) → 목록에서 확인·수정 → 체크한 곡을 한꺼번에 저장소로.
+   같은 이름이나 같은 크기의 곡이 이미 있으면 '이미 있음'으로 체크를 빼 둔다 */
+const MU_MAP = '오디오 보관함에서 분위기(Mood)로 골라 받았다면 — Calm → 졸림·포근 · Happy·Bright → 신남 · Funky → 엉뚱 · Inspirational·Dramatic → 의젓 · Romantic → 포근';
+function openMusicBulk(files, after) {
+  const el = scrEl();
+  const rows = files.map(function (f, i) {
+    const n = muFileName(f) || ('곡 ' + (i + 1));
+    const dup = musics().some(function (t) { return t.n === n || (t.sz && t.sz === f.size); });
+    return { i: i, file: f, n: n, st: 'wait', on: !dup, dup: dup, md: '', am: '', why: '', off: 0, dur: 0, bpm: 0, conf: 0, pk: null, cr: '', au: '', p: 0 };
+  });
+  const scr = { el: el, run: 'ana', aud: null, pl: -1, stop: false, gone: false };
+  const ST = { wait: '기다리는 중', ana: '살펴보는 중…', bad: '열 수 없는 파일이라 빼요', short: '너무 짧은 곡(8초 미만)이라 빼요', up: '보내는 중', done: '넣었어요', fail: '보내지 못했어요 — 다시 보내 보세요' };
+  const can = function (r) { return r.st === 'ok' || r.st === 'fail'; };
+  const picked = function () { return rows.filter(function (r) { return r.on && can(r); }); };
+  function rowHTML(r) {
+    const live = can(r) || r.st === 'up';
+    const meta = r.dur ? mmss(r.dur) + (r.bpm ? ' · ' + (r.conf < 0.15 ? '박자 약함' : r.bpm + ' BPM') : '') + ' · 구간 ' + mmss(r.off) + '~' + mmss(Math.min(r.dur, r.off + 20)) : '';
+    const line = r.st === 'ok' ? (r.dup ? '<div class="t3">이미 보관함에 같은 곡이 있는 것 같아요 — 넣으려면 체크</div>' : '') + (r.cr ? '<div class="t3 ok">저작자 표시 넣음</div>' : '')
+      : '<div class="t3' + (r.st === 'done' ? ' ok' : '') + '">' + ST[r.st] + (r.st === 'up' ? ' ' + Math.round(r.p * 100) + '%' : '') + '</div>';
+    return '<div class="sx-bk' + (r.on && live ? '' : ' off') + '" data-r="' + r.i + '"><div class="r1">' +
+      '<button type="button" class="ck' + (r.on && live ? ' on' : '') + '" data-ck aria-label="넣기"' + (can(r) && scr.run !== 'save' ? '' : ' disabled') + '>✓</button>' +
+      '<div class="tx" data-ed><div class="t1">' + esc(r.n) + (can(r) ? ' <span class="ed">고치기 ›</span>' : '') + '</div><div class="t2">' + (meta ? esc(meta) : esc(ST[r.st] || '')) + '</div></div>' +
+      (r.dur ? '<button type="button" class="pl" data-pl aria-label="미리 듣기">' + (scr.pl === r.i ? '■' : '▶') + '</button>' : '') + '</div>' +
+      (r.dur && r.st !== 'bad' && r.st !== 'short' ? '<div class="sx-chips mo">' + muChips(r.md, r.am) + '</div><div class="why">' + (r.am ? '추천 ‘' + esc(r.am) + '’ — ' + esc(r.why) + (r.md !== r.am ? ' · 직접 고름' : '') : '') + '</div>' : '') +
+      line + '</div>';
+  }
+  function paint() {
+    const done = rows.filter(function (r) { return r.st !== 'wait' && r.st !== 'ana'; }).length, n = picked().length;
+    const foot = scr.run === 'ana' ? '살펴보는 중 ' + done + '/' + rows.length : (scr.run === 'save' ? '보내는 중…' : (rows.some(function (r) { return r.st === 'fail'; }) ? '실패한 곡 다시 보내기 (' + n + ')' : n + '곡 넣기'));
+    el.innerHTML = navBar({ back: '보관함', title: '여러 곡 넣기' }) +
+      '<div class="sx-body"><div class="sx-card" style="padding:14px 16px;"><div style="font-size:20px;font-weight:800;">' + rows.length + '곡 · 넣을 곡 ' + n + '</div>' +
+      '<div class="sx-sub" style="margin-top:4px;">곡마다 쓸 20초 구간과 분위기를 자동으로 골랐어요. 틀린 것만 고치세요. 곡 이름을 누르면 구간·빠르기·저작자 표시를 고칠 수 있어요.</div></div>' +
+      '<div class="sx-sec">분위기 한꺼번에 — 체크한 곡 모두</div><div class="sx-chips" data-all>' + muChips('', '') + '</div>' +
+      '<p class="sx-sub" style="margin:8px 6px 0;">' + esc(MU_MAP) + '</p>' +
+      '<div class="sx-warn">저작자 표시가 필요한(CC) 곡은 곡 이름을 눌러 문구를 넣어 주세요. 문구가 없으면 설명에 표시가 빠져요.</div>' +
+      '<div class="sx-list">' + rows.map(rowHTML).join('') + '</div></div>' +
+      '<div class="sx-foot"><button type="button" class="sx-btn" data-act="save"' + (scr.run === 'ready' && n ? '' : ' disabled') + '>' + esc(foot) + '</button></div>';
+  }
+  function paintRow(r) { const x = el.querySelector('[data-r="' + r.i + '"]'); if (x) x.outerHTML = rowHTML(r); }
+  function stopPlay() { muStop(scr.aud); const was = scr.pl; scr.pl = -1; if (was > -1 && rows[was]) paintRow(rows[was]); }
+  async function anaAll() {
+    for (let i = 0; i < rows.length; i++) {
+      const r = rows[i];
+      if (scr.gone) return;
+      r.st = 'ana'; paint();
+      try {
+        const an = await muAnalyze(r.file);
+        Object.assign(r, { dur: an.dur, off: an.off, bpm: an.bpm, conf: an.conf, am: an.md, md: an.md, why: an.why, pk: an.pk });
+        r.st = an.dur < 8 ? 'short' : 'ok';
+      } catch (e) { r.st = 'bad'; }
+      if (r.st !== 'ok') r.on = false;
+      await new Promise(function (res) { setTimeout(res, 0); });
+    }
+    if (scr.gone) return;
+    scr.run = 'ready'; paint();
+  }
+  async function saveAll() {
+    const list = picked(); if (!list.length) return;
+    stopPlay(); scr.run = 'save'; paint();
+    let ok = 0, fail = 0;
+    for (let i = 0; i < list.length; i++) {
+      const r = list[i];
+      if (scr.stop || scr.gone) break;
+      r.st = 'up'; r.p = 0; paintRow(r);
+      try {
+        const mid = muNewId(), ct = r.file.type || 'audio/mpeg';
+        const k = await mediaPut(r.file, 'mu', mid, muExt(r.file), ct, function (p) { r.p = p; paintRow(r); });
+        const rec = { n: r.n, md: r.md, bpm: r.bpm || 0, cr: r.cr || '', off: r.off, dur: r.dur, am: r.am || '', why: r.why || '', at: Date.now(), by: myName() || '', k: k, ct: ct, sz: r.file.size, pk: r.pk };
+        await shFetch('mu/' + mid, 'PUT', rec); D.mu[mid] = rec;
+        r.st = 'done'; ok++;
+      } catch (e) { r.st = 'fail'; fail++; logErr('음원 보관함: 여러 곡 넣기', e); }
+      paintRow(r);
+    }
+    scr.run = 'ready';
+    if (after) { try { after(); } catch (e) { } }
+    if (scr.gone) return;
+    if (!fail) { toast(ok + '곡을 음원 보관함에 넣었어요'); back(); return; }
+    toast(ok + '곡 넣음 · ' + fail + '곡 실패 — 다시 보내 보세요');
+    paint();
+  }
+  scr.paint = paint;
+  scr.destroy = function () { scr.gone = true; muStop(scr.aud); rows.forEach(function (r) { if (r.au) { try { URL.revokeObjectURL(r.au); } catch (e) { } } }); };
+  scr.onBack = function () {
+    if (scr.run !== 'save') return true;
+    uiConfirm({ title: '곡 넣기를 멈출까요?', msg: '지금 보내는 곡까지만 넣고 멈춰요. 넣은 곡은 보관함에 남아요.', ok: '멈추기', destr: true }).then(function (ok) { if (ok) scr.stop = true; });
+    return false;
+  };
+  el.addEventListener('click', function (e) {
+    const all = e.target.closest('[data-all] .sx-chip');
+    if (all) { if (scr.run === 'save') return; rows.forEach(function (r) { if (r.on && can(r)) r.md = all.dataset.v; }); paint(); return; }
+    const a = e.target.closest('[data-act="save"]'); if (a) { saveAll(); return; }
+    const box = e.target.closest('[data-r]'); if (!box) return;
+    const r = rows[+box.dataset.r]; if (!r) return;
+    if (e.target.closest('[data-ck]')) { if (can(r) && scr.run !== 'save') { r.on = !r.on; paint(); } return; }
+    if (e.target.closest('[data-pl]')) {
+      if (scr.pl === r.i) { stopPlay(); return; }
+      stopPlay();
+      if (!r.au) r.au = URL.createObjectURL(r.file);
+      if (!scr.aud) { scr.aud = new Audio(); scr.aud.preload = 'auto'; }
+      scr.pl = r.i; paintRow(r);
+      muPlay(scr.aud, r.au, r.off, function () { if (scr.pl === r.i) { scr.pl = -1; paintRow(r); } });
+      return;
+    }
+    const c = e.target.closest('.mo .sx-chip'); if (c) { if (can(r) && scr.run !== 'save') { r.md = c.dataset.v; paintRow(r); } return; }
+    if (e.target.closest('[data-ed]') && can(r) && scr.run !== 'save') { stopPlay(); musicSheet(null, function () { paint(); }, { row: r }); }
+  });
+  push(scr); paint();
+  anaAll();
+  return scr;
 }
 
 /* ---------- SH-08 B 부분 ---------- */
@@ -3653,13 +4012,15 @@ function setBHTML() {
   const lv = c.freq && c.freq.d === today() ? c.freq.lv : bLevelNow(Date.now());
   return '<div class="sx-sec">자동 올리기</div>' + bConnHTML(false) + '<div class="sx-grp">' +
     row('연결 주소(피드 Worker)', c.fw ? esc(String(c.fw).replace(/^https:\/\//, '').slice(0, 26)) : '<span class="dis">넣어 주세요</span>', ' data-act="fw"') +
-    (c.fw ? row('피드 주소', '복사', ' data-act="feed"', 'act') : '') +
+    (c.fw ? row('피드 주소' + (c.ig ? ' · 유튜브' : ''), '복사', ' data-act="feed"', 'act') : '') +
+    (c.fw ? '<div class="sx-set"><span>인스타 릴스도 올리기</span><div class="sx-mini"><button type="button" data-ig="0" class="' + (c.ig ? '' : 'on') + '">끔</button><button type="button" data-ig="1" class="' + (c.ig ? 'on' : '') + '">켬</button></div></div>' : '') +
+    (c.fw && c.ig ? row('피드 주소 · 인스타', '복사', ' data-act="igfeed"', 'act') : '') +
     row('음원 보관함', st.mu + '곡', ' data-act="mu"') +
     '<div class="sx-set"><span>하루 최대 편수</span><div class="sx-step"><button type="button" data-st="maxDay" data-d="-1" aria-label="줄이기">−</button><b>' + (c.maxDay || 3) + '편</b><button type="button" data-st="maxDay" data-d="1" aria-label="늘리기">+</button></div></div>' +
     row('공개 주기', esc(AU.LEVELS[lv] ? AU.LEVELS[lv].n : '') + ' · 재고 ' + bStock() + '편', '') +
-    row('이번 달 자동 올림(추정)', AU.monthUsed(D.rec, D.q, Date.now()) + ' / ' + AU.ZAP_MAX + '건', '') +
+    row('이번 달 Zapier 사용(추정)', AU.monthUsed(D.rec, D.q, Date.now()) + ' / ' + AU.ZAP_MAX + '건' + (c.ig ? ' · 편당 2건' : ''), '') +
     (function () { const t = Object.keys(D.q || {}).map(function (k) { return D.q[k]; }).filter(function (x) { return x && x.k; }); const mb = t.reduce(function (a, x) { return a + (+x.sz || 0); }, 0) / 1048576; return row('임시 영상', t.length + '개 · ' + (t.length ? mb.toFixed(1) : '0') + 'MB', ''); })() +
-    '</div><p class="sx-sub" style="margin:7px 8px 0;">첫 설정: ① Cloudflare에 피드 Worker 붙여넣기 → 연결 주소 넣기 ② 피드 주소 복사 → Zapier(RSS → YouTube 동영상 올리기) ③ 음원 넣기. 자세한 순서는 안내서를 보세요.</p>';
+    '</div><p class="sx-sub" style="margin:7px 8px 0;">첫 설정: ① Cloudflare에 피드 Worker 붙여넣기 → 연결 주소 넣기 ② 피드 주소 복사 → Zapier(RSS → YouTube 동영상 올리기) ③ 음원 넣기. 인스타 릴스는 ④ 켬 → 인스타 피드 주소 → Zapier 두 번째 Zap(RSS → Instagram for Business ‘Publish Video’). 자세한 순서는 안내서를 보세요.</p>';
 }
 async function setBAct(act, paint) {
   if (act === 'fw') {
@@ -3675,13 +4036,50 @@ async function setBAct(act, paint) {
       const r = await fetch(u + '/ping', { signal: ctl.signal }); clearTimeout(to);
       const j = await r.json();
       if (!j || !j.ok || j.name !== 'bbaekkom-feed') throw new Error('피드 Worker가 아니에요');
-      await cfgSet('fw', u);
-      uiAlert('연결됐어요 (피드 Worker v' + j.v + ').\n이제 ‘피드 주소’를 복사해 Zapier에 넣어 주세요.');
+      await cfgSet('fw', u); try { await cfgSet('fwv', +j.v || 1); } catch (er) { }
+      uiAlert('연결됐어요 (피드 Worker v' + j.v + ').\n이제 ‘피드 주소’를 복사해 Zapier에 넣어 주세요.' + (C().ig && !(+j.v >= 2) ? '\n\n이 Worker는 인스타 피드가 없는 예전 코드예요. 인스타 릴스를 쓰려면 V6.8 코드로 바꿔 주세요.' : ''));
     } catch (e) { uiAlert('연결하지 못했어요.\n주소가 맞는지, Worker를 배포했는지 확인해 주세요.\n(' + String((e && e.message) || e) + ')'); }
     paint(); return;
   }
   if (act === 'feed') { copyText(feedUrl()); uiAlert('피드 주소를 복사했어요.\nZapier ‘RSS by Zapier → New Item in Feed’의 Feed URL에 붙여넣어 주세요.\n\n' + feedUrl()); return; }
+  if (act === 'igfeed') { copyText(igFeedUrl()); uiAlert('인스타 피드 주소를 복사했어요.\nZapier에서 새 Zap: ‘RSS by Zapier → New Item in Feed’의 Feed URL에 붙여넣고, 할 일은 ‘Instagram for Business → Publish Video’예요.\n\n' + igFeedUrl()); return; }
   if (act === 'mu') { openMusic(); return; }
+}
+/* V6.8 인스타 릴스 켜기·끄기 — 켤 때는 피드 Worker가 v2(인스타 피드 있음)인지 먼저 확인한다 */
+async function igSet(on, paint) {
+  const c = C();
+  if (!!c.ig === on) return;
+  if (on) {
+    if (!c.fw) { uiAlert('먼저 자동 올리기 연결 주소(피드 Worker)를 넣어 주세요.'); return; }
+    toast('피드 Worker를 확인하는 중…');
+    let v = 0;
+    try { const j = await fwFetch('/ping', 15000); if (!j.ok || j.name !== 'bbaekkom-feed') throw new Error('피드 Worker가 아니에요'); v = +j.v || 1; }
+    catch (e) { uiAlert('피드 Worker에 연결하지 못했어요.\n인터넷과 연결 주소를 확인해 주세요.\n(' + String((e && e.message) || e) + ')'); return; }
+    try { await cfgSet('fwv', v); } catch (e) { }
+    if (v < 2) { uiAlert('피드 Worker 코드가 예전 버전(v' + v + ')이에요.\nCloudflare에서 V6.8 피드 Worker 코드로 바꿔 붙여넣고 Deploy 한 뒤 다시 켜 주세요.'); paint(); return; }
+    try { await cfgSet('ig', 1); } catch (e) { toast('저장 실패 — 인터넷 확인'); return; }
+    const n = await igApply(true);
+    uiAlert('인스타 릴스도 올리기를 켰어요.\n‘피드 주소 · 인스타’를 복사해 Zapier에 인스타용 Zap을 하나 더 만들어 주세요.' + (n ? '\n이미 예약된 ' + n + '편도 인스타에 같이 올라가요.' : '') + '\n\nZapier 무료 한도(월 100건)를 유튜브·인스타가 함께 써서 한 달 약 50편까지예요.');
+  } else {
+    try { await cfgSet('ig', 0); } catch (e) { toast('저장 실패 — 인터넷 확인'); return; }
+    const n = await igApply(false);
+    toast('인스타 릴스 올리기를 껐어요' + (n ? ' · 예약 ' + n + '편은 유튜브에만 올라가요' : ''));
+  }
+  try { await cfgSet('freq', null); await bReplan(); } catch (e) { }   /* 한 편에 쓰는 Zapier 건수가 바뀌어 오늘 빈도를 다시 정한다 */
+  paint();
+}
+/* 이미 예약된 편에 인스타 표시 넣기·빼기 — 켤 때는 아직 공개 전인 편만, 끌 때는 인스타 Zap이 아직 안 가져간 편만 */
+async function igApply(on) {
+  const now = Date.now();
+  let n = 0;
+  for (const r of scheds()) {
+    const x = r.q, rr = D.rec[r.rid];
+    try {
+      if (on && !x.ig && (!x.at || x.at > now)) { await qPatch(r.rid, { ig: 1, ic: AU.igCaption(x.ti, x.de) }); if (rr) { rr.ig = 1; await recPut(r.rid, rr); } n++; }
+      else if (!on && x.ig && !igTk(r.rid)) { await qPatch(r.rid, { ig: null, ic: null }); if (rr) { delete rr.ig; await recPut(r.rid, rr); } n++; }
+    } catch (e) { logErr('자동 올리기: 인스타 표시', e); }
+  }
+  return n;
 }
 
 /* ---------- 홈 '이번 주 쇼츠' 카드 (SH-00-4) ---------- */

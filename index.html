@@ -2882,7 +2882,7 @@ body.alb-sel #bnav{display:none;}
       <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
       <li>의료 정보는 일반 정보입니다. 개별 판단은 수의사 진료가 우선입니다.</li>
     </ul>
-    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.7.0 · 2026-10-29</p>
+    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.8.0 · 2026-10-29</p>
   </div>
 
   <h3 class="sec">진단 <span class="muted small" id="diagErrN"></span></h3>
@@ -4288,7 +4288,19 @@ class VideoRTC extends HTMLElement {
 
 if(window.customElements && !customElements.get('video-stream')){ customElements.define('video-stream', VideoRTC); }
 </script>
-<script>/* V6.7.0 (2026-10-29): 쇼츠 2단계 — 자동 올리기(B). 화면정의서 SH-03 B·SH-05B·SH-06·SH-08 B·SH-09·SH-00-4·12-7.
+<script>/* V6.8.0 (2026-10-29): 쇼츠 음원·인스타 — 화면정의서 SH-09·SH-09B(새)·SH-08 B·SH-06·SH-05B.
+   ① 음원 여러 곡 한 번에 넣기(SH-09B): '추가'에서 파일을 여러 개 고르면 차례로 살펴 목록으로 — 곡마다 체크·미리 듣기·분위기 칩·추천 이유,
+      '분위기 한꺼번에', 이미 있는 곡(같은 이름·크기)은 체크를 빼 둠, 열 수 없는 파일·8초 미만은 뺌, 곡 이름을 누르면 구간·빠르기·저작자 표시 고치기 → 체크한 곡을 차례로 저장소에.
+   ② 곡 분석(auto.js AU.analyze): 쓸 20초 구간 자동 선택(20초 평균 세기가 가장 큰 곳, 조용한 시작 감점, 거의 같으면 앞쪽, 소리가 커지는 순간에 맞춤),
+      추천 분위기 5가지(빠르기·세기·밝기(2kHz 위 비중)·박자 뚜렷함·끊김·점점 커짐)와 이유 문구, 박자 약함 표시. 한 곡 넣기·'자동 추천 다시 받기'(저장된 곡)도 같은 분석.
+      분위기 칩은 고르기만(다시 눌러도 꺼지지 않음). 곡에 am(추천 분위기)·why(이유) 저장.
+   ③ 인스타 릴스도 올리기(선택): 설정 B '인스타 릴스도 올리기' 켬 → 피드 Worker v2인지 확인 → 예약 때 q에 ig·ic(캡션 = 제목 + 설명, #shorts → #reels, #dogsofyoutube → #dogsofinstagram, 태그 30개·2,200자).
+      피드 Worker v2의 인스타 피드(?ch=ig)를 두 번째 Zap(RSS → Instagram for Business 'Publish Video')이 가져감. 읽은 기록은 feed/ig.
+      유튜브 게시가 확인돼도 인스타 Zap이 가져간 뒤 1시간까지 임시 영상 보관(q.yd), 7일 지나면 정리. 기록 탭·상세에 인스타 상태(가져감·보내는 중·안 가져감).
+      Zapier 사용 건수: 인스타도 올린 편은 2건 — 월 한도 안에서 공개 주기를 정할 때도 편당 2건으로 계산. 연결 띠에 인스타 Zap 상태.
+   본체(index.html) 변경: 버전만. 피드 Worker 코드 바뀜(v2) — Cloudflare에서 바꿔 붙여넣기. 자동 테스트 34묶음(새 2: 곡 분석 단위·V6.8 화면 흐름). */
+
+/* V6.7.0 (2026-10-29): 쇼츠 2단계 — 자동 올리기(B). 화면정의서 SH-03 B·SH-05B·SH-06·SH-08 B·SH-09·SH-00-4·12-7.
    ① 마무리에서 '자동 올리기': 음원 보관함 곡 자동 선택(같은 분위기·최근 5편 제외)·곡 박자에 맞춘 사진 전환·설명에 저작자 표시 줄,
       공개 시각(다음 자동 시각 / 지금 바로 / 직접 선택), Zapier 연결 상태 띠. 만들기 → 저장소(R2)로 임시 영상(3번 다시 시도, 안 되면 직접 올리기로 전환) → 예약 완료.
    ② 예약 탭: 예약됨·올리는 중·확인 지연(+2시간)·실패(+24시간). 다시 확인·유튜브 링크 붙여넣기·직접 올리기로 전환(같은 영상)·예약 취소(Zapier가 가져가기 전까지).
@@ -4397,7 +4409,7 @@ if(window.customElements && !customElements.get('video-stream')){ customElements
 /* V5.8 (2026-08-21): 접종 실기록 반영(2차 08.07 종합+코로나1차, 3차 08.21 종합+코로나2차, 4차 09.04 예약, 넥스가드 스펙트라 매월 21일, 코로나 보강 2027.08.21),
    04장 미니 인도어 퍼피 체중별 급여표 추가, 급여 계산기 기본 ME 3735 + kcal 누락 NaN 가드. 저장 구조·동기화·달력 로직 변경 없음. */
 /* =============== State =============== */
-const APP_VER='6.7.0', APP_DATE='2026-10-29';   /* V6.6: 앱 버전 — dev/VERSION 한 곳에서 빌드할 때 채움 */
+const APP_VER='6.8.0', APP_DATE='2026-10-29';   /* V6.6: 앱 버전 — dev/VERSION 한 곳에서 빌드할 때 채움 */
 const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, sleepCur:0, sleepLog:{}, feed:{kcal:4000, meals:4, adult:0, adultMode:'auto', bcs:'ok', bcsAt:'', neut:0, treat:0, vetG:0, vetAt:''}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}, media:{url:''}, kgCur:0, kgLog:{}, kgCfg:{name:'도그스테이', pass:0, from:''}, marks:{}};
 let S = JSON.parse(JSON.stringify(DEFAULT_S));
 let storageOK = false, artOK = false, saveTimer = null, lastEditAt = 0;
@@ -5612,7 +5624,7 @@ function bindAlbum(){
    meta[id].p2=1 이면 그 사진의 원본·썸네일이 R2에 있음. 없으면 기존 파이어베이스.
    화면 코드는 albImgSrc() 한 곳만 거치므로 표시·정렬·메모·좋아요는 전부 그대로다.
    상대 폰이 구버전이면 p2 를 모르기 때문에, 두 폰 모두 이 빌드일 때만 전환한다. */
-const PVER=670;   /* V6.6: 빌드 번호 = VERSION에서 자동(6.6.0 → 660). 기기 보고(ver)·상대 폰 구버전 확인용 */
+const PVER=680;   /* V6.6: 빌드 번호 = VERSION에서 자동(6.6.0 → 660). 기기 보고(ver)·상대 폰 구버전 확인용 */
 const PMIG={run:false, stop:false, gate:null};
 const P2SCHEMES=[
   {id:'d', name:'영상과 같은 형식 (v/… .mp4)',  ct:'video/mp4',  f:function(k,id){ return 'v/'+id+(k==='th'?'t':'')+'.mp4'; }},
