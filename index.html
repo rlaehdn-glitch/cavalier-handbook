@@ -2882,7 +2882,7 @@ body.alb-sel #bnav{display:none;}
       <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
       <li>의료 정보는 일반 정보입니다. 개별 판단은 수의사 진료가 우선입니다.</li>
     </ul>
-    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.8.0 · 2026-10-29</p>
+    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.8.1 · 2026-11-02</p>
   </div>
 
   <h3 class="sec">진단 <span class="muted small" id="diagErrN"></span></h3>
@@ -4288,7 +4288,10 @@ class VideoRTC extends HTMLElement {
 
 if(window.customElements && !customElements.get('video-stream')){ customElements.define('video-stream', VideoRTC); }
 </script>
-<script>/* V6.8.0 (2026-10-29): 쇼츠 음원·인스타 — 화면정의서 SH-09·SH-09B(새)·SH-08 B·SH-06·SH-05B.
+<script>/* V6.8.1 (2026-11-02): 동기화 올리기 보정 — '앱을 닫아도 마지막 업로드 마저 보내기'(keepalive)를 글자 수(6만 자)가 아니라 바이트(6만 바이트)로 판단.
+   브라우저 한도는 64KB(바이트)인데 한글은 1자 3바이트라, 기록 문서가 64KB 근처(진단 당시 52KB)가 되면 올리기가 'Failed to fetch'로 계속 실패하는 구간이 생겼다(크로미움 재현).
+   JS 동기화부만 변경. 시험 e2e_v681. */
+/* V6.8.0 (2026-10-29): 쇼츠 음원·인스타 — 화면정의서 SH-09·SH-09B(새)·SH-08 B·SH-06·SH-05B.
    ① 음원 여러 곡 한 번에 넣기(SH-09B): '추가'에서 파일을 여러 개 고르면 차례로 살펴 목록으로 — 곡마다 체크·미리 듣기·분위기 칩·추천 이유,
       '분위기 한꺼번에', 이미 있는 곡(같은 이름·크기)은 체크를 빼 둠, 열 수 없는 파일·8초 미만은 뺌, 곡 이름을 누르면 구간·빠르기·저작자 표시 고치기 → 체크한 곡을 차례로 저장소에.
    ② 곡 분석(auto.js AU.analyze): 쓸 20초 구간 자동 선택(20초 평균 세기가 가장 큰 곳, 조용한 시작 감점, 거의 같으면 앞쪽, 소리가 커지는 순간에 맞춤),
@@ -4409,7 +4412,7 @@ if(window.customElements && !customElements.get('video-stream')){ customElements
 /* V5.8 (2026-08-21): 접종 실기록 반영(2차 08.07 종합+코로나1차, 3차 08.21 종합+코로나2차, 4차 09.04 예약, 넥스가드 스펙트라 매월 21일, 코로나 보강 2027.08.21),
    04장 미니 인도어 퍼피 체중별 급여표 추가, 급여 계산기 기본 ME 3735 + kcal 누락 NaN 가드. 저장 구조·동기화·달력 로직 변경 없음. */
 /* =============== State =============== */
-const APP_VER='6.8.0', APP_DATE='2026-10-29';   /* V6.6: 앱 버전 — dev/VERSION 한 곳에서 빌드할 때 채움 */
+const APP_VER='6.8.1', APP_DATE='2026-11-02';   /* V6.6: 앱 버전 — dev/VERSION 한 곳에서 빌드할 때 채움 */
 const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, sleepCur:0, sleepLog:{}, feed:{kcal:4000, meals:4, adult:0, adultMode:'auto', bcs:'ok', bcsAt:'', neut:0, treat:0, vetG:0, vetAt:''}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}, media:{url:''}, kgCur:0, kgLog:{}, kgCfg:{name:'도그스테이', pass:0, from:''}, marks:{}};
 let S = JSON.parse(JSON.stringify(DEFAULT_S));
 let storageOK = false, artOK = false, saveTimer = null, lastEditAt = 0;
@@ -4478,7 +4481,11 @@ async function syncFetch(method, body){
   const ctl=new AbortController(); const to=setTimeout(()=>ctl.abort(), 8000);
   try{
     const opt={method:method, body:body||undefined, signal:ctl.signal};
-    if(method==='PUT' && body && body.length<60000) opt.keepalive=true;   /* V5.15: 앱을 닫아도 마지막 업로드는 살아남는다 */
+    if(method==='PUT' && body){   /* V5.15: 앱을 닫아도 마지막 업로드는 살아남는다(keepalive) */
+      /* V6.8.1: 브라우저 한도는 64KB '바이트'. 한글은 1자 3바이트라 글자 수(6만)로 재면 한도를 넘겨 'Failed to fetch'로 계속 실패했다 */
+      let n=Infinity; try{ n=new Blob([body]).size; }catch(e){}
+      if(n<60000) opt.keepalive=true;
+    }
     const r=await fetch(syncPath(), opt);
     if(!r.ok) throw new Error('HTTP '+r.status);
     return await r.json();
@@ -5624,7 +5631,7 @@ function bindAlbum(){
    meta[id].p2=1 이면 그 사진의 원본·썸네일이 R2에 있음. 없으면 기존 파이어베이스.
    화면 코드는 albImgSrc() 한 곳만 거치므로 표시·정렬·메모·좋아요는 전부 그대로다.
    상대 폰이 구버전이면 p2 를 모르기 때문에, 두 폰 모두 이 빌드일 때만 전환한다. */
-const PVER=680;   /* V6.6: 빌드 번호 = VERSION에서 자동(6.6.0 → 660). 기기 보고(ver)·상대 폰 구버전 확인용 */
+const PVER=681;   /* V6.6: 빌드 번호 = VERSION에서 자동(6.6.0 → 660). 기기 보고(ver)·상대 폰 구버전 확인용 */
 const PMIG={run:false, stop:false, gate:null};
 const P2SCHEMES=[
   {id:'d', name:'영상과 같은 형식 (v/… .mp4)',  ct:'video/mp4',  f:function(k,id){ return 'v/'+id+(k==='th'?'t':'')+'.mp4'; }},
