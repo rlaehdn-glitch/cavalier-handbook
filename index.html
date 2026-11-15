@@ -1829,6 +1829,13 @@ body.alb-sel #bnav{display:none;}
 .wg-rc-none{margin:0; padding:0 16px 16px; font-size:14px; color:var(--label2);}
 @media (prefers-reduced-motion: reduce){ .wg-mem-go:active{transform:none;} }
 </style>
+<style id="v691css">
+/* ================= V6.9.1 — 2끼 전환 체크 (2026-11-16) ================= V6 토큰만 사용 */
+#feedCard .fd-two{margin:10px 0 0;}
+.fd-two-h{margin:0 0 6px; font-size:14px; font-weight:700; color:var(--label);}
+.fd-two-h span{margin-left:8px; font-size:12.5px; font-weight:400; color:var(--label2);}
+.fd-two-src{margin:8px 0 0; font-size:12px; color:var(--label2);}
+</style>
 </head>
 <body>
 
@@ -2523,22 +2530,25 @@ body.alb-sel #bnav{display:none;}
   <div class="box box-warn">
     <div class="bt">⚠ 급여 시간 — 08~18시 부재에 맞추는 법 <span class="muted small" style="font-weight:400;">(끼니 수는 08장 계산기에서 설정)</span></div>
     <div class="tw"><table>
-      <thead><tr><th>월령</th><th>끼니</th><th>권장 시각</th><th>최대 공복</th></tr></thead>
+      <thead><tr><th>월령</th><th>끼니</th><th>권장 시각</th><th>공복 경고</th></tr></thead>
       <tbody>
         <tr><td>~4개월</td><td>4회</td><td>07:00 · 11:30 · 16:00 · 20:30</td><td>5시간</td></tr>
-        <tr><td>4~6개월</td><td>3회</td><td><strong>06:30 · 13:30 · 21:00</strong></td><td>7시간 30분</td></tr>
-        <tr><td>6~12개월</td><td>2~3회</td><td>07:00 · 13:30 · 20:00</td><td>9시간</td></tr>
-        <tr><td>12개월~</td><td>2회</td><td>07:00 · 19:30</td><td>12시간</td></tr>
+        <tr><td>4~6개월</td><td>3회</td><td>06:30 · 13:30 · 21:00</td><td>7시간 30분</td></tr>
+        <tr><td>6~12개월</td><td>3회 또는 2회</td><td>3회 07:00 · 13:30 · 20:00<br>2회 07:00 · 19:00</td><td>3회 9시간<br>2회 13시간</td></tr>
+        <tr><td>12개월~</td><td>2회</td><td>07:00 · 19:00</td><td>13시간</td></tr>
       </tbody>
     </table></div>
+    <p class="muted small" style="margin:8px 0 0;">공복 경고 시간은 생리적 한계가 아니라 위 시간표 간격(+여유)으로 정한 값입니다. 4개월부터 밤사이 공복(마지막 끼니 → 아침 첫 끼니)은 경고하지 않고, 08시가 지나도 첫 끼니 기록이 없으면 홈에 표시합니다.</p>
     <ul class="ls">
       <li>낮 시각(11:30·13:30·16:00)은 부재 시간이라 <strong>자동급식기</strong> 몫입니다. 아침은 산책 후, 저녁은 귀가 후로 붙이면 출퇴근과 충돌하지 않습니다.</li>
-      <li>끼니를 줄일 때는 <strong>저녁 쪽 한 끼를 2~3일에 걸쳐 빼고</strong> 그만큼 나머지에 나눠 담습니다. 하루 총량은 그대로.</li>
-      <li>마지막 끼니를 19시 이전으로 당기면 야간 공복이 11시간을 넘어갑니다 — 취침 전 한 끼를 21시 전후로 유지.</li>
-      <li>낮 공백이 길 때 가장 큰 위험은 <strong>저혈당</strong>입니다. 계약서에도 "사료 부족 급여로 인한 저혈당증"이 보호자 책임 사유로 명시돼 있습니다.</li>
+      <li>끼니를 줄일 때는 <strong>한 끼를 2~3일에 걸쳐 빼고</strong>(4→3회는 저녁 쪽, 3→2회는 낮 13:30) 그만큼 나머지에 나눠 담습니다. 하루 총량은 그대로. 3→2회 조건·확인은 08장 '2끼 전환 체크'.</li>
+      <li><strong>6개월 미만</strong>은 마지막 끼니를 19시 이전으로 당기지 않습니다(야간 공복 11시간 초과) — 취침 전 한 끼를 21시 전후로 유지.</li>
+      <li><strong>6개월 미만</strong>은 낮 공백이 길 때 가장 큰 위험이 <strong>저혈당</strong>입니다(토이견 3~6개월 미만 — 아래 근거). 계약서에도 "사료 부족 급여로 인한 저혈당증"이 보호자 책임 사유로 명시돼 있습니다.</li>
       <li>자동급식기로 낮 1회를 추가하면 안전 마진이 생깁니다. 단 <u>불린 사료는 상하므로 낮 급여는 반드시 건사료</u>로.</li>
+      <li>2끼로 바꾼 뒤 아침에 <strong>노란 거품(담즙)</strong>을 토하면 긴 공복 탓일 수 있습니다 — 저녁 몫 일부를 취침 전으로 옮깁니다(하루 총량 안에서). 반복되면 진료.</li>
       <li>저혈당 신호: 축 늘어짐 · 비틀거림 · 잇몸 창백 · 반응 둔해짐. 이때는 꿀이나 설탕물을 잇몸에 발라주고 <strong>즉시 병원</strong>(11장).</li>
     </ul>
+    <p class="muted small" style="margin:10px 0 0;">근거 — 끼니 수: <a class="lnk ext" href="https://www.akc.org/expert-advice/nutrition/puppy-feeding-fundamentals/" target="_blank" rel="noopener">AKC</a>(6~12개월 하루 2회 시작)&nbsp;· <a class="lnk ext" href="https://thekennelclub.org.uk/health-and-dog-care/health/health-and-care/a-z-of-health-and-care-issues/puppy-feeding-tips" target="_blank" rel="noopener">영국 켄넬클럽</a>(6개월 이상 2회, 견종별 차이)&nbsp;· <a class="lnk ext" href="https://www.royalcanin.com/us/dogs/puppy/how-often-to-feed-a-puppy" target="_blank" rel="noopener">Royal Canin</a>(소형견 6~10개월 최소 2회)&nbsp;· <a class="lnk ext" href="https://www.chewy.com/education/dog/food-and-nutrition/how-often-should-i-feed-my-puppy" target="_blank" rel="noopener">Chewy·Coates DVM</a>(성견 4.5kg 미만도 6개월부터 2회)&nbsp;· <a class="lnk ext" href="https://vetnutrition.tufts.edu/?p=10015" target="_blank" rel="noopener">Tufts</a>(하루 요구량을 채우면 끼니 수는 유연)<br>끼니 빼는 시점: <a class="lnk ext" href="https://vcahospitals.com/know-your-pet/puppy---recommendations-for-new-owners-part-ii---general-care" target="_blank" rel="noopener">VCA</a>(한 끼를 며칠 연속 덜 먹을 때)<br>저혈당 위험 시기: <a class="lnk ext" href="https://www.purinaproclub.com/pro-resources/learning-hub/breeding/hypoglycemia-toy-breeds" target="_blank" rel="noopener">Purina</a>(3개월 미만)&nbsp;· <a class="lnk ext" href="https://vettimes.co.uk/app/uploads/wp-post-to-pdf-enhanced-cache/1/135568.pdf" target="_blank" rel="noopener">Vet Times 2016</a>(토이견 6개월 미만)<br>2끼 뒤 빈속 구토: <a class="lnk ext" href="https://jaaha.kglmeridian.com/view/journals/aaha/52/3/article-p157.xml" target="_blank" rel="noopener">JAAHA 2016</a>(늦은 밤 식사로 7마리 중 5마리 개선)<br>전환 시점을 직접 비교한 연구는 확인되지 않음 — 수의·견종단체 권고 수준.</p>
   </div>
 
   <h3 class="sec">체중 관리 — 카발리에의 핵심 과제</h3>
@@ -2759,7 +2769,7 @@ body.alb-sel #bnav{display:none;}
       <tr><td>06:40~07:20</td><td><strong>아침 산책 25~30분</strong> + 배변</td><td>하루 중 가장 중요한 시간. 아침 에너지를 빼야 낮 11시간이 평화로움</td></tr>
       <tr><td>07:20~07:40</td><td>아침 급여 + 물 교체 + 몸 상태 훑기(눈·귀·걸음)</td><td>급여는 "앉아·기다려" 후에</td></tr>
       <tr><td>07:50</td><td>부재 세팅: 콩/노즈워크 배치, 실내 온도(여름 26℃ 안팎 에어컨), 커튼·백색소음, 조용히 출발</td><td>작별 인사 없이. 여름 온도 관리는 생명 문제(더위 취약 견종)</td></tr>
-      <tr><td>13:30</td><td>낮 급여 — 자동급식기 (12개월 미만)</td><td>건사료만. 끼니 수·시각은 04장 표, 양은 08장 계산기 기준</td></tr>
+      <tr><td>13:30</td><td>낮 급여 — 3끼일 때 (자동급식기)</td><td>건사료만. 끼니 수·시각은 04장 표, 양은 08장 계산기 기준</td></tr>
       <tr><td>낮</td><td>(선택) 펫캠 확인 1~2회 / 펫시터·유치원 요일 운영</td><td>확인용이지 말 걸기용 아님 — 스피커로 말 걸면 오히려 불안 자극</td></tr>
       <tr><td>19:00~19:40</td><td><strong>저녁 산책 30분</strong> + 배변</td><td>귀가 인사는 차분해진 후. 가방 내려놓고 5분 뒤 시작해도 늦지 않음</td></tr>
       <tr><td>19:40~20:00</td><td>저녁 급여 + 훈련 5~10분(05장 명령어 1개)</td><td>머리 쓰는 10분 = 몸 운동 30분의 피로</td></tr>
@@ -2913,7 +2923,7 @@ body.alb-sel #bnav{display:none;}
       <div><label for="fdNeut">중성화</label><select id="fdNeut"><option value="0">수술 전</option><option value="1">완료</option></select></div>
       <div><label for="fdTreat">간식 비율 (하루 열량 중)</label><select id="fdTreat"><option value="0">0% — 사료알로만</option><option value="5">5%</option><option value="10">10% (상한)</option></select></div>
       <div><label for="fdKcal">사료 칼로리 (kcal/kg)</label><input type="number" id="fdKcal" inputmode="numeric" step="10" min="2500" max="6000"><p class="hint" id="fdKcalHint"></p></div>
-      <div class="full"><label for="fdMeals">하루 끼니 수</label><select id="fdMeals"><option value="2">2회</option><option value="3">3회</option><option value="4">4회</option><option value="5">5회</option></select><p class="hint" id="fdMealsHint"></p></div>
+      <div class="full"><label for="fdMeals">하루 끼니 수</label><select id="fdMeals"><option value="2">2회</option><option value="3">3회</option><option value="4">4회</option><option value="5">5회</option></select><p class="hint" id="fdMealsHint"></p><div class="feed-stage fd-two" id="fdTwo" hidden></div></div>
     </div>
     <p class="muted small" style="margin:12px 0 0;">공식 범위는 AAHA 2021(하한)과 영국 수의간호 기준(상한) 사이입니다. 같은 체중·사료라도 기준마다 ±20% 달라서, 숫자 하나 대신 범위와 실측(체형·성장)으로 판정합니다. 급여량 변경은 한 번에 10%, 2주 뒤 갈비뼈 재판정. 기준 설명은 서재 04장.</p>
   </div>
@@ -3039,7 +3049,7 @@ body.alb-sel #bnav{display:none;}
       <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
       <li>의료 정보는 일반 정보입니다. 개별 판단은 수의사 진료가 우선입니다.</li>
     </ul>
-    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.9.0 · 2026-11-07</p>
+    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.9.1 · 2026-11-16</p>
   </div>
 
   <h3 class="sec">진단 <span class="muted small" id="diagErrN"></span></h3>
@@ -3462,6 +3472,11 @@ body.alb-sel #bnav{display:none;}
     <li>코레일 여객운송약관·SR 운송 규정 — 13장 대중교통 동반 기준</li>
     <li>국가동물보호정보시스템(animal.go.kr) — 전체 참고문헌·심화 자료는 14장 자료실 — 13장 동물등록·실종 절차</li>
     <li>American Red Cross, Pet First Aid — 11장 응급처치·CPR 기초</li>
+    <li>AKC, <em>Puppy Feeding Fundamentals</em> · The Kennel Club(영국), <em>Puppy feeding tips</em> · Royal Canin, <em>How often to feed a puppy</em> · Chewy(Jennifer Coates, DVM), <em>How Often Should I Feed My Puppy?</em>, 2026 — 04·08장 끼니 수(6개월 이후 2회)</li>
+    <li>VCA Animal Hospitals, <em>Puppy – Recommendations for New Owners Part II</em> — 04·08장 끼니를 줄이는 시점</li>
+    <li>Purina Pro Club, <em>Hypoglycemia in Toy Breeds</em> · Cole L, Barfield D, <em>Approaches to diagnosing and treating hypoglycaemic patients</em>, Vet Times, 2016 — 04장 저혈당 위험 시기</li>
+    <li>Ferguson L, Wennogle SA, Webb CB, <em>Bilious Vomiting Syndrome in Dogs: Retrospective Study of 20 Cases (2002–2012)</em>, J Am Anim Hosp Assoc, 2016 — 04·08장 2끼 전환 뒤 빈속 구토</li>
+    <li>Tufts Petfoodology, <em>How Often Should I Feed My Pet?</em> — 04장 끼니 수와 하루 요구량</li>
   </ol>
   <p class="muted small">서적·논문은 링크 대신 서지 정보로 표기했습니다. 통계·수치가 본문과 다르게 개정될 수 있으니, 의학적 판단은 항상 담당 수의사가 우선입니다.</p>
 
@@ -4446,7 +4461,17 @@ class VideoRTC extends HTMLElement {
 
 if(window.customElements && !customElements.get('video-stream')){ customElements.define('video-stream', VideoRTC); }
 </script>
-<script>/* V6.9.0 (2026-11-07): 산책 업데이트 — 화면정의서 S09·S10·S11 (앱 설계 D00 예외: 이번 산책 업데이트만 웹 수정).
+<script>/* V6.9.1 (2026-11-16): 급여 — 2끼 전환·공복 경고 정리 (앱 설계 D00 예외: 이번 급여 수정만 웹 반영).
+   ① 공복 경고를 끼니 수에 연동: 6개월부터 3끼 이상 9시간 · 2끼 13시간(간격 12시간 + 여유 1시간). 2끼 다음 끼니 예상 = 12시간.
+      기존(6~12개월 9시간 고정)은 2끼로 바꾸면 매일 16시~저녁 '공복 9시간 초과'가 떴고, 12개월 이후 04장 권장 07:00·19:30도 19시부터 경고가 떴음.
+   ② 4개월부터 밤사이 공복(어제 마지막 끼니 → 오늘 첫 끼니)은 공복 경고에서 뺌: 06~08시 '아침 급여 시간' 안내, 08시가 지나도 첫 끼니가 없으면 '아침 식사 기록 없음'.
+      기존은 04장이 권장한 야간 공복(21:00→06:30)을 매일 06시대에 '공복 초과, 저혈당 주의'로 잡았음. 4개월 미만은 그대로.
+   ③ 08장 '2끼 전환 체크': 6~12개월 3끼일 때 조건·방법, 끼니 수를 2회로 바꾼 날부터 7일간 확인 항목(D+N). S.feed.mealsAt(끼니 수를 바꾼 날짜, YYYY-MM-DD) 추가.
+   ④ 04장 급여 시간 표: '최대 공복' → '공복 경고'(시간표 기준값이며 생리적 한계가 아님을 명시), 6~12개월 2회 시각 07:00·19:00, 근거 줄 + 참고문헌 5건.
+   ⑤ 문구: 04장 저혈당·야간 공복 항목을 6개월 미만으로 한정, 2끼 뒤 빈속 구토 항목 추가, 06장 '13:30 낮 급여(12개월 미만)' → '3끼일 때'.
+   PVER(빌드 번호)는 690 유지 — 사진 저장 방식 판별(albMigGate)이 빌드 번호로 상대 폰을 구분하므로, 데이터 호환이 같은 이번 수정에서 올리면 상대 폰 업데이트 전까지 새 사진이 R2 대신 Firebase로 감.
+   급여량 계산식·동기화·다른 기록 구조 변경 없음. */
+/* V6.9.0 (2026-11-07): 산책 업데이트 — 화면정의서 S09·S10·S11 (앱 설계 D00 예외: 이번 산책 업데이트만 웹 수정).
    ① 산책 중: 대변·소변·사진 버튼을 홈과 같은 선 아이콘으로. 지난달 사진 지점 반경 50m 안 → 배너(썸네일·[보기]) + 지도 사진 핀. '내 위치로' 버튼이 아래 패널에 가려지던 문제 수정.
    ② 종료 시트 한 장: 요약(경로·시간·거리·대표 사진) + 한 줄(선택) + 함께(기록자 자동·가족 이름) + 상태 체크 5항목. 시트에서 뒤로 = 산책 이어서 기록.
    ③ 산책 기록: 사진·한 줄이 있으면 추억 카드(대표 사진 위 경로, 장소·한 줄·함께·처음·날씨). 판정 배지에 사유 1단어. 날짜 옆 day N.
@@ -4580,8 +4605,8 @@ if(window.customElements && !customElements.get('video-stream')){ customElements
 /* V5.8 (2026-08-21): 접종 실기록 반영(2차 08.07 종합+코로나1차, 3차 08.21 종합+코로나2차, 4차 09.04 예약, 넥스가드 스펙트라 매월 21일, 코로나 보강 2027.08.21),
    04장 미니 인도어 퍼피 체중별 급여표 추가, 급여 계산기 기본 ME 3735 + kcal 누락 NaN 가드. 저장 구조·동기화·달력 로직 변경 없음. */
 /* =============== State =============== */
-const APP_VER='6.9.0', APP_DATE='2026-11-07';   /* V6.6: 앱 버전 — dev/VERSION 한 곳에서 빌드할 때 채움 */
-const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, sleepCur:0, sleepLog:{}, feed:{kcal:4000, meals:4, adult:0, adultMode:'auto', bcs:'ok', bcsAt:'', neut:0, treat:0, vetG:0, vetAt:''}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}, media:{url:''}, kgCur:0, kgLog:{}, kgCfg:{name:'도그스테이', pass:0, from:''}, marks:{}};
+const APP_VER='6.9.1', APP_DATE='2026-11-16';   /* V6.6: 앱 버전 — dev/VERSION 한 곳에서 빌드할 때 채움 */
+const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, sleepCur:0, sleepLog:{}, feed:{kcal:4000, meals:4, mealsAt:'', adult:0, adultMode:'auto', bcs:'ok', bcsAt:'', neut:0, treat:0, vetG:0, vetAt:''}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}, media:{url:''}, kgCur:0, kgLog:{}, kgCfg:{name:'도그스테이', pass:0, from:''}, marks:{}};
 let S = JSON.parse(JSON.stringify(DEFAULT_S));
 let storageOK = false, artOK = false, saveTimer = null, lastEditAt = 0;
 
@@ -7742,15 +7767,21 @@ function renderMealGap(){
   const per=feedMealTxt(fd);                                         /* V6.2: 현재 급여량(+조정) 또는 공식 범위 */
   const g=feedGap();                                                  /* V5.17: 월령·끼니 수 기준 */
   if(hr>=22 || hr<6){ mgSet(el,'mg-night','🌙 야간 — 아침 첫 식사는 06~08시'+per); return; }
-  if(!lm){ mgSet(el,'mg-warn','⚠ 식사 기록 없음 — 공복 한계 '+feedGapTxt(g.limit)+per); return; }
+  if(!lm){ mgSet(el,'mg-warn','⚠ 식사 기록 없음 — 공복 경고 '+feedGapTxt(g.limit)+per); return; }
   const gap=Date.now()-lm;
+  /* V6.9.1: 4개월부터 밤사이 공복(어제 마지막 끼니 → 오늘 첫 끼니)은 공복 경고에서 뺀다 — 04장 권장 시간표의 야간 공복을 매일 아침 경고로 잡던 문제 */
+  if(g.mo!=null && g.mo>=4 && lm<new Date(todayKey()+'T00:00:00').getTime()){
+    if(hr<8) mgSet(el,'mg-night','🌅 아침 급여 시간 (06~08시) · 어제 마지막 '+fmtHM(lm)+per);
+    else mgSet(el,'mg-warn','⚠ 아침 식사 기록 없음 — 마지막 식사 후 '+fmtDur(gap)+per);
+    return;
+  }
   if(gap>g.limit*3600000){
     mgSet(el,'mg-warn','⚠ 마지막 식사 후 '+fmtDur(gap)+' — 공복 '+feedGapTxt(g.limit)+' 초과'+((g.mo!=null && g.mo<6)? ', 저혈당 주의' : '')+per);
   }else{
     const next=lm+g.est*3600000;
     const nh=new Date(next).getHours();
-    if(nh>=22 || nh<6){
-      /* V5.1: 다음 끼니가 야간(22~06시)에 걸림 → 새벽 급여 안내 대신 하루 마감 처리 */
+    if(nh>=22 || nh<6 || d2s(new Date(next))!==todayKey()){
+      /* V5.1: 다음 끼니가 야간(22~06시)에 걸림 → 새벽 급여 안내 대신 하루 마감 처리 · V6.9.1: 2끼(간격 12시간)는 다음 끼니가 내일 아침이면 마감 */
       const lmH=new Date(lm).getHours();
       const mo=(typeof ageMo==='function')? ageMo() : null;
       const eaten=qlNorm(todayKey()).meal.length;
@@ -7780,14 +7811,30 @@ const FEED_BCS={thin:{adj:1.10, t:'마름'}, ok:{adj:1.0, t:'이상'}, heavy:{ad
 const FEED_R=[0.09, 0.19];        /* 로지스틱 성장률(주당) 탐색 범위 — 소·중형견 0.091~0.189 (Posada 2014) */
 const FEED_WIN=49;                /* 성견 체중 추정에 쓰는 최근 기록 기간(일) */
 let FEED_EST_CACHE={k:null, v:null};
-/* V5.17: 공복 기준 — limit=월령별 최대 공복(시간), est=다음 끼니 예상 간격(깨어있는 16시간 ÷ (끼니−1), 단 limit 이내) */
-const FEED_MEALTIME={p4:'07:00 · 11:30 · 16:00 · 20:30', p6:'06:30 · 13:30 · 21:00', p12:'07:00 · 13:30 · 20:00', ad:'07:00 · 19:30'};
+/* V5.17 → V6.9.1: 공복 경고 기준 — limit=경고를 띄우는 공복 시간, est=다음 끼니 예상 간격.
+   4개월 미만 5h · 4~6개월 7.5h · 6개월부터 3끼 이상 9h, 2끼 13h(간격 12h + 여유 1h).
+   est = 깨어있는 16시간 ÷ (끼니−1), 단 limit 이내 · 6개월부터 2끼는 12h.
+   수의 문헌의 생리적 한계가 아니라 04장 급여 시간표 간격으로 정한 값(04장 표에 명시). 저혈당 문구는 6개월 미만만(토이견 3~6개월 미만 — 04장 근거). */
+const FEED_MEALTIME={p4:'07:00 · 11:30 · 16:00 · 20:30', p6:'06:30 · 13:30 · 21:00', p12:'07:00 · 13:30 · 20:00', two:'07:00 · 19:00'};
 function feedGap(){
   const mo=(typeof ageMo==='function')? ageMo() : null;
   const m=feedCfg().meals||4;
-  const limit = (mo==null)? 5 : (mo<4? 5 : (mo<6? 7.5 : (mo<12? 9 : 12)));
-  return {limit:limit, est:Math.min(limit, 16/Math.max(1,m-1)), mo:mo};
+  const two=(mo!=null && mo>=6 && m<=2);
+  const limit = (mo==null)? 5 : (mo<4? 5 : (mo<6? 7.5 : (two? 13 : 9)));
+  return {limit:limit, est:(two? 12 : Math.min(limit, 16/Math.max(1,m-1))), mo:mo};
 }
+/* V6.9.1: 08장 '2끼 전환 체크' — pre: 6~12개월 3끼일 때, post: 끼니 수를 2회로 바꾼 날부터 7일. 근거는 04장 급여 시간 표 아래 */
+const FEED_TWO={
+  pre:'<div class="fd-two-h">2끼 전환 체크<span>6개월부터 가능 · 3끼 유지도 정상 범위</span></div><ul>'
+    +'<li><b>조건(셋 다)</b> 한 끼를 며칠 연속 남김 · 체형 \'이상\' · 아침 노란 거품 토 없음</li>'
+    +'<li><b>방법</b> 하루 총량 그대로. 낮(13:30) 몫을 2~3일에 걸쳐 줄여 아침·저녁(07:00·19:00)에 나눈 뒤 끼니 수를 2회로</li>'
+    +'<li><b>전환 전</b> 진료 때 수의사 확인</li></ul>'
+    +'<p class="fd-two-src">근거: AKC · 영국 켄넬클럽 · VCA · JAAHA 2016 — 서재 04장</p>',
+  post:'<div class="fd-two-h">2끼 전환 D+{N}<span>바꾼 날부터 7일 확인</span></div><ul>'
+    +'<li><b>아침 노란 거품 토</b> 저녁 몫 일부를 취침 전으로(하루 총량 안에서). 반복되면 3끼로 되돌리고 진료</li>'
+    +'<li><b>변·체중</b> 묽은 변이 이틀 연속이거나 체중이 줄면 3끼로 되돌리고 진료</li></ul>'
+    +'<p class="fd-two-src">근거: JAAHA 2016(빈속 구토) — 서재 04장</p>'
+};
 function feedGapTxt(h){ return (h===Math.round(h))? (h+'시간') : (Math.floor(h)+'시간 '+Math.round((h%1)*60)+'분'); }
 function feedCfg(){ return Object.assign({}, DEFAULT_S.feed, S.feed||{}); }     /* 옛 저장본(kcal·meals만)도 기본값으로 채워 읽음 */
 function feedSet(k, v){ S.feed=feedCfg(); S.feed[k]=v; saveState(); renderFeed(); renderMealGap(); }
@@ -7968,10 +8015,18 @@ function renderFeed(){
   if(mh){                                                             /* V5.17: 권장 횟수 + 권장 시각 + 공복 한계 */
     if(mo==null) mh.textContent='';
     else{
-      const gp=feedGap();
-      const rec = mo<4? {n:'4회', t:FEED_MEALTIME.p4} : (mo<6? {n:'3~4회', t:FEED_MEALTIME.p6} : (mo<12? {n:'2~3회', t:FEED_MEALTIME.p12} : {n:'2회', t:FEED_MEALTIME.ad}));
-      mh.textContent='이 월령 권장: '+rec.n+' · '+rec.t+' (공복 한계 '+feedGapTxt(gp.limit)+')';
+      const gp=feedGap(), fm=c.meals||4;                              /* V6.9.1: 6~12개월은 3회·2회 시각 둘 다, 공복 경고는 지금 끼니 수 기준 */
+      const rec = mo<4? {n:'4회', t:FEED_MEALTIME.p4} : (mo<6? {n:'3~4회', t:FEED_MEALTIME.p6} : (mo<12? {n:'2~3회', t:'3회 '+FEED_MEALTIME.p12+' / 2회 '+FEED_MEALTIME.two} : {n:'2회', t:FEED_MEALTIME.two}));
+      mh.textContent='이 월령 권장: '+rec.n+' · '+rec.t+' — 공복 경고 '+feedGapTxt(gp.limit)+'('+fm+'회 기준)';
     }
+  }
+  const tw=document.getElementById('fdTwo');
+  if(tw){                                                             /* V6.9.1: 2끼 전환 체크 — 6~12개월 3끼일 때 · 2회로 바꾼 날부터 7일 */
+    const fm=c.meals||4, ago=c.mealsAt? stDiff(c.mealsAt, todayKey()) : null;
+    const pre=(mo!=null && mo>=6 && mo<12 && fm===3), post=(mo!=null && mo>=6 && fm===2 && ago!=null && ago>=0 && ago<=7);
+    tw.hidden=!(pre || post);
+    if(pre) tw.innerHTML=FEED_TWO.pre;
+    else if(post) tw.innerHTML=FEED_TWO.post.replace('{N}', String(ago));
   }
   const bh=document.getElementById('fdBcsHint');
   if(bh){
@@ -8041,7 +8096,11 @@ function renderFeed(){
 function bindFeed(){
   const on=function(id, fn){ const el=document.getElementById(id); if(el) el.addEventListener('change', fn); };
   on('fdKcal', function(){ const v=parseInt(this.value,10); if(v>=2500 && v<=6000) feedSet('kcal', v); else renderFeed(); });
-  on('fdMeals', function(){ feedSet('meals', parseInt(this.value,10)||4); });
+  on('fdMeals', function(){                                           /* V6.9.1: 끼니 수를 바꾼 날짜 — 2끼 전환 체크 D+N */
+    const v=parseInt(this.value,10)||4;
+    if(v!==(feedCfg().meals||4)){ S.feed=feedCfg(); S.feed.mealsAt=todayKey(); }
+    feedSet('meals', v);
+  });
   on('fdAdultMode', function(){ feedSet('adultMode', this.value==='manual'? 'manual' : 'auto'); });
   on('fdAdult', function(){ const v=parseFloat(String(this.value).replace(',','.')); feedSet('adult', (v>=1 && v<=60)? Math.round(v*10)/10 : 0); });
   on('fdBcs', function(){ S.feed=feedCfg(); S.feed.bcs=FEED_BCS[this.value]? this.value : 'ok'; S.feed.bcsAt=todayKey(); saveState(); renderFeed(); renderMealGap(); });
