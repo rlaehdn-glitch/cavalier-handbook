@@ -1923,6 +1923,24 @@ body.alb-sel #bnav{display:none;}
 .cl-cb small{color:var(--label2); font-size:12.5px;}
 #clOvl .kg-chk{margin-top:10px;}
 </style>
+<style id="v71css">
+/* ---------- V7.1 구글 캘린더 — 달력 칸 점·막대, 날짜 목록 줄, 설정 칩 ---------- */
+.cl-ics .gd{flex:0 0 auto; width:6px; height:6px; border-radius:50%; margin:0 1px;}
+.cl-bar.x{opacity:.9;}
+.cl-row.gc{cursor:default;}
+.cl-row.gc:active{opacity:1;}
+.cl-ic.gc{position:relative; background:none;}
+.cl-ic.gc::before{content:""; position:absolute; inset:0; border-radius:9px; background:currentColor; opacity:.15;}
+.cl-ic.gc svg{position:relative;}
+.gc-dot{display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:5px; vertical-align:1px;}
+.gc-cals{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;}
+.gc-cals:empty{display:none;}
+.gc-chip{display:inline-flex; align-items:center; gap:7px; border:none; border-radius:999px; padding:8px 13px; font-family:inherit; font-size:14px; font-weight:600; background:var(--fill2); color:var(--label); cursor:pointer;}
+.gc-chip i{width:9px; height:9px; border-radius:50%; flex:0 0 auto;}
+.gc-chip.off{color:var(--label3); text-decoration:line-through;}
+.gc-chip.off i{opacity:.35;}
+#gcStat.warn{color:var(--warn-ink);}
+</style>
 </head>
 <body>
 
@@ -3076,6 +3094,35 @@ body.alb-sel #bnav{display:none;}
     </details>
   </div>
 
+  <h3 class="sec">구글 캘린더 <span class="muted small">이 기기에만 저장</span></h3>
+  <div class="card">
+    <p class="muted small" style="margin-top:0;">구글 캘린더 일정(기본: 여행·강아지)을 달력에 함께 표시합니다. 읽기만 하며 핸드북 기록과 섞이지 않습니다.</p>
+    <div class="row"><input type="url" id="gcUrl" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Apps Script 웹 앱 주소 (https://script.google.com/macros/s/…/exec)" style="width:100%;"></div>
+    <div class="row" style="margin-top:8px;">
+      <button class="btn sm" id="gcOn" type="button">연결 · 새로고침</button>
+      <button class="btn sm ghost" id="gcOff" type="button">끊기</button>
+    </div>
+    <p id="gcStat" class="muted small" style="margin:8px 0 0;">연결 안 됨</p>
+    <div id="gcCals" class="gc-cals"></div>
+    <details style="margin-top:10px;">
+      <summary class="small" style="cursor:pointer; font-weight:800; color:var(--chest-d);">최초 1회 설정법 — PC에서 (약 5분, 무료)</summary>
+      <div class="row" style="margin-top:10px;">
+        <button class="btn sm ghost" id="gcCode" type="button">코드 복사</button>
+        <button class="btn sm ghost" id="gcMani" type="button">권한 설정 복사</button>
+      </div>
+      <ol class="ls small" style="margin-top:8px;">
+        <li>PC 브라우저로 핸드북을 열어 이 안내를 펼칩니다(위 복사 버튼 사용).</li>
+        <li><strong>script.google.com</strong> 접속 → 캘린더가 있는 구글 계정으로 로그인 → <strong>새 프로젝트</strong></li>
+        <li>편집기 내용을 모두 지우고 <strong>코드 복사</strong>한 내용을 붙여넣기 → 저장(Ctrl+S)</li>
+        <li>왼쪽 톱니 <strong>프로젝트 설정</strong> → <strong>편집기에 'appsscript.json' 매니페스트 파일 표시</strong> 체크 → 편집기로 돌아와 appsscript.json 내용을 <strong>권한 설정 복사</strong>한 내용으로 바꾸고 저장 (캘린더 '보기' 권한만 사용)</li>
+        <li>오른쪽 위 <strong>배포 → 새 배포</strong> → 유형 선택 옆 톱니 → <strong>웹 앱</strong> → 실행: <strong>나</strong> · 액세스: <strong>모든 사용자</strong> → <strong>배포</strong></li>
+        <li><strong>액세스 승인</strong> → 계정 선택 → '확인되지 않은 앱' 화면이면 <strong>고급 → (프로젝트 이름)(으)로 이동</strong> → <strong>허용</strong></li>
+        <li><strong>웹 앱 URL</strong>(…/exec로 끝남)을 위 칸에 붙여넣고 <strong>연결</strong>. 다른 폰도 같은 주소를 넣습니다.</li>
+      </ol>
+      <p class="muted small">불러올 캘린더는 코드 맨 위 <code>CALS</code> 줄에서 바꿉니다(바꾼 뒤 배포 → 배포 관리 → 연필 → 버전 '새 버전' → 배포, 주소는 그대로). 주소를 아는 사람은 이 캘린더들의 일정 제목·시각을 볼 수 있으니 주소를 다른 곳에 올리지 마세요.</p>
+    </details>
+  </div>
+
   <h3 class="sec">백업</h3>
   <div class="card">
     <div class="row">
@@ -3104,7 +3151,7 @@ body.alb-sel #bnav{display:none;}
       <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
       <li>의료 정보는 일반 정보입니다. 개별 판단은 수의사 진료가 우선입니다.</li>
     </ul>
-    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V6.9.1 · 2026-11-16</p>
+    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V7.1.0 · 2026-11-19</p>
   </div>
 
   <h3 class="sec">진단 <span class="muted small" id="diagErrN"></span></h3>
@@ -4517,7 +4564,16 @@ class VideoRTC extends HTMLElement {
 
 if(window.customElements && !customElements.get('video-stream')){ customElements.define('video-stream', VideoRTC); }
 </script>
-<script>/* V7.0.0 (2026-11-19): 달력 개편 — 할 일·기록을 한 장부로 (앱 설계 D00 예외: 워치 개발 전 달력 데이터 구조 확정, 이번 달력 개편만 웹 반영).
+<script>/* V7.1.0 (2026-11-19): 구글 캘린더 불러오기(읽기 전용) — 달력 개편(D00 예외)의 연장. 장부(S.cal)·동기화·급여·산책 변경 없음.
+   ① 설정 > 구글 캘린더: Apps Script 웹 앱 주소(…/exec) 입력 → 그 스크립트가 보내는 캘린더(기본 여행·강아지)의 일정 제목·날짜·시각을 받음.
+      스크립트 코드·권한 설정(appsscript.json, 캘린더 보기 권한만)은 설정 화면의 복사 버튼으로 제공. 캘린더별 켜기·끄기(칩).
+   ② 달력: 하루 일정 = 캘린더 색 점, 여러 날 일정 = 캘린더 색 막대. 날짜 목록에 줄로 표시(누르는 동작 없음 — 고치는 곳은 구글 캘린더).
+      다가오는 일정에는 캘린더마다 가장 가까운 1건. 홈 '다음 일정'·지난 할 일 확인 카드에는 넣지 않음.
+   ③ 주소·받은 일정은 이 기기에만(localStorage _gcal) — 동기화·백업 제외(여행 날짜 = 집이 비는 날). 폰마다 한 번 입력.
+      받기: 달력 탭 열 때·앱으로 돌아올 때 10분 간격(실패 뒤 1분), [연결 · 새로고침]. 실패하면 마지막으로 받은 일정을 계속 표시하고 설정에 이유 표시.
+   ④ 설정 '저장 상태'의 버전 표기가 V6.9.1로 남아 있던 것 수정(구조 검사에 버전 표기 확인 추가).
+   PVER(빌드 번호) 690 유지. 시험 e2e_gcal. */
+/* V7.0.0 (2026-11-19): 달력 개편 — 할 일·기록을 한 장부로 (앱 설계 D00 예외: 워치 개발 전 달력 데이터 구조 확정, 이번 달력 개편만 웹 반영).
    ① 장부 S.cal(첫 기록 때 생김): 할 일 t{id·종류·제목·반복 구간 r[]·메모·병원 이름·진료 종류 …} + 회차 상태 o['할일id|예정일']{완료·건너뜀·옮김, 실제 날짜, 기록자} + 숨긴 자동 안내 h.
       반복: 1회(기간 끝 선택) · 매주 · 매월 같은 날 · 매년 · 완료 후 n일. 반복을 바꾸거나 '기준일 바꾸기'를 하면 새 구간을 덧붙여 지난 회차는 그대로.
       회차 키가 고정이라 두 폰이 같은 회차를 완료해도 1건. 취소·삭제는 표시(x·del)만 남김 — 두 폰을 합칠 때 되살아나지 않게.
@@ -4679,7 +4735,7 @@ if(window.customElements && !customElements.get('video-stream')){ customElements
 /* V5.8 (2026-08-21): 접종 실기록 반영(2차 08.07 종합+코로나1차, 3차 08.21 종합+코로나2차, 4차 09.04 예약, 넥스가드 스펙트라 매월 21일, 코로나 보강 2027.08.21),
    04장 미니 인도어 퍼피 체중별 급여표 추가, 급여 계산기 기본 ME 3735 + kcal 누락 NaN 가드. 저장 구조·동기화·달력 로직 변경 없음. */
 /* =============== State =============== */
-const APP_VER='7.0.0', APP_DATE='2026-11-19';   /* V6.6: 앱 버전 — dev/VERSION 한 곳에서 빌드할 때 채움 */
+const APP_VER='7.1.0', APP_DATE='2026-11-19';   /* V6.6: 앱 버전 — dev/VERSION 한 곳에서 빌드할 때 채움 */
 const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, sleepCur:0, sleepLog:{}, feed:{kcal:4000, meals:4, mealsAt:'', adult:0, adultMode:'auto', bcs:'ok', bcsAt:'', neut:0, treat:0, vetG:0, vetAt:''}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}, media:{url:''}, kgCur:0, kgLog:{}, kgCfg:{name:'도그스테이', pass:0, from:''}, marks:{}};
 let S = JSON.parse(JSON.stringify(DEFAULT_S));
 let storageOK = false, artOK = false, saveTimer = null, lastEditAt = 0;
@@ -5652,8 +5708,8 @@ function clGridPaint(){
   const first=new Date(calY, calM, 1).getDay(), dim=new Date(calY, calM+1, 0).getDate();
   const lo=d2s(new Date(calY, calM, 1)), hi=d2s(new Date(calY, calM, dim)), tk=todayKey();
   const byDay={}, bars={};
-  const put=function(ds, ic, c, pr){ if(ds<lo || ds>hi) return; (byDay[ds]=byDay[ds]||[]).push({ic:ic, c:c, pr:pr}); };
-  const bar=function(s, e, c){ for(let k=(s<lo? lo : s), n=0; k<=(e>hi? hi : e) && n<62; k=clAdd(k, 1), n++) (bars[k]=bars[k]||[]).push({c:c, s:k===s, e:k===e}); };
+  const put=function(ds, ic, c, pr, col){ if(ds<lo || ds>hi) return; (byDay[ds]=byDay[ds]||[]).push({ic:ic, c:c, pr:pr, col:col||''}); };
+  const bar=function(s, e, c, col){ for(let k=(s<lo? lo : s), n=0; k<=(e>hi? hi : e) && n<62; k=clAdd(k, 1), n++) (bars[k]=bars[k]||[]).push({c:c, col:col||'', s:k===s, e:k===e}); };
   clItems(lo, hi).forEach(function(x){
     if(x.st==='skip') return;
     if(x.st==='span'){ bar(x.d, x.e, 'p'); return; }
@@ -5665,15 +5721,16 @@ function clGridPaint(){
   const live=clLiveVr();
   (S.visits||[]).forEach(function(v){ if(v && clOk(v.d) && !(v.id && live[v.id])) put(v.d, 'i-cross', 'd', 4); });
   VAX_PLAN.forEach(function(p){ const v=(S.vax||{})[p.id]; if(v && v.done && clOk(v.date)) put(v.date, 'i-cross', 'd', 4); });
+  gcEvents(lo, hi).forEach(function(x){ if(x.e>x.d) bar(x.d, x.e, 'x', x.col); else put(x.d, '', 'x', 8, x.col); });   /* V7.1 구글 캘린더 */
   let h='';
   for(let i=0; i<first; i++) h+='<div class="cal-cell empty"></div>';
   for(let d=1; d<=dim; d++){
     const ds=calY+'-'+String(calM+1).padStart(2,'0')+'-'+String(d).padStart(2,'0'), dow=(first+d-1)%7;
     const cls=['cal-cell']; if(dow===0) cls.push('sun'); if(ds===tk) cls.push('today'); if(ds===calSel) cls.push('sel');
-    const seen={}, ics=(byDay[ds]||[]).sort(function(a, b){ return a.pr-b.pr; }).filter(function(x){ const k=x.ic+x.c; if(seen[k]) return false; seen[k]=1; return true; }).slice(0, 3);
-    const bs=(bars[ds]||[]).slice(0, 2).map(function(b, i){ return '<i class="cl-bar'+(b.c==='g'? ' g' : '')+(i? ' b2' : '')+(b.s || dow===0? ' s' : '')+(b.e || dow===6? ' e' : '')+'"></i>'; }).join('');
-    h+='<div class="'+cls.join(' ')+'" data-d="'+ds+'" role="button" tabindex="0" aria-label="'+(calM+1)+'월 '+d+'일'+(ics.length? ', 일정 있음' : '')+'"><span class="dn">'+d+'</span><span class="cl-ics">'+
-      ics.map(function(x){ return '<svg class="'+x.c+'" aria-hidden="true"><use href="#'+x.ic+'"/></svg>'; }).join('')+'</span>'+bs+'</div>';
+    const seen={}, ics=(byDay[ds]||[]).sort(function(a, b){ return a.pr-b.pr; }).filter(function(x){ const k=x.ic+x.c+x.col; if(seen[k]) return false; seen[k]=1; return true; }).slice(0, 3);
+    const bs=(bars[ds]||[]).slice(0, 2).map(function(b, i){ return '<i class="cl-bar'+(b.c==='g'? ' g' : (b.c==='x'? ' x' : ''))+(i? ' b2' : '')+(b.s || dow===0? ' s' : '')+(b.e || dow===6? ' e' : '')+'"'+(b.col? ' style="background:'+b.col+'"' : '')+'></i>'; }).join('');
+    h+='<div class="'+cls.join(' ')+'" data-d="'+ds+'" role="button" tabindex="0" aria-label="'+(calM+1)+'월 '+d+'일'+((ics.length || bs)? ', 일정 있음' : '')+'"><span class="dn">'+d+'</span><span class="cl-ics">'+
+      ics.map(function(x){ return x.c==='x'? '<i class="gd" style="background:'+x.col+'"></i>' : '<svg class="'+x.c+'" aria-hidden="true"><use href="#'+x.ic+'"/></svg>'; }).join('')+'</span>'+bs+'</div>';
   }
   grid.innerHTML=h;
   const now=new Date(), tb=document.getElementById('calToday');
@@ -5758,15 +5815,16 @@ function clDayPaint(){
   const bundle=its.some(function(x){ return x.t.k==='vet' && !x.e && x.st!=='skip'; })? its.filter(function(x){ return (x.t.k==='vet' || x.t.k==='med') && !x.e && x.st!=='skip'; }) : [];
   bundle.sort(function(a, b){ return (a.t.k==='vet'? 0 : 1)-(b.t.k==='vet'? 0 : 1); });
   const rest=its.filter(function(x){ return bundle.indexOf(x)<0; }).sort(function(a, b){ return clPri(a)-clPri(b) || String(a.t.tm||'99').localeCompare(String(b.t.tm||'99')) || String(a.t.ti).localeCompare(String(b.t.ti)); });
-  const info=clInfo(ds, ds), marks=clMarks(ds, ds).filter(function(m){ return m.d===ds; }), recs=clRecRows(ds);
+  const info=clInfo(ds, ds), marks=clMarks(ds, ds).filter(function(m){ return m.d===ds; }), recs=clRecRows(ds), gx=gcEvents(ds, ds);
   const walks=((S.walkLog||{})[ds]||[]).filter(function(s){ return s && +s.i>+s.o; }).length;
   let h='<div class="cl-dh"><b>'+clMD(ds)+' '+clDw(ds)+'요일</b>'+(ds===tk? '<span>오늘</span>' : '')+'</div>';
   if(bundle.length) h+=clVisitHtml(bundle, ds, tk);
   rest.forEach(function(x){ h+=clRowHtml(x, ds, tk); });
+  gx.forEach(function(x){ h+=gcRowHtml(x, ds); });
   info.forEach(function(x){ h+='<div class="cl-row info" role="button" tabindex="0" data-info="'+x.id+'"><span class="cl-ic"><svg class="ico"><use href="#i-star"/></svg></span><span class="cl-tx"><b>'+esc(x.ti)+'</b><span>자동 안내</span></span></div>'; });
   marks.forEach(function(m){ h+='<div class="cl-row info" role="button" tabindex="0" data-go="stats"><span class="cl-ic"><svg class="ico"><use href="#i-chart"/></svg></span><span class="cl-tx"><b>'+esc(m.ti)+'</b><span>기준일'+(m.e? ' · '+clMDs(m.d)+'–'+clMDs(m.e) : '')+'</span></span></div>'; });
   recs.forEach(function(r){ h+='<div class="cl-row rec" role="button" tabindex="0" data-go="'+r.go+'"><span class="cl-ic"><svg class="ico"><use href="#'+r.ic+'"/></svg></span><span class="cl-tx"><b>'+esc(r.ti)+'</b>'+(r.sub? '<span>'+esc(r.sub)+'</span>' : '')+'</span></div>'; });
-  if(!bundle.length && !rest.length && !info.length && !marks.length && !recs.length && !walks) h+='<p class="cl-empty">일정 없음</p>';
+  if(!bundle.length && !rest.length && !gx.length && !info.length && !marks.length && !recs.length && !walks) h+='<p class="cl-empty">일정 없음</p>';
   el.innerHTML='<div class="card cl-card">'+h+'<div id="clWalk"></div></div>';
   if(walks && typeof wgCalSel==='function'){ try{ wgCalSel(ds, document.getElementById('clWalk')); }catch(e){ logErr('달력: 산책 줄', e); } }
 }
@@ -5791,10 +5849,11 @@ function clNextPaint(){
     .filter(function(x){ if(seen[x.t.id]) return false; seen[x.t.id]=1; return true; })   /* 반복 할 일은 가장 가까운 1회만 */
     .map(function(x){ const sub=clSub2(x, x.d); return {d:x.d, ti:x.t.ti, sub:sub.join(' · '), pr:clPri(x)}; })
     .concat(clInfo(from, to).map(function(x){ return {d:x.d, ti:x.ti, sub:'자동 안내', pr:7}; }))
+    .concat(gcNext(from, to))
     .sort(function(a, b){ return a.d.localeCompare(b.d) || a.pr-b.pr; }).slice(0, 6);
   if(!its.length){ el.innerHTML=''; return; }
   el.innerHTML='<div class="card cl-card cl-up"><div class="cl-dh"><b>다가오는 일정</b></div>'+its.map(function(x){
-    return '<div class="cl-row" role="button" tabindex="0" data-gd="'+x.d+'"><span class="cl-ud"><b>'+clMDs(x.d)+'</b><span>'+clDw(x.d)+'</span></span><span class="cl-tx"><b>'+esc(x.ti)+'</b>'+(x.sub? '<span>'+esc(x.sub)+'</span>' : '')+'</span></div>';
+    return '<div class="cl-row" role="button" tabindex="0" data-gd="'+x.d+'"><span class="cl-ud"><b>'+clMDs(x.d)+'</b><span>'+clDw(x.d)+'</span></span><span class="cl-tx"><b>'+esc(x.ti)+'</b>'+(x.sub? '<span>'+(x.col? '<i class="gc-dot" style="background:'+x.col+'"></i>' : '')+esc(x.sub)+'</span>' : '')+'</span></div>';
   }).join('')+'</div>';
 }
 function clV8Paint(){   /* 02장 접종표 8행: 입력칸 대신 달력 기록 요약 */
@@ -6204,6 +6263,151 @@ function bindCal(){
   const ck=document.getElementById('ddCk');
   if(ck) ck.addEventListener('click', function(e){ e.stopPropagation(); if(ck.dataset.tid) clOpenDone(ck.dataset.tid, ck.dataset.due); });
 }
+/* =============== V7.1 구글 캘린더 불러오기 (읽기 전용) =============== */
+/* 설정 > 구글 캘린더에 Apps Script 웹 앱 주소(…/exec)를 넣으면, 그 스크립트가 보내는 캘린더(기본 여행·강아지)의 일정 제목·날짜·시각을
+   달력 칸(하루 = 점, 여러 날 = 막대) · 날짜 목록 · 다가오는 일정(캘린더마다 가장 가까운 1건)에 함께 보여준다. 장부(S.cal)와 섞지 않는다(읽기 전용).
+   주소·받은 일정은 이 기기에만(_gcal) — 동기화·백업에 넣지 않는다(여행 날짜 = 집이 비는 날). 폰마다 한 번 넣는다.
+   받기: 달력 탭을 열 때·앱으로 돌아올 때(10분 간격, 실패 뒤엔 1분) · 설정 [연결 · 새로고침]. 실패하면 마지막으로 받은 일정을 그대로 보여준다. */
+const GC={busy:false, msg:''};
+const GC_KEY='_gcal', GC_GAP=10*60000;
+const GC_CODE="/* 빼꼼 핸드북 — 구글 캘린더 연결 (읽기 전용) · 핸드북 V7.1\n   CALS에 적은 캘린더의 일정 '제목·날짜·시각'만 핸드북으로 보냅니다. 설명·장소·참석자·알림은 보내지 않습니다.\n   범위: 오늘 기준 60일 전 ~ 420일 뒤.\n   CALS를 바꾼 뒤에는 [배포] → [배포 관리] → 연필 → 버전 '새 버전' → [배포] (주소는 그대로) */\nconst CALS = ['여행', '강아지'];\n\nfunction doGet() {\n  let out;\n  try { out = feed_(); }\n  catch (err) { out = { v: 1, ok: 0, err: String((err && err.message) || err).slice(0, 200) }; }\n  return ContentService.createTextOutput(JSON.stringify(out)).setMimeType(ContentService.MimeType.JSON);\n}\n\nfunction feed_() {\n  const tz = Session.getScriptTimeZone();\n  const day = function (d) { return Utilities.formatDate(d, tz, 'yyyy-MM-dd'); };\n  const hm = function (d) { return Utilities.formatDate(d, tz, 'HH:mm'); };\n  const now = Date.now(), from = new Date(now - 60 * 864e5), to = new Date(now + 420 * 864e5);\n  const cals = [], miss = [], ev = [];\n  CALS.forEach(function (name) {\n    const list = CalendarApp.getCalendarsByName(name);\n    if (!list.length) { miss.push(name); return; }\n    list.forEach(function (cal) {\n      cals.push({ n: name, c: cal.getColor() });\n      cal.getEvents(from, to).forEach(function (x) {\n        const o = { c: name, t: String(x.getTitle() || '').slice(0, 100) };\n        if (x.isAllDayEvent()) {\n          o.d = day(x.getAllDayStartDate());\n          o.e = day(new Date(x.getAllDayEndDate().getTime() - 12 * 3600e3));   /* 끝 = 다음 날 0시 → 마지막 날 */\n        } else {\n          const s = x.getStartTime(), f = x.getEndTime();\n          o.d = day(s); o.s = hm(s); o.f = hm(f);\n          o.e = day(new Date(Math.max(s.getTime(), f.getTime() - 60e3)));      /* 0시에 끝나면 전날까지 */\n        }\n        if (o.e < o.d) o.e = o.d;\n        ev.push(o);\n      });\n    });\n  });\n  return { v: 1, ok: 1, at: new Date().toISOString(), cals: cals, miss: miss, ev: ev.slice(0, 500) };\n}\n";
+const GC_MANI="{\n  \"timeZone\": \"Asia/Seoul\",\n  \"dependencies\": {},\n  \"exceptionLogging\": \"STACKDRIVER\",\n  \"runtimeVersion\": \"V8\",\n  \"oauthScopes\": [\"https://www.googleapis.com/auth/calendar.readonly\"],\n  \"webapp\": { \"executeAs\": \"USER_DEPLOYING\", \"access\": \"ANYONE_ANONYMOUS\" }\n}\n";
+function gcLoad(){
+  let o=null; try{ o=JSON.parse(lsGet(GC_KEY)||'null'); }catch(e){ o=null; }
+  if(!o || typeof o!=='object' || Array.isArray(o)) o={};
+  if(typeof o.u!=='string') o.u='';
+  if(!o.off || typeof o.off!=='object' || Array.isArray(o.off)) o.off={};
+  ['ev', 'cals', 'miss'].forEach(function(k){ if(!Array.isArray(o[k])) o[k]=[]; });
+  return o;
+}
+function gcSave(o){ return lsSet(GC_KEY, JSON.stringify(o)); }
+function gcOkD(s){ return clOk(s) && d2s(clDt(s))===s; }   /* 실제 있는 날짜만(2026-13-45 같은 값 제외) */
+function gcUrlOk(u){ return /^https:\/\/script\.google\.com\/(?:a\/macros\/[^\/\s?#]+|macros)\/s\/[A-Za-z0-9_-]{20,}\/exec$/.test(u); }
+function gcColor(o, n){ const c=(o.cals.filter(function(x){ return x && x.n===n; })[0]||{}).c; return /^#[0-9a-fA-F]{6}$/.test(String(c||''))? c : '#8E8E93'; }
+function gcEvents(lo, hi){   /* [lo, hi]에 걸치는 일정 — 끈 캘린더 제외, 날짜순(하루 종일 먼저) */
+  const o=gcLoad(); if(!o.u) return [];
+  const tm=function(v){ return /^\d{2}:\d{2}$/.test(String(v||''))? v : ''; }, out=[];
+  o.ev.forEach(function(x, i){
+    if(!x || !gcOkD(x.d) || typeof x.c!=='string' || o.off[x.c]) return;
+    const e=(gcOkD(x.e) && x.e>x.d)? x.e : x.d;
+    if(x.d>hi || e<lo) return;
+    out.push({k:'g'+i, c:x.c, t:String(x.t||'').trim().slice(0, 100) || '(제목 없음)', d:x.d, e:e, s:tm(x.s), f:tm(x.f), col:gcColor(o, x.c)});
+  });
+  return out.sort(function(a, b){ return a.d.localeCompare(b.d) || (a.s? 1 : 0)-(b.s? 1 : 0) || a.s.localeCompare(b.s); });
+}
+function gcNext(from, to){   /* 다가오는 일정 — 캘린더마다 가장 가까운 1건 */
+  const seen={};
+  return gcEvents(from, to).filter(function(x){ if(x.d<from || seen[x.c]) return false; seen[x.c]=1; return true; })
+    .map(function(x){ return {d:x.d, ti:x.t, sub:x.c+(x.s? ' · '+x.s : (x.e>x.d? ' · '+clMDs(x.d)+'–'+clMDs(x.e) : '')), pr:8, col:x.col}; });
+}
+function gcRowHtml(x, ds){   /* 날짜 목록 줄 — 누르는 동작 없음(고치는 곳은 구글 캘린더) */
+  const sub=[x.c], multi=x.e>x.d;
+  if(multi){ const tot=clDiff(x.d, x.e)+1, n=clDiff(x.d, ds)+1; sub.push(clMDs(x.d)+'–'+clMDs(x.e)+' · '+n+'/'+tot+'일째'); }
+  if(x.s){ if(!multi) sub.push(x.s+((x.f && x.f!==x.s)? '–'+x.f : '')); else if(ds===x.d) sub.push(x.s+'부터'); else if(ds===x.e && x.f) sub.push(x.f+'까지'); }
+  else if(!multi) sub.push('하루 종일');
+  return '<div class="cl-row gc"><span class="cl-ic gc" style="color:'+x.col+'"><svg class="ico"><use href="#i-cal"/></svg></span>'+
+    '<span class="cl-tx"><b>'+esc(x.t)+'</b><span>'+esc(sub.join(' · '))+'</span></span></div>';
+}
+function gcFetch(force){ return gcGet(force).catch(function(e){ GC.busy=false; logErr('구글 캘린더: 받기', e); gcPaint(); }); }
+async function gcGet(force){
+  const o=gcLoad(), u=o.u; if(!u || GC.busy) return;
+  if(!force && o.at && Date.now()-o.at<GC_GAP) return;
+  GC.busy=true; GC.msg=''; gcPaint();
+  let err='', j=null;
+  const ac=(typeof AbortController==='function')? new AbortController() : null, to=setTimeout(function(){ if(ac) ac.abort(); }, 20000);
+  try{
+    const r=await fetch(u, {cache:'no-store', credentials:'omit', redirect:'follow', signal:ac? ac.signal : undefined});
+    if(!r.ok) err='불러오기 실패 (HTTP '+r.status+') — 주소를 확인해 주세요';
+    else{
+      try{ j=JSON.parse(await r.text()); }catch(e){ j=null; }
+      if(!j || j.v!==1) err='일정 형식이 아닌 응답 — 주소를 확인해 주세요';
+      else if(j.ok!==1) err='Apps Script 오류: '+String(j.err||'알 수 없음').slice(0, 120);
+    }
+  }catch(e){
+    err=(navigator.onLine===false)? '인터넷 연결 없음' : ((e && e.name==='AbortError')? '응답 없음(20초)' : "불러오기 실패 — 배포의 액세스가 '모든 사용자'인지 확인해 주세요");
+  }finally{ clearTimeout(to); }
+  GC.busy=false;
+  const n=gcLoad(); if(n.u!==u){ gcPaint(); return; }   /* 받는 사이 끊었거나 주소를 바꿈 */
+  let changed=false;
+  if(err){ n.err=err; n.at=Date.now()-GC_GAP+60000; }   /* 실패는 1분 뒤 다시 */
+  else{
+    const tm=function(v){ return /^\d{2}:\d{2}$/.test(String(v||'')); };
+    const ev=(Array.isArray(j.ev)? j.ev : []).filter(function(x){ return x && gcOkD(x.d) && typeof x.c==='string'; }).slice(0, 600).map(function(x){
+      const y={c:x.c.slice(0, 40), t:String(x.t||'').slice(0, 100), d:x.d};
+      if(gcOkD(x.e) && x.e>x.d) y.e=x.e; if(tm(x.s)) y.s=x.s; if(tm(x.f)) y.f=x.f;
+      return y;
+    });
+    const cals=(Array.isArray(j.cals)? j.cals : []).filter(function(c){ return c && typeof c.n==='string'; }).slice(0, 20).map(function(c){ return {n:c.n.slice(0, 40), c:String(c.c||'').slice(0, 7)}; });
+    const miss=(Array.isArray(j.miss)? j.miss : []).filter(function(m){ return typeof m==='string'; }).slice(0, 20).map(function(m){ return m.slice(0, 40); });
+    changed=JSON.stringify([ev, cals])!==JSON.stringify([n.ev, n.cals]);
+    n.ev=ev; n.cals=cals; n.miss=miss; n.at=Date.now(); n.ok=n.at; n.err='';
+  }
+  if(!gcSave(n)) logErr('구글 캘린더: 저장', '이 폰 저장공간 부족');
+  gcPaint();
+  if(changed){ try{ renderCal(); }catch(e){ logErr('구글 캘린더: 달력 그리기', e); } }
+}
+function gcWhen(ts){
+  const d=new Date(ts), ds=d2s(d);
+  return (ds===todayKey()? '오늘' : clMDs(ds))+' '+String(d.getHours()).padStart(2, '0')+':'+String(d.getMinutes()).padStart(2, '0');
+}
+function gcPaint(){   /* 설정 카드: 상태 한 줄 + 캘린더별 켜기·끄기 */
+  const st=document.getElementById('gcStat'), inp=document.getElementById('gcUrl'), box=document.getElementById('gcCals'); if(!st) return;
+  const o=gcLoad();
+  if(inp && document.activeElement!==inp && !GC.msg) inp.value=o.u;
+  let t;
+  if(GC.msg) t=GC.msg;
+  else if(!o.u) t='연결 안 됨';
+  else if(GC.busy) t='불러오는 중…';
+  else if(o.err) t='⚠ '+o.err+(o.ok? ' · '+gcWhen(o.ok)+'에 받은 일정 표시 중' : '');
+  else if(o.ok) t='연결됨 · '+gcWhen(o.ok)+' 받음 · 일정 '+o.ev.length+'건'+(o.miss.length? " · 못 찾은 캘린더: "+o.miss.join(', ') : '');
+  else t='연결 전';
+  st.textContent=t;
+  st.classList.toggle('warn', !!(GC.msg || (o.u && o.err)));
+  if(box){
+    const seen={};
+    box.innerHTML=(o.u? o.cals : []).filter(function(c){ if(seen[c.n]) return false; seen[c.n]=1; return true; }).map(function(c){
+      const off=!!o.off[c.n];
+      return '<button type="button" class="gc-chip'+(off? ' off' : '')+'" data-gcc="'+esc(c.n)+'" aria-pressed="'+(off? 'false' : 'true')+'"><i style="background:'+gcColor(o, c.n)+'"></i>'+esc(c.n)+'</button>';
+    }).join('');
+  }
+}
+function gcCopy(t, msg){
+  const done=function(){ uiToast(msg); };
+  try{ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(done, function(){ diagCopyFallback(t); done(); }); return; } }catch(e){}
+  diagCopyFallback(t); done();
+}
+function bindGcal(){
+  const on=document.getElementById('gcOn'); if(!on) return;
+  on.addEventListener('click', function(){
+    const inp=document.getElementById('gcUrl'), u=String((inp && inp.value)||'').trim();
+    GC.msg='';
+    if(!u) GC.msg='주소를 붙여넣어 주세요';
+    else if(/\/dev\/?$/.test(u)) GC.msg="…/dev 주소는 만든 사람만 열 수 있어요. 배포 후 나오는 '웹 앱 URL'(…/exec)을 넣어주세요";
+    else if(!gcUrlOk(u)) GC.msg='주소 형식이 다릅니다 — https://script.google.com/macros/s/…/exec';
+    if(GC.msg){ gcPaint(); return; }
+    const o=gcLoad();
+    if(o.u!==u){ o.u=u; o.ev=[]; o.cals=[]; o.miss=[]; o.at=0; o.ok=0; o.err=''; }
+    if(!gcSave(o)){ GC.msg='이 폰 저장공간이 가득 차 주소를 저장하지 못했어요'; gcPaint(); return; }
+    gcFetch(true);
+  });
+  document.getElementById('gcOff').addEventListener('click', async function(){
+    GC.msg='';
+    if(!gcLoad().u){ gcPaint(); return; }
+    if(!(await uiConfirm({msg:'구글 캘린더 연결을 끊을까요? 이 폰의 달력에서 구글 일정이 빠집니다. 구글 캘린더는 그대로입니다.', ok:'끊기'}))) return;
+    try{ localStorage.removeItem(GC_KEY); }catch(e){}
+    gcPaint(); try{ renderCal(); }catch(e){ logErr('구글 캘린더: 달력 그리기', e); }
+  });
+  document.getElementById('gcCals').addEventListener('click', function(e){
+    const b=e.target.closest('[data-gcc]'); if(!b) return;
+    const o=gcLoad(), n=b.dataset.gcc; if(o.off[n]) delete o.off[n]; else o.off[n]=1;
+    gcSave(o); gcPaint(); try{ renderCal(); }catch(err){ logErr('구글 캘린더: 달력 그리기', err); }
+  });
+  document.getElementById('gcCode').addEventListener('click', function(){ gcCopy(GC_CODE, '코드를 복사했어요 — Apps Script 편집기에 붙여넣으세요'); });
+  document.getElementById('gcMani').addEventListener('click', function(){ gcCopy(GC_MANI, '권한 설정을 복사했어요 — appsscript.json 내용을 이것으로 바꾸세요'); });
+  document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='visible' && document.body.getAttribute('data-tab')==='cal') gcFetch(false); });
+  gcPaint();
+}
+
 /* =============== 페이지 이동 (이전 장 / 다음 장) =============== */
 const TAB_ORDER=[['prep','01 분양 준비'],['health','02 건강·병원'],['money','03 보험·비용'],['food','04 사료·간식'],['walk','05 산책·훈련·짖음'],['work','06 직장인 플랜'],['neuter','07 중성화'],['shop','09 구매 가이드'],['place','10 삼송 동네 가이드'],['emerg','11 응급 대처'],['behav','12 행동 사전'],['life','13 생활·계절·법규'],['index','14 인덱스·자료실']];
 function buildPagers(){
@@ -7540,7 +7744,8 @@ function goTab(id, silent){
   if(id==='stats'){ try{ renderStats(); }catch(e){} }
   if(id==='record'){ try{ renderWeight(); }catch(e){} }   /* V6.1 */
   if(id==='notice'){ try{ chatTabOpen(); }catch(e){} }
-  if(id==='settings'){ try{ diagOnOpen(); }catch(e){} }   /* V6.6 진단 */
+  if(id==='settings'){ try{ diagOnOpen(); }catch(e){} try{ gcPaint(); }catch(e){} }   /* V6.6 진단 · V7.1 구글 캘린더 상태 */
+  if(id==='cal'){ try{ gcFetch(false); }catch(e){} }   /* V7.1 구글 캘린더 받기 */
   if(!silent){
     if(NAV_HIST[NAV_HIST.length-1]!==id){ NAV_HIST.push(id); if(NAV_HIST.length>30) NAV_HIST.shift(); }
     navHistPush(function(){ return {tab:id, d:((history.state && history.state.d)||0)+1, ly:NAV.layers.length}; }, '#'+id);
@@ -10855,7 +11060,7 @@ const BINDS=[['체크리스트', bindChecklists], ['접종', bindVax], ['프로�
   ['동기화', bindSync], ['앨범', bindAlbum], ['홈캠', bindCam], ['공지', bindNotice], ['화면 이동', bindNav], ['응급', bindSOS], ['빠른 기록', bindQlog], ['서재', bindLib],
   ['대표사진', bindRep], ['외출', bindAway], ['통계', bindStats], ['체중 시트', bindWt], ['급여', bindFeed], ['파일 백업', bindBackup], ['자정', bindMidnight], ['채팅', bindChat],
   ['장 안 링크', bindAnchors], ['대변 양', bindPooAmt], ['빠른 수정', bindQe], ['사진 이관', bindMig], ['공지 정리', ntcMigrate], ['V6 화면', bindV6], ['앨범 백업', bindAlbBackup],
-  ['화면 관리', navInit], ['진단', bindDiag]];
+  ['화면 관리', navInit], ['진단', bindDiag], ['구글 캘린더', bindGcal]];
 document.addEventListener('DOMContentLoaded', async ()=>{
   try{ await loadState(); }catch(e){ logErr('시작: 기록 읽기', e); }
   BINDS.forEach(function(b){ safely('시작: '+b[0], b[1]); });
