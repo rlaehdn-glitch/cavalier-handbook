@@ -1836,10 +1836,97 @@ body.alb-sel #bnav{display:none;}
 .fd-two-h span{margin-left:8px; font-size:12.5px; font-weight:400; color:var(--label2);}
 .fd-two-src{margin:8px 0 0; font-size:12px; color:var(--label2);}
 </style>
+<style id="v70css">
+/* ---------- V7.0 달력 — 월 달력 + 날짜 목록 + 시트 ---------- */
+#tab-cal .ch-head{margin-bottom:12px;}
+.cl-head{display:flex; align-items:center; gap:6px; margin:2px 2px 10px;}
+.cl-ym{flex:1; display:flex; align-items:baseline; gap:6px; min-width:0;}
+.cl-ym b{font-size:22px; font-weight:700; letter-spacing:-.3px;}
+.cl-ym span{font-size:14px; color:var(--label2); font-variant-numeric:tabular-nums;}
+.cl-hb{border:none; background:var(--fill3); color:var(--tint); height:34px; min-width:34px; border-radius:999px; padding:0 12px; font-family:inherit; font-size:14px; font-weight:600; display:inline-flex; align-items:center; justify-content:center; cursor:pointer;}
+.cl-hb.ic{padding:0;}
+.cl-hb svg.ico{width:18px; height:18px; stroke-width:2.3;}
+.cl-hb.add{background:var(--tint-btn); color:#fff;}
+.cl-hb[hidden]{display:none;}
+.cal-cell{position:relative;}
+.cl-ics{display:flex; gap:2px; height:13px; align-items:center; justify-content:center; margin-top:1px;}
+.cl-ics svg{width:12px; height:12px; fill:none; stroke:currentColor; stroke-width:2.3; stroke-linecap:round; stroke-linejoin:round;}
+.cl-ics .p{color:var(--label);} .cl-ics .d{color:var(--green);} .cl-ics .m{color:var(--warn-ink);} .cl-ics .i{color:var(--tint);}
+.cl-bar{position:absolute; left:-1px; right:-1px; bottom:1px; height:3px; background:var(--c-pee); opacity:.75; pointer-events:none;}
+.cl-bar.g{background:var(--label3); opacity:1;}
+.cl-bar.b2{bottom:5px;}
+.cl-bar.s{left:5px; border-top-left-radius:2px; border-bottom-left-radius:2px;}
+.cl-bar.e{right:5px; border-top-right-radius:2px; border-bottom-right-radius:2px;}
+.cl-card{padding:2px 14px 8px; margin-top:12px;}
+.cl-dh{display:flex; align-items:center; gap:8px; padding:12px 0 8px;}
+.cl-dh b{flex:1; font-size:17px; font-weight:700;}
+.cl-dh span{font-size:12px; font-weight:700; color:var(--tint-ink); background:var(--tint-fill); border-radius:999px; padding:2px 9px;}
+.cl-row{display:flex; align-items:center; gap:12px; padding:10px 0; border-top:.5px solid var(--sep); cursor:pointer; -webkit-tap-highlight-color:transparent;}
+.cl-dh + .cl-row, .cl-vh + .cl-row, .cl-card .wg-cal:first-child .cl-row:first-child{border-top:none;}
+.cl-row:active{opacity:.6;}
+.cl-ic{flex:0 0 auto; width:30px; height:30px; border-radius:9px; display:grid; place-items:center; background:var(--fill3); color:var(--label);}
+.cl-ic svg.ico{width:17px; height:17px;}
+.cl-ic.wk{color:var(--c-walk);}
+.cl-row.done .cl-ic{background:var(--sage-bg); color:var(--green);}
+.cl-row.miss .cl-ic{background:rgba(255,149,0,.15); color:var(--warn-ink);}
+.cl-row.info .cl-ic{background:var(--tint-fill); color:var(--tint);}
+.cl-row.span .cl-ic{background:rgba(217,154,0,.16); color:var(--c-pee);}
+.cl-row.rec .cl-ic{background:none; color:var(--label2);}
+.cl-tx{flex:1; min-width:0;}
+.cl-tx b{display:block; font-size:15px; font-weight:600; line-height:1.35; word-break:keep-all;}
+.cl-tx span{display:block; font-size:12.5px; color:var(--label2); line-height:1.4; margin-top:1px; word-break:keep-all;}
+.cl-row.rec .cl-tx b{font-weight:500;}
+.cl-row.skip .cl-tx b, .cl-row.past .cl-tx b{color:var(--label3);}
+.cl-row.skip .cl-tx b{text-decoration:line-through;}
+.cl-row.miss .cl-tx span{color:var(--warn-ink);}
+.cl-ck{flex:0 0 auto; width:28px; height:28px; border-radius:50%; border:1.8px solid var(--label3); background:none; cursor:pointer; padding:0; position:relative;}
+.cl-ck::after{content:""; position:absolute; inset:-8px;}
+.cl-row.miss .cl-ck{border-color:var(--warn-ink);}
+.cl-dn{flex:0 0 auto; width:28px; height:28px; border-radius:50%; background:var(--green); color:#fff; display:grid; place-items:center;}
+.cl-dn svg.ico{width:16px; height:16px; stroke-width:2.6;}
+.cl-empty{font-size:14px; color:var(--label2); margin:2px 0 8px;}
+.cl-vis{border:1px solid var(--sep); border-radius:14px; padding:6px 12px 10px; margin:2px 0 8px;}
+.cl-vis.done{border-color:var(--sage-bg);}
+.cl-vh{display:flex; align-items:center; gap:8px; padding:6px 0 4px;}
+.cl-vh svg.ico{width:18px; height:18px; color:var(--tint);}
+.cl-vh b{flex:1; font-size:15px; font-weight:700; min-width:0;}
+.cl-badge{font-size:11.5px; font-weight:700; border-radius:6px; padding:2px 8px; background:var(--fill2); color:var(--label2); white-space:nowrap;}
+.cl-badge.d{background:var(--sage-bg); color:var(--green);}
+.cl-vbtn{display:block; width:100%; margin-top:8px; border:none; border-radius:12px; padding:11px; font-family:inherit; font-size:15px; font-weight:600; background:var(--fill2); color:var(--tint); cursor:pointer;}
+.cl-lk{display:block; width:100%; text-align:left; border:none; background:none; padding:8px 0 2px; font-family:inherit; font-size:13.5px; font-weight:600; color:var(--tint); cursor:pointer;}
+.cl-qbs{display:flex; gap:6px; flex:0 0 auto;}
+.cl-qb{border:none; border-radius:999px; padding:7px 11px; font-family:inherit; font-size:13px; font-weight:600; background:var(--fill2); color:var(--label); cursor:pointer;}
+.cl-qb.ok{background:var(--tint-btn); color:#fff;}
+.cl-ud{flex:0 0 auto; width:44px; text-align:center; line-height:1.2;}
+.cl-ud b{display:block; font-size:15px; font-weight:700; font-variant-numeric:tabular-nums;}
+.cl-ud span{display:block; font-size:12px; color:var(--label2);}
+.cl-v8{border:none; background:var(--fill3); color:var(--tint); border-radius:10px; padding:7px 10px; font-family:inherit; font-size:13px; font-weight:600; cursor:pointer; white-space:nowrap;}
+#ddayBanner .dd-ck{flex:0 0 auto; border:none; border-radius:999px; padding:7px 13px; font-family:inherit; font-size:14px; font-weight:700; background:var(--tint-btn); color:#fff; cursor:pointer;}
+#ddayBanner .dd-ck[hidden], #ddayBanner .dd-num[hidden]{display:none;}
+/* 시트 */
+#clOvl .sheet{padding-bottom:calc(16px + env(safe-area-inset-bottom));}
+.cl-chips{display:flex; flex-wrap:wrap; gap:8px; margin:4px 0 10px;}
+.cl-chips[hidden], #clVetW[hidden], #clNW[hidden], #clEW[hidden], #clReW[hidden], #clTplW[hidden]{display:none;}
+.cl-chip{border:none; border-radius:999px; padding:9px 13px; font-family:inherit; font-size:14px; font-weight:600; background:var(--card); color:var(--label); cursor:pointer;}
+.cl-chip.on{background:var(--tint-btn); color:#fff;}
+.cl-lbl{font-size:13px; font-weight:600; color:var(--label2); margin:12px 4px 6px;}
+.cl-other{display:flex; align-items:center; gap:10px; background:var(--card); border-radius:14px; padding:6px 6px 6px 14px; margin-bottom:6px;}
+.cl-other label{font-size:15px; font-weight:500; flex:0 0 auto;}
+#clOvl input[type="text"], #clOvl input[type="date"], #clOvl input[type="time"], #clOvl input[type="number"], #clOvl select, #clOvl textarea{width:100%; background:var(--card); border:none; border-radius:14px; font-family:inherit; font-size:16px; padding:12px; color:var(--label); min-height:48px;}
+#clOvl .cl-other input[type="date"]{background:var(--fill3); min-height:40px; padding:8px 10px;}
+#clOvl textarea{resize:none; min-height:0;}
+#clOvl input:disabled, #clOvl select:disabled{opacity:.5;}
+#clOvl #clTi{margin-bottom:4px;}
+.cl-f2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+.cl-cb{display:flex; align-items:center; gap:10px; background:var(--card); border-radius:14px; padding:12px; margin-bottom:6px; font-size:15px; cursor:pointer;}
+.cl-cb input{width:20px; height:20px; accent-color:var(--tint); flex:0 0 auto;}
+.cl-cb small{color:var(--label2); font-size:12.5px;}
+#clOvl .kg-chk{margin-top:10px;}
+</style>
 </head>
 <body>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 10.5 12 4l8.5 6.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5.5h4V20"/></symbol><symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></symbol><symbol id="i-rec" viewBox="0 0 24 24"><path d="M12 4H6.5A2.5 2.5 0 0 0 4 6.5v11A2.5 2.5 0 0 0 6.5 20h11a2.5 2.5 0 0 0 2.5-2.5V12"/><path d="M17.6 3.6a1.9 1.9 0 0 1 2.8 2.8L12 14.8l-3.6.8.8-3.6z"/></symbol><symbol id="i-photo" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="m20.5 16-4.5-4.5-7.5 7.5"/></symbol><symbol id="i-lib" viewBox="0 0 24 24"><path d="M5 4.5h3.2V20H5zM10.4 4.5h3.2V20h-3.2z"/><path d="m15.6 5.6 3-.8 3.4 14.6-3 .8z"/></symbol><symbol id="i-poo" viewBox="0 0 24 24"><path d="M6 20h12a2.5 2.5 0 0 0 0-5H6a2.5 2.5 0 0 0 0 5z"/><path d="M8.3 15h7.4a2.25 2.25 0 0 0 0-4.5H8.3a2.25 2.25 0 0 0 0 4.5z"/><path d="M10 10.5h4a2 2 0 0 0 .2-4C13.6 4.9 12.6 4 11 4c.6.9.4 2-.6 2.5A2 2 0 0 0 10 10.5z"/></symbol><symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3.5c3 4 6 7.4 6 10.8a6 6 0 0 1-12 0c0-3.4 3-6.8 6-10.8z"/></symbol><symbol id="i-drops" viewBox="0 0 24 24"><path d="M9 4c2.3 3.1 4.6 5.6 4.6 8.2a4.6 4.6 0 0 1-9.2 0C4.4 9.6 6.7 7.1 9 4z"/><path d="M17 10.5c1.5 2 3 3.6 3 5.4a3 3 0 0 1-6 0c0-1.8 1.5-3.4 3-5.4z"/></symbol><symbol id="i-bowl" viewBox="0 0 24 24"><path d="M3.5 12h17a8.5 6.5 0 0 1-17 0z"/><path d="M9 9c0-1.1.9-1.4.9-2.6M14 9c0-1.1.9-1.4.9-2.6"/></symbol><symbol id="i-paw" viewBox="0 0 24 24"><ellipse cx="6.8" cy="10.2" rx="1.7" ry="2.2"/><ellipse cx="10.2" cy="6.4" rx="1.7" ry="2.3"/><ellipse cx="13.8" cy="6.4" rx="1.7" ry="2.3"/><ellipse cx="17.2" cy="10.2" rx="1.7" ry="2.2"/><path d="M12 12c2.6 0 5 2.8 5 5.2 0 1.6-1.2 2.8-2.8 2.8-1 0-1.4-.5-2.2-.5s-1.2.5-2.2.5C8.2 20 7 18.8 7 17.2 7 14.8 9.4 12 12 12z"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M19.5 14.5A7.5 7.5 0 0 1 9.5 4.5a7.5 7.5 0 1 0 10 10z"/></symbol><symbol id="i-bag" viewBox="0 0 24 24"><path d="M5.5 10.5A4.5 4.5 0 0 1 10 6h4a4.5 4.5 0 0 1 4.5 4.5v8A2 2 0 0 1 16.5 20.5h-9a2 2 0 0 1-2-2z"/><path d="M9.5 6V5a2.5 2.5 0 0 1 5 0v1"/><path d="M8.5 14h7v3.5h-7zM5.5 12.5h13"/></symbol><symbol id="i-door" viewBox="0 0 24 24"><path d="M13 20H6.5A1.5 1.5 0 0 1 5 18.5v-13A1.5 1.5 0 0 1 6.5 4H13"/><path d="M10 12h10M17 9l3 3-3 3"/></symbol><symbol id="i-chart" viewBox="0 0 24 24"><path d="M5 20v-8M10 20V5M15 20v-6M20 20V9"/></symbol><symbol id="i-cam" viewBox="0 0 24 24"><rect x="3" y="6.5" width="12.5" height="11" rx="2.5"/><path d="m15.5 10.5 5-3v9l-5-3z"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M7 3.5h3l1.5 4-2 1.3a10.5 10.5 0 0 0 5.7 5.7l1.3-2 4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 5 5.7a2 2 0 0 1 2-2.2z"/></symbol><symbol id="i-more" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="1.7" fill="currentColor" stroke="none"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="m14.5 5-7 7 7 7"/></symbol><symbol id="i-chev" viewBox="0 0 24 24"><path d="m9.5 5 7 7-7 7"/></symbol><symbol id="i-bath" viewBox="0 0 24 24"><path d="M3.5 11.5h17V13a5.5 5.5 0 0 1-5.5 5.5H9A5.5 5.5 0 0 1 3.5 13z"/><path d="M7.5 18.3 6.5 20.5M16.5 18.3l1 2.2"/><path d="M6.5 11.5V7a3 3 0 0 1 6 0v.8"/><path d="M11 7.8h3"/></symbol><symbol id="i-leaf" viewBox="0 0 24 24"><path d="M12 20v-7"/><path d="M12 13c0-4 3-7 7.5-7 0 4.5-3 7-7.5 7z"/><path d="M12 15.5C12 12.5 9.7 10 6 10c0 3.3 2.3 5.5 6 5.5z"/></symbol><symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6.4"/><circle cx="12" cy="12" r="2.5"/><path stroke-width="2.6" d="M12 2.6v2.4M12 21.4v-2.4M2.6 12h2.4M21.4 12h-2.4M5.35 5.35l1.7 1.7M18.65 18.65l-1.7-1.7M5.35 18.65l1.7-1.7M18.65 5.35l-1.7 1.7"/></symbol><symbol id="i-scale" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.5"/><path d="M8.4 10.2a4.2 4.2 0 0 1 7.2 0"/><path d="m12 11.6 1.7-2.4"/></symbol></defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 10.5 12 4l8.5 6.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5.5h4V20"/></symbol><symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></symbol><symbol id="i-rec" viewBox="0 0 24 24"><path d="M12 4H6.5A2.5 2.5 0 0 0 4 6.5v11A2.5 2.5 0 0 0 6.5 20h11a2.5 2.5 0 0 0 2.5-2.5V12"/><path d="M17.6 3.6a1.9 1.9 0 0 1 2.8 2.8L12 14.8l-3.6.8.8-3.6z"/></symbol><symbol id="i-photo" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="m20.5 16-4.5-4.5-7.5 7.5"/></symbol><symbol id="i-lib" viewBox="0 0 24 24"><path d="M5 4.5h3.2V20H5zM10.4 4.5h3.2V20h-3.2z"/><path d="m15.6 5.6 3-.8 3.4 14.6-3 .8z"/></symbol><symbol id="i-poo" viewBox="0 0 24 24"><path d="M6 20h12a2.5 2.5 0 0 0 0-5H6a2.5 2.5 0 0 0 0 5z"/><path d="M8.3 15h7.4a2.25 2.25 0 0 0 0-4.5H8.3a2.25 2.25 0 0 0 0 4.5z"/><path d="M10 10.5h4a2 2 0 0 0 .2-4C13.6 4.9 12.6 4 11 4c.6.9.4 2-.6 2.5A2 2 0 0 0 10 10.5z"/></symbol><symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3.5c3 4 6 7.4 6 10.8a6 6 0 0 1-12 0c0-3.4 3-6.8 6-10.8z"/></symbol><symbol id="i-drops" viewBox="0 0 24 24"><path d="M9 4c2.3 3.1 4.6 5.6 4.6 8.2a4.6 4.6 0 0 1-9.2 0C4.4 9.6 6.7 7.1 9 4z"/><path d="M17 10.5c1.5 2 3 3.6 3 5.4a3 3 0 0 1-6 0c0-1.8 1.5-3.4 3-5.4z"/></symbol><symbol id="i-bowl" viewBox="0 0 24 24"><path d="M3.5 12h17a8.5 6.5 0 0 1-17 0z"/><path d="M9 9c0-1.1.9-1.4.9-2.6M14 9c0-1.1.9-1.4.9-2.6"/></symbol><symbol id="i-paw" viewBox="0 0 24 24"><ellipse cx="6.8" cy="10.2" rx="1.7" ry="2.2"/><ellipse cx="10.2" cy="6.4" rx="1.7" ry="2.3"/><ellipse cx="13.8" cy="6.4" rx="1.7" ry="2.3"/><ellipse cx="17.2" cy="10.2" rx="1.7" ry="2.2"/><path d="M12 12c2.6 0 5 2.8 5 5.2 0 1.6-1.2 2.8-2.8 2.8-1 0-1.4-.5-2.2-.5s-1.2.5-2.2.5C8.2 20 7 18.8 7 17.2 7 14.8 9.4 12 12 12z"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M19.5 14.5A7.5 7.5 0 0 1 9.5 4.5a7.5 7.5 0 1 0 10 10z"/></symbol><symbol id="i-bag" viewBox="0 0 24 24"><path d="M5.5 10.5A4.5 4.5 0 0 1 10 6h4a4.5 4.5 0 0 1 4.5 4.5v8A2 2 0 0 1 16.5 20.5h-9a2 2 0 0 1-2-2z"/><path d="M9.5 6V5a2.5 2.5 0 0 1 5 0v1"/><path d="M8.5 14h7v3.5h-7zM5.5 12.5h13"/></symbol><symbol id="i-door" viewBox="0 0 24 24"><path d="M13 20H6.5A1.5 1.5 0 0 1 5 18.5v-13A1.5 1.5 0 0 1 6.5 4H13"/><path d="M10 12h10M17 9l3 3-3 3"/></symbol><symbol id="i-chart" viewBox="0 0 24 24"><path d="M5 20v-8M10 20V5M15 20v-6M20 20V9"/></symbol><symbol id="i-cam" viewBox="0 0 24 24"><rect x="3" y="6.5" width="12.5" height="11" rx="2.5"/><path d="m15.5 10.5 5-3v9l-5-3z"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M7 3.5h3l1.5 4-2 1.3a10.5 10.5 0 0 0 5.7 5.7l1.3-2 4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 5 5.7a2 2 0 0 1 2-2.2z"/></symbol><symbol id="i-more" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="1.7" fill="currentColor" stroke="none"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="m14.5 5-7 7 7 7"/></symbol><symbol id="i-chev" viewBox="0 0 24 24"><path d="m9.5 5 7 7-7 7"/></symbol><symbol id="i-bath" viewBox="0 0 24 24"><path d="M3.5 11.5h17V13a5.5 5.5 0 0 1-5.5 5.5H9A5.5 5.5 0 0 1 3.5 13z"/><path d="M7.5 18.3 6.5 20.5M16.5 18.3l1 2.2"/><path d="M6.5 11.5V7a3 3 0 0 1 6 0v.8"/><path d="M11 7.8h3"/></symbol><symbol id="i-leaf" viewBox="0 0 24 24"><path d="M12 20v-7"/><path d="M12 13c0-4 3-7 7.5-7 0 4.5-3 7-7.5 7z"/><path d="M12 15.5C12 12.5 9.7 10 6 10c0 3.3 2.3 5.5 6 5.5z"/></symbol><symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6.4"/><circle cx="12" cy="12" r="2.5"/><path stroke-width="2.6" d="M12 2.6v2.4M12 21.4v-2.4M2.6 12h2.4M21.4 12h-2.4M5.35 5.35l1.7 1.7M18.65 18.65l-1.7-1.7M5.35 18.65l1.7-1.7M18.65 5.35l-1.7 1.7"/></symbol><symbol id="i-scale" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.5"/><path d="M8.4 10.2a4.2 4.2 0 0 1 7.2 0"/><path d="m12 11.6 1.7-2.4"/></symbol><symbol id="i-pill" viewBox="0 0 24 24"><path d="M10.6 19.9a5 5 0 0 1-7-7l6.8-6.8a5 5 0 0 1 7 7z"/><path d="m7 9.5 7 7"/></symbol><symbol id="i-cross" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><path d="M12 8v8M8 12h8"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol><symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3.8 2.5 5.1 5.6.8-4 3.9.9 5.6-5-2.6-5 2.6.9-5.6-4-3.9 5.6-.8z"/></symbol><symbol id="i-cut" viewBox="0 0 24 24"><circle cx="6.5" cy="7" r="2.5"/><circle cx="6.5" cy="17" r="2.5"/><path d="M8.6 8.4 19.5 17.5M8.6 15.6 19.5 6.5"/></symbol></defs></svg>
 <header class="appbar">
   <div id="libBack"><button id="libBackBtn" type="button" aria-label="뒤로"><svg class="ico"><use href="#i-back"/></svg>뒤로</button><span id="libBackT"></span></div>
   <button class="ab-photo" id="abPhoto" aria-label="홈으로"><img id="abImg" alt=""><span id="abPaw">🐾</span></button>
@@ -1902,6 +1989,7 @@ body.alb-sel #bnav{display:none;}
       <span class="g-ic"><svg class="ico"><use href="#i-cal"/></svg></span>
       <div class="dd-tx"><b id="ddTitle"></b><span id="ddDate"></span></div>
       <div class="dd-num" id="ddNum">D-?</div>
+      <button type="button" class="dd-ck" id="ddCk" hidden>완료</button>
       <svg class="ico chev"><use href="#i-chev"/></svg>
     </div>
     <details class="hx-stage"><summary><span class="g-ic" style="--c:var(--c-meal)"><svg class="ico"><use href="#i-leaf"/></svg></span><span class="hs-tx"><b id="homeStage">이번 단계</b><span>지금 할 일 보기</span></span><svg class="ico chev"><use href="#i-chev"/></svg></summary><div id="stageTasks"></div></details>
@@ -1934,62 +2022,29 @@ body.alb-sel #bnav{display:none;}
   <div class="strip" id="photoStrip"><p class="muted small" style="margin:0;">동기화를 켜면 최근 사진이 여기에 표시됩니다.</p></div>
 </section>
 
-<!-- ===================== CAL 관리 달력 ===================== -->
+<!-- ===================== CAL 달력 (V7.0: 할 일·기록 한 장부) ===================== -->
 <section class="tab-panel" id="tab-cal">
   <div class="ch-head">
     <div class="ch-no">YEARLY PLANNER</div>
     <h2 class="serif">달력</h2>
-    <p class="lede">접종·구충·검진이 자동으로 표시됩니다. 날짜를 누르면 그날 일정 확인·추가.</p>
   </div>
 
-  <div class="card" style="margin-bottom:14px;">
-    <div class="ct">다가오는 관리 알림 <span class="muted small" style="font-weight:400;">— 향후 60일</span></div>
-    <div id="upList"></div>
-  </div>
+  <div id="clCheck"></div>
 
   <div class="cal-wrap">
-    <div class="cal-head">
-      <button class="btn sm ghost" id="calPrev" aria-label="이전 달">←</button>
-      <div style="text-align:center;">
-        <div class="cal-title" id="calTitle">달력</div>
-        <button class="btn sm ghost" id="calToday" style="margin-top:4px; padding:3px 10px; font-size:11.5px;">오늘로</button>
-      </div>
-      <button class="btn sm ghost" id="calNext" aria-label="다음 달">→</button>
+    <div class="cl-head">
+      <div class="cl-ym"><b id="calTitle">달력</b><span id="clYear"></span></div>
+      <button class="cl-hb" id="calToday" type="button">오늘</button>
+      <button class="cl-hb ic" id="calPrev" type="button" aria-label="이전 달"><svg class="ico"><use href="#i-back"/></svg></button>
+      <button class="cl-hb ic" id="calNext" type="button" aria-label="다음 달"><svg class="ico"><use href="#i-chev"/></svg></button>
+      <button class="cl-hb ic add" id="clAdd" type="button" aria-label="할 일 추가"><svg class="ico"><use href="#i-plus"/></svg></button>
     </div>
     <div class="cal-grid" id="calDow"></div>
     <div class="cal-grid" id="calGrid"></div>
-    <div class="cal-legend">
-      <span><span class="dot a"></span>관리 알림(자동)</span>
-      
-      <span><span class="dot d"></span>완료</span>
-      <span><span class="dot u"></span>내 일정</span>
-      <span><span class="dot k"></span>유치원</span>
-    </div>
   </div>
 
-  <div class="card" style="margin-top:14px;">
-    <div class="ct" id="selTitle">날짜를 선택하세요</div>
-    <div id="selEvents"></div>
-    <div class="cv-grid" style="margin-top:10px;">
-      <input type="text" id="cvTitle" placeholder="일정 내용 (예: 유치원 상담)">
-      <select id="cvCat"><option value="o">📌 기타</option><option value="h">🏥 병원</option><option value="g">✂️ 미용</option><option value="s">🏫 유치원</option><option value="b">🎂 기념</option></select>
-      <input type="time" id="cvTime">
-      <select id="cvRep"><option value="">반복 없음</option><option value="w">매주</option><option value="m">매월</option></select>
-      <button class="btn sm" id="cvAdd">추가</button>
-    </div>
-    <p class="muted small" style="margin-top:8px;">접종 예정은 자동 생성하지 않습니다 — 병원 예약은 위 "내 일정"으로 등록하세요. 접종 후 02장 표에서 완료 체크하면 이 달력에 초록 "완료"로 기록됩니다. 심장사상충·구충 알림은 매월 자동.</p>
-  </div>
-
-  <div class="box box-key" style="margin-top:14px;">
-    <div class="bt">★ 달력이 자동으로 챙겨주는 것</div>
-    <ul class="ls">
-      <li><strong>접종</strong> — 예정일 자동 계산·"지연" 표시는 하지 않습니다(V5.7). 실제 병원 예약을 "내 일정"으로 등록하고, 접종 후 02장 표에서 완료 체크하면 그 날짜에 완료 기록이 남습니다</li>
-      <li><strong>분양 보상기간 만료</strong> — 입양일 +15일(2026.08.09)</li>
-      <li><strong>심장사상충·구충</strong> — 매월 반복 (생후 8주 이후부터). 02장 표 8번 행에 첫 투여일(넥스가드 스펙트라 2026.08.21)을 넣으면 그 날짜 기준 = 매월 21일로 반복</li>
-      <li><strong>성장 이정표</strong> — 사회화 골든타임 마감(14주) · 중성화 상담(6개월) · 성견 사료 전환 검토(10개월)</li>
-      <li><strong>매년 생일</strong> — 연간검진 + 심장 청진 + 보강접종 알림 (카발리에 관리의 핵심)</li>
-    </ul>
-  </div>
+  <div id="clDay"></div>
+  <div id="clNext"></div>
 </section>
 
 <!-- ===================== NOTICE 오늘의 공지 ===================== -->
@@ -3758,6 +3813,7 @@ body.alb-sel #bnav{display:none;}
 <div id="repOvl" class="sheet-ovl" role="dialog" aria-modal="true" aria-label="대표 사진 바꾸기"><div class="sheet"><div class="grab"></div><div class="sh-t">대표 사진 바꾸기</div><div class="rep-cmp"><figure><span class="rep-ph" id="repOld"></span><figcaption>지금</figcaption></figure><svg class="ico rep-arr"><use href="#i-chev"/></svg><figure><span class="rep-ph" id="repNew"></span><figcaption>새 사진</figcaption></figure></div><button type="button" class="sh-b1" id="repOk">대표 사진으로 설정</button><button type="button" class="sh-cancel" id="repNo">취소</button></div></div>
 <div id="kgOvl" class="sheet-ovl" role="dialog" aria-modal="true" aria-label="유치원 기록"><div class="sheet"><div class="grab"></div><div class="sh-t" id="kgTitle">하원 기록</div><div class="sh-sub" id="kgSub">유치원</div><div class="kg-f" id="kgDateRow"><label for="kgDate">날짜</label><input type="date" id="kgDate"></div><div class="kg-2"><div class="kg-f"><label for="kgT1">등원</label><input type="time" id="kgT1" step="60"></div><div class="kg-f"><label for="kgT2">하원</label><input type="time" id="kgT2" step="60"></div></div><label class="kg-chk" id="kgMealRow"><input type="checkbox" class="sw" id="kgMeal"><span>유치원에서 식사</span><input type="time" id="kgMealT" step="60" aria-label="식사 시각"></label><label class="kg-lbl" for="kgMemo">알림장 메모</label><textarea id="kgMemo" rows="2" maxlength="200" placeholder="예: 친구들과 잘 놀았고 대변 1회"></textarea><p class="sh-hint" id="kgHint"></p><div class="sh-btns"><button type="button" class="sh-b2" id="kgDel">등원 취소</button><button type="button" class="sh-b1" id="kgSave">하원 기록</button></div><button type="button" class="sh-cancel" id="kgCancel">닫기</button></div></div>
 <div id="bathOvl" class="sheet-ovl" role="dialog" aria-modal="true" aria-labelledby="bathT"><div class="sheet"><div class="grab"></div><div class="sh-t" id="bathT">목욕</div><div class="sh-sub" id="bathSub"></div><p class="sh-hint" id="bathHold"></p><button type="button" class="sh-b1" id="bathToday">오늘 목욕했어요</button><div class="bath-date"><label for="bathDate">다른 날에 했어요</label><input type="date" id="bathDate"><button type="button" class="btn sm ghost" id="bathDateAdd">기록</button></div><p class="sh-hint" id="bathMsg" role="alert"></p><div class="bath-lbl" id="bathListLbl">최근 기록</div><div class="bath-list" id="bathList"></div><p class="bath-guide">목욕 전 빗질 → 38℃ 미온수, 샴푸는 희석 → 귀에 물 안 들어가게 → 뿌리까지 완전 건조. 항문낭도 이때. 접종·수술 직후엔 미루기.</p><button type="button" class="lnk" id="bathGuide">13장 위생 실전 보기<svg class="ico"><use href="#i-chev"/></svg></button><button type="button" class="sh-cancel" id="bathClose">닫기</button></div></div>
+<div id="clOvl" class="sheet-ovl" role="dialog" aria-modal="true" aria-labelledby="clT"><div class="sheet" id="clSheet"></div></div>
 <div id="uiToast" role="status" aria-live="polite"><span id="uiToastT"></span><button type="button" id="uiToastU">되돌리기</button></div>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
@@ -4461,7 +4517,25 @@ class VideoRTC extends HTMLElement {
 
 if(window.customElements && !customElements.get('video-stream')){ customElements.define('video-stream', VideoRTC); }
 </script>
-<script>/* V6.9.1 (2026-11-16): 급여 — 2끼 전환·공복 경고 정리 (앱 설계 D00 예외: 이번 급여 수정만 웹 반영).
+<script>/* V7.0.0 (2026-11-19): 달력 개편 — 할 일·기록을 한 장부로 (앱 설계 D00 예외: 워치 개발 전 달력 데이터 구조 확정, 이번 달력 개편만 웹 반영).
+   ① 장부 S.cal(첫 기록 때 생김): 할 일 t{id·종류·제목·반복 구간 r[]·메모·병원 이름·진료 종류 …} + 회차 상태 o['할일id|예정일']{완료·건너뜀·옮김, 실제 날짜, 기록자} + 숨긴 자동 안내 h.
+      반복: 1회(기간 끝 선택) · 매주 · 매월 같은 날 · 매년 · 완료 후 n일. 반복을 바꾸거나 '기준일 바꾸기'를 하면 새 구간을 덧붙여 지난 회차는 그대로.
+      회차 키가 고정이라 두 폰이 같은 회차를 완료해도 1건. 취소·삭제는 표시(x·del)만 남김 — 두 폰을 합칠 때 되살아나지 않게.
+   ② 완료 = 실제로 한 날짜: 오늘·어제·최근 6일 칩 또는 다른 날. 예정일 자리는 비우고 '예정 ○일보다 3일 일찍'으로만 표시. 매월 할 일은 3일 이상 차이 나면 '다음부터 매월 N일로' 선택.
+   ③ 병원 방문 묶음: 같은 날 병원·투약 할 일을 카드 하나로. '방문 완료' → 날짜·함께 한 것·비용·메모 → 08장 병원 기록(id·tk)과 지출(id·vr)을 함께 만들고, 취소하면 함께 되돌림.
+      수술을 추가할 때 07장 수술 전후 할 일(전날 밤 금식 · 넥카라·목욕 금지 14일 · 재진·실밥 10~14일 · 중성화면 급여 기준 반영)을 선택해 함께 추가. 중성화 일정이 있으면 '중성화 상담 권장(6개월)' 안내는 접음.
+      ±10일 안의 투약 회차는 '이날 함께'로 병원 날짜에 묶음. 1회 할 일을 옮기면 묶인 할 일도 같은 만큼 이동.
+      넥카라·목욕 금지 기간에는 목욕 권장을 기간이 끝난 다음 날로 미루고, 홈 목욕 줄·목욕 시트도 '수술 후 목욕 금지 기간'으로 표시.
+   ④ 예전 기록 흡수(고정 id · 첫 동기화 받기 뒤): 02장 8행 투여일 → '심장사상충·구충'(매월) + 그날 완료, 목욕·체중 → '완료 후 14일' 할 일(완료는 목욕·체중 기록에서 읽음),
+      S.events(내 일정) → 할 일로 옮기고 비움(옛 버전 폰이 나중에 넣은 것도 다음 받기 때 흡수). 흡수는 사용자 편집이 아니라 시각(_at)을 찍지 않고 다음 받기(합치기) 때 서버에 반영.
+      02장 8행은 입력칸 대신 '최근 · 다음' 요약 버튼. 투여를 기록하면 8행 날짜도 최근 투여일로 맞춤(옛 버전 폰 호환). 8행 기록이 없으면 놓침 확인은 오늘부터.
+   ⑤ 화면: 월 달력(종류 아이콘 최대 3 · 완료 초록 · 놓침 주황 · 기간 막대) + 고른 날 목록(병원 카드·할 일·자동 안내·기준일·접종·병원·지출·체중·유치원·산책·빠른 기록 요약) + 다가오는 일정 6건.
+      '기록이 없는 지난 할 일' 카드(했어요 / 안 했어요). 설명 문단·범례·'다가오는 관리 알림' 카드·입력칸은 삭제, [+] 시트 하나로 추가.
+      홈 '다음 일정'도 같은 장부를 읽음: 오늘·지난 할 일은 [완료] 버튼.
+   ⑥ 연결 수정: 목욕 '접종 후 쉬는 기간'이 달력 접종 일정·병원 접종 기록도 읽음. 달력 칸의 산책·목욕 점은 날짜 목록으로 옮김. 백업(내보내기·가져오기)에 cal 포함.
+      병원 할 일을 지워도 그 병원 기록·지출은 일반 기록으로 날짜 목록에 남음. 완료 날짜는 생일 이전·미래 불가.
+   PVER(빌드 번호)는 690 유지 — 사진 저장 방식 판별용이라 이번 수정과 무관. 급여·산책·동기화 엔진 변경 없음(첫 받기 뒤 흡수 호출 1줄만). 시험 e2e_cal. */
+/* V6.9.1 (2026-11-16): 급여 — 2끼 전환·공복 경고 정리 (앱 설계 D00 예외: 이번 급여 수정만 웹 반영).
    ① 공복 경고를 끼니 수에 연동: 6개월부터 3끼 이상 9시간 · 2끼 13시간(간격 12시간 + 여유 1시간). 2끼 다음 끼니 예상 = 12시간.
       기존(6~12개월 9시간 고정)은 2끼로 바꾸면 매일 16시~저녁 '공복 9시간 초과'가 떴고, 12개월 이후 04장 권장 07:00·19:30도 19시부터 경고가 떴음.
    ② 4개월부터 밤사이 공복(어제 마지막 끼니 → 오늘 첫 끼니)은 공복 경고에서 뺌: 06~08시 '아침 급여 시간' 안내, 08시가 지나도 첫 끼니가 없으면 '아침 식사 기록 없음'.
@@ -4605,7 +4679,7 @@ if(window.customElements && !customElements.get('video-stream')){ customElements
 /* V5.8 (2026-08-21): 접종 실기록 반영(2차 08.07 종합+코로나1차, 3차 08.21 종합+코로나2차, 4차 09.04 예약, 넥스가드 스펙트라 매월 21일, 코로나 보강 2027.08.21),
    04장 미니 인도어 퍼피 체중별 급여표 추가, 급여 계산기 기본 ME 3735 + kcal 누락 NaN 가드. 저장 구조·동기화·달력 로직 변경 없음. */
 /* =============== State =============== */
-const APP_VER='6.9.1', APP_DATE='2026-11-16';   /* V6.6: 앱 버전 — dev/VERSION 한 곳에서 빌드할 때 채움 */
+const APP_VER='7.0.0', APP_DATE='2026-11-19';   /* V6.6: 앱 버전 — dev/VERSION 한 곳에서 빌드할 때 채움 */
 const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, sleepCur:0, sleepLog:{}, feed:{kcal:4000, meals:4, mealsAt:'', adult:0, adultMode:'auto', bcs:'ok', bcsAt:'', neut:0, treat:0, vetG:0, vetAt:''}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}, media:{url:''}, kgCur:0, kgLog:{}, kgCfg:{name:'도그스테이', pass:0, from:''}, marks:{}};
 let S = JSON.parse(JSON.stringify(DEFAULT_S));
 let storageOK = false, artOK = false, saveTimer = null, lastEditAt = 0;
@@ -4767,6 +4841,7 @@ async function syncPull(){
     } else if(remote===null && (S._at||0)>0){
       syncPushSoon();
     }
+    try{ clPulled(); }catch(e){ logErr('달력: 첫 받기 뒤', e); }   /* V7.0: 첫 받기가 끝난 뒤 예전 기록을 장부로(새 폰의 빈 기록으로 기준을 세우지 않게) */
   }catch(e){ logErr('동기화: 받기', e); /* 다음 주기에 재시도 */ }
   finally{ SYNC.pulling=false; syncWarnPaint(); }
 }
@@ -5212,7 +5287,7 @@ function bindExpenses(){
    기본은 '합치기'(지금 기록은 그대로, 백업에만 있는 기록을 더함). '백업 시점으로 되돌리기'는 한 번 더 확인하고,
    지우기 전에 지금 상태를 파일로 먼저 저장한다. 끝나면 5초 동안 '되돌리기'.
    (V6.5.2까지: 파일 내용을 붙여넣으면 빈 기록으로 덮어써 두 폰의 기록이 모두 지워졌다) */
-const IO_KEYS=['qlog', 'weight', 'walkLog', 'sleepLog', 'awayLog', 'kgLog', 'events', 'ntc', 'visits', 'expenses', 'profile', 'bathLog'];
+const IO_KEYS=['qlog', 'weight', 'walkLog', 'sleepLog', 'awayLog', 'kgLog', 'events', 'ntc', 'visits', 'expenses', 'profile', 'bathLog', 'cal'];
 function ioParse(text){
   let p; try{ p=JSON.parse(String(text||'').trim()); }catch(e){ return {err:'형식이 올바르지 않습니다. 내보내기 텍스트나 백업 파일 내용을 그대로 붙여넣어 주세요.'}; }
   let at='';
@@ -5222,7 +5297,7 @@ function ioParse(text){
 }
 function ioCount(o){
   const n=function(v){ return Array.isArray(v)? v.length : (v && typeof v==='object')? Object.keys(v).length : 0; };
-  return '빠른 기록 '+n(o.qlog)+'일 · 산책 '+n(o.walkLog)+'일 · 수면 '+n(o.sleepLog)+'일 · 체중 '+n(o.weight)+'건 · 일정 '+n(o.events)+'건';
+  return '빠른 기록 '+n(o.qlog)+'일 · 산책 '+n(o.walkLog)+'일 · 수면 '+n(o.sleepLog)+'일 · 체중 '+n(o.weight)+'건 · 일정 '+(n(o.events)+((o.cal && o.cal.t && typeof o.cal.t==='object')? Object.keys(o.cal.t).filter(function(k){ const x=o.cal.t[k]; return x && !(+x.del>0); }).length : 0))+'건';
 }
 function ioDownload(obj, suffix){
   const data=JSON.stringify({app:'cavalier-handbook', exported:new Date().toISOString(), data:obj}, null, 1);
@@ -5276,10 +5351,14 @@ function renderStorage(){
     : '<span class="storage-badge no">저장 비활성 — 미리보기 환경입니다. 파일을 브라우저로 열면 자동 저장됩니다.</span>';
 }
 
-/* =============== 관리 달력 (정비 알림) =============== */
+/* =============== V7.0 달력 — 할 일·기록 한 장부 ===============
+   저장: S.cal = {v:1, t:{할 일}, o:{'할일id|예정일': 회차 상태}, h:{숨긴 자동 항목: 시각}} — 첫 기록 때 만들고 빈 칸은 지운다(규칙 5).
+   할 일 t: {id, k:종류(med 투약·vet 병원·care 관리·kg 유치원·day 기념·etc 기타), ti:제목, r:[구간], tm?:시각, me?:메모, pl?:병원 이름, vt?:진료 종류,
+            pa?:묶음 부모 id, src?:'bath'|'wt'(목욕·체중 기록에서 완료를 읽음), nc?:1(완료 없는 안내·기간), act?:'neut', hold?:'bath'(이 기간엔 목욕 미룸), ic?:아이콘, lg?:1(옛 '내 일정'), ck:놓침 확인 시작일, at, by, up?, del?}
+   구간 r[i]: {f:'once'|'w'|'m'|'y'|'aft', d:기준일, e?:기간 끝(once), n?:며칠마다(aft), b?:이 구간이 적용되는 첫날} — 반복을 바꿔도 지난 회차는 그대로 남는다.
+   회차 o: {s:'done'|'skip'|'move', d:실제(옮긴) 날, at, by, me?, vr?:병원 기록 id, ex?:지출 id, x?:취소 시각} — 키가 고정이라 두 폰이 같은 회차를 동시에 완료해도 1건.
+   D04 대응: id=id, k=type, at=createdAt(UTC ms), by=createdBy, del=deletedAt, 회차 d=localDate·at=occurredAt. 시간대 생략 = Asia/Seoul. */
 let calY=(new Date()).getFullYear(), calM=(new Date()).getMonth(), calSel=todayKey();
-/* 계약서 명시 2차 접종 예정일. 병원에서 일정이 바뀌면 이 값만 고치면 3~7차가 함께 밀립니다. */
-const VAX_ANCHOR='2026-08-02';
 const VAX_PLAN=[
  {id:'v1', seq:1, wk:7,  t:'접종 1차 (종합) — 켄넬 완료'},
  {id:'v2', seq:2, wk:9,  t:'접종 2차 (종합+코로나)'},
@@ -5289,172 +5368,841 @@ const VAX_PLAN=[
  {id:'v6', seq:6, wk:17, t:'접종 6차 (인플루+광견병)'},
  {id:'v7', seq:7, wk:19, t:'항체가 검사'}
 ];
-/* 입양일 기준 이벤트 */
-const HOME_EVENTS=[[15,'★ 분양 보상기간(15일) 만료 — 바크바크 계약']];
+/* 입양일·생일 기준 자동 안내(저장하지 않고 계산, 숨기면 S.cal.h) */
+const HOME_EVENTS=[[15,'분양 보상기간(15일) 만료 — 바크바크 계약']];
 const MILESTONES=[[98,'사회화 골든타임 마감 (14주)'],[183,'중성화 상담 권장 시점 (6개월)'],[304,'성견 사료 전환 검토 (10개월)']];
 function d2s(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function addD(base,n){const d=new Date(base.getTime()); d.setDate(d.getDate()+n); return d;}
-function autoEventsRange(from,to){
-  const out=[]; const tk=todayKey();
-  const b=S.profile.birth? new Date(S.profile.birth+'T00:00:00') : null;
-  if(!b) return out;
-  VAX_PLAN.forEach(v=>{
-    const st=S.vax[v.id]||{};
-    if(st.done){ if(st.date){ const dd=new Date(st.date+'T00:00:00'); if(dd>=from&&dd<=to) out.push({d:d2s(dd), t:v.t+' — 완료', cls:'d'}); } }
-    /* V5.7: 미완료 접종의 자동 '예정/지연' 이벤트 생성 중단 — 실제 병원 예약은 '내 일정'으로 관리, 완료 체크 시에만 달력에 기록 */
-  });
-  const hw=S.vax.v8||{};
-  const anchor = hw.date? parseInt(hw.date.slice(8,10),10) : (S.profile.home? parseInt(S.profile.home.slice(8,10),10) : b.getDate());
-  const hwStart=addD(b,56);
-  let cur=new Date(from.getFullYear(), from.getMonth(), 1);
-  while(cur<=to){
-    const dim=new Date(cur.getFullYear(),cur.getMonth()+1,0).getDate();
-    const dd=new Date(cur.getFullYear(),cur.getMonth(),Math.min(anchor,dim));
-    if(dd>=from&&dd<=to&&dd>=hwStart) out.push({d:d2s(dd), t:'심장사상충·구충 예방일', cls:'a'});
-    cur=new Date(cur.getFullYear(),cur.getMonth()+1,1);
+
+const CL={sh:null, pulled:false};
+const CL_K={med:{t:'투약', ic:'i-pill', need:1}, vet:{t:'병원', ic:'i-cross', need:1}, care:{t:'관리', ic:'i-cut', need:1},
+  kg:{t:'유치원', ic:'i-bag', need:0}, day:{t:'기념', ic:'i-star', need:0}, etc:{t:'기타', ic:'i-cal', need:0}};
+const CL_KS=['med', 'vet', 'care', 'kg', 'day', 'etc'];
+const CL_VT=['검진', '접종', '치료', '수술', '기타'];
+const CL_DOW=['일', '월', '화', '수', '목', '금', '토'];
+const CL_RP=[['once', '안 함'], ['w', '매주'], ['m', '매월 같은 날'], ['aft', '완료 후 며칠마다'], ['y', '매년']];
+
+/* ---------- 날짜 ---------- */
+function clOk(s){ return typeof s==='string' && /^\d{4}-\d{2}-\d{2}$/.test(s); }
+function clDt(s){ return new Date(s+'T00:00:00'); }
+function clAdd(s, n){ return d2s(addD(clDt(s), n)); }
+function clDiff(a, b){ return Math.round((clDt(b)-clDt(a))/86400000); }
+function clMD(s){ return (+s.slice(5,7))+'월 '+(+s.slice(8,10))+'일'; }
+function clMDs(s){ return (+s.slice(5,7))+'/'+(+s.slice(8,10)); }
+function clDw(s){ return CL_DOW[clDt(s).getDay()]; }
+function clHash(s){ let h=0x811c9dc5; s=String(s); for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h, 0x01000193); } return (h>>>0).toString(36); }
+function clNewId(){ return (typeof wgUuid7==='function')? wgUuid7() : 'c'+Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
+
+/* ---------- 장부 읽기·쓰기 ---------- */
+function clData(){ const c=S.cal; return (c && typeof c==='object' && !Array.isArray(c))? c : null; }
+function clSub(k){ const c=clData(), v=c && c[k]; return (v && typeof v==='object' && !Array.isArray(v))? v : {}; }
+function clEnsure(){
+  if(!clData()) S.cal={v:1};
+  const c=S.cal;
+  ['t', 'o', 'h'].forEach(function(k){ if(!c[k] || typeof c[k]!=='object' || Array.isArray(c[k])) c[k]={}; });
+  return c;
+}
+function clTidy(){   /* 빈 칸은 지운다 — Firebase가 빈 칸을 저장하지 않아 매번 '바뀜'으로 잡히는 문제 방지(규칙 5) */
+  const c=clData(); if(!c) return;
+  ['t', 'o', 'h'].forEach(function(k){ const v=c[k]; if(v && typeof v==='object' && !Object.keys(v).length) delete c[k]; });
+  if(!c.t && !c.o && !c.h) delete S.cal;
+}
+function clSave(){ clTidy(); saveState(); }
+function clSegs(t){
+  let r=t && t.r;
+  if(r && !Array.isArray(r) && typeof r==='object') r=Object.keys(r).sort(function(a, b){ return a-b; }).map(function(k){ return r[k]; });
+  return Array.isArray(r)? r.filter(function(g){ return g && clOk(g.d) && /^(once|w|m|y|aft)$/.test(g.f); }) : [];
+}
+function clFrom(g){ return clOk(g.b)? g.b : g.d; }
+function clTasks(){
+  const T=clSub('t');
+  return Object.keys(T).map(function(k){ return T[k]; }).filter(function(t){ return t && typeof t==='object' && t.id && !(+t.del>0) && clSegs(t).length; });
+}
+function clTask(id){ const t=clSub('t')[id]; return (t && typeof t==='object' && !(+t.del>0) && clSegs(t).length)? t : null; }
+function clKind(t){ return CL_K[t && t.k] || CL_K.etc; }
+function clIcon(t){ return (t.ic && /^i-[a-z]+$/.test(t.ic))? t.ic : (t.src==='bath'? 'i-bath' : (t.src==='wt'? 'i-scale' : clKind(t).ic)); }
+function clNeed(t){ return !!(t && clKind(t).need && !t.nc); }
+function clOcc(id, due){
+  const o=clSub('o')[id+'|'+due];
+  return (o && typeof o==='object' && !(+o.x>0) && /^(done|skip|move)$/.test(o.s) && clOk(o.d))? o : null;
+}
+function clSetOcc(id, due, o){
+  const c=clEnsure(), k=id+'|'+due, prev=c.o[k];
+  const n=Object.assign({}, o); if(prev && +prev.x>0) n.x=0;   /* 취소했던 회차를 다시 완료 — 취소 표시를 0으로(두 폰 합칠 때 되살아나지 않게) */
+  c.o[k]=n;
+}
+
+/* ---------- 회차 계산 ---------- */
+function clSegOcc(g, lo, hi){
+  const out=[], st=g.d;
+  if(g.f==='once'){ if(st>=lo && st<=hi) out.push(st); return out; }
+  if(g.f==='w'){
+    let k=st; if(k<lo) k=clAdd(st, Math.ceil(clDiff(st, lo)/7)*7);
+    for(let i=0; k<=hi && i<700; i++){ out.push(k); k=clAdd(k, 7); }
+    return out;
   }
-  MILESTONES.forEach(ms=>{ const dd=addD(b,ms[0]); if(dd>=from&&dd<=to) out.push({d:d2s(dd), t:ms[1], cls:'a'}); });
-  if(S.profile.home){
-    const hb=new Date(S.profile.home+'T00:00:00');
-    HOME_EVENTS.forEach(function(ev){ const dd=addD(hb,ev[0]); if(dd>=from&&dd<=to) out.push({d:d2s(dd), t:ev[1], cls:'a'}); });
+  if(g.f==='m'){
+    const day=+st.slice(8,10), a=clDt(lo>st? lo : st);
+    let y=a.getFullYear(), m=a.getMonth()-1;
+    for(let i=0; i<400; i++){
+      if(m<0){ m=11; y--; }
+      const dim=new Date(y, m+1, 0).getDate(), k=d2s(new Date(y, m, Math.min(day, dim)));
+      if(k>hi) break;
+      if(k>=st && k>=lo) out.push(k);
+      m++; if(m>11){ m=0; y++; }
+    }
+    return out;
   }
-  for(let age=1; age<=20; age++){
-    const bd=new Date(b.getFullYear()+age, b.getMonth(), b.getDate());
-    if(bd>=from&&bd<=to) out.push({d:d2s(bd), t:age+'번째 생일 — 연간검진·심장청진·보강접종', cls:'a'});
+  if(g.f==='y'){
+    const md=st.slice(5), y1=+hi.slice(0,4);
+    for(let y=Math.max(+st.slice(0,4), +lo.slice(0,4)); y<=y1; y++){
+      let k=y+'-'+md; if(md==='02-29' && new Date(y, 1, 29).getMonth()!==1) k=y+'-02-28';
+      if(k>=st && k>=lo && k<=hi) out.push(k);
+    }
   }
   return out;
 }
-function eventsForMonth(y,m){
-  const from=new Date(y,m,1), to=new Date(y,m,new Date(y,m+1,0).getDate(),23,59,59);
-  const evs=autoEventsRange(from,to);
-  const mk=y+'-'+String(m+1).padStart(2,'0');
-  (S.events||[]).forEach(function(e,i){
-    if(!e.d) return;
-    const base=new Date(e.d+'T00:00:00');
-    const push=function(ds){ evs.push({d:ds, t:e.t, cls:'u', idx:i, c:e.c||'', tm:e.tm||'', rep:e.rep||''}); };
-    if(!e.rep){ if(e.d.slice(0,7)===mk) push(e.d); return; }
-    if(base>to) return;
-    if(e.rep==='w'){
-      let cur=new Date(Math.max(base.getTime(), from.getTime()));
-      const wd=base.getDay();
-      cur.setDate(cur.getDate()+((wd-cur.getDay())+7)%7);
-      while(cur<=to){ if(cur>=base) push(d2s(cur)); cur=addD(cur,7); }
-    }else if(e.rep==='m'){
-      const dim=new Date(y,m+1,0).getDate();
-      const dd=new Date(y,m,Math.min(base.getDate(),dim));
-      if(dd>=base && dd<=to) push(d2s(dd));
-    }
+function clDues(t, lo, hi){   /* 반복 회차의 예정일 — 구간마다 자기 기간에서만 */
+  const r=clSegs(t), out=[];
+  r.forEach(function(g, i){
+    if(g.f==='aft') return;
+    const a=clFrom(g), z=(i+1<r.length)? clFrom(r[i+1]) : '';
+    clSegOcc(g, lo>a? lo : a, hi).forEach(function(k){ if(!z || k<z) out.push(k); });
   });
-  /* V6: 유치원 다녀온 날 */
-  Object.keys(S.kgLog||{}).forEach(function(k){ if(k.slice(0,7)!==mk) return; (S.kgLog[k]||[]).forEach(function(s){ evs.push({d:k, t:kgName()+' '+fmtHM(s.o)+'–'+fmtHM(s.i)+' · '+fmtDur(s.i-s.o)+(s.f? ' · 식사 '+s.f : '')+(s.m? ' · '+s.m : ''), cls:'k'}); }); });
-  return evs;
+  return out;
+}
+function clDoneDates(t){
+  if(t.src==='bath') return (typeof bathKeys==='function')? bathKeys() : [];
+  if(t.src==='wt') return (S.weight||[]).map(function(w){ return w && w.d; }).filter(clOk).sort();
+  const O=clSub('o'), p=t.id+'|', out=[];
+  Object.keys(O).forEach(function(k){ if(k.indexOf(p)!==0) return; const o=clOcc(t.id, k.slice(p.length)); if(o && o.s==='done') out.push(o.d); });
+  return out.sort();
+}
+function clAftDue(t){
+  const r=clSegs(t), g=r[r.length-1]; if(!g || g.f!=='aft') return '';
+  const ds=clDoneDates(t), last=ds.length? ds[ds.length-1] : '';
+  let due=last? clAdd(last, Math.max(1, Math.min(365, +g.n||14))) : g.d;
+  if(clFrom(g)>due) due=clFrom(g);
+  return due;
+}
+/* 한 칸 = {k, t:할 일, due:예정일, d:보이는 날, st:'plan'|'done'|'miss'|'skip'|'span', e?:기간 끝, o?:회차, rec?:기록 종류, late?:권장일} */
+function clItems(lo, hi){
+  const tk=todayKey(), out=[], lo2=clAdd(lo, -62), hi2=clAdd(hi, 62);
+  clTasks().forEach(function(t){
+    const r=clSegs(t), g=r[r.length-1];
+    if(g.f==='aft'){
+      clDoneDates(t).forEach(function(d){ if(d>=lo && d<=hi) out.push({k:t.id+'@'+d, t:t, due:d, d:d, st:'done', rec:t.src||'o'}); });
+      const due=clAftDue(t); if(!due) return;
+      const o=clOcc(t.id, due); if(o && o.s!=='move') return;
+      const at=o? o.d : due; let show=at<tk? tk : at, hold='';   /* 권장일이 지났으면 오늘에 띄운다(놓침이 아니라 '해도 되는 때') */
+      if(t.src==='bath'){ const he=clBathHold(show); if(he){ hold=he; show=clAdd(he, 1); } }   /* 수술 후 목욕 금지 기간이면 끝난 다음 날로 */
+      if(show>=lo && show<=hi) out.push({k:t.id+'|'+due, t:t, due:due, d:show, st:'plan', late:(at<tk && !hold)? at : '', hold:hold, o:o});
+      return;
+    }
+    const g0=r[0], span=(r.length===1 && g0.f==='once' && clOk(g0.e) && g0.e>g0.d)? g0.e : '';
+    const ck=clOk(t.ck)? t.ck : '0000-00-00';
+    clDues(t, lo2, hi2).forEach(function(due){
+      const o=clOcc(t.id, due);
+      if(o && o.s==='done'){ if(o.d>=lo && o.d<=hi) out.push({k:t.id+'|'+due, t:t, due:due, d:o.d, st:'done', o:o}); return; }
+      if(o && o.s==='skip'){ if(due>=lo && due<=hi) out.push({k:t.id+'|'+due, t:t, due:due, d:due, st:'skip', o:o}); return; }
+      const d=o? o.d : due, e=span? clAdd(span, clDiff(due, d)) : '';
+      const st=(clNeed(t) && (e || d)<tk && due>=ck)? 'miss' : ((e && t.nc)? 'span' : 'plan');
+      if(e){ if(d<=hi && e>=lo) out.push({k:t.id+'|'+due, t:t, due:due, d:d, e:e, st:st, o:o}); }
+      else if(d>=lo && d<=hi) out.push({k:t.id+'|'+due, t:t, due:due, d:d, st:st, o:o});
+    });
+  });
+  return out;
+}
+function clBathHold(ds){   /* 목욕 금지 기간(hold:'bath' 할 일)이 ds를 덮으면 그 끝날 */
+  let end='';
+  clTasks().forEach(function(t){ if(t.hold!=='bath') return; const g=clSegs(t)[0]; if(g && g.f==='once' && clOk(g.e) && ds>=g.d && ds<=g.e && g.e>end) end=g.e; });
+  return end;
+}
+function clHasNeut(){ return clTasks().some(function(t){ return t.k==='vet' && /중성화/.test(String(t.ti||'')); }); }
+function clInfo(lo, hi){
+  const out=[], b=S.profile && S.profile.birth, H=clSub('h');
+  if(!clOk(b)) return out;
+  const neut=clHasNeut();
+  const add=function(id, d, ti){ if(+H[id]>0 || d<lo || d>hi) return; out.push({k:id, id:id, d:d, st:'info', ti:ti}); };
+  MILESTONES.forEach(function(ms){ if(ms[0]===183 && neut) return; add('ms'+ms[0], clAdd(b, ms[0]), ms[1]); });   /* 중성화 일정이 있으면 '상담 권장' 안내는 접는다 */
+  if(clOk(S.profile.home)) HOME_EVENTS.forEach(function(ev){ add('hm'+ev[0], clAdd(S.profile.home, ev[0]), ev[1]); });
+  const y0=+b.slice(0,4);
+  for(let age=1; age<=20; age++){
+    let d=(y0+age)+b.slice(4); if(b.slice(5)==='02-29' && new Date(y0+age, 1, 29).getMonth()!==1) d=(y0+age)+'-02-28';
+    add('bd'+age, d, age+'번째 생일 — 연간검진·심장청진·보강접종');
+  }
+  return out;
+}
+function clMarks(lo, hi){   /* 통계 기준일(S.marks) — 기간은 막대, 하루짜리는 별 */
+  const M=(S.marks && typeof S.marks==='object' && !Array.isArray(S.marks))? S.marks : {}, out=[];
+  Object.keys(M).forEach(function(id){
+    const m=M[id]; if(!m || !clOk(m.s)) return;
+    const e=(clOk(m.e) && m.e>m.s)? m.e : '';
+    if(m.s<=hi && (e || m.s)>=lo) out.push({k:'mk'+id, d:m.s, e:e, st:'mark', ti:String(m.t||'기준일').slice(0, 30)});
+  });
+  return out;
+}
+function clNextDue(t){
+  const tk=todayKey();
+  if(clSegs(t).slice(-1)[0].f==='aft') return clAftDue(t);
+  const its=clItems(tk, clAdd(tk, 400)).filter(function(x){ return x.t.id===t.id && (x.st==='plan' || x.st==='span'); });
+  its.sort(function(a, b){ return a.d.localeCompare(b.d); });
+  return its.length? its[0].d : '';
+}
+function clRuleText(t){
+  const r=clSegs(t), g=r[r.length-1]; if(!g) return '';
+  if(g.f==='w') return '매주 '+clDw(g.d)+'요일';
+  if(g.f==='m') return '매월 '+(+g.d.slice(8,10))+'일';
+  if(g.f==='y') return '매년 '+clMD(g.d);
+  if(g.f==='aft') return (+g.n||14)+'일마다';
+  return '';
+}
+function clLiveVr(){   /* 살아 있는 할 일의 완료에 묶인 병원 기록 id — 할 일을 지우면 그 병원 기록·지출은 일반 기록으로 보인다 */
+  const set={}, O=clSub('o');
+  Object.keys(O).forEach(function(k){ const o=O[k], t=(o && o.vr && o.s==='done' && !(+o.x>0))? clTask(k.split('|')[0]) : null; if(t && t.k==='vet') set[o.vr]=1; });
+  return set;
+}
+function clVaxDates(){   /* 목욕 '접종 후 쉬는 기간' 판단용 — 달력의 접종 일정·병원 접종 기록 */
+  const tk=todayKey(), out=[];
+  clItems(clAdd(tk, -7), tk).forEach(function(x){ if(x.t.k==='vet' && x.t.vt==='접종' && x.st!=='skip') out.push(x.d); });
+  (S.visits||[]).forEach(function(v){ if(v && v.t==='접종' && clOk(v.d)) out.push(v.d); });
+  return out;
+}
+
+/* ---------- 예전 기록 흡수(한 번 이상 실행해도 같은 결과) ---------- */
+function clGuessVt(s){ s=String(s||''); return /접종|백신|광견병|보강/.test(s)? '접종' : (/수술|중성화/.test(s)? '수술' : (/검진|검사|청진/.test(s)? '검진' : (/치료|진료/.test(s)? '치료' : '기타'))); }
+function clHasDateRec(id, d){ const O=clSub('o'), p=id+'|'; return Object.keys(O).some(function(k){ const o=O[k]; return k.indexOf(p)===0 && o && o.d===d; }); }
+function clNearDue(t, d){
+  let best='', bd=99;
+  clDues(t, clAdd(d, -20), clAdd(d, 20)).forEach(function(k){ const n=Math.abs(clDiff(k, d)); if(n<bd){ bd=n; best=k; } });
+  return best;
+}
+function clAbsorb(){
+  if(syncConfigured() && !SYNC.pulledOK) return false;   /* 첫 받기 전에는 만들지 않는다 — 새 폰의 빈 기록으로 기준을 세우지 않게 */
+  let ch=false; const tk=todayKey(), now=Date.now(), b=S.profile && S.profile.birth, home=S.profile && S.profile.home;
+  const T=function(){ return clSub('t'); };
+  const mk=function(id, o){ clEnsure().t[id]=Object.assign({id:id, at:now, by:''}, o); ch=true; };
+  if(clOk(b)){
+    /* ① 심장사상충·구충 — 02장 8행의 투여일(없으면 예전 달력과 같은 기준일)로 매월 반복 */
+    if(!T().hw){
+      const v8=(S.vax||{}).v8||{};
+      let st='';
+      if(v8.done && clOk(v8.date)) st=v8.date;
+      else{
+        const day=clOk(home)? +home.slice(8,10) : +b.slice(8,10), s0=clAdd(b, 56), a=clDt(s0);
+        let y=a.getFullYear(), m=a.getMonth();
+        for(let i=0; i<3 && !st; i++){ const k=d2s(new Date(y, m, Math.min(day, new Date(y, m+1, 0).getDate()))); if(k>=s0) st=k; m++; if(m>11){ m=0; y++; } }
+      }
+      /* 놓침 확인은 실제 투여 기록(8행)이 있을 때만 그날부터 — 기록이 없으면 추정 시작일이라 오늘부터 */
+      if(st) mk('hw', {k:'med', ti:'심장사상충·구충', me:'넥스가드 스펙트라', r:[{f:'m', d:st}], ck:(v8.done && clOk(v8.date))? st : tk});
+    }
+    /* ② 목욕·체중 — 기존 기록에서 완료를 읽는 할 일(완료 기록을 따로 만들지 않음) */
+    const base=clOk(home)? home : b;
+    if(!T().bath) mk('bath', {k:'care', src:'bath', ti:'목욕', r:[{f:'aft', d:base, n:14}], ck:base});
+    if(!T().wt) mk('wt', {k:'care', src:'wt', ti:'체중 재기', r:[{f:'aft', d:base, n:14}], ck:base});
+  }
+  /* ③ 02장 8행 날짜 = 그날 투여(예전 화면에서 고친 날짜도) — 같은 날짜 기록이 이미 있으면(취소 포함) 건너뜀 */
+  const hw=clTask('hw'), v8=(S.vax||{}).v8||{};
+  if(hw && v8.done && clOk(v8.date) && !clHasDateRec('hw', v8.date)){
+    const due=clNearDue(hw, v8.date);
+    if(due && !clSub('o')['hw|'+due]){ clEnsure().o['hw|'+due]={s:'done', d:v8.date, at:now, by:''}; ch=true; }
+  }
+  /* ④ 예전 '내 일정'(S.events) → 할 일. 고정 id라 두 폰이 함께 옮겨도 1건 */
+  if(Array.isArray(S.events) && S.events.length){
+    const keep=[];
+    S.events.forEach(function(e){
+      if(!e || !clOk(e.d) || !String(e.t||'').trim()){ keep.push(e); return; }
+      const id='ev'+clHash([e.d, e.t, e.c||'', e.tm||'', e.rep||''].join('|'));
+      if(!T()[id]){
+        const kind={h:'vet', g:'care', s:'kg', b:'day'}[e.c]||'etc';
+        const o={k:kind, ti:String(e.t).trim().slice(0, 60), r:[{f:e.rep==='w'? 'w' : (e.rep==='m'? 'm' : 'once'), d:e.d}], lg:1, ck:tk};
+        if(/^\d{2}:\d{2}$/.test(e.tm||'')) o.tm=e.tm;
+        if(kind==='vet') o.vt=clGuessVt(e.t);
+        mk(id, o);
+      }
+    });
+    if(keep.length!==S.events.length){ S.events=keep; ch=true; }
+  }
+  if(ch){ clTidy(); persistLocal(); }   /* 사용자 편집이 아니므로 시각(_at)을 찍지 않고, 서버 반영은 다음 받기(합치기)에서 */
+  return ch;
+}
+function clPulled(){   /* 첫 받기가 끝나면 한 번 — 흡수 후 화면 갱신 */
+  if(CL.pulled) return; CL.pulled=true;
+  if(clAbsorb()){ try{ renderCal(); renderDday(); }catch(e){ logErr('달력: 첫 받기 뒤', e); } }
+}
+
+/* ---------- 그리기 ---------- */
+function clByD(a, b){ return a.d.localeCompare(b.d) || clPri(a)-clPri(b); }
+function clPri(x){   /* 칸 아이콘·줄 순서: 놓침 → 병원·투약 예정 → 다른 예정 → 병원 완료 → 완료 → '해도 되는 때'(목욕·체중) → 안내 */
+  if(x.st==='miss') return 0;
+  if(x.st==='plan') return (x.late || x.hold)? 6 : (x.t && x.t.k==='vet'? 1 : (x.t && x.t.k==='med'? 2 : 3));
+  if(x.st==='span') return 4;
+  if(x.st==='done') return (x.t && x.t.k==='vet')? 4 : 5;
+  return 6;
 }
 function renderCal(){
-  const dowEl=document.getElementById('calDow'); if(!dowEl) return;
-  dowEl.innerHTML=['일','월','화','수','목','금','토'].map(function(d,i){return '<div class="cal-dow'+(i===0?' sun':'')+'">'+d+'</div>';}).join('');
-  document.getElementById('calTitle').textContent=calY+'년 '+(calM+1)+'월';
-  const evs=eventsForMonth(calY,calM);
-  const byDay={}; evs.forEach(e=>{ (byDay[e.d]=byDay[e.d]||[]).push(e); });
-  const first=new Date(calY,calM,1).getDay(), dim=new Date(calY,calM+1,0).getDate();
-  let html='';
-  for(let i=0;i<first;i++) html+='<div class="cal-cell empty"></div>';
-  const tk=todayKey();
-  for(let d=1; d<=dim; d++){
-    const ds=calY+'-'+String(calM+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-    const dow=(first+d-1)%7;
-    const cls=['cal-cell']; if(dow===0)cls.push('sun'); if(ds===tk)cls.push('today'); if(ds===calSel)cls.push('sel');
-    const dots=(byDay[ds]||[]).slice(0,4).map(e=>'<span class="dot '+e.cls+'"></span>').join('')+(typeof wgCalDot==='function'? wgCalDot(ds) : '')+(typeof bathCalDot==='function'? bathCalDot(ds) : '');   /* V6.3 · V6.4 */
-    html+='<div class="'+cls.join(' ')+'" data-d="'+ds+'"><span class="dn">'+d+'</span><div class="dots">'+dots+'</div></div>';
-  }
-  const grid=document.getElementById('calGrid');
-  grid.innerHTML=html;
-  grid.querySelectorAll('.cal-cell[data-d]').forEach(c=>c.addEventListener('click',function(){ calSel=this.dataset.d; renderCal(); }));
-  renderSel(byDay); renderUpcoming();
+  try{ clAbsorb(); }catch(e){ logErr('달력: 예전 기록 정리', e); }
+  clGridPaint(); clChkPaint(); clDayPaint(); clNextPaint(); clV8Paint();
 }
-function renderSel(byDay){
-  const t=document.getElementById('selTitle'), box=document.getElementById('selEvents');
-  const p=calSel.split('-');
-  const dt=new Date(parseInt(p[0],10), parseInt(p[1],10)-1, parseInt(p[2],10));
-  t.textContent=parseInt(p[1],10)+'월 '+parseInt(p[2],10)+'일 ('+['일','월','화','수','목','금','토'][dt.getDay()]+')';
-  const evs=(byDay&&byDay[calSel])||[];
-  const TAGN={a:'알림',l:'지연',d:'완료',u:'내 일정',k:'유치원'};
-  const CATI={h:'🏥',g:'✂️',s:'🏫',b:'🎂',o:'📌'};
-  box.innerHTML=evs.length? evs.map(function(e){
-    let left='<span class="ev-tag '+e.cls+'">'+TAGN[e.cls]+'</span> ';
-    if(e.cls==='u'){
-      left+=(CATI[e.c]||'📌')+' '+(e.tm? '<strong>'+esc(e.tm)+'</strong> ':'')+esc(e.t)+(e.rep? ' <span class="muted small">('+(e.rep==='w'?'매주':'매월')+')</span>':'');
-    }else{
-      left+=esc(e.t);
-    }
-    let right='';
-    if(e.cls==='u') right='<button class="del" data-i="'+e.idx+'" aria-label="삭제">✕</button>';
-    if(e.vid && (e.cls==='a'||e.cls==='l')) right='<button class="btn sm" data-vx="'+e.vid+'">✓ 완료</button>';
-    return '<div class="ev-row"><span>'+left+'</span>'+right+'</div>';
-  }).join('') : '<p class="muted small" style="margin:6px 0;">일정 없음 — 아래에서 추가.</p>';
-  box.querySelectorAll('.del').forEach(function(b){ b.addEventListener('click',async function(){
-    const i=parseInt(this.dataset.i,10);
-    const e=S.events[i];
-    if(e && e.rep && !(await askConfirm('반복 일정입니다. 전체 반복을 삭제할까요?'))) return;
-    S.events.splice(i,1); saveState(); renderCal();
-  }); });
-  box.querySelectorAll('[data-vx]').forEach(function(b){ b.addEventListener('click',function(){
-    S.vax[this.dataset.vx]={done:true, date:calSel};
-    saveState(); renderAll();
-  }); });
-  try{ if(typeof wgCalSel==='function') wgCalSel(calSel, box); }catch(e){ console.error(e); }   /* V6.3 */
-  try{ if(typeof bathCalSel==='function') bathCalSel(calSel, box); }catch(e){ console.error(e); }   /* V6.4 */
-}
-function renderUpcoming(){
-  const el=document.getElementById('upList'); if(!el) return;
-  if(!S.profile.birth){ el.innerHTML='<p class="muted small">설정에서 생년월일을 입력하면 알림이 자동 생성됩니다.</p>'; return; }
-  const now=new Date(); now.setHours(0,0,0,0);
-  const to=addD(now,60); const tk=todayKey(); const toS=d2s(to);
-  let evs=autoEventsRange(now,to).filter(function(e){ return e.cls!=='d' && e.cls!=='l'; });
-  /* V5.7: 접종 지연 자동 주입 제거 — 내 일정 기반 운영 */
-  const overdue=[];
-  (S.events||[]).forEach(function(e){
-    if(!e.d) return;
-    const base=new Date(e.d+'T00:00:00');
-    const push=function(ds){ if(ds>=tk && ds<=toS) evs.push({d:ds, t:(e.tm? e.tm+' ':'')+e.t, cls:'u'}); };
-    if(!e.rep){ push(e.d); return; }
-    if(e.rep==='w'){
-      let cur=new Date(Math.max(base.getTime(), now.getTime()));
-      const wd=base.getDay();
-      cur.setDate(cur.getDate()+((wd-cur.getDay())+7)%7);
-      while(cur<=to){ if(cur>=base) push(d2s(cur)); cur=addD(cur,7); }
-    }else if(e.rep==='m'){
-      for(let k=0;k<3;k++){
-        const y2=now.getFullYear(), m2=now.getMonth()+k;
-        const dim=new Date(y2,m2+1,0).getDate();
-        const dd=new Date(y2,m2,Math.min(base.getDate(),dim));
-        if(dd>=base) push(d2s(dd));
-      }
-    }
+function clGridPaint(){
+  const dowEl=document.getElementById('calDow'), grid=document.getElementById('calGrid'); if(!dowEl || !grid) return;
+  dowEl.innerHTML=CL_DOW.map(function(d, i){ return '<div class="cal-dow'+(i===0? ' sun' : '')+'">'+d+'</div>'; }).join('');
+  const tt=document.getElementById('calTitle'); if(tt) tt.textContent=(calM+1)+'월';
+  const yy=document.getElementById('clYear'); if(yy) yy.textContent=String(calY);
+  const first=new Date(calY, calM, 1).getDay(), dim=new Date(calY, calM+1, 0).getDate();
+  const lo=d2s(new Date(calY, calM, 1)), hi=d2s(new Date(calY, calM, dim)), tk=todayKey();
+  const byDay={}, bars={};
+  const put=function(ds, ic, c, pr){ if(ds<lo || ds>hi) return; (byDay[ds]=byDay[ds]||[]).push({ic:ic, c:c, pr:pr}); };
+  const bar=function(s, e, c){ for(let k=(s<lo? lo : s), n=0; k<=(e>hi? hi : e) && n<62; k=clAdd(k, 1), n++) (bars[k]=bars[k]||[]).push({c:c, s:k===s, e:k===e}); };
+  clItems(lo, hi).forEach(function(x){
+    if(x.st==='skip') return;
+    if(x.st==='span'){ bar(x.d, x.e, 'p'); return; }
+    const c=x.st==='done'? 'd' : (x.st==='miss'? 'm' : 'p');
+    put(x.d, clIcon(x.t), c, clPri(x));
   });
-  evs.sort(function(a,b2){return a.d.localeCompare(b2.d);});
-  const all=overdue.concat(evs).slice(0,8);
-  el.innerHTML= all.length? all.map(function(e){
-    const dd=Math.round((new Date(e.d+'T00:00:00')-now)/86400000);
-    const dl= e.cls==='l'? '지연' : (dd===0?'오늘':'D-'+dd);
-    return '<div class="up-item up-go" data-d="'+e.d+'"><span class="up-d"'+(e.cls==='l'?' style="color:var(--red);"':'')+'>'+dl+'</span><span>'+esc(e.t)+' <span class="muted small">('+e.d.slice(5)+')</span></span></div>';
-  }).join('') : '<p class="muted small">향후 60일 내 알림 없음.</p>';
-  el.querySelectorAll('.up-go').forEach(function(r){ r.addEventListener('click',function(){ goCalDate(this.dataset.d); }); });
+  clInfo(lo, hi).forEach(function(x){ put(x.d, 'i-star', 'i', 7); });
+  clMarks(lo, hi).forEach(function(m){ if(m.e) bar(m.d, m.e, 'g'); else put(m.d, 'i-star', 'i', 7); });
+  const live=clLiveVr();
+  (S.visits||[]).forEach(function(v){ if(v && clOk(v.d) && !(v.id && live[v.id])) put(v.d, 'i-cross', 'd', 4); });
+  VAX_PLAN.forEach(function(p){ const v=(S.vax||{})[p.id]; if(v && v.done && clOk(v.date)) put(v.date, 'i-cross', 'd', 4); });
+  let h='';
+  for(let i=0; i<first; i++) h+='<div class="cal-cell empty"></div>';
+  for(let d=1; d<=dim; d++){
+    const ds=calY+'-'+String(calM+1).padStart(2,'0')+'-'+String(d).padStart(2,'0'), dow=(first+d-1)%7;
+    const cls=['cal-cell']; if(dow===0) cls.push('sun'); if(ds===tk) cls.push('today'); if(ds===calSel) cls.push('sel');
+    const seen={}, ics=(byDay[ds]||[]).sort(function(a, b){ return a.pr-b.pr; }).filter(function(x){ const k=x.ic+x.c; if(seen[k]) return false; seen[k]=1; return true; }).slice(0, 3);
+    const bs=(bars[ds]||[]).slice(0, 2).map(function(b, i){ return '<i class="cl-bar'+(b.c==='g'? ' g' : '')+(i? ' b2' : '')+(b.s || dow===0? ' s' : '')+(b.e || dow===6? ' e' : '')+'"></i>'; }).join('');
+    h+='<div class="'+cls.join(' ')+'" data-d="'+ds+'" role="button" tabindex="0" aria-label="'+(calM+1)+'월 '+d+'일'+(ics.length? ', 일정 있음' : '')+'"><span class="dn">'+d+'</span><span class="cl-ics">'+
+      ics.map(function(x){ return '<svg class="'+x.c+'" aria-hidden="true"><use href="#'+x.ic+'"/></svg>'; }).join('')+'</span>'+bs+'</div>';
+  }
+  grid.innerHTML=h;
+  const now=new Date(), tb=document.getElementById('calToday');
+  if(tb) tb.hidden=(calSel===tk && calY===now.getFullYear() && calM===now.getMonth());
+}
+function clSub2(x, ds){   /* 줄 아래 설명 */
+  const t=x.t, o=x.o||{}, sub=[];
+  if(x.st==='done'){
+    if(x.rec==='bath'){ const ks=(typeof bathKeys==='function')? bathKeys() : [], i=ks.indexOf(x.d); sub.push(i>0? clDiff(ks[i-1], x.d)+'일 간격' : '첫 기록'); }
+    else if(x.rec==='wt'){ const w=(S.weight||[]).filter(function(w){ return w && w.d===x.d; })[0]; if(w) sub.push(w.kg+'kg'); }
+    else{
+      const df=clDiff(x.due, x.d);
+      if(df<0) sub.push('예정 '+clMD(x.due)+'보다 '+(-df)+'일 일찍');
+      else if(df>0) sub.push('예정 '+clMD(x.due)+'보다 '+df+'일 늦게');
+      if(o.by) sub.push(o.by);
+      if(o.me) sub.push(o.me);
+    }
+    return sub;
+  }
+  if(x.st==='miss'){ sub.push('예정 '+clMD(x.due)+' ('+clDw(x.due)+') · 기록 없음'); return sub; }
+  if(x.st==='skip'){ sub.push('건너뜀'); return sub; }
+  if(t.k==='vet' && t.vt) sub.push(t.vt);
+  if(x.e){ const tot=clDiff(x.d, x.e)+1, n=clDiff(x.d, ds)+1; sub.push(clMDs(x.d)+'–'+clMDs(x.e)+((t.nc && n>=1 && n<=tot)? ' · '+n+'/'+tot+'일째' : ' 사이')); }
+  if(x.hold) sub.push('목욕 금지 기간이 끝난 뒤');
+  else if(x.late) sub.push(t.src==='bath'? clMDs(x.late)+'부터 해도 돼요' : '예정 '+clMDs(x.late)+' · '+clDiff(x.late, todayKey())+'일 지남');
+  else if(o.s==='move') sub.push('예정 '+clMDs(x.due)+'에서 옮김');
+  if(t.tm) sub.push(t.tm);
+  const rt=(x.e || o.s==='move')? '' : clRuleText(t); if(rt) sub.push(rt);
+  if(t.me && !t.src) sub.push(t.me);
+  return sub;
+}
+function clRowHtml(x, ds, tk){
+  const t=x.t, need=clNeed(t) && (x.st==='plan' || x.st==='miss');
+  const past=(x.st==='plan' && !need && (x.e || x.d)<tk)? ' past' : '';
+  const sub=clSub2(x, ds);
+  const right=x.st==='done'? '<span class="cl-dn" aria-label="완료"><svg class="ico"><use href="#i-check"/></svg></span>' :
+    (need? '<button type="button" class="cl-ck" data-ck="1" aria-label="'+esc(t.ti)+' 완료"></button>' : '');
+  return '<div class="cl-row '+x.st+past+'" role="button" tabindex="0" data-tid="'+esc(t.id)+'" data-due="'+x.due+'"><span class="cl-ic"><svg class="ico"><use href="#'+clIcon(t)+'"/></svg></span>'+
+    '<span class="cl-tx"><b>'+esc(t.ti)+'</b>'+(sub.length? '<span>'+esc(sub.join(' · '))+'</span>' : '')+'</span>'+right+'</div>';
+}
+function clVisitHtml(list, ds, tk){
+  const vets=list.filter(function(x){ return x.t.k==='vet'; }), v0=vets[0];
+  const allDone=list.every(function(x){ return x.st==='done'; });
+  const pl=vets.map(function(x){ return x.t.pl; }).filter(Boolean)[0], tm=vets.map(function(x){ return x.t.tm; }).filter(Boolean)[0];
+  let h='<div class="cl-vis'+(allDone? ' done' : '')+'"><div class="cl-vh"><svg class="ico"><use href="#i-cross"/></svg><b>'+esc(pl || '병원 방문')+(tm? ' · '+esc(tm) : '')+'</b>'+
+    '<span class="cl-badge'+(allDone? ' d' : '')+'">'+(allDone? '완료' : (ds<tk? '기록 없음' : '예정'))+'</span></div>';
+  list.forEach(function(x){ h+=clRowHtml(x, ds, tk); });
+  const vr=vets.map(function(x){ return x.o && x.o.vr; }).filter(Boolean)[0];
+  if(vr){ const ex=(S.expenses||[]).filter(function(e){ return e && e.vr===vr; })[0]; if(ex) h+='<div class="cl-row rec" role="button" tabindex="0" data-go="record"><span class="cl-ic"><svg class="ico"><use href="#i-rec"/></svg></span><span class="cl-tx"><b>비용 '+Number(ex.a||0).toLocaleString()+'원</b><span>지출에 기록됨</span></span></div>'; }
+  if(!allDone && v0.st!=='done'){
+    if(ds>=tk){
+      clItems(clAdd(ds, -10), clAdd(ds, 10)).forEach(function(x){
+        if(x.t.k==='med' && x.st==='plan' && x.d!==ds && !x.e) h+='<button type="button" class="cl-lk" data-mv="'+esc(x.t.id)+'" data-due="'+x.due+'" data-to="'+ds+'">'+esc(x.t.ti)+'('+clMDs(x.d)+' 예정)도 이날 함께</button>';
+      });
+      if(v0.t.vt==='수술' && !clTasks().some(function(t){ return t.pa===v0.t.id; })) h+='<button type="button" class="cl-lk" data-tpl="'+esc(v0.t.id)+'">수술 전후 할 일 추가 · 07장</button>';
+    }
+    h+='<button type="button" class="cl-vbtn" data-vdone="'+esc(v0.t.id)+'" data-due="'+v0.due+'">방문 완료</button>';
+  }
+  return h+'</div>';
+}
+function clRecRows(ds){
+  const rows=[], tasks=clTasks(), live=clLiveVr();
+  const hasBath=tasks.some(function(t){ return t.src==='bath'; }), hasWt=tasks.some(function(t){ return t.src==='wt'; });
+  VAX_PLAN.forEach(function(p){ const v=(S.vax||{})[p.id]; if(v && v.done && v.date===ds) rows.push({ic:'i-cross', ti:p.t.split('—')[0].trim(), sub:'접종 완료 · 02장 표', go:'health'}); });
+  (S.visits||[]).forEach(function(v){ if(v && v.d===ds && !(v.id && live[v.id])) rows.push({ic:'i-cross', ti:'병원 · '+(v.t||'기록'), sub:v.m||'', go:'record'}); });
+  (S.expenses||[]).forEach(function(e){ if(e && e.d===ds && !(e.vr && live[e.vr])) rows.push({ic:'i-rec', ti:'지출 · '+(e.c||'기타'), sub:Number(e.a||0).toLocaleString()+'원'+(e.m? ' · '+e.m : ''), go:'record'}); });
+  if(!hasWt) (S.weight||[]).forEach(function(w){ if(w && w.d===ds) rows.push({ic:'i-scale', ti:'체중 '+w.kg+'kg', sub:'', go:'record'}); });
+  if(!hasBath && typeof bathLog==='function' && bathLog()[ds]) rows.push({ic:'i-bath', ti:'목욕', sub:'', go:'bath'});
+  kgDay(ds).forEach(function(s){ rows.push({ic:'i-bag', ti:kgName()+' '+fmtHM(s.o)+'–'+fmtHM(s.i), sub:fmtDur(s.i-s.o)+(s.f? ' · 식사 '+s.f : '')+(s.m? ' · '+s.m : ''), go:'kg'}); });
+  const q=(S.qlog||{})[ds];
+  if(q){
+    const n=function(k){ const a=q[k]; return Array.isArray(a)? a.length : (+a||0); }, parts=[];
+    [['poo', '대변'], ['pee', '소변'], ['diar', '설사'], ['meal', '식사']].forEach(function(p){ const c=n(p[0]); if(c) parts.push(p[1]+' '+c); });
+    if(parts.length) rows.push({ic:'i-poo', ti:parts.join(' · '), sub:'', go:'stats'});
+  }
+  return rows;
+}
+function clDayPaint(){
+  const el=document.getElementById('clDay'); if(!el) return;
+  const ds=calSel, tk=todayKey();
+  const its=clItems(ds, ds).filter(function(x){ return x.e? (ds>=x.d && ds<=x.e) : x.d===ds; });
+  const bundle=its.some(function(x){ return x.t.k==='vet' && !x.e && x.st!=='skip'; })? its.filter(function(x){ return (x.t.k==='vet' || x.t.k==='med') && !x.e && x.st!=='skip'; }) : [];
+  bundle.sort(function(a, b){ return (a.t.k==='vet'? 0 : 1)-(b.t.k==='vet'? 0 : 1); });
+  const rest=its.filter(function(x){ return bundle.indexOf(x)<0; }).sort(function(a, b){ return clPri(a)-clPri(b) || String(a.t.tm||'99').localeCompare(String(b.t.tm||'99')) || String(a.t.ti).localeCompare(String(b.t.ti)); });
+  const info=clInfo(ds, ds), marks=clMarks(ds, ds).filter(function(m){ return m.d===ds; }), recs=clRecRows(ds);
+  const walks=((S.walkLog||{})[ds]||[]).filter(function(s){ return s && +s.i>+s.o; }).length;
+  let h='<div class="cl-dh"><b>'+clMD(ds)+' '+clDw(ds)+'요일</b>'+(ds===tk? '<span>오늘</span>' : '')+'</div>';
+  if(bundle.length) h+=clVisitHtml(bundle, ds, tk);
+  rest.forEach(function(x){ h+=clRowHtml(x, ds, tk); });
+  info.forEach(function(x){ h+='<div class="cl-row info" role="button" tabindex="0" data-info="'+x.id+'"><span class="cl-ic"><svg class="ico"><use href="#i-star"/></svg></span><span class="cl-tx"><b>'+esc(x.ti)+'</b><span>자동 안내</span></span></div>'; });
+  marks.forEach(function(m){ h+='<div class="cl-row info" role="button" tabindex="0" data-go="stats"><span class="cl-ic"><svg class="ico"><use href="#i-chart"/></svg></span><span class="cl-tx"><b>'+esc(m.ti)+'</b><span>기준일'+(m.e? ' · '+clMDs(m.d)+'–'+clMDs(m.e) : '')+'</span></span></div>'; });
+  recs.forEach(function(r){ h+='<div class="cl-row rec" role="button" tabindex="0" data-go="'+r.go+'"><span class="cl-ic"><svg class="ico"><use href="#'+r.ic+'"/></svg></span><span class="cl-tx"><b>'+esc(r.ti)+'</b>'+(r.sub? '<span>'+esc(r.sub)+'</span>' : '')+'</span></div>'; });
+  if(!bundle.length && !rest.length && !info.length && !marks.length && !recs.length && !walks) h+='<p class="cl-empty">일정 없음</p>';
+  el.innerHTML='<div class="card cl-card">'+h+'<div id="clWalk"></div></div>';
+  if(walks && typeof wgCalSel==='function'){ try{ wgCalSel(ds, document.getElementById('clWalk')); }catch(e){ logErr('달력: 산책 줄', e); } }
+}
+function clChkPaint(){
+  const el=document.getElementById('clCheck'); if(!el) return;
+  const tk=todayKey(), its=clItems(clAdd(tk, -180), clAdd(tk, -1)).filter(function(x){ return x.st==='miss'; }).sort(clByD);
+  if(!its.length){ el.innerHTML=''; return; }
+  let h='<div class="card cl-card cl-chk"><div class="cl-dh"><b>기록이 없는 지난 할 일</b><span>'+its.length+'건</span></div>';
+  its.slice(0, 6).forEach(function(x){
+    h+='<div class="cl-row miss" role="button" tabindex="0" data-tid="'+esc(x.t.id)+'" data-due="'+x.due+'"><span class="cl-ic"><svg class="ico"><use href="#'+clIcon(x.t)+'"/></svg></span>'+
+      '<span class="cl-tx"><b>'+esc(x.t.ti)+'</b><span>예정 '+clMD(x.due)+' ('+clDw(x.due)+')'+(x.e? ' – '+clMD(x.e) : '')+'</span></span>'+
+      '<span class="cl-qbs"><button type="button" class="cl-qb ok" data-qd="1">했어요</button><button type="button" class="cl-qb" data-qs="1">안 했어요</button></span></div>';
+  });
+  if(its.length>6) h+='<p class="cl-empty">외 '+(its.length-6)+'건 — 날짜를 눌러 확인할 수 있어요</p>';
+  el.innerHTML=h+'</div>';
+}
+function clNextPaint(){
+  const el=document.getElementById('clNext'); if(!el) return;
+  const tk=todayKey(), from=calSel>=tk? clAdd(calSel, 1) : tk, to=clAdd(from, 120);
+  const seen={};
+  const its=clItems(from, to).filter(function(x){ return (x.st==='plan' || x.st==='span') && x.d>=from && !x.t.src; }).sort(clByD)
+    .filter(function(x){ if(seen[x.t.id]) return false; seen[x.t.id]=1; return true; })   /* 반복 할 일은 가장 가까운 1회만 */
+    .map(function(x){ const sub=clSub2(x, x.d); return {d:x.d, ti:x.t.ti, sub:sub.join(' · '), pr:clPri(x)}; })
+    .concat(clInfo(from, to).map(function(x){ return {d:x.d, ti:x.ti, sub:'자동 안내', pr:7}; }))
+    .sort(function(a, b){ return a.d.localeCompare(b.d) || a.pr-b.pr; }).slice(0, 6);
+  if(!its.length){ el.innerHTML=''; return; }
+  el.innerHTML='<div class="card cl-card cl-up"><div class="cl-dh"><b>다가오는 일정</b></div>'+its.map(function(x){
+    return '<div class="cl-row" role="button" tabindex="0" data-gd="'+x.d+'"><span class="cl-ud"><b>'+clMDs(x.d)+'</b><span>'+clDw(x.d)+'</span></span><span class="cl-tx"><b>'+esc(x.ti)+'</b>'+(x.sub? '<span>'+esc(x.sub)+'</span>' : '')+'</span></div>';
+  }).join('')+'</div>';
+}
+function clV8Paint(){   /* 02장 접종표 8행: 입력칸 대신 달력 기록 요약 */
+  const tr=document.querySelector('#vaxTable tr[data-vx="v8"]'); if(!tr) return;
+  let b=document.getElementById('clV8');
+  if(!b){
+    const td=tr.lastElementChild; if(!td) return;
+    tr.querySelectorAll('.vx-done, .vx-date').forEach(function(x){ x.style.display='none'; });
+    td.insertAdjacentHTML('beforeend', '<button type="button" class="cl-v8" id="clV8"></button>');
+    b=document.getElementById('clV8'); if(!b) return;
+    b.addEventListener('click', clV8Go);
+  }
+  const t=clTask('hw');
+  if(!t){ b.textContent='달력에서 관리'; return; }
+  const ds=clDoneDates(t), last=ds.length? ds[ds.length-1] : '', nx=clNextDue(t);
+  b.textContent=(last? '최근 '+clMDs(last) : '기록 없음')+(nx? ' · 다음 '+clMDs(nx) : '');
+}
+function clV8Go(){
+  const t=clTask('hw'); if(!t){ goTab('cal'); return; }
+  const tk=todayKey(), its=clItems(clAdd(tk, -60), clAdd(tk, 31)).filter(function(x){ return x.t.id==='hw' && (x.st==='plan' || x.st==='miss'); }).sort(clByD);
+  if(its.length) clOpenDone('hw', its[0].due); else{ goTab('cal'); }
+}
+
+/* ---------- 홈 '다음 일정' ---------- */
+function clNearest(){
+  const tk=todayKey();
+  const its=clItems(clAdd(tk, -7), clAdd(tk, 90)).filter(function(x){ return !x.t.src; });
+  const now=its.filter(function(x){ return x.st==='miss' || (x.st==='plan' && clNeed(x.t) && x.d<=tk); }).sort(clByD);
+  if(now.length){ const x=now[0]; return {d:x.e && x.st==='plan'? tk : x.d, t:x.t.ti, tid:x.t.id, due:x.due, act:true, vet:x.t.k==='vet'}; }
+  const up=its.filter(function(x){ return (x.st==='plan' || x.st==='span') && x.d>=tk; }).map(function(x){ return {d:x.d, t:x.t.ti, pr:clPri(x)}; })
+    .concat(clInfo(tk, clAdd(tk, 90)).filter(function(x){ return x.id.indexOf('hm')!==0; }).map(function(x){ return {d:x.d, t:x.ti, pr:7}; }));
+  up.sort(function(a, b){ return a.d.localeCompare(b.d) || a.pr-b.pr; });
+  return up[0]||null;
+}
+function renderDday(){
+  const el=document.getElementById('ddayBanner'); if(!el) return;
+  let ev=null; try{ ev=clNearest(); }catch(e){ logErr('홈: 다음 일정', e); }
+  const ck=document.getElementById('ddCk'), num=document.getElementById('ddNum');
+  if(!ev){ el.className=''; if(ck) ck.hidden=true; return; }
+  const tk=todayKey(), dd=clDiff(tk, ev.d);
+  document.getElementById('ddTitle').textContent=ev.t;
+  document.getElementById('ddDate').textContent=ev.act? (dd<0? clMD(ev.d)+' 예정 · '+(-dd)+'일 지남' : '오늘 할 일') : clMD(ev.d)+' ('+clDw(ev.d)+')';
+  if(num){ num.textContent=dd===0? '오늘' : (dd<0? (-dd)+'일 지남' : 'D-'+dd); num.hidden=!!ev.act; }
+  if(ck){ ck.hidden=!ev.act; ck.dataset.tid=ev.tid||''; ck.dataset.due=ev.due||''; ck.textContent=ev.vet? '방문 완료' : '완료'; }
+  el.className='vis'+(ev.act? (dd<0? ' late' : ' urgent') : (dd<=1? ' urgent' : ''));
+}
+
+/* ---------- 시트 ---------- */
+function clSheetOpen(html){
+  const ov=document.getElementById('clOvl'), sh=document.getElementById('clSheet'); if(!ov || !sh) return null;
+  sh.innerHTML='<div class="grab"></div>'+html;
+  sh.scrollTop=0;
+  ov.classList.add('on');
+  return sh;
+}
+function clHide(){ const ov=document.getElementById('clOvl'); if(ov) ov.classList.remove('on'); CL.sh=null; }
+function clMsg(t){ const m=document.getElementById('clMsg'); if(m) m.textContent=t||''; }
+function clAfter(){
+  try{ renderCal(); }catch(e){ logErr('달력: 그리기', e); }
+  try{ renderDday(); }catch(e){}
+  try{ renderVisits(); renderExpenses(); renderEChart(); }catch(e){}
+}
+function clChips(tk, due){
+  const out=[], add=function(d, lb){ if(!out.some(function(x){ return x.d===d; })) out.push({d:d, lb:lb}); };
+  if(clOk(due) && due<clAdd(tk, -6)) add(due, '예정일 '+clMDs(due));
+  add(tk, '오늘 '+(+tk.slice(8,10)));
+  add(clAdd(tk, -1), '어제 '+(+clAdd(tk, -1).slice(8,10)));
+  for(let i=2; i<=6; i++){ const d=clAdd(tk, -i); add(d, clDw(d)+' '+(+d.slice(8,10))); }
+  return out;
+}
+function clDayPick(sh, st, onPick){   /* 날짜 칩 + 다른 날 */
+  const paint=function(){
+    sh.querySelectorAll('#clChips .cl-chip').forEach(function(b){ b.classList.toggle('on', b.dataset.d===st.sel); });
+    if(onPick) onPick();
+  };
+  sh.querySelectorAll('#clChips .cl-chip').forEach(function(b){ b.addEventListener('click', function(){ st.sel=b.dataset.d; const di=document.getElementById('clDd'); if(di) di.value=''; clMsg(''); paint(); }); });
+  const di=document.getElementById('clDd');
+  if(di) di.addEventListener('change', function(){
+    const v=di.value||'';
+    if(!clOk(v)){ return; }
+    if(v>st.tk){ clMsg('미래 날짜는 고를 수 없어요'); di.value=''; return; }
+    if(clOk(S.profile && S.profile.birth) && v<S.profile.birth){ clMsg('생일 이전 날짜예요'); di.value=''; return; }
+    st.sel=v; clMsg(''); paint();
+  });
+  paint();
+}
+function clChipHtml(tk, due){
+  return '<div class="cl-chips" id="clChips">'+clChips(tk, due).map(function(c){ return '<button type="button" class="cl-chip" data-d="'+c.d+'">'+c.lb+'</button>'; }).join('')+'</div>'+
+    '<div class="cl-other"><label for="clDd">다른 날</label><input type="date" id="clDd" max="'+tk+'"'+(clOk(S.profile && S.profile.birth)? ' min="'+S.profile.birth+'"' : '')+'></div>';
+}
+function clOpenDone(tid, due){
+  const t=clTask(tid); if(!t) return;
+  if(t.src==='wt'){ openWtSheet(); return; }
+  if(t.k==='vet'){ clOpenVisit(tid, due); return; }
+  const tk=todayKey(), o=clOcc(tid, due), g=clSegs(t).slice(-1)[0];
+  const st={m:'done', tid:tid, due:due, tk:tk, sel:(o && o.s==='done')? o.d : ((due<clAdd(tk, -6) && !t.src)? due : tk)};
+  CL.sh=st;
+  const monthly=g.f==='m' && !t.src;
+  const sh=clSheetOpen('<div class="sh-t" id="clT">'+esc(t.ti)+'</div><div class="sh-sub">'+(t.src? '권장 '+clMD(due) : '예정 '+clMD(due)+' ('+clDw(due)+')')+(t.me && !t.src? ' · '+esc(t.me) : '')+'</div>'+
+    '<div class="cl-lbl">언제 했나요?</div>'+clChipHtml(tk, due)+
+    (monthly? '<label class="kg-chk" id="clReW" hidden><span id="clReT"></span><input type="checkbox" class="sw" id="clRe"></label>' : '')+
+    '<p class="sh-hint" id="clMsg" role="alert"></p><button type="button" class="sh-b1" id="clSave"></button><button type="button" class="sh-cancel" id="clCancel">취소</button>');
+  if(!sh) return;
+  clDayPick(sh, st, function(){
+    const sv=document.getElementById('clSave'); if(sv) sv.textContent=clMD(st.sel)+(st.sel===tk? '(오늘)' : '')+'로 완료';
+    const w=document.getElementById('clReW');
+    if(w){ const far=Math.abs(clDiff(due, st.sel))>=3; w.hidden=!far; if(!far) document.getElementById('clRe').checked=false; document.getElementById('clReT').textContent='다음부터 매월 '+(+st.sel.slice(8,10))+'일로'; }
+  });
+  document.getElementById('clCancel').addEventListener('click', clHide);
+  document.getElementById('clSave').addEventListener('click', function(){
+    if(!clOk(st.sel) || st.sel>st.tk){ clMsg('날짜를 골라 주세요'); return; }
+    const re=!!(document.getElementById('clRe') && document.getElementById('clRe').checked);
+    clHide();
+    if(t.src==='bath'){ if(typeof bathAdd==='function' && !bathAdd(st.sel, clMD(st.sel)+' 목욕 기록했어요')) uiToast('그날 목욕은 이미 기록돼 있어요'); return; }
+    clDone(tid, due, st.sel, re);
+  });
+}
+function clSyncV8(){   /* 예전 화면(02장 8행·옛 버전 폰)과 맞추기 — 가장 최근 투여일 */
+  const t=clSub('t').hw; if(!t) return;
+  const ds=clDoneDates(t), last=ds.length? ds[ds.length-1] : '';
+  const v8=(S.vax||{}).v8||{};
+  if(last && (v8.date!==last || !v8.done)){ S.vax=S.vax||{}; S.vax.v8={done:true, date:last}; }
+}
+function clSnap(){ return {cal:sClone(S.cal||null), vax:sClone(S.vax||{}), visits:sClone(S.visits||[]), expenses:sClone(S.expenses||[]), feed:sClone(S.feed||{})}; }
+function clRestore(p){
+  if(p.cal) S.cal=p.cal; else delete S.cal;
+  S.vax=p.vax; S.visits=p.visits; S.expenses=p.expenses; S.feed=p.feed;
+  clSave(); clAfter(); try{ renderFeed(); renderMealGap(); }catch(e){}
+}
+function clDone(tid, due, d, re){
+  const t=clTask(tid); if(!t) return;
+  const snap=clSnap();
+  clSetOcc(tid, due, {s:'done', d:d, at:Date.now(), by:myName()||''});
+  let msg=clMD(d)+' 완료했어요';
+  const g=clSegs(t).slice(-1)[0];
+  if(re && g.f==='m'){   /* 기준일 바꾸기: 다음 달 1일부터 새 날짜 — 지난 회차는 그대로 */
+    const a=clDt(due>d? due : d), nbD=new Date(a.getFullYear(), a.getMonth()+1, 1), ny=nbD.getFullYear(), nm=nbD.getMonth();
+    const nb=d2s(nbD), day=+d.slice(8,10), nd=d2s(new Date(ny, nm, Math.min(day, new Date(ny, nm+1, 0).getDate())));
+    const r=clSegs(t).filter(function(s){ return clFrom(s)<nb; }); r.push({f:'m', d:nd, b:nb}); t.r=r; t.up=Date.now();
+    msg+=' · 다음부터 매월 '+day+'일';
+  }
+  if(t.act==='neut'){ const f=(typeof feedCfg==='function')? feedCfg() : (S.feed||{}); if(!f.neut){ f.neut=1; S.feed=f; msg='급여 기준을 중성화 후로 바꿨어요'; try{ renderFeed(); renderMealGap(); }catch(e){} } }
+  if(tid==='hw') clSyncV8();
+  clSave(); clAfter();
+  uiToast(msg, function(){ clRestore(snap); });
+}
+function clUndone(tid, due){
+  const c=clEnsure(), k=tid+'|'+due, cur=c.o[k]; if(!cur) return;
+  const snap=clSnap(), now=Date.now(), tt=c.t[tid];
+  if(cur.vr && tt && tt.k==='vet'){   /* 병원 방문 자체를 취소 — 함께 완료한 것·병원 기록·지출을 같이 되돌린다 */
+    Object.keys(c.o).forEach(function(kk){ const o=c.o[kk]; if(o && o.vr===cur.vr && !(+o.x>0)) c.o[kk]=Object.assign({}, o, {x:now}); });
+    S.visits=(S.visits||[]).filter(function(v){ return !(v && v.id===cur.vr); });
+    S.expenses=(S.expenses||[]).filter(function(e){ return !(e && e.vr===cur.vr); });
+  }else c.o[k]=Object.assign({}, cur, {x:now});
+  clSyncV8();   /* 남은 가장 최근 투여일로(없으면 그대로 — 취소한 날짜는 흡수 대상에서 빠짐) */
+  clSave(); clAfter();
+  uiToast('완료를 취소했어요', function(){ clRestore(snap); });
+}
+function clOpenVisit(tid, due){
+  const t=clTask(tid); if(!t) return;
+  const tk=todayKey(), o=clOcc(tid, due), at=(o && o.s==='move')? o.d : due;
+  const st={m:'visit', tid:tid, due:due, tk:tk, sel:(o && o.s==='done')? o.d : (at<=tk? at : tk)};
+  CL.sh=st;
+  const others=clItems(at, at).filter(function(x){ return (x.t.k==='med' || x.t.k==='vet') && (x.st==='plan' || x.st==='miss') && !x.e && x.d===at && !(x.t.id===tid && x.due===due); });
+  const sh=clSheetOpen('<div class="sh-t" id="clT">방문 완료</div><div class="sh-sub">'+esc(t.ti)+' · 예정 '+clMD(at)+' ('+clDw(at)+')</div>'+
+    '<div class="cl-lbl">언제 다녀왔나요?</div>'+clChipHtml(tk, at)+
+    (others.length? '<div class="cl-lbl">함께 한 것</div>'+others.map(function(x){ return '<label class="cl-cb"><input type="checkbox" checked data-bk="'+esc(x.t.id)+'|'+x.due+'"><span>'+esc(x.t.ti)+(x.t.me? ' <small>'+esc(x.t.me)+'</small>' : '')+'</span></label>'; }).join('') : '')+
+    '<div class="cl-lbl">비용 (선택)</div><input type="number" id="clCost" inputmode="numeric" min="0" step="100" placeholder="원">'+
+    '<div class="cl-lbl">메모 (선택)</div><textarea id="clMe" rows="2" placeholder="진단·처방·다음 진료"></textarea>'+
+    '<p class="sh-hint" id="clMsg" role="alert"></p><button type="button" class="sh-b1" id="clSave">방문 완료</button><button type="button" class="sh-cancel" id="clCancel">취소</button>');
+  if(!sh) return;
+  clDayPick(sh, st, function(){ const sv=document.getElementById('clSave'); if(sv) sv.textContent=clMD(st.sel)+(st.sel===tk? '(오늘)' : '')+' 방문 완료'; });
+  document.getElementById('clCancel').addEventListener('click', clHide);
+  document.getElementById('clSave').addEventListener('click', function(){
+    if(!clOk(st.sel) || st.sel>st.tk){ clMsg('날짜를 골라 주세요'); return; }
+    const cv=String(document.getElementById('clCost').value||'').replace(/[^0-9]/g, ''), cost=cv? Math.min(99999999, +cv) : 0;
+    const me=String(document.getElementById('clMe').value||'').trim().slice(0, 200);
+    const picks=[]; sh.querySelectorAll('[data-bk]').forEach(function(c){ if(c.checked){ const p=c.dataset.bk.split('|'); picks.push({tid:p[0], due:p[1]}); } });
+    clHide();
+    clVisitDone(tid, due, st.sel, picks, cost, me);
+  });
+}
+function clVisitDone(tid, due, d, picks, cost, me){
+  const t=clTask(tid); if(!t) return;
+  const snap=clSnap(), now=Date.now(), by=myName()||'', vid=clNewId();
+  const names=[t.ti].concat(picks.map(function(p){ const x=clTask(p.tid); return x? x.ti : ''; }).filter(Boolean));
+  S.visits=(S.visits||[]).concat([{id:vid, d:d, t:CL_VT.indexOf(t.vt)>=0? t.vt : '기타', m:names.join(' · ')+(me? ' — '+me : ''), tk:tid, due:due}]);
+  let ex='';
+  if(cost>0){ ex=clNewId(); S.expenses=(S.expenses||[]).concat([{id:ex, d:d, c:'병원', a:cost, m:t.ti, vr:vid}]); }
+  const o={s:'done', d:d, at:now, by:by, vr:vid}; if(ex) o.ex=ex; if(me) o.me=me;
+  clSetOcc(tid, due, o);
+  picks.forEach(function(p){ if(clTask(p.tid)) clSetOcc(p.tid, p.due, {s:'done', d:d, at:now, by:by, vr:vid}); });
+  if(picks.some(function(p){ return p.tid==='hw'; })) clSyncV8();
+  clSave(); clAfter();
+  uiToast(clMD(d)+' 방문 기록했어요'+(cost? ' · 지출 '+cost.toLocaleString()+'원' : ''), function(){ clRestore(snap); });
+}
+function clOpenMove(tid, due){
+  const t=clTask(tid); if(!t) return;
+  const tk=todayKey(), o=clOcc(tid, due), cur=(o && o.s==='move')? o.d : due, base=cur<tk? tk : cur;
+  const st={m:'move', tid:tid, due:due, tk:tk, sel:''};
+  CL.sh=st;
+  const q=[[clAdd(base, 1), '+1일'], [clAdd(base, 3), '+3일'], [clAdd(base, 7), '+1주']];
+  if(t.k!=='vet') clItems(clAdd(cur, -14), clAdd(cur, 14)).forEach(function(x){ if(x.t.k==='vet' && x.st==='plan' && !x.e && x.d>=tk && !q.some(function(c){ return c[0]===x.d; })) q.unshift([x.d, clMDs(x.d)+' 병원 방문과 같은 날']); });
+  const sh=clSheetOpen('<div class="sh-t" id="clT">날짜 옮기기</div><div class="sh-sub">'+esc(t.ti)+' · 예정 '+clMD(cur)+' ('+clDw(cur)+')</div>'+
+    '<div class="cl-chips" id="clChips">'+q.map(function(c){ return '<button type="button" class="cl-chip" data-d="'+c[0]+'">'+c[1]+'</button>'; }).join('')+'</div>'+
+    '<div class="cl-other"><label for="clMd">날짜</label><input type="date" id="clMd" min="'+tk+'"></div>'+
+    '<p class="sh-hint" id="clMsg" role="alert"></p><button type="button" class="sh-b1" id="clSave">옮기기</button><button type="button" class="sh-cancel" id="clCancel">취소</button>');
+  if(!sh) return;
+  const paint=function(){ sh.querySelectorAll('#clChips .cl-chip').forEach(function(b){ b.classList.toggle('on', b.dataset.d===st.sel); }); document.getElementById('clSave').textContent=st.sel? clMD(st.sel)+'로 옮기기' : '옮기기'; };
+  sh.querySelectorAll('#clChips .cl-chip').forEach(function(b){ b.addEventListener('click', function(){ st.sel=b.dataset.d; document.getElementById('clMd').value=st.sel; clMsg(''); paint(); }); });
+  document.getElementById('clMd').addEventListener('change', function(){ const v=this.value||''; if(clOk(v)){ st.sel=v; clMsg(''); paint(); } });
+  document.getElementById('clCancel').addEventListener('click', clHide);
+  document.getElementById('clSave').addEventListener('click', function(){
+    if(!clOk(st.sel)){ clMsg('옮길 날짜를 골라 주세요'); return; }
+    if(st.sel<st.tk){ clMsg('지난 날짜로는 옮길 수 없어요 — 이미 했다면 완료로 기록하세요'); return; }
+    if(st.sel===cur){ clHide(); return; }
+    clHide(); clMove(tid, due, st.sel);
+  });
+}
+function clMove(tid, due, nd){
+  const t=clTask(tid); if(!t) return;
+  const snap=clSnap(), r=clSegs(t), g0=r[0];
+  let kids=0;
+  if(r.length===1 && g0.f==='once' && !clSub('o')[tid+'|'+due]){   /* 1회 할 일은 날짜 자체를 바꾸고, 묶인 할 일(수술 전후)도 같은 만큼 */
+    const dl=clDiff(g0.d, nd), ng={f:'once', d:nd}; if(clOk(g0.e)) ng.e=clAdd(g0.e, dl);
+    t.r=[ng]; t.ck=nd; t.up=Date.now();
+    kids=clShiftKids(tid, dl);
+  }else clSetOcc(tid, due, {s:'move', d:nd, at:Date.now(), by:myName()||''});
+  calSel=nd; const a=clDt(nd); calY=a.getFullYear(); calM=a.getMonth();
+  clSave(); clAfter();
+  uiToast(clMD(nd)+'로 옮겼어요'+(kids? ' · 연결된 할 일 '+kids+'건도' : ''), function(){ clRestore(snap); });
+}
+function clShiftKids(tid, dl){   /* 묶인 할 일(수술 전후)을 같은 날수만큼 — 아직 완료·건너뜀이 없는 1회 할 일만 */
+  let n=0;
+  if(!dl) return n;
+  clTasks().forEach(function(k){
+    const kr=clSegs(k); if(k.pa!==tid || kr.length!==1 || kr[0].f!=='once' || clSub('o')[k.id+'|'+kr[0].d]) return;
+    const kg={f:'once', d:clAdd(kr[0].d, dl)}; if(clOk(kr[0].e)) kg.e=clAdd(kr[0].e, dl);
+    k.r=[kg]; k.ck=kg.d; k.up=Date.now(); n++;
+  });
+  return n;
+}
+function clSkip(tid, due){
+  const snap=clSnap();
+  clSetOcc(tid, due, {s:'skip', d:due, at:Date.now(), by:myName()||''});
+  clSave(); clAfter();
+  uiToast('이번 회차를 건너뛰었어요', function(){ clRestore(snap); });
+}
+function clDelTask(tid){
+  const t=clTask(tid); if(!t) return;
+  const snap=clSnap(), now=Date.now(); let n=0;
+  t.del=now;
+  clTasks().forEach(function(k){ if(k.pa===tid){ k.del=now; n++; } });
+  clSave(); clAfter();
+  uiToast('삭제했어요'+(n? ' · 연결된 할 일 '+n+'건도' : ''), function(){ clRestore(snap); });
+}
+async function clRowAct(tid, due){
+  const t=clTask(tid); if(!t) return;
+  const it=clItems(clAdd(due, -62), clAdd(due, 62)).filter(function(x){ return x.t.id===tid && x.due===due; })[0];
+  const stt=it? it.st : 'plan', rep=clSegs(t).slice(-1)[0].f!=='once', acts=[];
+  if(stt==='done'){
+    if(t.src==='bath') acts.push({label:'목욕 기록 보기', fn:function(){ bathOpen(); }});
+    else if(t.src==='wt') acts.push({label:'체중 기록 보기', fn:function(){ goTab('record'); }});
+    else{ acts.push({label:t.k==='vet'? '병원 기록 보기' : '완료 날짜 고치기', fn:function(){ if(t.k==='vet') goTab('record'); else clOpenDone(tid, due); }}); acts.push({label:'완료 취소', destr:true, fn:function(){ clUndone(tid, due); }}); }
+  }else if(stt==='skip'){
+    acts.push({label:'건너뜀 취소', fn:function(){ clUndone(tid, due); }});
+  }else{
+    if(clNeed(t)) acts.push({label:t.k==='vet'? '방문 완료' : (t.src==='wt'? '체중 기록' : (t.src==='bath'? '목욕 기록' : '완료')), fn:function(){ clOpenDone(tid, due); }});
+    acts.push({label:'날짜 옮기기', fn:function(){ clOpenMove(tid, due); }});
+    if(rep && !t.src && clSegs(t).slice(-1)[0].f!=='aft') acts.push({label:'이번은 건너뛰기', fn:function(){ clSkip(tid, due); }});
+  }
+  acts.push({label:'할 일 수정', fn:function(){ clOpenEdit(tid, ''); }});
+  acts.push({label:rep? '반복 할 일 삭제' : '할 일 삭제', destr:true, fn:async function(){
+    if(rep && !(await askConfirm('반복 할 일 전체를 삭제할까요? 지난 병원·지출 기록은 남습니다.'))) return;
+    clDelTask(tid);
+  }});
+  const idx=await uiActions(t.ti, acts.map(function(a){ return {label:a.label, destr:!!a.destr}; }));
+  if(idx>=0 && acts[idx]) setTimeout(acts[idx].fn, 0);
+}
+async function clInfoAct(id){
+  const x=clInfo('0000-01-01', '9999-12-31').filter(function(i){ return i.id===id; })[0]; if(!x) return;
+  const idx=await uiActions(x.ti, [{label:'달력에서 숨기기'}]);
+  if(idx!==0) return;
+  clEnsure().h[id]=Date.now(); clSave(); clAfter();
+  uiToast('숨겼어요', function(){ clEnsure().h[id]=0; clSave(); clAfter(); });
+}
+function clOpenEdit(tid, ds){
+  const t=tid? clTask(tid) : null, tk=todayKey(), r=t? clSegs(t) : [], g=t? r[r.length-1] : null;
+  const once=!t || g.f==='once', doneOnce=!!(t && once && clOcc(t.id, g.d));
+  const st={m:'edit', tid:tid||'', tk:tk, k:t? t.k : 'med', vt:t && t.vt? t.vt : '검진', rp:t? g.f : 'once'};
+  CL.sh=st;
+  const d0=t? g.d : (ds || tk);
+  const sh=clSheetOpen('<div class="sh-t" id="clT">'+(t? '할 일 수정' : '할 일 추가')+'</div>'+
+    '<div class="cl-chips" id="clKinds">'+CL_KS.map(function(k){ return '<button type="button" class="cl-chip" data-k="'+k+'">'+CL_K[k].t+'</button>'; }).join('')+'</div>'+
+    '<input type="text" id="clTi" maxlength="60" placeholder="제목" value="'+(t? esc(t.ti) : '')+'">'+
+    '<div id="clVetW"><div class="cl-chips" id="clVts">'+CL_VT.map(function(v){ return '<button type="button" class="cl-chip" data-vt="'+v+'">'+v+'</button>'; }).join('')+'</div>'+
+    '<input type="text" id="clPl" maxlength="40" placeholder="병원 이름 (선택)" value="'+(t && t.pl? esc(t.pl) : '')+'"></div>'+
+    '<div class="cl-f2"><div><div class="cl-lbl" id="clDl">날짜</div><input type="date" id="clD" value="'+d0+'"'+(doneOnce? ' disabled' : '')+'></div>'+
+    '<div><div class="cl-lbl">시간 (선택)</div><input type="time" id="clTm" value="'+(t && t.tm? esc(t.tm) : '')+'"></div></div>'+
+    '<div class="cl-lbl">반복</div><select id="clRp">'+CL_RP.map(function(p){ return '<option value="'+p[0]+'">'+p[1]+'</option>'; }).join('')+'</select>'+
+    '<div id="clNW"><div class="cl-lbl">며칠마다</div><input type="number" id="clN" inputmode="numeric" min="1" max="365" value="'+(g && g.n? +g.n : 14)+'"></div>'+
+    '<div id="clEW"><div class="cl-lbl">끝나는 날 (기간일 때만)</div><input type="date" id="clE" value="'+(g && g.e? g.e : '')+'"'+(doneOnce? ' disabled' : '')+'></div>'+
+    '<div class="cl-lbl">메모 (선택)</div><textarea id="clMe" rows="2" maxlength="200" placeholder="예: 넥스가드 스펙트라">'+(t && t.me? esc(t.me) : '')+'</textarea>'+
+    (t? '' : '<label class="kg-chk" id="clTplW" hidden><span>수술 전후 할 일 함께 추가 · 07장</span><input type="checkbox" class="sw" id="clTpl" checked></label>')+
+    (doneOnce? '<p class="sh-hint">완료한 할 일의 날짜는 \'완료 날짜 고치기\'로 바꿔요</p>' : '')+
+    '<p class="sh-hint" id="clMsg" role="alert"></p><button type="button" class="sh-b1" id="clSave">'+(t? '저장' : '추가')+'</button><button type="button" class="sh-cancel" id="clCancel">취소</button>');
+  if(!sh) return;
+  document.getElementById('clRp').value=st.rp;
+  if(t && t.src){ document.getElementById('clRp').disabled=true; document.getElementById('clKinds').hidden=true; document.getElementById('clD').disabled=true; }   /* 목욕·체중: 며칠마다·제목·메모만 */
+  const paint=function(){
+    sh.querySelectorAll('#clKinds .cl-chip').forEach(function(b){ b.classList.toggle('on', b.dataset.k===st.k); });
+    sh.querySelectorAll('#clVts .cl-chip').forEach(function(b){ b.classList.toggle('on', b.dataset.vt===st.vt); });
+    document.getElementById('clVetW').hidden=st.k!=='vet';
+    st.rp=document.getElementById('clRp').value;
+    document.getElementById('clNW').hidden=st.rp!=='aft';
+    document.getElementById('clEW').hidden=st.rp!=='once';
+    document.getElementById('clDl').textContent=st.rp==='once'? '날짜' : (st.rp==='aft'? '처음 할 날' : '시작일');
+    const tw=document.getElementById('clTplW'); if(tw) tw.hidden=!(st.k==='vet' && st.vt==='수술' && st.rp==='once');
+  };
+  sh.querySelectorAll('#clKinds .cl-chip').forEach(function(b){ b.addEventListener('click', function(){ st.k=b.dataset.k; paint(); }); });
+  sh.querySelectorAll('#clVts .cl-chip').forEach(function(b){ b.addEventListener('click', function(){ st.vt=b.dataset.vt; paint(); }); });
+  document.getElementById('clRp').addEventListener('change', paint);
+  document.getElementById('clCancel').addEventListener('click', clHide);
+  document.getElementById('clSave').addEventListener('click', function(){ clEditSave(st); });
+  paint();
+  if(!t) setTimeout(function(){ try{ document.getElementById('clTi').focus(); }catch(e){} }, 80);
+}
+function clEditSave(st){
+  const ti=String(document.getElementById('clTi').value||'').trim().slice(0, 60);
+  const d=document.getElementById('clD').value||'', tm=document.getElementById('clTm').value||'', rp=document.getElementById('clRp').value;
+  const n=Math.round(+document.getElementById('clN').value||0), e=document.getElementById('clE').value||'';
+  const me=String(document.getElementById('clMe').value||'').trim().slice(0, 200), pl=String(document.getElementById('clPl').value||'').trim().slice(0, 40);
+  if(!ti){ clMsg('제목을 입력해 주세요'); return; }
+  if(!clOk(d)){ clMsg('날짜를 골라 주세요'); return; }
+  if(rp==='aft' && !(n>=1 && n<=365)){ clMsg('며칠마다는 1~365 사이로 넣어 주세요'); return; }
+  if(rp==='once' && e && (!clOk(e) || e<=d)){ clMsg('끝나는 날은 시작 다음 날 이후로 골라 주세요'); return; }
+  const snap=clSnap(), c=clEnsure(), now=Date.now();
+  const seg={f:rp, d:d}; if(rp==='aft') seg.n=n; if(rp==='once' && e) seg.e=e;
+  let t=st.tid? clTask(st.tid) : null, msg='추가했어요', kids=0, moved=0;
+  if(!t){
+    const id=clNewId();
+    t={id:id, k:st.k, ti:ti, r:[seg], ck:d, at:now, by:myName()||''};
+    c.t[id]=t;
+  }else{
+    const r=clSegs(t), g=r[r.length-1], same=g.f===seg.f && g.d===seg.d && (+g.n||0)===(+seg.n||0) && (g.e||'')===(seg.e||'');
+    if(t.src && (+g.n||14)!==n) t.r=r.filter(function(s){ return clFrom(s)<st.tk; }).concat([{f:'aft', d:g.d, n:n, b:st.tk}]);   /* 목욕·체중: 오늘부터 새 간격 */
+    if(!same && !t.src){
+      const used=Object.keys(clSub('o')).some(function(k){ return k.indexOf(t.id+'|')===0; });
+      if(r.length===1 && g.f==='once' && seg.f==='once' && g.d!==seg.d && !clSub('o')[t.id+'|'+g.d]) moved=clShiftKids(t.id, clDiff(g.d, seg.d));   /* 날짜를 바꾸면 묶인 할 일도 */
+      if(r.length===1 && (g.f==='once' || !used)){ t.r=[seg]; t.ck=d; }
+      else{ seg.b=(seg.d>st.tk)? seg.d : st.tk; t.r=r.filter(function(s){ return clFrom(s)<seg.b; }).concat([seg]); }   /* 지난 회차는 그대로 두고 오늘부터 새 규칙 */
+    }
+    t.k=t.src? t.k : st.k; t.ti=ti; t.up=now; msg='수정했어요';
+  }
+  if(rp==='once' && e && !t.src && t.k!=='vet' && t.k!=='med') t.nc=1;   /* 기간(발정·회복 등)은 완료가 필요 없는 막대 */
+  if(tm) t.tm=tm; else delete t.tm;
+  if(me) t.me=me; else delete t.me;
+  if(t.k==='vet'){ t.vt=st.vt; if(pl) t.pl=pl; else delete t.pl; }else{ delete t.vt; delete t.pl; }
+  const tpl=document.getElementById('clTpl');
+  if(!st.tid && tpl && tpl.checked && t.k==='vet' && t.vt==='수술' && rp==='once') kids=clTemplate(t);
+  if(!st.tid){ calSel=t.r[0].d; const a=clDt(calSel); calY=a.getFullYear(); calM=a.getMonth(); }
+  clHide(); clSave(); clAfter();
+  uiToast(msg+(kids? ' · 수술 전후 할 일 '+kids+'건' : '')+(moved? ' · 연결된 할 일 '+moved+'건도 옮김' : ''), function(){ clRestore(snap); });
+}
+function clTemplate(v){   /* 07장 수술 전후 — 금식(전날 밤) · 넥카라·목욕 금지(10~14일) · 재진·실밥 · 중성화면 급여 기준 */
+  const D=clSegs(v)[0].d, by=myName()||'', now=Date.now(); let n=0;
+  const mk=function(o){ const id=clNewId(); clEnsure().t[id]=Object.assign({id:id, pa:v.id, at:now, by:by, ck:o.r[0].d}, o); n++; };
+  mk({k:'care', ic:'i-bowl', ti:'금식 시작', r:[{f:'once', d:clAdd(D, -1)}], me:'시간은 병원 안내대로 · 07장: 통상 전날 밤부터', nc:1});
+  mk({k:'care', ic:'i-cross', ti:'넥카라 · 목욕 금지', r:[{f:'once', d:D, e:clAdd(D, 14)}], me:'상시 착용 · 격한 놀이·점프 금지(07장)', nc:1, hold:'bath'});
+  mk({k:'vet', vt:'검진', ti:'재진 · 실밥 확인', r:[{f:'once', d:clAdd(D, 10), e:clAdd(D, 14)}], me:'날짜는 병원 안내대로'});
+  if(/중성화/.test(String(v.ti||''))) mk({k:'care', ic:'i-bowl', ti:'급여 기준에 중성화 반영', r:[{f:'once', d:clAdd(D, 14)}], act:'neut', me:'완료하면 급여 계산이 중성화 후 기준으로 바뀝니다'});
+  return n;
+}
+function clOnClick(e){
+  const tg=e.target;
+  const row=tg.closest('[data-tid]');
+  if(tg.closest('[data-qd]') && row){ const t=clTask(row.dataset.tid); if(!t) return; if(t.k==='vet' || t.src) clOpenDone(t.id, row.dataset.due); else clDone(t.id, row.dataset.due, row.dataset.due, false); return; }
+  if(tg.closest('[data-qs]') && row){ clSkip(row.dataset.tid, row.dataset.due); return; }
+  if(tg.closest('[data-ck]') && row){ clOpenDone(row.dataset.tid, row.dataset.due); return; }
+  const vd=tg.closest('[data-vdone]'); if(vd){ clOpenVisit(vd.dataset.vdone, vd.dataset.due); return; }
+  const mv=tg.closest('[data-mv]'); if(mv){ clMove(mv.dataset.mv, mv.dataset.due, mv.dataset.to); return; }
+  const tp=tg.closest('[data-tpl]');
+  if(tp){ const v=clTask(tp.dataset.tpl); if(!v) return; const snap=clSnap(), n=clTemplate(v); clSave(); clAfter(); uiToast('수술 전후 할 일 '+n+'건을 추가했어요', function(){ clRestore(snap); }); return; }
+  if(row){ clRowAct(row.dataset.tid, row.dataset.due); return; }
+  const inf=tg.closest('[data-info]'); if(inf){ clInfoAct(inf.dataset.info); return; }
+  const gd=tg.closest('[data-gd]'); if(gd){ goCalDate(gd.dataset.gd); return; }
+  const go=tg.closest('[data-go]');
+  if(go){ const g=go.dataset.go; if(g==='bath'){ if(typeof bathOpen==='function') bathOpen(); } else if(g==='kg'){ goTab('home'); } else goTab(g); }
 }
 function bindCal(){
   const p=document.getElementById('calPrev'); if(!p) return;
-  p.addEventListener('click',function(){ calM--; if(calM<0){calM=11;calY--;} renderCal(); animCal(); });
-  document.getElementById('calNext').addEventListener('click',function(){ calM++; if(calM>11){calM=0;calY++;} renderCal(); animCal(); });
-  document.getElementById('calToday').addEventListener('click',function(){ const n=new Date(); calY=n.getFullYear(); calM=n.getMonth(); calSel=todayKey(); renderCal(); animCal(); });
-  document.getElementById('cvAdd').addEventListener('click',function(){
-    const v=document.getElementById('cvTitle').value.trim();
-    if(!v){ alert('일정 내용을 입력하세요.'); return; }
-    if(!S.events) S.events=[];
-    S.events.push({d:calSel, t:v, c:document.getElementById('cvCat').value, tm:document.getElementById('cvTime').value, rep:document.getElementById('cvRep').value});
-    document.getElementById('cvTitle').value='';
-    document.getElementById('cvTime').value='';
-    document.getElementById('cvRep').value='';
-    saveState(); renderCal();
+  const tk0=function(){ const n=new Date(); return calY===n.getFullYear() && calM===n.getMonth()? todayKey() : d2s(new Date(calY, calM, 1)); };
+  p.addEventListener('click', function(){ calM--; if(calM<0){ calM=11; calY--; } calSel=tk0(); renderCal(); animCal(); });
+  document.getElementById('calNext').addEventListener('click', function(){ calM++; if(calM>11){ calM=0; calY++; } calSel=tk0(); renderCal(); animCal(); });
+  document.getElementById('calToday').addEventListener('click', function(){ const n=new Date(); calY=n.getFullYear(); calM=n.getMonth(); calSel=todayKey(); renderCal(); animCal(); });
+  const add=document.getElementById('clAdd'); if(add) add.addEventListener('click', function(){ clOpenEdit('', calSel); });
+  const grid=document.getElementById('calGrid');
+  const pick=function(c){ if(!c || !c.dataset.d) return; calSel=c.dataset.d; renderCal(); };
+  grid.addEventListener('click', function(e){ pick(e.target.closest('.cal-cell[data-d]')); });
+  grid.addEventListener('keydown', function(e){ if(e.key==='Enter' || e.key===' '){ const c=e.target.closest('.cal-cell[data-d]'); if(c){ e.preventDefault(); pick(c); } } });
+  ['clDay', 'clCheck', 'clNext'].forEach(function(id){
+    const el=document.getElementById(id); if(!el) return;
+    el.addEventListener('click', function(e){ try{ clOnClick(e); }catch(er){ logErr('달력: 누르기', er); } });
+    el.addEventListener('keydown', function(e){ if((e.key==='Enter' || e.key===' ') && e.target.matches('[role="button"]')){ e.preventDefault(); try{ clOnClick(e); }catch(er){ logErr('달력: 누르기', er); } } });
   });
+  const ov=document.getElementById('clOvl'); if(ov) ov.addEventListener('click', function(e){ if(e.target===ov) clHide(); });
+  const ck=document.getElementById('ddCk');
+  if(ck) ck.addEventListener('click', function(e){ e.stopPropagation(); if(ck.dataset.tid) clOpenDone(ck.dataset.tid, ck.dataset.due); });
 }
 /* =============== 페이지 이동 (이전 장 / 다음 장) =============== */
 const TAB_ORDER=[['prep','01 분양 준비'],['health','02 건강·병원'],['money','03 보험·비용'],['food','04 사료·간식'],['walk','05 산책·훈련·짖음'],['work','06 직장인 플랜'],['neuter','07 중성화'],['shop','09 구매 가이드'],['place','10 삼송 동네 가이드'],['emerg','11 응급 대처'],['behav','12 행동 사전'],['life','13 생활·계절·법규'],['index','14 인덱스·자료실']];
@@ -6819,7 +7567,7 @@ function navBack(){
    NAV_SHEETS에 id만 추가하면 자동으로 따라간다. (이전: 탭·사진 확대·산책·쇼츠가 각자 기록을 쌓고, 시트는 관리 없음)
    기록 칸을 넣고 빼는 일은 앱·쇼츠 모두 navHistPush / navHistBack 두 함수로만 한다(아래 '문지기'). */
 const NAV={layers:[], closing:0, pend:0, afterQ:[], pushQ:[], dead:new Set(), seq:0, chk:null, needChk:false, wd:null};
-const NAV_SHEETS=['uiSheet', 'qeOvl', 'wtOvl', 'sosOvl', 'ntcOvl', 'repOvl', 'kgOvl', 'bathOvl'];
+const NAV_SHEETS=['uiSheet', 'qeOvl', 'wtOvl', 'sosOvl', 'ntcOvl', 'repOvl', 'kgOvl', 'bathOvl', 'clOvl'];
 function navTabNow(){ return document.body.getAttribute('data-tab') || 'home'; }
 function navIsOpen(id){ return NAV.layers.some(function(l){ return l.id===id; }); }
 
@@ -6922,7 +7670,7 @@ function bindNav(){
   const bi=document.getElementById('abInfo'); if(bi) bi.addEventListener('click', function(){ goTab('home'); });
   const lb=document.getElementById('libBackBtn'); if(lb) lb.addEventListener('click', navBack);
   const hp=document.getElementById('hpBtn'); if(hp) hp.addEventListener('click', function(){ goTab('album'); });   /* V6.0.4: 홈 대표사진 → 앨범 */
-  const db=document.getElementById('ddayBanner'); if(db) db.addEventListener('click', function(){ const ev=nearestEvent(); goTab('cal'); if(ev) goCalDate(ev.d); });
+  const db=document.getElementById('ddayBanner'); if(db) db.addEventListener('click', function(){ const ev=clNearest(); goTab('cal'); if(ev) goCalDate(ev.d); });
 }
 
 /* =============== V2: SOS =============== */
@@ -6966,27 +7714,6 @@ function applyRepDraw(th){
     else{ img.style.display='none'; if(paw) paw.style.display='inline'; }
   });
   try{ heroSync(th); }catch(e){}
-}
-function nearestEvent(){
-  if(!S.profile.birth) return null;
-  const now=new Date(); now.setHours(0,0,0,0);
-  const tk=todayKey(); const to=addD(now,90);
-  /* V5.7: 접종 지연 우선 표시 제거 — 배너는 구충·마일스톤·내 일정 기준으로만 */
-  let evs=autoEventsRange(now,to).filter(function(e){ return e.cls==='a' && e.t.indexOf('보상')===-1; });
-  (S.events||[]).forEach(function(e){ if(e.d>=tk) evs.push({d:e.d, t:e.t, cls:'u'}); });
-  evs.sort(function(a,b2){ return a.d.localeCompare(b2.d); });
-  return evs.length ? {d:evs[0].d, t:evs[0].t, late:false} : null;
-}
-function renderDday(){
-  const el=document.getElementById('ddayBanner'); if(!el) return;
-  const ev=nearestEvent();
-  if(!ev){ el.className=''; return; }
-  const now=new Date(); now.setHours(0,0,0,0);
-  const dd=Math.round((new Date(ev.d+'T00:00:00')-now)/86400000);
-  document.getElementById('ddNum').textContent = ev.late ? '지연' : (dd===0 ? 'D-DAY' : 'D-'+dd);
-  document.getElementById('ddTitle').textContent = ev.t;
-  document.getElementById('ddDate').textContent = ev.d.slice(5).replace('-','/') + (ev.late ? ' — 병원 예약이 필요합니다' : '');
-  el.className = 'vis' + (ev.late ? ' late' : (dd<=1 ? ' urgent' : ''));
 }
 function renderHomeNotice(){
   const el=document.getElementById('homeNotice'); if(!el) return;
@@ -11752,16 +12479,15 @@ function wgAddSave(){
 }
 
 /* ---------- 달력 ---------- */
-function wgCalDot(ds){ const a=(S.walkLog||{})[ds]; return (Array.isArray(a) && a.some(function(s){ return s && +s.i>+s.o; }))? '<span class="dot wk"></span>' : ''; }
 function wgCalSel(ds, box){
   if(!box) return;
   const a=((S.walkLog||{})[ds]||[]).filter(function(s){ return s && +s.i>+s.o; }); if(!a.length) return;
   let h='<div class="wg-cal">';
   a.forEach(function(s){
-    h+='<div class="ev-row" role="button" tabindex="0" data-wgk="'+ds+'" data-wgo="'+s.o+'"><span><span class="ev-tag wk">산책</span> '+fmtHM(s.o)+'–'+fmtHM(s.i)+' · '+fmtDur(s.i-s.o)+(s.d!=null? ' · '+wgKm(s.d)+'km' : '')+'</span><svg class="ico chev"><use href="#i-chev"/></svg></div>';
+    h+='<div class="cl-row rec" role="button" tabindex="0" data-wgk="'+ds+'" data-wgo="'+s.o+'"><span class="cl-ic wk"><svg class="ico"><use href="#i-paw"/></svg></span><span class="cl-tx"><b>산책 '+fmtHM(s.o)+'–'+fmtHM(s.i)+'</b><span>'+fmtDur(s.i-s.o)+(s.d!=null? ' · '+wgKm(s.d)+'km' : '')+'</span></span></div>';   /* V7.0 달력 줄 모양 */
   });
   box.insertAdjacentHTML('beforeend', h+'</div>');
-  box.querySelectorAll('.wg-cal .ev-row').forEach(function(r){
+  box.querySelectorAll('.wg-cal .cl-row').forEach(function(r){
     const go=function(){ wgDetOpen(r.dataset.wgk, +r.dataset.wgo, false); };
     r.addEventListener('click', go); r.addEventListener('keydown', function(e){ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); } });
   });
@@ -12191,18 +12917,21 @@ function bathVaxDates(){
     });
   }catch(e){}
   (S.events||[]).forEach(function(e){ if(e && e.d && /접종/.test(String(e.t||''))) out.push(String(e.d)); });
+  try{ if(typeof clVaxDates==='function') clVaxDates().forEach(function(d){ out.push(String(d)); }); }catch(e){}   /* V7.0: 달력의 접종 일정·병원 접종 기록 */
   return out;
 }
 function bathHold(tk){
   tk=tk||todayKey(); let v='';
   bathVaxDates().forEach(function(d){ if(!/^\d{4}-\d{2}-\d{2}$/.test(d)) return; const n=bathDiff(d, tk); if(n>=0 && n<=BATH.hold && d>v) v=d; });
-  return v? {vax:v, from:bathPlus(v, BATH.hold+1)} : null;
+  const ce=(typeof clBathHold==='function')? clBathHold(tk) : '';   /* V7.0: 달력의 목욕 금지 기간(수술 전후) */
+  if(ce){ const f=bathPlus(ce, 1); if(!v || f>bathPlus(v, BATH.hold+1)) return {vax:v, from:f, why:'수술 후 목욕 금지 기간'}; }
+  return v? {vax:v, from:bathPlus(v, BATH.hold+1), why:'접종 후 쉬는 기간'} : null;
 }
 function bathState(){
   const tk=todayKey(), last=bathLast(tk);
   if(!last) return {k:'none'};
   const n=bathDiff(last, tk);
-  if(n>=BATH.due){ const h=bathHold(tk); if(h) return {k:'hold', n:n, last:last, from:h.from}; }
+  if(n>=BATH.due){ const h=bathHold(tk); if(h) return {k:'hold', n:n, last:last, from:h.from, why:h.why}; }
   if(n>=BATH.late) return {k:'late', n:n, last:last};
   if(n>=BATH.due) return {k:'due', n:n, last:last};
   return {k:'ok', n:n, last:last};
@@ -12213,7 +12942,7 @@ function bathPaint(){
   let b='목욕', sub='', go=false;
   if(st.k==='none') sub='지난 목욕일을 넣어 주세요';
   else if(st.k==='ok') sub= st.n===0? '오늘' : st.n+'일 전';
-  else if(st.k==='hold'){ b='목욕은 '+bathMDs(st.from)+'부터'; sub='접종 후 쉬는 기간'; }
+  else if(st.k==='hold'){ b='목욕은 '+bathMDs(st.from)+'부터'; sub=st.why||'접종 후 쉬는 기간'; }
   else { b='목욕해도 좋아요'; sub=st.n+'일 전'; go=true; }
   el.className='bath-row'+(go? ' due' : '')+(st.k==='late'? ' late' : '');
   el.innerHTML='<button type="button" class="br-main" data-bath="open"><svg class="ico br-ic" aria-hidden="true"><use href="#i-bath"/></svg>'+
@@ -12265,7 +12994,7 @@ function bathSheetPaint(){
   const sub=document.getElementById('bathSub');
   if(sub) sub.textContent= last? '마지막 '+bathMD(last)+(last===tk? '(오늘)' : '')+' · '+bathMD(bathPlus(last, BATH.due))+'부터 해도 좋아요' : '마지막 목욕일을 넣으면 14일 뒤부터 홈에 알려 드려요';
   const hd=document.getElementById('bathHold');
-  if(hd) hd.textContent= (h && !today)? '접종 후 쉬는 기간이에요 · '+bathMD(h.from)+'부터 권장' : '';
+  if(hd) hd.textContent= (h && !today)? (h.why||'접종 후 쉬는 기간')+'이에요 · '+bathMD(h.from)+'부터 권장' : '';
   const bt=document.getElementById('bathToday');
   if(bt){ bt.disabled=today; bt.textContent= today? '오늘 기록됨' : '오늘 목욕했어요'; }
   const ks=bathKeys(), rec=ks.slice(-BATH.list).reverse();
@@ -12290,14 +13019,6 @@ function bathDateAdd(){
   if(bathLog()[k]){ say('이미 기록된 날이에요'); return; }
   say('');
   bathAdd(k, bathMD(k)+' 목욕 기록했어요');
-}
-function bathCalDot(ds){ return bathLog()[ds]? '<span class="dot bt"></span>' : ''; }
-function bathCalSel(ds, box){
-  if(!box || !bathLog()[ds]) return;
-  const ks=bathKeys(), i=ks.indexOf(ds), prev=i>0? ks[i-1] : '';
-  box.insertAdjacentHTML('beforeend', '<div class="bath-cal"><div class="ev-row" role="button" tabindex="0"><span><span class="ev-tag bt">목욕</span> '+(prev? bathDiff(prev, ds)+'일 간격' : '첫 기록')+'</span><svg class="ico chev" aria-hidden="true"><use href="#i-chev"/></svg></div></div>');
-  const r=box.querySelector('.bath-cal .ev-row');
-  if(r){ r.addEventListener('click', bathOpen); r.addEventListener('keydown', function(e){ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); bathOpen(); } }); }
 }
 function bindBath(){
   const row=document.getElementById('bathRow');
