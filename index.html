@@ -283,11 +283,11 @@ section.tab-panel.on{animation:panelIn .34s cubic-bezier(.22,.8,.36,1);}
 .alb-vid{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; text-decoration:none; background:#3A3128; color:#F6EAD6;}
 .alb-play{font-size:20px;}
 .alb-vm{font-size:11px; padding:0 6px; text-align:center; overflow:hidden; max-height:2.7em; word-break:break-all;}
-#albLb{position:fixed; inset:0; background:rgba(20,16,12,.93); z-index:80; display:none; flex-direction:column;}
+#albLb{position:fixed; inset:0; background:#14100C; z-index:80; display:none; flex-direction:column;}   /* V7.2: 불투명(뒤 화면 비침 방지) */
 #albLb.on{display:flex;}
 #albLbImg{flex:1; width:100%; min-height:0; object-fit:contain;}
 .alb-lb-bar{display:flex; gap:8px; align-items:center; padding:12px 12px calc(12px + env(safe-area-inset-bottom));}
-.alb-cap{flex:1; font-size:13px; line-height:1.4; color:#F6EAD6; word-break:break-all;}
+.alb-cap{flex:1; min-width:0; font-size:13px; line-height:1.4; color:#F6EAD6; word-break:keep-all; overflow-wrap:anywhere;}   /* V7.2: 숫자·낱말 중간에서 끊지 않게(띄어쓰기에서 줄바꿈) */
 .alb-nav{position:absolute; top:50%; transform:translateY(-50%); width:44px; height:92px; display:flex; align-items:center; justify-content:center; background:rgba(20,16,12,.34); border:0; border-radius:12px; color:#F6EAD6; font-size:30px; line-height:1; cursor:pointer; z-index:2; padding:0 0 4px;}
 #albLbPrev{left:6px;} #albLbNext{right:6px;}
 .alb-nav[disabled]{opacity:.14; pointer-events:none;}
@@ -1676,7 +1676,7 @@ body.alb-sel #bnav{display:none;}
 /* ================= V6.9 — 산책 업데이트 (화면정의서 S09·S10·S11) =================
    기존 V6 토큰만 사용 → 라이트·다크 자동. */
 .wg-qa button .ico{width:20px; height:20px; flex:0 0 auto;}
-.wg-qa #wgPh .ico, .wg-pin .ico, .wg-chip-s .ico{color:var(--tint);}
+.wg-qa #wgPh .ico, .wg-qa #wgVd .ico, .wg-pin .ico, .wg-chip-s .ico{color:var(--tint);}
 .wg-pin .ico{width:15px; height:15px;}
 .wg-chip-s .ico{width:15px; height:15px; flex:0 0 auto;}
 .wg-btm > .wg-recenter{top:-58px; bottom:auto; right:12px;}
@@ -1784,6 +1784,15 @@ body.alb-sel #bnav{display:none;}
 .wg-pv{position:fixed; inset:0; z-index:128; display:none; align-items:center; justify-content:center; background:#000; touch-action:pan-y;}
 .wg-pv.on{display:flex;}
 .wg-pv > img{max-width:100%; max-height:100%; object-fit:contain; display:block;}
+/* V7.2: 산책 영상 — 사진 보기에서 재생(위·아래 줄과 안 겹치게 여백), 썸네일 ▶ 표시 */
+.wg-pv > video{display:none; max-width:100%; max-height:100%; background:#000;}
+.wg-pv.vid{padding:calc(64px + env(safe-area-inset-top)) 0 calc(72px + env(safe-area-inset-bottom)); box-sizing:border-box;}
+.wg-pv.vid > video{display:block;}
+.wg-pv.vid > img{display:none;}
+.wg-vb{position:absolute; z-index:1; right:5px; top:5px; width:22px; height:22px; border-radius:50%; background:rgba(0,0,0,.52); pointer-events:none;}
+.wg-vb::after{content:''; position:absolute; left:8.5px; top:6px; border-style:solid; border-width:5px 0 5px 7.5px; border-color:transparent transparent transparent #fff;}
+.wg-pp .wg-vb{right:auto; top:50%; left:50%; width:16px; height:16px; margin:-8px 0 0 -8px;}
+.wg-pp .wg-vb::after{left:6px; top:4px; border-width:4px 0 4px 6px;}
 .wg-pv-top{position:absolute; top:0; left:0; right:0; display:flex; align-items:center; justify-content:space-between; padding:calc(10px + env(safe-area-inset-top)) 12px 10px 18px; color:#fff; font-size:15px; font-weight:600; font-variant-numeric:tabular-nums;}
 .wg-pv-x{width:40px; height:40px; border:none; border-radius:50%; background:rgba(255,255,255,.18); color:#fff; font-family:inherit; font-size:24px; line-height:1; cursor:pointer;}
 .wg-pv-nav{position:absolute; top:50%; transform:translateY(-50%); width:44px; height:72px; border:none; border-radius:12px; background:rgba(255,255,255,.14); color:#fff; font-family:inherit; font-size:30px; line-height:1; cursor:pointer;}
@@ -3151,7 +3160,7 @@ body.alb-sel #bnav{display:none;}
       <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
       <li>의료 정보는 일반 정보입니다. 개별 판단은 수의사 진료가 우선입니다.</li>
     </ul>
-    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V7.1.0 · 2026-11-19</p>
+    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V7.2.0 · 2026-11-19</p>
   </div>
 
   <h3 class="sec">진단 <span class="muted small" id="diagErrN"></span></h3>
@@ -4564,7 +4573,17 @@ class VideoRTC extends HTMLElement {
 
 if(window.customElements && !customElements.get('video-stream')){ customElements.define('video-stream', VideoRTC); }
 </script>
-<script>/* V7.1.0 (2026-11-19): 구글 캘린더 불러오기(읽기 전용) — 달력 개편(D00 예외)의 연장. 장부(S.cal)·동기화·급여·산책 변경 없음.
+<script>/* V7.2.0 (2026-11-19): 산책 중 영상 · 앨범 사진 칸 메모 · 크게 보기 배경 (앱 설계 D00 예외: 이번 3건만 웹 반영).
+   ① 산책 중 [영상] 버튼(대변·소변·사진 옆): 폰 카메라 영상 모드 → 앨범 영상(R2, 15장 영상 올리기와 같은 형식)으로 올리고 이 산책에 연결.
+      메모 '산책 중 · 시각', 촬영 시각 shotAt·sd = 버튼 누른 시각. 여러 개는 순서대로 올림. 실패하면 [다시 올리기 · 폰에 저장 · 버리기].
+      진행 중 칩 '영상 N' · 지도 핀(영상 아이콘). 저장: walkLog vd(영상 수) · 경로 파일 vids[{id,at,lat,lng}] — 옛 버전 폰은 무시.
+   ② 산책 연결에 영상 포함: 상세 사진 줄·지도 핀·지난달 이 자리 배너·사진 보기(영상은 재생, 좌우 밀기 대신 ‹ ›). 썸네일에 ▶ 표시.
+      앨범 15장에서 따로 올린 영상도 촬영 시각이 산책 시간(앞뒤 2분) 안이면 연결. 대표 사진은 사진 우선(사진이 없을 때만 영상 썸네일), 영상에는 '대표 사진으로' 없음.
+      월간 리캡 베스트 3·쇼츠(사진 모음)는 사진만 — 변경 없음.
+   ③ 앨범 사진 칸에도 메모 표시(영상 칸과 같은 자리·같은 모양). 산책 중 자동 메모('산책 중 · 10:35')는 칸에서 빼고 뒤에 직접 쓴 글만 — 영상 칸도 같은 규칙. 크게 보기는 전체 메모 그대로.
+   ④ 사진 크게 보기 배경을 불투명으로(뒤 앨범 목록·하단 메뉴가 비치던 것). 아래 '날짜 · 메모' 줄은 띄어쓰기에서 줄바꿈('10:3 / 5'처럼 숫자 중간에서 끊기던 것).
+   PVER(빌드 번호) 690 유지. 시험 e2e_v72. */
+/* V7.1.0 (2026-11-19): 구글 캘린더 불러오기(읽기 전용) — 달력 개편(D00 예외)의 연장. 장부(S.cal)·동기화·급여·산책 변경 없음.
    ① 설정 > 구글 캘린더: Apps Script 웹 앱 주소(…/exec) 입력 → 그 스크립트가 보내는 캘린더(기본 여행·강아지)의 일정 제목·날짜·시각을 받음.
       스크립트 코드·권한 설정(appsscript.json, 캘린더 보기 권한만)은 설정 화면의 복사 버튼으로 제공. 캘린더별 켜기·끄기(칩).
    ② 달력: 하루 일정 = 캘린더 색 점, 여러 날 일정 = 캘린더 색 막대. 날짜 목록에 줄로 표시(누르는 동작 없음 — 고치는 곳은 구글 캘린더).
@@ -4735,7 +4754,7 @@ if(window.customElements && !customElements.get('video-stream')){ customElements
 /* V5.8 (2026-08-21): 접종 실기록 반영(2차 08.07 종합+코로나1차, 3차 08.21 종합+코로나2차, 4차 09.04 예약, 넥스가드 스펙트라 매월 21일, 코로나 보강 2027.08.21),
    04장 미니 인도어 퍼피 체중별 급여표 추가, 급여 계산기 기본 ME 3735 + kcal 누락 NaN 가드. 저장 구조·동기화·달력 로직 변경 없음. */
 /* =============== State =============== */
-const APP_VER='7.1.0', APP_DATE='2026-11-19';   /* V6.6: 앱 버전 — dev/VERSION 한 곳에서 빌드할 때 채움 */
+const APP_VER='7.2.0', APP_DATE='2026-11-19';   /* V6.6: 앱 버전 — dev/VERSION 한 곳에서 빌드할 때 채움 */
 const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, sleepCur:0, sleepLog:{}, feed:{kcal:4000, meals:4, mealsAt:'', adult:0, adultMode:'auto', bcs:'ok', bcsAt:'', neut:0, treat:0, vetG:0, vetAt:''}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}, media:{url:''}, kgCur:0, kgLog:{}, kgCfg:{name:'도그스테이', pass:0, from:''}, marks:{}};
 let S = JSON.parse(JSON.stringify(DEFAULT_S));
 let storageOK = false, artOK = false, saveTimer = null, lastEditAt = 0;
@@ -6527,6 +6546,8 @@ const albThIO=('IntersectionObserver' in window)? new IntersectionObserver(funct
     albImgSrc('th',id).then(function(v){ if(v){ ALB.thumbs.set(id,v); img.src=v; img.classList.add('ld'); } }).catch(function(e){ img.classList.add('err'); albErrNote(id, e); });
   });
 },{rootMargin:'250px'}) : null;
+/* V7.2: 앨범 칸에 보일 메모 — 산책 중 자동 메모('산책 중 · 10:35')는 빼고 직접 쓴 글만(크게 보기는 전체) */
+function albMemoUser(m){ return String((m && m.m)||'').replace(/^\s*산책 중 · \d{1,2}:\d{2}\s*/, '').trim(); }
 function renderAlbum(){
   renderAlbumHead(); renderCompare(); renderStrip();
   if(typeof wgRecapPaint==='function') safely('산책: 리캡', wgRecapPaint);   /* V6.9 월간 리캡 */
@@ -6546,7 +6567,7 @@ function renderAlbum(){
       out+= S.profile.birth ? albAgeHead(gk) : '<div class="alb-mon">'+esc(String(gk).replace('-','년 '))+'월</div>';
     }
     const dd=esc(d.slice(5).replace('-','.'));
-    const memo = m.m ? '<span class="m">'+esc(m.m)+'</span>' : '';
+    const um=albMemoUser(m), memo = um ? '<span class="m">'+esc(um)+'</span>' : '';   /* V7.2: 사진 칸에도 · 자동 메모 제외 */
     const lc=albLikeCount(m), lkb = lc ? '<span class="alb-lkb">&#10084; '+lc+'</span>' : '';   /* V5.11 */
     if(m.t==='v'){
       /* V5.9.2: 유튜브 링크 — 영상 ID를 읽어 썸네일 표시, 누르면 유튜브로 */
@@ -6559,7 +6580,7 @@ function renderAlbum(){
       out+='<div class="alb-cell alb-rv'+albSelCls(id)+'" data-open="'+id+'">'+(m.th?'<img class="alb-th" data-aid="'+id+'" alt="">':'')
         +'<span class="alb-badge">&#9654; '+(m.dur?mediaDur(m.dur):'영상')+'</span>'+lkb+albUseB(m)+'<span class="alb-d">'+memo+dd+'</span><span class="alb-ck"></span></div>';
     }else{
-      out+='<div class="alb-cell'+albSelCls(id)+'" data-open="'+id+'"><img class="alb-th" data-aid="'+id+'" alt="">'+lkb+albUseB(m)+'<span class="alb-d">'+dd+'</span><span class="alb-ck"></span></div>';
+      out+='<div class="alb-cell'+albSelCls(id)+'" data-open="'+id+'"><img class="alb-th" data-aid="'+id+'" alt="">'+lkb+albUseB(m)+'<span class="alb-d">'+memo+dd+'</span><span class="alb-ck"></span></div>';
     }
   });
   const empty = f==='l' ? '아직 좋아요가 없습니다. 사진을 크게 열고 ♡ 를 누르거나, 사진을 두 번 톡톡 두드려 보세요.'
@@ -11110,6 +11131,7 @@ const WG_ICO={
   poo:'<svg class="ico" style="color:var(--c-poo)" aria-hidden="true"><use href="#i-poo"/></svg>',
   pee:'<svg class="ico" style="color:var(--c-pee)" aria-hidden="true"><use href="#i-drop"/></svg>',
   cam:'<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 8.6a2 2 0 0 1 2-2h1.6l1.4-2.1h5l1.4 2.1h1.6a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2z"/><circle cx="12" cy="12.7" r="3.2"/></svg>',
+  vid:'<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="6.8" width="12" height="10.4" rx="2.2"/><path d="m15.5 10.6 5-3.1v9l-5-3.1z"/></svg>',   /* V7.2 */
   chk:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
   plus:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
   chev:'<svg class="ico chev" aria-hidden="true"><use href="#i-chev"/></svg>',
@@ -11211,24 +11233,27 @@ function wgShotMs(m){   /* 사진 촬영 시각 — shotAt(V6.9) → sd(V6.5 현
   if(/^산책 중/.test(m.m||'')) return +m.at||0;
   return 0;
 }
-function wgLinkedAlb(s){   /* 산책 시간대(앞뒤 2분)에 찍은 앨범 사진 */
+function wgIsVid(id){ const m=ALB.meta && ALB.meta[id]; return !!(m && m.t==='r'); }   /* V7.2 */
+function wgLinkedAlb(s, vid){   /* 산책 시간대(앞뒤 2분)에 찍은 앨범 사진 · V7.2: vid=true면 영상(R2)도 */
   const M=ALB.meta; if(!M || !s) return [];
   const a=+s.o-120000, b=+s.i+120000, out=[];
-  Object.keys(M).forEach(function(id){ const m=M[id]; if(!m || m.t!=='p') return; const t=wgShotMs(m); if(t && t>=a && t<=b) out.push([t, id]); });
+  Object.keys(M).forEach(function(id){ const m=M[id]; if(!m || !(m.t==='p' || (vid && m.t==='r'))) return; const t=wgShotMs(m); if(t && t>=a && t<=b) out.push([t, id]); });
   out.sort(function(u, v){ return u[0]-v[0]; });
   return out.map(function(u){ return u[1]; });
 }
 function wgLinked(s, p){
   const out=[], add=function(id){ if(id && out.indexOf(id)<0 && (!ALB.meta || ALB.meta[id])) out.push(id); };
   ((p && p.photos)||[]).forEach(function(v){ if(v) add(v.id); });
-  wgLinkedAlb(s).forEach(add);
+  ((p && p.vids)||[]).forEach(function(v){ if(v) add(v.id); });   /* V7.2 */
+  wgLinkedAlb(s, true).forEach(add);
   return out;
 }
 function wgCover(s, p){
   const ids=wgLinked(s, p); if(!ids.length) return '';
   if(s.cv && ids.indexOf(s.cv)>-1) return s.cv;
-  let best=ids[0], bl=-1;
-  ids.forEach(function(id){ const m=ALB.meta && ALB.meta[id], l=m? albLikeCount(m) : 0; if(l>bl){ bl=l; best=id; } });
+  const ph=ids.filter(function(id){ return !wgIsVid(id); }), pool=ph.length? ph : ids;   /* V7.2: 대표는 사진 우선 — 사진이 없을 때만 영상 썸네일 */
+  let best=pool[0], bl=-1;
+  pool.forEach(function(id){ const m=ALB.meta && ALB.meta[id], l=m? albLikeCount(m) : 0; if(l>bl){ bl=l; best=id; } });
   return best;
 }
 function wgAlbMeta(){
@@ -11294,6 +11319,10 @@ function wgKm1(m){ return (Math.max(0, +m||0)/1000).toFixed(1); }
 function wgImgErr(e){ WG.imgErr=(WG.imgErr||0)+1; if(WG.imgErr<=3) logErr('산책: 사진 불러오기', e); }
 function wgImgInto(box, id, full){
   if(!box || !id) return;
+  const isV=wgIsVid(id);   /* V7.2: 영상은 썸네일 + ▶ 표시, 원본 사진 받기 생략 */
+  let vb=box.querySelector('.wg-vb');
+  if(isV && !vb){ vb=document.createElement('i'); vb.className='wg-vb'; vb.setAttribute('aria-hidden', 'true'); box.appendChild(vb); }
+  else if(!isV && vb) vb.remove();
   let img=box.querySelector('img.wg-cvi');
   if(!img){ img=document.createElement('img'); img.className='wg-cvi'; img.alt=''; box.insertBefore(img, box.firstChild); }
   if(img.dataset.id===id) return;
@@ -11301,7 +11330,7 @@ function wgImgInto(box, id, full){
   const th=ALB.thumbs && ALB.thumbs.get(id);
   if(th) img.src=th;
   else albImgSrc('th', id).then(function(v){ if(v && img.dataset.id===id){ ALB.thumbs.set(id, v); if(!img.dataset.full) img.src=v; } }).catch(wgImgErr);
-  if(full) wgFullLater(img, id);
+  if(full && !isV) wgFullLater(img, id);
 }
 function wgFullLater(img, id){   /* 큰 카드: 화면 근처에 오면 원본 크기로 */
   const go=function(){
@@ -11401,7 +11430,7 @@ async function wgStart(){
   WG.cur={v:1, id:'w'+now.toString(36)+Math.random().toString(36).slice(2,5), dev:DEV_ID, by:(myName()||''), startAt:now, o:o,
     segs:[[]], pauses:[], paused:0, gaps:[], anchor:null, out:0, rw:[], lastMove:now, lastFixAt:0, fixes:0, acc:null, pos:null, geoErr:0,
     st:{dist:0, mv:0, sn:0, gapD:0, gapS:0, run:0, runCur:0, runMax:0, maxV:0}, ele:{g:0, l:0, ref:null, n:0},
-    w:null, wTry:0, photos:[], pins:[], al:{}, ending:0};
+    w:null, wTry:0, photos:[], vids:[], pins:[], al:{}, ending:0};
   if(!S.walkCur) S.walkCur=o;
   S.walkGps={d:DEV_ID, n:(myName()||''), o:o};
   saveState(); try{ renderQlog(); }catch(e){}
@@ -11749,6 +11778,7 @@ function wgSave(ck){
   if(rec){ seg.rp=rec.per; seg.rd=rec.day; }
   if(ck && Object.keys(ck).length) seg.ck=Object.assign({}, ck);
   if(c.photos.length) seg.ph=c.photos.length;
+  if(c.vids && c.vids.length) seg.vd=c.vids.length;   /* V7.2: 산책 중 영상 수 */
   /* V6.9: D04 — 기록 id(UUIDv7)·기록자, 한 줄·함께·장소·처음 */
   seg.id=wgUuid7();
   const by=myName(); if(by) seg.by=by;
@@ -11813,6 +11843,7 @@ function wgPayload(c, seg, pins, cfg){
     ele: c.ele.n>=10? {src:'gps', g:Math.round(c.ele.g), l:Math.round(c.ele.l)} : null,
     w:c.w||null, ck:seg.ck||null, rec: seg.rp? {per:seg.rp, day:seg.rd} : null,
     photos:c.photos.map(function(v){ return near(v.lat, v.lng)? {id:v.id, at:v.at} : v; }),
+    vids:(c.vids && c.vids.length)? c.vids.map(function(v){ return near(v.lat, v.lng)? {id:v.id, at:v.at} : v; }) : undefined,   /* V7.2 */
     pins:pins.filter(function(v){ return v.lat!=null && !near(v.lat, v.lng); }),
     cfg:{runKmh:cfg.runKmh, runSec:cfg.runSec, heatWarn:cfg.heatWarn, heatDanger:cfg.heatDanger, coldWarn:cfg.coldWarn}
   };
@@ -11873,12 +11904,13 @@ function wgEnsureDom(){
         '<div class="wg-st"><b id="wgSnf">0:00</b><span>킁킁·쉼</span></div></div>'+
       '<div class="wg-chips" id="wgChips"></div>'+
       '<div class="wg-banner" id="wgBan" role="status" aria-live="polite"><p id="wgBanT"></p><button type="button" id="wgBanA"></button><button type="button" class="x" id="wgBanX" aria-label="알림 닫기">×</button></div>'+
-      '<div class="wg-qa"><button type="button" id="wgPoo">'+WG_ICO.poo+'대변</button><button type="button" id="wgPee">'+WG_ICO.pee+'소변</button><button type="button" id="wgPh">'+WG_ICO.cam+'사진</button></div>'+
+      '<div class="wg-qa"><button type="button" id="wgPoo">'+WG_ICO.poo+'대변</button><button type="button" id="wgPee">'+WG_ICO.pee+'소변</button><button type="button" id="wgPh">'+WG_ICO.cam+'사진</button><button type="button" id="wgVd">'+WG_ICO.vid+'영상</button></div>'+
       '<div class="wg-ctrl"><button type="button" class="wg-cb" id="wgPk"><i>'+WG_SVG.moon+'</i>주머니</button>'+
         '<button type="button" class="wg-cb main" id="wgPause"><i id="wgPauseI">'+WG_SVG.pause+'</i><span id="wgPauseT">기록 멈춤</span></button>'+
         '<button type="button" class="wg-cb stop" id="wgStop"><i>'+WG_SVG.stop+'</i>끝내기</button></div>'+
     '</div>'+
     '<input type="file" id="wgCam" accept="image/*" capture="environment" style="display:none;">'+
+    '<input type="file" id="wgVidIn" accept="video/*" capture="environment" style="display:none;">'+
   '</div></div>'+
   '<div id="wgPocket" role="dialog" aria-modal="true" aria-label="주머니 모드">'+
     '<p class="wg-pk-hint">주머니 모드 · 화면 터치가 막혀 있어요. 전화·카톡 알림은 그대로 받을 수 있어요.</p>'+
@@ -11906,7 +11938,7 @@ function wgEnsureDom(){
     '<div class="wg-f2"><div><label class="wg-fl" for="wgAddT">시작</label><input type="time" id="wgAddT" step="60"></div><div><label class="wg-fl" for="wgAddM">걸은 시간(분)</label><input type="number" id="wgAddM" inputmode="numeric" min="1" max="300"></div></div>'+
     '<label class="wg-fl" for="wgAddK">거리 (km · 모르면 비워 두기)</label><input type="number" id="wgAddK" inputmode="decimal" step="0.01" min="0" max="50">'+
     '<p class="sh-hint" id="wgAddH"></p><button type="button" class="sh-b1" id="wgAddOk">추가</button><button type="button" class="sh-cancel" id="wgAddNo">취소</button></div></div>'+
-  '<div id="wgPv" class="wg-pv" role="dialog" aria-modal="true" aria-label="산책 사진"><img id="wgPvImg" alt="">'+
+  '<div id="wgPv" class="wg-pv" role="dialog" aria-modal="true" aria-label="산책 사진"><img id="wgPvImg" alt=""><video id="wgPvVid" controls playsinline webkit-playsinline preload="metadata"></video>'+
     '<div class="wg-pv-top"><span id="wgPvCnt"></span><button type="button" class="wg-pv-x" id="wgPvX" aria-label="닫기">×</button></div>'+
     '<button type="button" class="wg-pv-nav l" id="wgPvL" aria-label="이전 사진">‹</button><button type="button" class="wg-pv-nav r" id="wgPvR" aria-label="다음 사진">›</button>'+
     '<div class="wg-pv-bar"><span id="wgPvCap"></span><button type="button" id="wgPvCv" hidden>대표 사진으로</button></div></div>';
@@ -11917,11 +11949,12 @@ function wgEnsureDom(){
   on('wgCtr', function(){ WG.follow=true; const b=document.getElementById('wgCtr'); if(b) b.classList.remove('on'); const c=WG.cur; if(c && c.pos && WG.lm){ try{ WG.lm.map.setView([c.pos[0], c.pos[1]], Math.max(16, WG.lm.map.getZoom()||17)); }catch(e){} } });
   on('wgBanX', function(){ WG.banner=null; WG.wakeHide=1; wgPaintBanner(); });
   on('wgBanA', function(){ const b=WG.banner; if(b && b.act && b.act.fn){ WG.banner=null; wgPaintBanner(); b.act.fn(); } else if(WG.wakeFail){ wgWakeOn(true); } });
-  on('wgPoo', function(){ wgMark('poo'); }); on('wgPee', function(){ wgMark('pee'); }); on('wgPh', wgPhoto);
+  on('wgPoo', function(){ wgMark('poo'); }); on('wgPee', function(){ wgMark('pee'); }); on('wgPh', wgPhoto); on('wgVd', wgVideo);
   on('wgPk', wgPocketOn);
   on('wgPause', function(){ const c=WG.cur; if(!c) return; if(c.paused) wgResume(); else wgPause(); });
   on('wgStop', wgEndAsk);
   const cam=document.getElementById('wgCam'); if(cam) cam.addEventListener('change', function(){ const f=this.files && this.files[0]; this.value=''; if(f) wgPhotoUp(f); });
+  const vin=document.getElementById('wgVidIn'); if(vin) vin.addEventListener('change', function(){ const f=this.files && this.files[0]; this.value=''; if(f) wgVidUp(f); });   /* V7.2 */
   on('wgAllOk', wgAllOk);
   on('wgCkSave', function(){ wgSave(WG.ck); });
   on('wgCkSkip', function(){ wgSave(null); });
@@ -11948,7 +11981,7 @@ function wgEnsureDom(){
   const pv=document.getElementById('wgPv');
   if(pv){
     let tx=null;
-    pv.addEventListener('touchstart', function(e){ tx=(e.touches && e.touches.length)? e.touches[0].clientX : null; }, {passive:true});
+    pv.addEventListener('touchstart', function(e){ tx=(e.touches && e.touches.length && !(e.target && e.target.tagName==='VIDEO'))? e.touches[0].clientX : null; }, {passive:true});   /* V7.2: 영상 위는 밀기 대신 재생 막대 */
     pv.addEventListener('touchend', function(e){ const t=e.changedTouches && e.changedTouches[0]; if(tx!=null && t && Math.abs(t.clientX-tx)>50) wgPvStep(t.clientX<tx? 1 : -1); tx=null; }, {passive:true});
   }
   const wi=document.getElementById('wgWith'); if(wi) wi.addEventListener('click', wgWithTap);
@@ -12054,6 +12087,7 @@ function wgPaintLive(){
   if(c.st.runMax>=cfg.runSec) ch.push('<span class="wg-chip-s warn">뛰기 '+wgMin(c.st.runMax)+'</span>');
   if(c.pins.length){ const np=c.pins.filter(function(x){ return x.k==='poo'; }).length, nq=c.pins.length-np; if(np) ch.push('<span class="wg-chip-s">'+WG_ICO.poo+'대변 '+np+'</span>'); if(nq) ch.push('<span class="wg-chip-s">'+WG_ICO.pee+'소변 '+nq+'</span>'); }
   if(c.photos.length) ch.push('<span class="wg-chip-s">'+WG_ICO.cam+'사진 '+c.photos.length+'</span>');
+  if(c.vids && c.vids.length) ch.push('<span class="wg-chip-s">'+WG_ICO.vid+'영상 '+c.vids.length+'</span>');   /* V7.2 */
   if(WG.wakeNo) ch.push('<span class="wg-chip-s warn">화면 꺼짐 방지 미지원</span>');
   set('wgChips', ch.join(''), true);
   const pb=document.getElementById('wgPause');
@@ -12142,11 +12176,11 @@ function wgLiveMe(p){
     if(WG.follow){ if(!lm.centered){ lm.map.setView(ll, 17); lm.centered=true; } else lm.map.panTo(ll, {animate:true}); }
   }catch(e){}
 }
-function wgPinIcon(L, k){ return L.divIcon({className:'', html:'<div class="wg-pin">'+(k==='poo'? WG_ICO.poo : (k==='pee'? WG_ICO.pee : WG_ICO.cam))+'</div>', iconSize:[26,26], iconAnchor:[13,13]}); }
+function wgPinIcon(L, k){ return L.divIcon({className:'', html:'<div class="wg-pin">'+(k==='poo'? WG_ICO.poo : (k==='pee'? WG_ICO.pee : (k==='vd'? WG_ICO.vid : WG_ICO.cam)))+'</div>', iconSize:[26,26], iconAnchor:[13,13]}); }
 function wgLivePins(){
   const lm=WG.lm, c=WG.cur; if(!lm || !c) return;
   try{ lm.pins.clearLayers(); }catch(e){}
-  c.pins.concat(c.photos.map(function(x){ return {k:'ph', lat:x.lat, lng:x.lng}; })).forEach(function(x){
+  c.pins.concat(c.photos.map(function(x){ return {k:'ph', lat:x.lat, lng:x.lng}; }), (c.vids||[]).map(function(x){ return {k:'vd', lat:x.lat, lng:x.lng}; })).forEach(function(x){
     if(x.lat==null) return;
     try{ lm.L.marker([x.lat, x.lng], {icon:wgPinIcon(lm.L, x.k), interactive:false, keyboard:false}).addTo(lm.pins); }catch(e){}
   });
@@ -12214,7 +12248,7 @@ async function wgDrawMap(boxId, tracks, opt){
     });
     if(!opt.heat) tracks.forEach(function(p){
       (p.pins||[]).forEach(function(v){ if(v.lat!=null) L.marker([v.lat, v.lng], {icon:wgPinIcon(L, v.k), interactive:false, keyboard:false}).addTo(map); });
-      (p.photos||[]).forEach(function(v){ if(v.lat!=null && (!ALB.meta || ALB.meta[v.id])){ const mk=L.marker([v.lat, v.lng], {icon:wgPhotoIcon(L, v.id, 1), keyboard:false}).addTo(map); mk.on('click', function(){ wgPvOpen([v.id], 0); }); } });
+      (p.photos||[]).concat(p.vids||[]).forEach(function(v){ if(v.lat!=null && (!ALB.meta || ALB.meta[v.id])){ const mk=L.marker([v.lat, v.lng], {icon:wgPhotoIcon(L, v.id, 1), keyboard:false}).addTo(map); mk.on('click', function(){ wgPvOpen([v.id], 0); }); } });
       const all=[]; (p.segs||[]).map(wgDec).forEach(function(s){ s.forEach(function(q){ all.push(q); }); });
       if(all.length){ L.circleMarker(all[0], {radius:6, color:'#fff', weight:2, fillColor:wgCss('--wg-ok','#34C759'), fillOpacity:1, interactive:false}).addTo(map); L.circleMarker(all[all.length-1], {radius:6, color:'#fff', weight:2, fillColor:wgCss('--wg-bad','#FF3B30'), fillOpacity:1, interactive:false}).addTo(map); }
     });
@@ -12298,6 +12332,74 @@ async function wgPhotoUp(file){
     if(c){ c.photos.push({id:id, at:at.at, lat:at.lat, lng:at.lng}); wgPersist(true); wgLivePins(); wgPaintLive(); }
     uiToast('사진 저장 · 앨범과 산책 지도에 표시돼요');
   }catch(e){ uiToast('사진을 올리지 못했어요 · 인터넷 확인 후 앨범에서 다시 올려 주세요'); }
+}
+
+/* ---------- V7.2: 산책 중 영상 — 폰 카메라(영상 모드) → 앨범 영상(R2) + 이 산책에 연결 ---------- */
+function wgVideo(){
+  const c=WG.cur; if(!c || c.ending) return;
+  if(!syncConfigured()){ uiAlert('영상은 동기화를 켠 뒤 앨범에 올라가요.\n설정에서 동기화를 먼저 켜 주세요.'); return; }
+  if(!mediaConfigured()){ uiAlert('영상 저장소가 아직 연결되지 않았어요.\n앨범 화면 아래 \'영상 저장소 연결\'을 먼저 해 주세요.'); return; }
+  const p=c.pos; WG.vidAt={at:Date.now(), lat:p? p[0] : null, lng:p? p[1] : null};
+  const inp=document.getElementById('wgVidIn'); if(inp) inp.click();
+}
+async function wgAlbVideo(file, memo, shot, onProg){   /* 15장 앨범 영상 올리기와 같은 경로·형식(R2 파일 + th 썸네일 + meta) */
+  const ext=mediaExt(file), ct=(file.type && /^video\//.test(file.type))? file.type : 'video/mp4';
+  const id=albNewId(), key='v/'+id+'.'+ext;
+  let th=null, dur=0;
+  try{ const t=await videoThumb(file, 360, 0.7); th=t.data; dur=t.dur; }catch(e){ th=null; }
+  try{
+    await mediaUpload(file, key, ct, onProg);
+    if(th) await albFetch('th/'+id, 'PUT', JSON.stringify(th));
+    const meta={t:'r', d:todayKey(), m:memo||'', at:Date.now(), s:th? th.length : 0, vs:file.size, k:key, ct:ct, dur:Math.round(dur||0), th:th? 1 : 0};
+    if(shot){ meta.shotAt=shot; meta.sd=albLocalISO(new Date(shot)); }
+    await albFetch('meta/'+id, 'PUT', JSON.stringify(meta));
+    ALB.meta=ALB.meta||{}; ALB.meta[id]=meta; if(th) ALB.thumbs.set(id, th);
+  }catch(e){
+    try{ await mediaFetch(mediaApi('/file/'+key), {method:'DELETE'}, 15000); }catch(e2){}
+    throw e;
+  }
+  try{ await albBumpIdx(); }catch(e){}
+  try{ renderAlbum(); }catch(e){}
+  if(!th) setTimeout(function(){ try{ albRepairThumbs(); }catch(e){} }, 500);
+  return id;
+}
+function wgVidUp(file){
+  const at=WG.vidAt||{at:Date.now(), lat:null, lng:null}; WG.vidAt=null;
+  const c=WG.cur;
+  WG.vq=WG.vq||[]; WG.vq.push({file:file, at:at, wid:c? c.id : null});
+  wgVidNext();
+}
+async function wgVidNext(){   /* 여러 개면 순서대로 한 개씩 */
+  if(WG.vBusy) return;
+  const job=(WG.vq||[]).shift(); if(!job) return;
+  WG.vBusy=true;
+  let ok=false;
+  try{
+    uiToast('영상 올리는 중… 화면을 닫지 마세요');
+    const id=await wgAlbVideo(job.file, '산책 중 · '+fmtHM(job.at.at), job.at.at, function(p){ uiToast('영상 올리는 중 '+Math.round(p*100)+'% · 화면을 닫지 마세요'); });
+    const c=WG.cur;
+    if(c && c.id===job.wid){ c.vids=c.vids||[]; c.vids.push({id:id, at:job.at.at, lat:job.at.lat, lng:job.at.lng}); wgPersist(true); wgLivePins(); wgPaintLive(); }
+    ok=true;
+    uiToast('영상 저장 · 앨범과 산책 지도에 표시돼요');
+  }catch(e){ logErr('산책: 영상 올리기', e); }
+  WG.vBusy=false;
+  if(!ok){
+    const tt=document.getElementById('uiToast'); if(tt) tt.classList.remove('on');   /* '올리는 중' 알림이 선택 창 제목을 가리지 않게 */
+    let ix=-1;
+    try{ const r=await uiSheetOpen({title:'영상을 올리지 못했어요 · 인터넷을 확인해 주세요', list:true, actions:[{label:'다시 올리기'}, {label:'폰에 저장'}, {label:'버리기', destr:true}], noCancel:true}); ix=(r && r.ok)? r.idx : -1; }catch(e){ ix=-1; }
+    if(ix===0) WG.vq.unshift(job);
+    else if(ix!==2) wgVidSave(job.file, job.at.at);   /* 폰에 저장 — 창을 그냥 닫아도 영상을 잃지 않게 */
+  }
+  setTimeout(wgVidNext, 0);
+}
+function wgVidSave(file, at){   /* 올리기 실패 때 영상을 잃지 않게 폰 다운로드 폴더로(파일 이름은 영문 — 일부 브라우저가 한글 이름을 버림) */
+  try{
+    const d=new Date(at||Date.now()), nm='bbaekkom_walk_'+d2s(d).replace(/-/g, '')+'_'+String(d.getHours()).padStart(2, '0')+String(d.getMinutes()).padStart(2, '0')+'.'+mediaExt(file);
+    const u=URL.createObjectURL(file), a=document.createElement('a');
+    a.href=u; a.download=nm; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(u); }, 60000);
+    uiToast('폰에 저장했어요 · 나중에 앨범 영상 버튼으로 올려 주세요');
+  }catch(e){ logErr('산책: 영상 저장', e); }
 }
 
 /* ---------- 산책 후 상태 체크 ---------- */
@@ -12612,7 +12714,7 @@ function wgDetPaint(s, p){   /* V6.9: 장소·함께·한 줄 고치기, 사진 
   let h='<div class="wg-ttl"><b>'+esc(wgTitle(s))+'</b><span>'+fmtHM(s.o)+'–'+fmtHM(s.i)+'</span></div>';
   h+=wgSumHead(s, true);
   if(s.g) h+='<div class="wg-dmap" id="wgDetMap"><div class="wg-mapmsg">'+(p? '' : (syncConfigured()? '경로를 불러오는 중…' : '이 폰에 경로가 없어요'))+'</div></div>';
-  if(ph.length) h+='<div class="wg-photos">'+ph.map(function(id){ return '<button type="button" class="wg-ph" data-wgph="'+esc(id)+'" aria-label="사진 크게 보기">'+(id===cv? '<em>대표</em>' : '')+'</button>'; }).join('')+'</div>';
+  if(ph.length) h+='<div class="wg-photos">'+ph.map(function(id){ return '<button type="button" class="wg-ph" data-wgph="'+esc(id)+'" aria-label="'+(wgIsVid(id)? '영상 보기' : '사진 크게 보기')+'">'+(id===cv? '<em>대표</em>' : '')+'</button>'; }).join('')+'</div>';
   h+='<div class="wg-info"><button type="button" class="wg-ir" data-wgi="pl"><b>장소</b><span>'+(wgPlaceName(s.pl)? esc(wgPlaceName(s.pl)) : '<i>이름 붙이기</i>')+'</span>'+WG_ICO.chev+'</button>'+
      '<div class="wg-ir wg-iw"><b>함께</b><span class="wg-with">'+wgWithHtml(by, Array.isArray(s.with)? s.with : [])+'</span></div>'+
      '<button type="button" class="wg-ir" data-wgi="nt"><b>한 줄</b><span>'+(s.note? esc(s.note) : '<i>남기기</i>')+'</span>'+WG_ICO.chev+'</button></div>';
@@ -12742,7 +12844,7 @@ function walkInit(){
 /* ---------- 지도 사진 핀 · 여러 경로(지도를 못 불러올 때) ---------- */
 function wgPhotoIcon(L, id, n){
   const th=ALB.thumbs && ALB.thumbs.get(id);
-  return L.divIcon({className:'', html:'<div class="wg-pp" data-wgpp="'+esc(id)+'"><img alt=""'+(th? ' src="'+th+'"' : '')+'>'+(n>1? '<b>'+n+'</b>' : '')+'</div>', iconSize:[34,34], iconAnchor:[17,17]});
+  return L.divIcon({className:'', html:'<div class="wg-pp" data-wgpp="'+esc(id)+'"><img alt=""'+(th? ' src="'+th+'"' : '')+'>'+(wgIsVid(id)? '<i class="wg-vb" aria-hidden="true"></i>' : '')+(n>1? '<b>'+n+'</b>' : '')+'</div>', iconSize:[34,34], iconAnchor:[17,17]});
 }
 function wgPpLoad(root){
   if(!root) return;
@@ -12774,9 +12876,10 @@ function wgEndSumPaint(){
   if(c.w){ const wx=wgWx(c.w.c); bits.push((wx? wx+' ' : '')+wgT(c.w.t)); }
   let h='<span class="wg-es-rt">'+(segs.length? wgRouteSvg(segs, 58, 58, {pad:7, sw:2.8, r:3}) : '')+'</span>'+
     '<span class="wg-es-tx"><b>'+wgMin(dur)+'<small>'+wgKm(wgDistLive())+'km</small></b><span>'+esc(bits.join(' · '))+'</span></span>';
-  if(c.photos.length) h+='<span class="wg-es-cv" id="wgEndCv"><em>대표</em></span>';
+  const cvId=c.photos.length? c.photos[0].id : ((c.vids && c.vids.length)? c.vids[0].id : '');   /* V7.2: 사진이 없으면 영상 */
+  if(cvId) h+='<span class="wg-es-cv" id="wgEndCv"><em>대표</em></span>';
   box.innerHTML=h;
-  if(c.photos.length) wgImgInto(document.getElementById('wgEndCv'), c.photos[0].id, false);
+  if(cvId) wgImgInto(document.getElementById('wgEndCv'), cvId, false);
 }
 function wgWithHtml(me, sel){
   const names=wgNames(); sel.forEach(function(n){ if(names.indexOf(n)<0) names.push(n); });
@@ -12819,7 +12922,7 @@ function wgSumHead(s, lite){   /* 한 줄 · 함께 · 처음 — 요약 시트�
 }
 
 /* ---------- 산책 기록 카드 (S09) ---------- */
-function wgIsBig(s){ return !!(s.note || s.cv || s.ph || wgLinkedAlb(s).length); }
+function wgIsBig(s){ return !!(s.note || s.cv || s.ph || s.vd || wgLinkedAlb(s, true).length); }
 function wgTags(s){
   const a=[], w=Array.isArray(s.with)? s.with : [];
   if(s.by || w.length) a.push('<span>'+esc([s.by].concat(w).filter(Boolean).join(' · '))+(w.length? ' 함께' : '')+'</span>');
@@ -12832,7 +12935,7 @@ function wgCardHtml(k, s){
   const pv=wgSegLv(s), pill=pv? '<span class="wg-pill '+pv[0]+'">'+esc(pv[1])+'</span>' : '';
   const at=' data-wgk="'+esc(k)+'" data-wgo="'+s.o+'"', meta=fmtHM(s.o)+'–'+fmtHM(s.i)+' · '+wgRowSub(s);
   if(!wgIsBig(s)) return '<button type="button" class="wg-row wg-card"'+at+'><span class="wg-thumb"'+(s.g? ' data-wgth="'+esc(s.g)+'"' : '')+'>'+(s.g? '' : '<svg class="ico"><use href="#i-paw"/></svg>')+'</span><span class="wg-row-tx"><b>'+esc(wgTitle(s))+'</b><span>'+meta+'</span></span>'+pill+'</button>';
-  const tg=wgTags(s), hasPh=!!(s.cv || s.ph || wgLinkedAlb(s).length);
+  const tg=wgTags(s), hasPh=!!(s.cv || s.ph || s.vd || wgLinkedAlb(s, true).length);
   const hero=hasPh? '<span class="wg-mc-ph">'+(s.g? '<span class="wg-mc-rt" data-wgth="'+esc(s.g)+'"></span>' : '')+'</span>' : (s.g? '<span class="wg-mc-ph wg-mc-art"></span>' : '');   /* 사진 없이 한 줄만 = 경로 그림 */
   return '<button type="button" class="wg-mc"'+at+'>'+hero+
     '<span class="wg-mc-bd"><span class="wg-mc-t1"><b>'+esc(wgTitle(s))+'</b>'+pill+'</span><span class="wg-mc-mt">'+meta+'</span>'+
@@ -12845,7 +12948,7 @@ async function wgCovers(root){
     const s=wgSegFind(el.dataset.wgk, +el.dataset.wgo); if(!s) continue;
     const art=el.querySelector('.wg-mc-art');
     let p=s.g? wgCacheGet(s.g) : null;
-    if(!p && s.g && (s.ph || art) && syncConfigured() && fetched<12){ fetched++; p=await wgFetchTrack(s.g); }
+    if(!p && s.g && (s.ph || s.vd || art) && syncConfigured() && fetched<12){ fetched++; p=await wgFetchTrack(s.g); }
     if(!el.isConnected) return;
     if(art){ const segs=((p && p.segs)||[]).map(wgDec).filter(function(v){ return v.length; }); if(segs.length) art.innerHTML=wgRouteSvg(segs, 360, 150, {pad:26, sw:3.6, r:5}); else art.remove(); continue; }
     const id=wgCover(s, p);
@@ -12931,8 +13034,8 @@ function wgPosAt(p, ms){   /* 촬영 시각에 가장 가까운 경로 점(3분 
 }
 function wgSpotsOf(s, p){
   const cand=[];
-  ((p && p.photos)||[]).forEach(function(v){ if(v && v.id && v.lat!=null && v.lng!=null && (!ALB.meta || ALB.meta[v.id])) cand.push({id:v.id, lat:v.lat, lng:v.lng}); });
-  wgLinkedAlb(s).forEach(function(id){
+  ((p && p.photos)||[]).concat((p && p.vids)||[]).forEach(function(v){ if(v && v.id && v.lat!=null && v.lng!=null && (!ALB.meta || ALB.meta[v.id])) cand.push({id:v.id, lat:v.lat, lng:v.lng}); });   /* V7.2: 영상 포함 */
+  wgLinkedAlb(s, true).forEach(function(id){
     if(cand.some(function(v){ return v.id===id; })) return;
     const pos=wgPosAt(p, wgShotMs(ALB.meta[id])); if(pos) cand.push({id:id, lat:pos[0], lng:pos[1]});
   });
@@ -12950,7 +13053,7 @@ async function wgMemLoad(){
     const now=new Date(), from=d2s(new Date(now.getFullYear(), now.getMonth()-1, 1)), to=d2s(new Date(now.getFullYear(), now.getMonth(), 0));
     await wgAlbMeta();
     const walks=[];
-    Object.keys(S.walkLog||{}).forEach(function(k){ if(k<from || k>to) return; ((S.walkLog||{})[k]||[]).forEach(function(s){ if(s && s.g && +s.i>+s.o && (s.ph || wgLinkedAlb(s).length)) walks.push(s); }); });
+    Object.keys(S.walkLog||{}).forEach(function(k){ if(k<from || k>to) return; ((S.walkLog||{})[k]||[]).forEach(function(s){ if(s && s.g && +s.i>+s.o && (s.ph || s.vd || wgLinkedAlb(s, true).length)) walks.push(s); }); });
     walks.sort(function(a, b){ return b.o-a.o; });
     const spots=[];
     for(const s of walks.slice(0, 30)){
@@ -12977,7 +13080,8 @@ function wgMemPaint(){
   const M=WG.mem, sp=M && M.cur;
   if(!sp || !WG.cur || WG.cur.ending){ el.classList.remove('on'); return; }
   const d=new Date(sp.o);
-  document.getElementById('wgMemS').textContent=(d.getMonth()+1)+'월 '+d.getDate()+'일 · 사진 '+sp.ids.length+'장';
+  const nv=sp.ids.filter(wgIsVid).length, np=sp.ids.length-nv;   /* V7.2: 사진·영상 따로 */
+  document.getElementById('wgMemS').textContent=(d.getMonth()+1)+'월 '+d.getDate()+'일 · '+[np? '사진 '+np+'장' : '', nv? '영상 '+nv+'개' : ''].filter(Boolean).join(' · ');
   wgImgInto(document.getElementById('wgMemTh'), sp.ids[0], false);
   el.classList.add('on');
 }
@@ -13006,13 +13110,31 @@ function wgPvShow(){
   const id=P.ids[P.i], img=document.getElementById('wgPvImg');
   document.getElementById('wgPvCnt').textContent=P.ids.length>1? (P.i+1)+' / '+P.ids.length : '';
   document.getElementById('wgPvL').hidden=P.i<=0; document.getElementById('wgPvR').hidden=P.i>=P.ids.length-1;
-  const m=ALB.meta && ALB.meta[id], t=m? wgShotMs(m) : 0;
-  document.getElementById('wgPvCap').textContent=t? wgDateLbl(t)+' '+fmtHM(t) : '';
+  const m=ALB.meta && ALB.meta[id], t=m? wgShotMs(m) : 0, isV=!!(m && m.t==='r');   /* V7.2: 영상은 재생 */
+  const cap=document.getElementById('wgPvCap');
+  cap.textContent=(t? wgDateLbl(t)+' '+fmtHM(t) : '')+(isV && m.dur? (t? ' · ' : '')+mediaDur(m.dur) : '');
   const cb=document.getElementById('wgPvCv'), oc=P.opt.onCover;
-  cb.hidden=!oc; if(oc){ const on=P.opt.cover===id; cb.textContent=on? '대표 사진' : '대표 사진으로'; cb.classList.toggle('on', on); }
+  cb.hidden=!oc || isV; if(oc && !isV){ const on=P.opt.cover===id; cb.textContent=on? '대표 사진' : '대표 사진으로'; cb.classList.toggle('on', on); }
+  wgPvVidStop();
+  const pv=document.getElementById('wgPv'); if(pv) pv.classList.toggle('vid', isV);
   img.dataset.id=id; img.removeAttribute('src');
-  const th=ALB.thumbs && ALB.thumbs.get(id); if(th) img.src=th;
+  const th=ALB.thumbs && ALB.thumbs.get(id);
+  if(isV){
+    const vd=document.getElementById('wgPvVid'); if(!vd) return;
+    vd.dataset.id=id;
+    if(th) vd.poster=th; else albImgSrc('th', id).then(function(v){ if(v && vd.dataset.id===id){ ALB.thumbs.set(id, v); vd.poster=v; } }).catch(wgImgErr);
+    if(!mediaConfigured()){ cap.textContent='영상 저장소가 연결되지 않아 재생할 수 없어요'; return; }
+    vd.src=mediaApi('/file/'+m.k); try{ vd.load(); }catch(e){}
+    return;
+  }
+  if(th) img.src=th;
   albImgSrc('full', id).then(function(v){ if(v && img.dataset.id===id) img.src=v; }).catch(wgImgErr);
+}
+function wgPvVidStop(){   /* V7.2: 넘기거나 닫을 때 영상 멈춤·연결 끊기 */
+  const vd=document.getElementById('wgPvVid'); if(!vd) return;
+  try{ vd.pause(); }catch(e){}
+  if(vd.getAttribute('src')){ vd.removeAttribute('src'); try{ vd.load(); }catch(e){} }
+  vd.removeAttribute('poster'); vd.dataset.id='';
 }
 function wgPvStep(d){ const P=WG.pv; if(!P) return; const n=P.i+d; if(n<0 || n>=P.ids.length) return; P.i=n; wgPvShow(); }
 function wgPvCover(){
@@ -13023,6 +13145,7 @@ function wgPvCover(){
 function wgPvClose(fromPop){
   const el=document.getElementById('wgPv'); if(!el || !el.classList.contains('on')) return;
   el.classList.remove('on'); WG.pv=null;
+  wgPvVidStop(); el.classList.remove('vid');   /* V7.2 */
   const img=document.getElementById('wgPvImg'); if(img){ img.removeAttribute('src'); img.dataset.id=''; }
   if(!fromPop) wgHistBack('pv');
 }
