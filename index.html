@@ -3064,9 +3064,9 @@ body.alb-sel #bnav{display:none;}
 
   <h3 class="sec">병원 연락처</h3>
   <div class="card">
-    <div class="field"><label>단골 동물병원 (이름·전화)</label><input type="text" id="vetMain" placeholder="예: 삼송동물병원 02-6015-3624"></div>
-    <div class="field"><label>24시 응급 병원 (이름·전화)</label><input type="text" id="vet24" placeholder="예: 24시 라인동물의료센터 02-381-2475"></div>
-    <p class="muted small" style="margin:0;">여기 적은 메모는 상단 응급 버튼 안에도 표시됩니다.</p>
+    <div class="field"><label>단골 동물병원 (이름·전화)</label><input type="text" id="vetMain" placeholder="예: ○○동물병원 02-000-0000"></div>
+    <div class="field"><label>24시 응급 병원 (이름·전화)</label><input type="text" id="vet24" placeholder="예: 24시 ○○동물의료센터 02-000-0000"></div>
+    <p class="muted small" style="margin:0;">여기 적은 병원은 상단 응급 버튼에 전화 버튼으로 나옵니다. 이름과 전화번호를 함께 적어 주세요.</p>
   </div>
 
   <h3 class="sec">유치원</h3>
@@ -3160,7 +3160,7 @@ body.alb-sel #bnav{display:none;}
       <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
       <li>의료 정보는 일반 정보입니다. 개별 판단은 수의사 진료가 우선입니다.</li>
     </ul>
-    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V7.2.0 · 2026-11-19</p>
+    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V7.2.1 · 2026-11-20</p>
   </div>
 
   <h3 class="sec">진단 <span class="muted small" id="diagErrN"></span></h3>
@@ -3251,6 +3251,7 @@ body.alb-sel #bnav{display:none;}
     <h2 class="serif">삼송 동네 가이드 — 견주 생활권 지도</h2>
     <p class="lede">삼송로 240 기준. 이름 = 위치·후기, 전화 버튼 = 즉시 연결. 방문 전 확인 권장.</p>
   </div>
+  <div class="box box-warn" id="placeMoved"><div class="bt">■ 이사 전 동네(삼송) 기준 정보입니다. 응급 때는 상단 응급 버튼(설정 → 병원 연락처)의 병원을 쓰세요.</div></div>
   <div class="box box-core">
     <div class="bt">■ 결론 먼저 — 삼송은 개 키우기 좋은 입지</div>
     <ul class="ls">
@@ -3350,7 +3351,7 @@ body.alb-sel #bnav{display:none;}
   <div class="tw"><table>
     <thead><tr><th>등급</th><th>증상</th><th>행동</th></tr></thead>
     <tbody>
-      <tr><td><span class="tag r">즉시<br>(밤이라도)</span></td><td>호흡곤란·청색 잇몸 / 반복 구토+축 처짐 / 혈변·흑변·혈뇨 / 12시간 이상 배뇨 없음 / 발작 / 중독 섭취 / 배가 급격히 팽창하며 헛구역질 / 심한 통증 비명 / 4개월 미만 퍼피의 구토·설사</td><td>24시 병원(라인동물의료센터, 10장) 전화하며 즉시 이동</td></tr>
+      <tr><td><span class="tag r">즉시<br>(밤이라도)</span></td><td>호흡곤란·청색 잇몸 / 반복 구토+축 처짐 / 혈변·흑변·혈뇨 / 12시간 이상 배뇨 없음 / 발작 / 중독 섭취 / 배가 급격히 팽창하며 헛구역질 / 심한 통증 비명 / 4개월 미만 퍼피의 구토·설사</td><td>24시 병원(상단 응급 버튼 · 설정의 24시 병원) 전화하며 즉시 이동</td></tr>
       <tr><td><span class="tag y">24시간 내</span></td><td>구토 1~2회지만 컨디션 정상 / 무른 변 이틀 지속 / 절뚝임 지속 / 귀 악취·긁기 / 눈 충혈·눈곱 색 변화 / 식욕부진 하루 이상 / 물 마시는 양 급증</td><td>다음날 단골 병원 예약. 사진·영상 기록</td></tr>
       <tr><td><span class="tag g">관찰</span></td><td>아침 공복에 노란 거품 토 가끔 / 풀 뜯어먹기 / 하루 무른 변 1회 후 정상 / 재채기 몇 번</td><td>급여 간격 조정 등 관찰. 반복되면 진료. 08장 기록장에 메모</td></tr>
     </tbody>
@@ -3811,8 +3812,7 @@ body.alb-sel #bnav{display:none;}
   <div class="sos-card">
     <div class="sos-h">🚨 응급 — 검색하지 말고 전화부터</div>
     <div class="sos-b">
-      <a class="sos-call" href="tel:02-381-2475">24시 라인동물의료센터 · 02-381-2475<small>연중무휴 24시간 · 삼송역 상가 · 도보 5분</small></a>
-      <a class="sos-call sec" href="tel:02-6015-3624">삼송동물병원(단골 후보) · 02-6015-3624</a>
+      <div id="sosCalls"></div>
       <div class="sos-memo" id="sosMemo" style="display:none;"></div>
       <details>
         <summary>응급 신호 8 — 빠르게 확인</summary>
@@ -4573,7 +4573,13 @@ class VideoRTC extends HTMLElement {
 
 if(window.customElements && !customElements.get('video-stream')){ customElements.define('video-stream', VideoRTC); }
 </script>
-<script>/* V7.2.0 (2026-11-19): 산책 중 영상 · 앨범 사진 칸 메모 · 크게 보기 배경 (앱 설계 D00 예외: 이번 3건만 웹 반영).
+<script>/* V7.2.1 (2026-11-20): 응급 정보 — 이사(2026-11) 반영 (앱 설계 D00 웹 수정 예외 6번째, D06-A 결정 ⑧).
+   ① 상단 응급 버튼의 병원 2줄: 코드 고정(삼송) → 설정 '병원 연락처'의 단골·24시 병원을 전화 버튼으로 표시(글에서 전화번호를 찾아 연결).
+      24시 칸이 비어 있으면 이사 전 24시 병원을 '이사 전 동네' 표시와 함께 보여 주고, 빈 칸은 [설정에서 넣기] 안내.
+   ② 설정 병원 연락처: 예시 문구에서 이사 전 병원 이름 삭제, 안내 문구 변경.
+   ③ 10장 맨 위 '이사 전 동네(삼송) 기준' 안내 1줄. 11장 증상 판단표의 24시 병원 → '상단 응급 버튼 · 설정의 24시 병원'.
+   저장 구조·동기화 변경 없음(S.vet.main·e24 그대로). */
+/* V7.2.0 (2026-11-19): 산책 중 영상 · 앨범 사진 칸 메모 · 크게 보기 배경 (앱 설계 D00 예외: 이번 3건만 웹 반영).
    ① 산책 중 [영상] 버튼(대변·소변·사진 옆): 폰 카메라 영상 모드 → 앨범 영상(R2, 15장 영상 올리기와 같은 형식)으로 올리고 이 산책에 연결.
       메모 '산책 중 · 시각', 촬영 시각 shotAt·sd = 버튼 누른 시각. 여러 개는 순서대로 올림. 실패하면 [다시 올리기 · 폰에 저장 · 버리기].
       진행 중 칩 '영상 N' · 지도 핀(영상 아이콘). 저장: walkLog vd(영상 수) · 경로 파일 vids[{id,at,lat,lng}] — 옛 버전 폰은 무시.
@@ -4754,7 +4760,7 @@ if(window.customElements && !customElements.get('video-stream')){ customElements
 /* V5.8 (2026-08-21): 접종 실기록 반영(2차 08.07 종합+코로나1차, 3차 08.21 종합+코로나2차, 4차 09.04 예약, 넥스가드 스펙트라 매월 21일, 코로나 보강 2027.08.21),
    04장 미니 인도어 퍼피 체중별 급여표 추가, 급여 계산기 기본 ME 3735 + kcal 누락 NaN 가드. 저장 구조·동기화·달력 로직 변경 없음. */
 /* =============== State =============== */
-const APP_VER='7.2.0', APP_DATE='2026-11-19';   /* V6.6: 앱 버전 — dev/VERSION 한 곳에서 빌드할 때 채움 */
+const APP_VER='7.2.1', APP_DATE='2026-11-20';   /* V6.6: 앱 버전 — dev/VERSION 한 곳에서 빌드할 때 채움 */
 const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, sleepCur:0, sleepLog:{}, feed:{kcal:4000, meals:4, mealsAt:'', adult:0, adultMode:'auto', bcs:'ok', bcsAt:'', neut:0, treat:0, vetG:0, vetAt:''}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}, media:{url:''}, kgCur:0, kgLog:{}, kgCfg:{name:'도그스테이', pass:0, from:''}, marks:{}};
 let S = JSON.parse(JSON.stringify(DEFAULT_S));
 let storageOK = false, artOK = false, saveTimer = null, lastEditAt = 0;
@@ -7900,15 +7906,43 @@ function bindNav(){
 }
 
 /* =============== V2: SOS =============== */
+/* V7.2.1: 응급 버튼 병원 = 설정 '병원 연락처'(단골·24시). 코드에 고정한 병원 없음.
+   글에서 전화번호를 찾아 전화 버튼으로 연결. 24시 칸이 비어 있으면 이사 전 동네 24시 병원을 '이사 전 동네' 표시와 함께 보여 줌(응급 시트가 비지 않게). */
+const SOS_OLD24={nm:'24시 라인동물의료센터', tel:'02-381-2475'};
+function sosTel(s){
+  const m=String(s||'').match(/0\d{1,2}[-.\s)]*\d{3,4}[-.\s]*\d{4}|1[5-9]\d{2}[-.\s]*\d{4}/);
+  return m? m[0].replace(/\D/g,'') : '';
+}
+function sosPaint(){
+  const box=document.getElementById('sosCalls'), memo=document.getElementById('sosMemo');
+  if(!box || !memo) return;
+  box.innerHTML=''; memo.innerHTML=''; memo.style.display='none';
+  const vet=S.vet||{};
+  const NOTEL='전화번호를 찾지 못했어요 — 설정에 이름과 전화번호를 함께 적어 주세요';
+  const add=function(txt, tel, sub, sec){
+    const a=document.createElement('a');
+    a.className='sos-call'+(sec? ' sec' : '')+(tel? '' : ' nolink');
+    if(tel) a.href='tel:'+tel;
+    a.appendChild(document.createTextNode(txt));
+    if(sub){ const s=document.createElement('small'); s.textContent=sub; a.appendChild(s); }
+    box.appendChild(a);
+  };
+  const e24=String(vet.e24||'').trim(), main=String(vet.main||'').trim();
+  if(e24){ const t=sosTel(e24); add(e24, t, t? '24시 응급 병원 · 설정' : NOTEL, false); }
+  else add(SOS_OLD24.nm+' · '+SOS_OLD24.tel, sosTel(SOS_OLD24.tel), '이사 전 동네(삼송) 병원 · 설정에 새 24시 병원을 넣어 주세요', false);
+  if(main){ const t=sosTel(main); add(main, t, t? '단골 병원 · 설정' : NOTEL, true); }
+  if(!e24 || !main){
+    const p=document.createElement('span');
+    p.textContent=(!e24 && !main)? '단골·24시 병원이 비어 있어요. ' : (!e24? '24시 병원이 비어 있어요. ' : '단골 병원이 비어 있어요. ');
+    const b=document.createElement('button'); b.type='button'; b.className='lnk'; b.id='sosGoSet'; b.textContent='설정에서 넣기';
+    b.addEventListener('click', function(){ const ov=document.getElementById('sosOvl'); if(ov) ov.classList.remove('on'); goTab('settings'); });
+    memo.appendChild(p); memo.appendChild(b); memo.style.display='block';
+  }
+}
 function bindSOS(){
   const ov=document.getElementById('sosOvl'); if(!ov) return;
   document.getElementById('sosBtn').addEventListener('click', function(){
-    const m=[];
-    if(S.vet.main) m.push('단골 메모: '+S.vet.main);
-    if(S.vet.e24) m.push('24시 메모: '+S.vet.e24);
-    const el=document.getElementById('sosMemo');
-    if(m.length){ el.textContent=m.join('\n'); el.style.display='block'; }
-    else{ el.style.display='none'; }
+    sosPaint();
     ov.classList.add('on');
   });
   document.getElementById('sosClose').addEventListener('click', function(){ ov.classList.remove('on'); });
