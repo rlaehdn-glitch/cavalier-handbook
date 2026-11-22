@@ -3160,7 +3160,7 @@ body.alb-sel #bnav{display:none;}
       <li>수치·비용은 2026년 기준 대략 범위이며 병원·지역별로 다릅니다.</li>
       <li>의료 정보는 일반 정보입니다. 개별 판단은 수의사 진료가 우선입니다.</li>
     </ul>
-    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V7.2.1 · 2026-11-20</p>
+    <p class="muted small" style="margin:10px 0 0;">빼꼼 핸드북 V7.2.2 · 2026-11-22</p>
   </div>
 
   <h3 class="sec">진단 <span class="muted small" id="diagErrN"></span></h3>
@@ -4573,7 +4573,13 @@ class VideoRTC extends HTMLElement {
 
 if(window.customElements && !customElements.get('video-stream')){ customElements.define('video-stream', VideoRTC); }
 </script>
-<script>/* V7.2.1 (2026-11-20): 응급 정보 — 이사(2026-11) 반영 (앱 설계 D00 웹 수정 예외 6번째, D06-A 결정 ⑧).
+<script>/* V7.2.2 (2026-11-22): 급여 — 홈 '오늘 식사 마감'이 남은 끼니를 무시하던 문제 (앱 설계 D00 예외: V6.9.1 급여 수정의 보정).
+   원인: 다음 끼니 예상 = 마지막 식사 + 간격(6개월부터 3끼 8시간 = 깨어있는 16시간 ÷ 2). 예상 시각이 22시 이후면 끼니 수와 관계없이 마감 처리.
+      6개월 미만은 '마지막 19시 전 → 한 끼 더 권장' 경고로 빠졌으나 6개월(생후 183일)부터 그 분기가 꺼져, 3끼 중 2번째를 14시 이후에 기록하면 '마감 (2/3끼)'로 3번째 끼니가 사라짐.
+   수정: 야간에 걸릴 때 설정 끼니가 남았고(먹은 끼니 < 끼니 수) 마지막 식사가 19시 전이면 '다음 식사 ~21:00 (N/M끼 · 마지막 HH:MM)'.
+      21:00 = 04장 '취침 전 한 끼 21시 전후' · KG_MT 3끼 마지막 시각과 같은 기준. 끼니를 다 먹었거나 마지막 식사가 19시 이후면 지금처럼 마감.
+   6개월 미만 경고·공복 경고 시간·급여량 계산·저장 구조·동기화 변경 없음. PVER(빌드 번호) 690 유지. 시험 e2e_v722. */
+/* V7.2.1 (2026-11-20): 응급 정보 — 이사(2026-11) 반영 (앱 설계 D00 웹 수정 예외 6번째, D06-A 결정 ⑧).
    ① 상단 응급 버튼의 병원 2줄: 코드 고정(삼송) → 설정 '병원 연락처'의 단골·24시 병원을 전화 버튼으로 표시(글에서 전화번호를 찾아 연결).
       24시 칸이 비어 있으면 이사 전 24시 병원을 '이사 전 동네' 표시와 함께 보여 주고, 빈 칸은 [설정에서 넣기] 안내.
    ② 설정 병원 연락처: 예시 문구에서 이사 전 병원 이름 삭제, 안내 문구 변경.
@@ -4760,7 +4766,7 @@ if(window.customElements && !customElements.get('video-stream')){ customElements
 /* V5.8 (2026-08-21): 접종 실기록 반영(2차 08.07 종합+코로나1차, 3차 08.21 종합+코로나2차, 4차 09.04 예약, 넥스가드 스펙트라 매월 21일, 코로나 보강 2027.08.21),
    04장 미니 인도어 퍼피 체중별 급여표 추가, 급여 계산기 기본 ME 3735 + kcal 누락 NaN 가드. 저장 구조·동기화·달력 로직 변경 없음. */
 /* =============== State =============== */
-const APP_VER='7.2.1', APP_DATE='2026-11-20';   /* V6.6: 앱 버전 — dev/VERSION 한 곳에서 빌드할 때 채움 */
+const APP_VER='7.2.2', APP_DATE='2026-11-22';   /* V6.6: 앱 버전 — dev/VERSION 한 곳에서 빌드할 때 채움 */
 const DEFAULT_S = {profile:{name:'',birth:'',home:'',reg:''}, vet:{main:'',e24:''}, checks:{}, vax:{}, daily:{}, weight:[], visits:[], expenses:[], events:[], qlog:{}, awayCur:0, awayLog:{}, walkCur:0, walkLog:{}, sleepCur:0, sleepLog:{}, feed:{kcal:4000, meals:4, mealsAt:'', adult:0, adultMode:'auto', bcs:'ok', bcsAt:'', neut:0, treat:0, vetG:0, vetAt:''}, ntc:[], rep:{id:'',th:''}, notice:{text:'',by:'',at:0,day:''}, media:{url:''}, kgCur:0, kgLog:{}, kgCfg:{name:'도그스테이', pass:0, from:''}, marks:{}};
 let S = JSON.parse(JSON.stringify(DEFAULT_S));
 let storageOK = false, artOK = false, saveTimer = null, lastEditAt = 0;
@@ -8775,6 +8781,9 @@ function renderMealGap(){
       const fm=feedCfg().meals||4;
       if(mo!=null && mo<6 && lmH<19){
         mgSet(el,'mg-warn','⚠ 마지막 '+fmtHM(lm)+' — 이대로 자면 야간 공복이 길어져요. 취침 전(21시 전후) 한 끼 더 권장'+per);
+      }else if(eaten<fm && lmH<19){
+        /* V7.2.2: 설정한 끼니가 남았으면 마감하지 않고 21:00으로 안내 — 6개월부터 3끼 예상 간격이 8시간이라 2번째 끼니가 14시 이후면 '+8시간'이 22시를 넘어 남은 끼니가 마감으로 사라지던 문제 */
+        mgSet(el,'mg-ok','✓ 다음 식사 ~21:00 ('+eaten+'/'+fm+'끼 · 마지막 '+fmtHM(lm)+')'+per);
       }else{
         mgSet(el,'mg-ok','✓ 오늘 식사 마감 ('+eaten+'/'+fm+'끼 · 마지막 '+fmtHM(lm)+') — 다음은 내일 아침 06~08시'+per);
       }
